@@ -16,6 +16,7 @@ public class Launcher {
 	public static final String NAME = "SpaceExplorer2D"; 
 	public static final AdvancedFile FOLDER = OSUtil.getAppDataFolder(NAME);
 	public static final String NATIVES_DIR_NAME = "natives";
+	public static final String RESOURCEPACKS = "resourcepacks";
 	public static final double ASPECT_RATIO = 16/9.0;
 	
 	public static void main(String[] args) {
@@ -32,6 +33,7 @@ public class Launcher {
 						.setBoolean(GameSettings.LIGHT_2D, true),
 				new GLFWInfo(3, 2, true, false, 1280, 720));
 		Display.setAspectRatio(ASPECT_RATIO, true);
+		new Game(new AdvancedFile(FOLDER, RESOURCEPACKS));
 	}
 
 }
