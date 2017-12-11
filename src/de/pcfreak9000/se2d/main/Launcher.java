@@ -1,11 +1,18 @@
 package de.pcfreak9000.se2d.main;
 
+import org.lwjgl.glfw.GLFW;
+
 import de.codemakers.io.file.AdvancedFile;
+import de.pcfreak9000.se2d.game.Game;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
+import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.settings.GameSettings;
+import omnikryptec.settings.Key;
+import omnikryptec.settings.KeySettings;
 import omnikryptec.util.AdvancedThreadFactory;
+import omnikryptec.util.Instance;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.OSUtil;
 import omnikryptec.util.logger.LogLevel;
@@ -19,6 +26,11 @@ public class Launcher {
 	public static final String RESOURCEPACKS = "resourcepacks";
 	public static final double ASPECT_RATIO = 16/9.0;
 	
+	public static final String KEY_PLAYER_MOVE_FORWARD = "KEY_PLAYER_MOVE_FORWARD";
+	public static final String KEY_PLAYER_MOVE_BACKWARD = "KEY_PLAYER_MOVE_BACKWARD";
+	public static final String KEY_PLAYER_MOVE_RIGHT = "KEY_PLAYER_MOVE_RIGHT";
+	public static final String KEY_PLAYER_MOVE_LEFT = "KEY_PLAYER_MOVE_LEFT";
+
 	public static void main(String[] args) {
 		new Launcher();
 	}
@@ -29,10 +41,16 @@ public class Launcher {
         Logger.setDebugMode(true);
         Logger.setMinimumLogLevel(LogLevel.FINE);
         DisplayManager.createDisplay("SpaceExplorer2D",
-				new GameSettings().setAnisotropicLevel(16).setMultisamples(16).setUseRenderChunking(true)
+				new GameSettings().setAnisotropicLevel(16).setMultisamples(16).setUseRenderChunking(false)
 						.setBoolean(GameSettings.LIGHT_2D, true),
 				new GLFWInfo(3, 2, true, false, 1280, 720));
 		Display.setAspectRatio(ASPECT_RATIO, true);
+		OmniKryptecEngine.instance().getGameSettings().setKeySettings(new KeySettings());
+		Instance.getKeySettings().setKey(KEY_PLAYER_MOVE_FORWARD, GLFW.GLFW_KEY_W, true);
+		Instance.getKeySettings().setKey(KEY_PLAYER_MOVE_BACKWARD, GLFW.GLFW_KEY_S, true);
+		Instance.getKeySettings().setKey(KEY_PLAYER_MOVE_RIGHT, GLFW.GLFW_KEY_D, true);
+		Instance.getKeySettings().setKey(KEY_PLAYER_MOVE_LEFT, GLFW.GLFW_KEY_A, true);
+
 		new Game(new AdvancedFile(FOLDER, RESOURCEPACKS));
 	}
 

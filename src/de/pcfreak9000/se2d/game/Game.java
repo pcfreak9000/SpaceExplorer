@@ -1,7 +1,8 @@
-package de.pcfreak9000.se2d.main;
+package de.pcfreak9000.se2d.game;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.pcfreak9000.se2d.planet.Planet;
+import omnikryptec.gameobject.Camera;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.resource.loader.ResourceLoader;
 
@@ -26,7 +27,7 @@ public class Game {
 	}
 	
 	private void loadWorld() {
-		new Planet("Deine Mutter").setAsScene();
+		new Planet("Deine Mutter").setAsScene().setPlayer(new Player(new Camera().setOrthographicProjection2D(0, 0, 1000, 1000)));
 	}
 	
 }
