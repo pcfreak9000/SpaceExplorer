@@ -3,7 +3,7 @@ package de.pcfreak9000.se2d.main;
 import org.lwjgl.glfw.GLFW;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.pcfreak9000.se2d.game.Game;
+import de.pcfreak9000.se2d.game.SpaceExplorer2D;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
@@ -25,18 +25,14 @@ public class Launcher {
 	public static final String NATIVES_DIR_NAME = "natives";
 	public static final String RESOURCEPACKS = "resourcepacks";
 	public static final double ASPECT_RATIO = 16/9.0;
-	
-	public static final String KEY_PLAYER_MOVE_FORWARD = "KEY_PLAYER_MOVE_FORWARD";
-	public static final String KEY_PLAYER_MOVE_BACKWARD = "KEY_PLAYER_MOVE_BACKWARD";
-	public static final String KEY_PLAYER_MOVE_RIGHT = "KEY_PLAYER_MOVE_RIGHT";
-	public static final String KEY_PLAYER_MOVE_LEFT = "KEY_PLAYER_MOVE_LEFT";
+
 
 	public static void main(String[] args) {
 		new Launcher();
 	}
 	
 	public Launcher() {
-		NativesLoader.loadNatives(new AdvancedFile(FOLDER, NATIVES_DIR_NAME));
+		NativesLoader.loadNatives(null, new AdvancedFile(FOLDER, NATIVES_DIR_NAME));
 		Logger.enableLoggerRedirection(true);
         Logger.setDebugMode(true);
         Logger.setMinimumLogLevel(LogLevel.FINE);
@@ -46,12 +42,8 @@ public class Launcher {
 				new GLFWInfo(3, 2, true, false, 1280, 720));
 		Display.setAspectRatio(ASPECT_RATIO, true);
 		OmniKryptecEngine.instance().getGameSettings().setKeySettings(new KeySettings());
-		Instance.getKeySettings().setKey(KEY_PLAYER_MOVE_FORWARD, GLFW.GLFW_KEY_W, true);
-		Instance.getKeySettings().setKey(KEY_PLAYER_MOVE_BACKWARD, GLFW.GLFW_KEY_S, true);
-		Instance.getKeySettings().setKey(KEY_PLAYER_MOVE_RIGHT, GLFW.GLFW_KEY_D, true);
-		Instance.getKeySettings().setKey(KEY_PLAYER_MOVE_LEFT, GLFW.GLFW_KEY_A, true);
-
-		new Game(new AdvancedFile(FOLDER, RESOURCEPACKS));
+		KeyManager.init();
+		new SpaceExplorer2D(new AdvancedFile(FOLDER, RESOURCEPACKS));
 	}
 
 }
