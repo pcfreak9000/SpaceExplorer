@@ -12,12 +12,16 @@ import omnikryptec.main.Scene2D;
 import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.util.EnumCollection.FixedSizeMode;
+import omnikryptec.util.Maths;
 
 public class Planet {
-
+	
+	
 	private Scene2D planet;
 	private Instant id = Instant.now();
 	private String name;
+	private float radius=100;
+	
 	
 	public Planet(String name) {
 		planet = new Scene2D(name+id, SpaceExplorer2D.getSpaceExplorer2D().getPlanetCamera());
@@ -31,5 +35,13 @@ public class Planet {
 		return this;
 	}
 	
+	
+	public void generateChunk(float wx, float wy) {
+		
+	}
+	
+	public void getBiome(float x, float y) {
+		
+	}
 	
 }

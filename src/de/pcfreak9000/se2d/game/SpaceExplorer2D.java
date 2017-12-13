@@ -12,7 +12,7 @@ import omnikryptec.util.Instance;
 
 public class SpaceExplorer2D {
 
-	private static final AdvancedFile RESOURCELOCATION = new AdvancedFile("de", "pcfreak9000", "se2d", "res");
+	private static final AdvancedFile RESOURCELOCATION = new AdvancedFile(true, "", "de", "pcfreak9000", "se2d", "res");
 	private static final float[] PLANETPROJ = {-1920/2,-1080/2,1920, 1080};
 	
 	private static SpaceExplorer2D instance;

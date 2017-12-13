@@ -32,7 +32,7 @@ public class Launcher {
 	}
 	
 	public Launcher() {
-		NativesLoader.loadNatives(null, new AdvancedFile(FOLDER, NATIVES_DIR_NAME));
+		NativesLoader.loadNatives(null, new AdvancedFile(false, FOLDER, NATIVES_DIR_NAME));
 		Logger.enableLoggerRedirection(true);
         Logger.setDebugMode(true);
         Logger.setMinimumLogLevel(LogLevel.FINE);
@@ -43,7 +43,7 @@ public class Launcher {
 		Display.setAspectRatio(ASPECT_RATIO, true);
 		OmniKryptecEngine.instance().getGameSettings().setKeySettings(new KeySettings());
 		KeyManager.init();
-		new SpaceExplorer2D(new AdvancedFile(FOLDER, RESOURCEPACKS));
+		new SpaceExplorer2D(new AdvancedFile(false, FOLDER, RESOURCEPACKS));
 	}
 
 }
