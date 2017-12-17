@@ -6,12 +6,13 @@ import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.settings.KeySettings;
 import omnikryptec.util.EnumCollection.UpdateType;
+import omnikryptec.util.Instance;
 import omnikryptec.util.SmoothFloat;
 
 public class Player extends Sprite {
 
-	private static final float DY_SPEED = 2;
-	private static final float DX_SPEED = 2;
+	private static final float DY_SPEED = 200;
+	private static final float DX_SPEED = 200;
 
 	private KeySettings keysettings;
 
@@ -21,6 +22,7 @@ public class Player extends Sprite {
 		this.keysettings = OmniKryptecEngine.instance().getGameSettings().getKeySettings();
 		setTexture(ResourceLoader.currentInstance().getTexture("sfdsdfsdf").invertV());
 		getTransform().setScale(5);
+		setLayer(1);
 	}
 
 	private SmoothFloat dx = new SmoothFloat(0, 10);
@@ -29,16 +31,16 @@ public class Player extends Sprite {
 	@Override
 	protected void update() {
 		if (keysettings.isPressed(KeyManager.KEY_PLAYER_MOVE_FORWARD)) {
-			dy.setTarget(DY_SPEED);
+			dy.setTarget(DY_SPEED*Instance.getDeltaTimef());
 		} else if (keysettings.isPressed(KeyManager.KEY_PLAYER_MOVE_BACKWARD)) {
-			dy.setTarget(-DY_SPEED);
+			dy.setTarget(-DY_SPEED*Instance.getDeltaTimef());
 		} else {
 			dy.setTarget(0);
 		}
 		if (keysettings.isPressed(KeyManager.KEY_PLAYER_MOVE_LEFT)) {
-			dx.setTarget(-DX_SPEED);
+			dx.setTarget(-DX_SPEED*Instance.getDeltaTimef());
 		} else if (keysettings.isPressed(KeyManager.KEY_PLAYER_MOVE_RIGHT)) {
-			dx.setTarget(DX_SPEED);
+			dx.setTarget(DX_SPEED*Instance.getDeltaTimef());
 		} else {
 			dx.setTarget(0);
 		}
