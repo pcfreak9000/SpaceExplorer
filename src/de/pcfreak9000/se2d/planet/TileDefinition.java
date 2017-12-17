@@ -4,23 +4,13 @@ import omnikryptec.resource.texture.Texture;
 
 public class TileDefinition{
 	
-	public static final float DEFAULT_TILE_SIZE = 16;
+	public static final float TILE_SIZE = 64;
 	
 	private Texture tex;
-	private float width = DEFAULT_TILE_SIZE;
-	private float height = DEFAULT_TILE_SIZE;
 	private boolean prerenderable=true;
 	
 	public TileDefinition(Texture t) {
 		this.tex = t;
-	}
-	
-	public float getWidth() {
-		return width;
-	}
-	
-	public float getHeight() {
-		return height;
 	}
 	
 	public Texture getTexture() {

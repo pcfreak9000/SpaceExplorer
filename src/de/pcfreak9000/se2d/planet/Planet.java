@@ -1,6 +1,7 @@
 package de.pcfreak9000.se2d.planet;
 
 import java.time.Instant;
+import java.util.Random;
 
 import de.pcfreak9000.renderer.PlanetRenderer;
 import de.pcfreak9000.se2d.game.Player;
@@ -22,7 +23,7 @@ public class Planet {
 	private Scene2D planet;
 	private Instant id = Instant.now();
 	private String name;
-	private float radius=100;
+	private long radius=25;
 	
 	
 	public Planet(String name) {
@@ -34,7 +35,6 @@ public class Planet {
 	public Planet setAsScene(Player p) {
 		OmniKryptecEngine.instance().addAndSetScene(planet);
 		planet.addGameObject(p);
-		//planet.addGameObject((GameObject2D) new Sprite(ResourceLoader.currentInstance().getTexture("violet.png").invertV()).setLayer(-1).setGlobal(true));
 		generateChunk(0, 0);
 		return this;
 	}
@@ -42,7 +42,7 @@ public class Planet {
 	
 	public void generateChunk(float wx, float wy) {
 		Chunk chunk = new Chunk(0, 0);
-		chunk.generate().preRender();
+		chunk.generate(new Random(), radius, radius-10).preRender();
 		chunk.add(planet);
 	}
 	

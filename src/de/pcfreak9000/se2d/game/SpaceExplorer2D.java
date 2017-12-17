@@ -8,6 +8,7 @@ import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.resource.loader.ResourceLoader;
+import omnikryptec.resource.texture.Texture;
 import omnikryptec.util.Instance;
 
 public class SpaceExplorer2D {
@@ -48,6 +49,7 @@ public class SpaceExplorer2D {
 		ResourceLoader.currentInstance().stageAdvancedFiles(0, resourcepacks);
 		ResourceLoader.currentInstance().stageAdvancedFiles(1, RESOURCELOCATION);
 		ResourceLoader.currentInstance().loadStagedAdvancedFiles(true);
+		ResourceLoader.currentInstance().actions(Texture.class, (t)->t.invertV());
 	}
 	
 	private void loadWorld() {

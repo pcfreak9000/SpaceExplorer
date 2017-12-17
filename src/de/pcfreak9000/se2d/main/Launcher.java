@@ -38,7 +38,7 @@ public class Launcher {
         Logger.setMinimumLogLevel(LogLevel.FINE);
         DisplayManager.createDisplay("SpaceExplorer2D",
 				new GameSettings().setAnisotropicLevel(16).setMultisamples(16).setUseRenderChunking(false)
-						.setBoolean(GameSettings.LIGHT_2D, true),
+						.setBoolean(GameSettings.LIGHT_2D, false),
 				new GLFWInfo(3, 2, true, false, 1280, 720));
 		Display.setAspectRatio(ASPECT_RATIO, true);
 		OmniKryptecEngine.instance().getGameSettings().setKeySettings(new KeySettings());

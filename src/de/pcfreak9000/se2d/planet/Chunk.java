@@ -1,18 +1,21 @@
 package de.pcfreak9000.se2d.planet;
 
 import java.util.ArrayList;
+import java.util.Random;
 
-import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.main.Scene2D;
 import omnikryptec.renderer.d3.RenderMap;
 import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.resource.texture.Texture;
+import omnikryptec.util.Color;
 
 public class Chunk extends Sprite{
-
-	public static final float CHUNKSIZE = 250*TileDefinition.DEFAULT_TILE_SIZE;
+	
+	
+	public static final int CHUNKSIZE_T = 25;
+	public static final float CHUNKSIZE = CHUNKSIZE_T*TileDefinition.TILE_SIZE;
 
 	
 	private RenderMap<Texture, float[]> data = new RenderMap<>(Texture.class);
@@ -25,13 +28,28 @@ public class Chunk extends Sprite{
 	
 	private RenderMap<Texture, ArrayList<Tile>> tiles = new RenderMap<>(Texture.class);
 	
-	private TileDefinition TMP_T = new TileDefinition(ResourceLoader.currentInstance().getTexture("sdfsdfdsf"));
+	private TileDefinition TMP_T = new TileDefinition(ResourceLoader.currentInstance().getTexture("violet.png"));
 	
-	public Chunk generate() {
-		for(int x=0; x<CHUNKSIZE; x+=TileDefinition.DEFAULT_TILE_SIZE) {
-			for(int y=0; y<CHUNKSIZE; y+=TileDefinition.DEFAULT_TILE_SIZE) {
+	public Chunk generate(Random random, long maxr, long fader) {
+		maxr *= TileDefinition.TILE_SIZE;
+		fader *= TileDefinition.TILE_SIZE;
+		for(int x=0; x<CHUNKSIZE_T; x++) {
+			for(int y=0; y<CHUNKSIZE_T; y++) {
 				Tile tile = new Tile(TMP_T);
-				tile.getTransform().setPosition(x+this.x, y+this.y);
+				float tx = this.x + x*TileDefinition.TILE_SIZE;
+				float ty = this.y + y*TileDefinition.TILE_SIZE;
+				float txw = tx - TileDefinition.TILE_SIZE/2;
+				float tyw = ty - TileDefinition.TILE_SIZE/2;
+
+				if(txw*txw+tyw*tyw>maxr*maxr) {
+					continue;
+				}
+				if(txw*txw+tyw*tyw>fader*fader) {
+					float distancesq = 1-((float)org.joml.Math.sqrt(txw*txw+tyw*tyw)-(fader))/(maxr-fader);
+					tile.setColor(new Color(1, 1, 1, random.nextFloat()*distancesq>e(distancesq)?1:random.nextFloat()*distancesq));
+				}
+
+				tile.getTransform().setPosition(tx, ty);
 				if(tiles.get(tile.getTexture())==null) {
 					tiles.put(tile.getTexture(), new ArrayList<>());
 				}
@@ -39,6 +57,13 @@ public class Chunk extends Sprite{
 			}
 		}
 		return this;
+	}
+	
+	private float e(float x) {
+		if(x>=1) {
+			return 0;
+		}
+		return (float) Math.pow(Math.E, -(x*x));
 	}
 	
 	public Chunk preRender() {
@@ -54,15 +79,15 @@ public class Chunk extends Sprite{
 		return this;
 	}
 	
-	private int getSize(RenderMap<Texture, ArrayList<Tile>> tiles2) {
-		int xxx=0;
-		for(Texture t : tiles2.keysArray()) {
-			xxx+=tiles2.get(t).size();
+	private int getSize(RenderMap<Texture, ArrayList<Tile>> tiles) {
+		int fsize=0;
+		for(Texture t : tiles.keysArray()) {
+			fsize+=tiles.get(t).size();
 		}
 		
-		return xxx;
+		return fsize;
 	}
-
+	
 	public Chunk add(Scene2D s) {
 		s.addGameObject(this);
 		return this;
