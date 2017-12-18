@@ -36,8 +36,8 @@ public class Chunk extends Sprite{
 		for(int x=0; x<CHUNKSIZE_T; x++) {
 			for(int y=0; y<CHUNKSIZE_T; y++) {
 				Tile tile = new Tile(TMP_T);
-				float tx = this.x + x*TileDefinition.TILE_SIZE;
-				float ty = this.y + y*TileDefinition.TILE_SIZE;
+				float tx = this.x*CHUNKSIZE + x*TileDefinition.TILE_SIZE;
+				float ty = this.y*CHUNKSIZE + y*TileDefinition.TILE_SIZE;
 				float txw = tx - TileDefinition.TILE_SIZE/2;
 				float tyw = ty - TileDefinition.TILE_SIZE/2;
 
@@ -48,7 +48,6 @@ public class Chunk extends Sprite{
 					float distancesq = 1-((float)org.joml.Math.sqrt(txw*txw+tyw*tyw)-(fader))/(maxr-fader);
 					tile.setColor(new Color(1, 1, 1, random.nextFloat()*distancesq>e(distancesq)?1:random.nextFloat()*distancesq));
 				}
-
 				tile.getTransform().setPosition(tx, ty);
 				if(tiles.get(tile.getTexture())==null) {
 					tiles.put(tile.getTexture(), new ArrayList<>());
@@ -100,6 +99,7 @@ public class Chunk extends Sprite{
 	
 	@Override
 	public void paint(SpriteBatch batch) {
+		batch.color().set(1, 1, 1, 1);
 		for(Texture t : data.keysArray()) {
 			t.bindToUnitOptimized(0);
 			batch.drawPolygon(t, data.get(t), data.get(t).length/SpriteBatch.FLOATS_PER_VERTEX);

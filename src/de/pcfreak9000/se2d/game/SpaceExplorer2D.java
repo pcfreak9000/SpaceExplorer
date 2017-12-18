@@ -7,6 +7,7 @@ import omnikryptec.event.event.EventType;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.main.OmniKryptecEngine;
+import omnikryptec.main.Scene3D;
 import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.util.Instance;

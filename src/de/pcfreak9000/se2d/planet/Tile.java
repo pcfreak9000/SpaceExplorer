@@ -2,6 +2,7 @@ package de.pcfreak9000.se2d.planet;
 
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.util.Maths;
+import omnikryptec.util.Color;
 import omnikryptec.util.EnumCollection.FixedSizeMode;
 
 public class Tile extends Sprite{
