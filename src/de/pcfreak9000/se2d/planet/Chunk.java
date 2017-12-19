@@ -42,12 +42,10 @@ public class Chunk extends Sprite {
 		for (int x = 0; x < CHUNKSIZE_T; x++) {
 			for (int y = 0; y < CHUNKSIZE_T; y++) {
 				tile = new Tile(TMP_T);
-				array[x][y] = tile;
 				tx = this.x * CHUNKSIZE + x * TileDefinition.TILE_SIZE;
 				ty = this.y * CHUNKSIZE + y * TileDefinition.TILE_SIZE;
 				txw = tx - TileDefinition.TILE_SIZE / 2;
 				tyw = ty - TileDefinition.TILE_SIZE / 2;
-
 				if (txw * txw + tyw * tyw > maxr * maxr) {
 					continue;
 				}
@@ -62,6 +60,7 @@ public class Chunk extends Sprite {
 					}
 				}
 				tile.getTransform().setPosition(tx, ty);
+				array[x][y] = tile;
 				if (tile.getDefinition().isPrerenderable()) {
 					if (tiles.get(tile.getTexture()) == null) {
 						tiles.put(tile.getTexture(), new ArrayList<>());
@@ -72,15 +71,21 @@ public class Chunk extends Sprite {
 				}
 			}
 		}
+		int max=100;
 		for (int i = 0; i < 10; i++) {
 			float x = random.nextFloat() * CHUNKSIZE;
 			float y = random.nextFloat() * CHUNKSIZE;
-			if (array[(int) (x / TileDefinition.TILE_SIZE)][(int) (y / TileDefinition.TILE_SIZE)].isValid()) {
+			Tile t = array[(int) (x / TileDefinition.TILE_SIZE)][(int) (y / TileDefinition.TILE_SIZE)];
+			if (t!=null&&t.isValid()) {
 				Sprite sprite = new Sprite(ResourceLoader.currentInstance().getTexture("rofl"));
 				sprite.getTransform().setPosition(x+this.x*CHUNKSIZE, y+this.y*CHUNKSIZE);
 				sprite.setLayer(1);
 				others.add(sprite);
 			} else {
+				max--;
+				if(max<0) {
+					break;
+				}
 				i--;
 			}
 		}
@@ -142,6 +147,7 @@ public class Chunk extends Sprite {
 			t.bindToUnitOptimized(0);
 			batch.drawPolygon(t, data.get(t), data.get(t).length / SpriteBatch.FLOATS_PER_VERTEX);
 		}
+		batch.drawRect(x*CHUNKSIZE, y*CHUNKSIZE, CHUNKSIZE, CHUNKSIZE);
 	}
 
 	public static final int toChunk(float f) {

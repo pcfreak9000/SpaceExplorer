@@ -37,7 +37,7 @@ public class Planet {
 	private Scene2D planet;
 	private long id = Instant.now().toEpochMilli();
 	private String name;
-	private long radius=300;
+	private long radius=100;
 	
 	
 	private Chunk[][] chunks;
@@ -68,7 +68,7 @@ public class Planet {
 			return null;
 		}
 		if(chunks[cx+(chunksSize>>1)][cy+(chunksSize>>1)]==null) {
-			chunks[cx+(chunksSize>>1)][cy+(chunksSize>>1)] = new Chunk(cx, cy).generate(random, radius, radius-10).preRender().addTo(planet);
+			chunks[cx+(chunksSize>>1)][cy+(chunksSize>>1)] = new Chunk(cx, cy).generate(random, radius, radius-20).preRender().addTo(planet);
 		}
 		return chunks[cx+(chunksSize>>1)][cy+(chunksSize>>1)];
 	}
