@@ -31,21 +31,21 @@ public class Player extends Sprite {
 	@Override
 	protected void update() {
 		if (keysettings.isPressed(KeyManager.KEY_PLAYER_MOVE_FORWARD)) {
-			dy.setTarget(DY_SPEED*Instance.getDeltaTimef());
+			dy.setValueAndTarget(DY_SPEED*Instance.getDeltaTimef());
 		} else if (keysettings.isPressed(KeyManager.KEY_PLAYER_MOVE_BACKWARD)) {
-			dy.setTarget(-DY_SPEED*Instance.getDeltaTimef());
+			dy.setValueAndTarget(-DY_SPEED*Instance.getDeltaTimef());
 		} else {
-			dy.setTarget(0);
+			dy.setValueAndTarget(0);
 		}
 		if (keysettings.isPressed(KeyManager.KEY_PLAYER_MOVE_LEFT)) {
-			dx.setTarget(-DX_SPEED*Instance.getDeltaTimef());
+			dx.setValueAndTarget(-DX_SPEED*Instance.getDeltaTimef());
 		} else if (keysettings.isPressed(KeyManager.KEY_PLAYER_MOVE_RIGHT)) {
-			dx.setTarget(DX_SPEED*Instance.getDeltaTimef());
+			dx.setValueAndTarget(DX_SPEED*Instance.getDeltaTimef());
 		} else {
-			dx.setTarget(0);
+			dx.setValueAndTarget(0);
 		}
-		dx.update();
-		dy.update();
+		//dx.update();
+		//dy.update();
 		getTransform().increasePosition(dx.get(), dy.get());
 		SpaceExplorer2D.getSpaceExplorer2D().getPlanetCamera().getTransform().setPosition(
 				getTransform().getPosition(true).x + getWidth() / 2,

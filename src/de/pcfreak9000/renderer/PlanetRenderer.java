@@ -15,7 +15,7 @@ public class PlanetRenderer extends DefaultRenderer2D{
 			if(o1.getLayer()!=o2.getLayer()) {
 				return (int) Math.signum(o1.getLayer()-o2.getLayer());
 			} else {
-				return (int) Math.signum(o1.getTransform().getPosition(true).y-o2.getTransform().getPosition(true).y);
+				return (int) Math.signum(o2.getTransform().getPosition(true).y-o1.getTransform().getPosition(true).y);
 			}
 		}
 	};

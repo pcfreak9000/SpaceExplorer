@@ -8,9 +8,11 @@ import omnikryptec.util.EnumCollection.FixedSizeMode;
 public class Tile extends Sprite{
 
 	private TileDefinition myDefinition;
+	private boolean validPosition=true;
 	
 	public Tile(TileDefinition def) {
 		super(def.getTexture());
+		myDefinition = def;
 		setFixedSizeMode(FixedSizeMode.ON);
 		setFixedSize(TileDefinition.TILE_SIZE, TileDefinition.TILE_SIZE);
 	}
@@ -25,5 +27,13 @@ public class Tile extends Sprite{
 	
 	public long getY() {
 		return Maths.fastFloor(getTransform().getPosition(true).y/TileDefinition.TILE_SIZE);
+	}
+	
+	void invalidate() {
+		validPosition = false;
+	}
+	
+	public boolean isValid() {
+		return validPosition;
 	}
 }
