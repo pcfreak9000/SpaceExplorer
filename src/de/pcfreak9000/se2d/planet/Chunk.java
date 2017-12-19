@@ -3,16 +3,15 @@ package de.pcfreak9000.se2d.planet;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.joml.Math;
+
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.main.Scene2D;
 import omnikryptec.renderer.d3.RenderMap;
 import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.resource.texture.Texture;
-import omnikryptec.util.Color;
 import omnikryptec.util.Maths;
-
-import org.joml.Math;
 
 public class Chunk extends Sprite {
 
@@ -54,7 +53,7 @@ public class Chunk extends Sprite {
 					distancesq = 1 - ((float) Math.sqrt(txw * txw + tyw * tyw) - (fader)) / (maxr - fader);
 					randfl = random.nextFloat();
 					if (randfl * distancesq <= e(distancesq)) {
-						tile.getColor().set(1, 1, 1, randfl * distancesq);
+						tile.getColor().set(1, 1, 1, randfl * distancesq * distancesq * distancesq);
 					} else {
 						tile.getColor().setAll(1);
 					}
@@ -92,15 +91,16 @@ public class Chunk extends Sprite {
 		return this;
 	}
 
-	public Tile getTile(int crtx, int crty) {
-		return array[crtx][crty];
-	}
-
 	private float e(float x) {
 		if (x >= 1) {
 			return 0;
 		}
-		return (float) java.lang.Math.pow(Maths.E, -(x * x));
+		return (float) java.lang.Math.pow(Maths.E, -(x * x))*1.5f;
+	}
+
+	
+	public Tile getTile(int crtx, int crty) {
+		return array[crtx][crty];
 	}
 
 	public Chunk preRender() {

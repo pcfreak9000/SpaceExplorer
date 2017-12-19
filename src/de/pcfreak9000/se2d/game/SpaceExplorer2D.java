@@ -2,15 +2,10 @@ package de.pcfreak9000.se2d.game;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.pcfreak9000.se2d.planet.Planet;
-import omnikryptec.event.event.EventSystem;
-import omnikryptec.event.event.EventType;
 import omnikryptec.gameobject.Camera;
-import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.Scene3D;
 import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.resource.texture.Texture;
-import omnikryptec.util.Instance;
 
 public class SpaceExplorer2D {
 

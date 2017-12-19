@@ -1,7 +1,5 @@
 package de.pcfreak9000.se2d.main;
 
-import org.lwjgl.glfw.GLFW;
-
 import de.codemakers.io.file.AdvancedFile;
 import de.pcfreak9000.se2d.game.SpaceExplorer2D;
 import de.pcfreak9000.se2d.planet.Chunk;
@@ -10,10 +8,7 @@ import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.settings.GameSettings;
-import omnikryptec.settings.Key;
 import omnikryptec.settings.KeySettings;
-import omnikryptec.util.AdvancedThreadFactory;
-import omnikryptec.util.Instance;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.OSUtil;
 import omnikryptec.util.logger.LogLevel;
@@ -42,7 +37,7 @@ public class Launcher {
 						.setInteger(GameSettings.CHUNK_WIDTH_2D, (int) Chunk.CHUNKSIZE)
 						.setInteger(GameSettings.CHUNK_HEIGHT_2D, (int) Chunk.CHUNKSIZE)
 						.setInteger(GameSettings.CHUNK_OFFSET_2D_X, 2).setInteger(GameSettings.CHUNK_OFFSET_2D_Y, 2),
-				new GLFWInfo(3, 2, true, false, 1280, 720));
+				new GLFWInfo(4, 2, true, false, 1280, 720));
 		Display.setAspectRatio(ASPECT_RATIO, true);
 		OmniKryptecEngine.instance().getGameSettings().setKeySettings(new KeySettings());
 		KeyManager.init();

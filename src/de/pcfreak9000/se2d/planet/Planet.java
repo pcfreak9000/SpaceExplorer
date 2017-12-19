@@ -23,11 +23,12 @@ public class Planet {
 		protected void update() {
 			int camX = Chunk.toChunk(getCamera().getTransform().getPosition(true).x);
 			int camY = Chunk.toChunk(getCamera().getTransform().getPosition(true).y);
-			for(int i=-2; i<=2; i++) {
-				for(int j=-2; j<=2; j++) {
+			for(int i=-1; i<=1; i++) {
+				for(int j=-1; j<=1; j++) {
 					getChunk(camX+i, camY+j);
 				}
 			}
+			System.out.println(OmniKryptecEngine.instance().getDisplayManager().getFPSCounted());
 		}
 		
 		
@@ -68,7 +69,7 @@ public class Planet {
 			return null;
 		}
 		if(chunks[cx+(chunksSize>>1)][cy+(chunksSize>>1)]==null) {
-			chunks[cx+(chunksSize>>1)][cy+(chunksSize>>1)] = new Chunk(cx, cy).generate(random, radius, radius-20).preRender().addTo(planet);
+			chunks[cx+(chunksSize>>1)][cy+(chunksSize>>1)] = new Chunk(cx, cy).generate(random, radius, radius-40).preRender().addTo(planet);
 		}
 		return chunks[cx+(chunksSize>>1)][cy+(chunksSize>>1)];
 	}
