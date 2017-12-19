@@ -37,7 +37,7 @@ public class Launcher {
 						.setInteger(GameSettings.CHUNK_WIDTH_2D, (int) Chunk.CHUNKSIZE)
 						.setInteger(GameSettings.CHUNK_HEIGHT_2D, (int) Chunk.CHUNKSIZE)
 						.setInteger(GameSettings.CHUNK_OFFSET_2D_X, 2).setInteger(GameSettings.CHUNK_OFFSET_2D_Y, 2),
-				new GLFWInfo(4, 2, true, false, 1280, 720));
+				new GLFWInfo(3, 2, true, false, 1280, 720));
 		Display.setAspectRatio(ASPECT_RATIO, true);
 		OmniKryptecEngine.instance().getGameSettings().setKeySettings(new KeySettings());
 		KeyManager.init();

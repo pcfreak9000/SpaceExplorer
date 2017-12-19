@@ -28,7 +28,6 @@ public class Planet {
 					getChunk(camX+i, camY+j);
 				}
 			}
-			System.out.println(OmniKryptecEngine.instance().getDisplayManager().getFPSCounted());
 		}
 		
 		
