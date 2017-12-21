@@ -14,6 +14,7 @@ public class Tile extends Sprite{
 		myDefinition = def;
 		setFixedSizeMode(FixedSizeMode.ON);
 		setFixedSize(TileDefinition.TILE_SIZE, TileDefinition.TILE_SIZE);
+		setLayer(TileDefinition.TILE_LAYER);
 	}
 	
 	public TileDefinition getDefinition() {
