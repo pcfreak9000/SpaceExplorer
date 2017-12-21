@@ -12,6 +12,7 @@ import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
 public class Planet {
+	
 	private class PlanetScene extends Scene2D{
 		
 		PlanetScene(String name){
@@ -32,12 +33,13 @@ public class Planet {
 		
 		
 	}
+	
 	public static final PlanetRenderer RENDERER = new PlanetRenderer();
 	
 	private Scene2D planet;
 	private long id = Instant.now().toEpochMilli();
 	private String name;
-	private long radius=100;
+	private long radius=1000;
 	
 	
 	private Chunk[][] chunks;

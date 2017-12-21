@@ -51,5 +51,4 @@ public class Player extends Sprite {
 				getTransform().getPosition(true).x + getWidth() / 2,
 				getTransform().getPosition(true).y + getHeight() / 2, 0);
 	}
-
 }
