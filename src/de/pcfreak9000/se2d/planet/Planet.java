@@ -3,9 +3,9 @@ package de.pcfreak9000.se2d.planet;
 import java.time.Instant;
 import java.util.Random;
 
-import de.pcfreak9000.renderer.PlanetRenderer;
 import de.pcfreak9000.se2d.game.Player;
 import de.pcfreak9000.se2d.game.SpaceExplorer2D;
+import de.pcfreak9000.se2d.renderer.PlanetRenderer;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene2D;
 import omnikryptec.util.logger.LogLevel;
@@ -39,7 +39,7 @@ public class Planet {
 	private Scene2D planet;
 	private long id = Instant.now().toEpochMilli();
 	private String name;
-	private long radius=1000;
+	private long radius=100;
 	
 	
 	private Chunk[][] chunks;

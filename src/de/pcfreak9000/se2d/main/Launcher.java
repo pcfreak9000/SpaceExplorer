@@ -16,6 +16,8 @@ import omnikryptec.util.logger.Logger;
 
 public class Launcher {
 
+	public static final boolean DEBUG=false;
+	
 	public static final String NAME = "SpaceExplorer2D";
 	public static final AdvancedFile FOLDER = OSUtil.getAppDataFolder(NAME);
 	public static final String NATIVES_DIR_NAME = "natives";
@@ -29,7 +31,7 @@ public class Launcher {
 	public Launcher() {
 		NativesLoader.loadNatives(null, new AdvancedFile(false, FOLDER, NATIVES_DIR_NAME));
 		Logger.enableLoggerRedirection(true);
-		Logger.setDebugMode(true);
+		Logger.setDebugMode(DEBUG);
 		Logger.setMinimumLogLevel(LogLevel.FINE);
 		DisplayManager.createDisplay("SpaceExplorer2D",
 				new GameSettings().setAnisotropicLevel(16).setMultisamples(16).setUseRenderChunking(true)

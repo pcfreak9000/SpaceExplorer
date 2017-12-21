@@ -20,8 +20,8 @@ public class Player extends Sprite {
 		this.setUpdateType(UpdateType.DYNAMIC);
 		this.setGlobal(true);
 		this.keysettings = OmniKryptecEngine.instance().getGameSettings().getKeySettings();
-		setTexture(ResourceLoader.currentInstance().getTexture("violet.png"));
-		getTransform().setScale(0.1f);
+		setTexture(ResourceLoader.currentInstance().getTexture("mensch.png"));
+		getTransform().setScale(2f);
 		setLayer(1);
 	}
 

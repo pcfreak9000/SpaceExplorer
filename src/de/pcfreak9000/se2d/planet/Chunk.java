@@ -5,6 +5,7 @@ import java.util.Random;
 
 import org.joml.Math;
 
+import de.pcfreak9000.se2d.main.Launcher;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.main.Scene2D;
@@ -31,7 +32,7 @@ public class Chunk extends Sprite {
 	private Tile[][] array = new Tile[CHUNKSIZE_T][CHUNKSIZE_T];
 	private ArrayList<Sprite> others = new ArrayList<>();
 
-	private TileDefinition TMP_T = new TileDefinition(ResourceLoader.currentInstance().getTexture("violet.png"));
+	private TileDefinition TMP_T = new TileDefinition(ResourceLoader.currentInstance().getTexture("grassy.png"));
 
 	public Chunk generate(Random random, long maxr, long fader) {
 		maxr *= TileDefinition.TILE_SIZE;
@@ -71,12 +72,12 @@ public class Chunk extends Sprite {
 			}
 		}
 		int max=100;
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 30; i++) {
 			float x = random.nextFloat() * CHUNKSIZE;
 			float y = random.nextFloat() * CHUNKSIZE;
 			Tile t = array[(int) (x / TileDefinition.TILE_SIZE)][(int) (y / TileDefinition.TILE_SIZE)];
 			if (t!=null&&t.isValid()) {
-				Sprite sprite = new Sprite(ResourceLoader.currentInstance().getTexture("rofl"));
+				Sprite sprite = new Sprite(ResourceLoader.currentInstance().getTexture("treetest.png"));
 				sprite.getTransform().setPosition(x+this.x*CHUNKSIZE, y+this.y*CHUNKSIZE);
 				sprite.setLayer(1);
 				others.add(sprite);
@@ -147,7 +148,9 @@ public class Chunk extends Sprite {
 			t.bindToUnitOptimized(0);
 			batch.drawPolygon(t, data.get(t), data.get(t).length / SpriteBatch.FLOATS_PER_VERTEX);
 		}
-		batch.drawRect(x*CHUNKSIZE, y*CHUNKSIZE, CHUNKSIZE, CHUNKSIZE);
+		if(Launcher.DEBUG) {
+			batch.drawRect(x*CHUNKSIZE, y*CHUNKSIZE, CHUNKSIZE, CHUNKSIZE);
+		}
 	}
 
 	public static final int toChunk(float f) {
