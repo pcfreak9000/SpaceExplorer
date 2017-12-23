@@ -6,8 +6,10 @@ import java.util.Random;
 import de.pcfreak9000.se2d.game.Player;
 import de.pcfreak9000.se2d.game.SpaceExplorer2D;
 import de.pcfreak9000.se2d.renderer.PlanetRenderer;
+import omnikryptec.gameobject.Light2D;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene2D;
+import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -18,6 +20,10 @@ public class Planet {
 		PlanetScene(String name){
 			super(name, SpaceExplorer2D.getSpaceExplorer2D().getPlanetCamera());
 			setRenderer(RENDERER);
+			setAmbientColor(0.2f, 0.2f, 0.2f);
+			Light2D test = new Light2D(null, ResourceLoader.currentInstance().getTexture("light1.png"));
+			test.getTransform().setScale(1);
+			addGameObject(test);
 		}
 		
 		@Override
@@ -61,6 +67,12 @@ public class Planet {
 	public Planet setAsScene(Player p) {
 		OmniKryptecEngine.instance().addAndSetScene(planet);
 		planet.addGameObject(p);
+		return this;
+	}
+	
+	public Planet unsetAsScene(Player p){
+		OmniKryptecEngine.instance().setScene2D(null);
+		planet.removeGameObject(p);
 		return this;
 	}
 	

@@ -16,14 +16,14 @@ import omnikryptec.util.Maths;
 
 public class Chunk extends Sprite {
 
-	public static final int CHUNKSIZE_T = 30;
+	public static final int CHUNKSIZE_T = 20;
 	public static final float CHUNKSIZE = CHUNKSIZE_T * TileDefinition.TILE_SIZE;
 
 	private RenderMap<Texture, float[]> data = new RenderMap<>(Texture.class);
 	private int x, y;
 
 	public Chunk(int x, int y) {
-		getTransform().setPosition(x*CHUNKSIZE, y*CHUNKSIZE);
+		getTransform().setPosition(x*CHUNKSIZE+000.1f, y*CHUNKSIZE+000.1f);
 		this.x = x;
 		this.y = y;
 	}
@@ -153,6 +153,16 @@ public class Chunk extends Sprite {
 		}
 	}
 
+	@Override
+	public float getWidth() {
+		return CHUNKSIZE;
+	}
+	
+	@Override
+	public float getHeight() {
+		return CHUNKSIZE;
+	}
+	
 	public static final int toChunk(float f) {
 		return (int) Maths.fastFloor(f/CHUNKSIZE);
 	}
