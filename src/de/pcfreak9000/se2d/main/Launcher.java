@@ -34,7 +34,7 @@ public class Launcher {
 		Logger.setDebugMode(DEBUG);
 		Logger.setMinimumLogLevel(LogLevel.FINE);
 		DisplayManager.createDisplay("SpaceExplorer2D",
-				new GameSettings().setAnisotropicLevel(16).setMultisamples(16).setUseRenderChunking(true).setUseFrustrumCulling(true)
+				new GameSettings().setAnisotropicLevel(16).setMultisamples(16).setUseRenderChunking(false).setUseFrustrumCulling(true)
 						.setBoolean(GameSettings.LIGHT_2D, true)
 						.setInteger(GameSettings.CHUNK_WIDTH_2D, (int) Chunk.CHUNKSIZE)
 						.setInteger(GameSettings.CHUNK_HEIGHT_2D, (int) Chunk.CHUNKSIZE)

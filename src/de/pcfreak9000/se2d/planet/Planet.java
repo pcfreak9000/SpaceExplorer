@@ -21,9 +21,6 @@ public class Planet {
 			super(name, SpaceExplorer2D.getSpaceExplorer2D().getPlanetCamera());
 			setRenderer(RENDERER);
 			setAmbientColor(0.2f, 0.2f, 0.2f);
-			Light2D test = new Light2D(null, ResourceLoader.currentInstance().getTexture("light1.png"));
-			test.getTransform().setScale(1);
-			addGameObject(test);
 		}
 		
 		@Override

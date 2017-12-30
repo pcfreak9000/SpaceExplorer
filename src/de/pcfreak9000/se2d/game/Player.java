@@ -1,6 +1,7 @@
 package de.pcfreak9000.se2d.game;
 
 import de.pcfreak9000.se2d.main.KeyManager;
+import omnikryptec.gameobject.Light2D;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.resource.loader.ResourceLoader;
@@ -15,7 +16,8 @@ public class Player extends Sprite {
 	private static final float DX_SPEED = 200;
 
 	private KeySettings keysettings;
-
+	private Light2D light1;
+	
 	public Player() {
 		this.setUpdateType(UpdateType.DYNAMIC);
 		this.setGlobal(true);
@@ -23,6 +25,9 @@ public class Player extends Sprite {
 		setTexture(ResourceLoader.currentInstance().getTexture("mensch.png"));
 		getTransform().setScale(2f);
 		setLayer(1);
+		light1 = new Light2D(null, ResourceLoader.currentInstance().getTexture("light1.png"));
+		light1.getTransform().setScale(1).increasePosition(getWidth()/2, getHeight()/2);
+		addChild(light1);
 	}
 
 	private SmoothFloat dx = new SmoothFloat(0, 10);
@@ -50,5 +55,10 @@ public class Player extends Sprite {
 		SpaceExplorer2D.getSpaceExplorer2D().getPlanetCamera().getTransform().setPosition(
 				getTransform().getPosition(true).x + getWidth() / 2,
 				getTransform().getPosition(true).y + getHeight() / 2, 0);
+	}
+	
+	@Override
+	public void added() {
+		
 	}
 }
