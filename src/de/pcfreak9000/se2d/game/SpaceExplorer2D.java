@@ -34,7 +34,7 @@ public class SpaceExplorer2D {
 		}
 		instance = this;
 		this.resourcepacks = resourcepacks;
-		ResourceLoader.createInstanceDefault(true);
+		ResourceLoader.createInstanceDefault(true, false);
 		loadRes();
 		loadWorld();
 		OmniKryptecEngine.instance().startLoop();
