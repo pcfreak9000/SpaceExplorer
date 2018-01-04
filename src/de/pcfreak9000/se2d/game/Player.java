@@ -27,7 +27,7 @@ public class Player extends Sprite {
 		setLayer(1);
 		light1 = new Light2D(null, ResourceLoader.currentInstance().getTexture("light1.png"));
 		light1.getTransform().setScale(1).increasePosition(getWidth()/2, getHeight()/2);
-		addChild(light1);
+	//	addChild(light1);
 	}
 
 	private SmoothFloat dx = new SmoothFloat(0, 10);
