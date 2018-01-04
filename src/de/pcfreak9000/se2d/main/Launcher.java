@@ -16,7 +16,7 @@ import omnikryptec.util.logger.Logger;
 
 public class Launcher {
 
-	public static final boolean DEBUG=false;
+	public static final boolean DEBUG=true;
 	
 	public static final String NAME = "SpaceExplorer2D";
 	public static final AdvancedFile FOLDER = OSUtil.getAppDataFolder(NAME);
@@ -34,7 +34,7 @@ public class Launcher {
 		Logger.setDebugMode(DEBUG);
 		Logger.setMinimumLogLevel(LogLevel.FINE);
 		DisplayManager.createDisplay("SpaceExplorer2D",
-				new GameSettings().setAnisotropicLevel(16).setMultisamples(16).setUseRenderChunking(false).setUseFrustrumCulling(true)
+				new GameSettings().setAnisotropicLevel(16).setMultisamples(16).setUseRenderChunking(true).setUseFrustrumCulling(true)
 						.setBoolean(GameSettings.LIGHT_2D, true)
 						.setInteger(GameSettings.CHUNK_WIDTH_2D, (int) Chunk.CHUNKSIZE)
 						.setInteger(GameSettings.CHUNK_HEIGHT_2D, (int) Chunk.CHUNKSIZE)

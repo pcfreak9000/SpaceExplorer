@@ -20,7 +20,7 @@ public class Player extends Sprite {
 	
 	public Player() {
 		this.setUpdateType(UpdateType.DYNAMIC);
-		this.setGlobal(true);
+		//this.setGlobal(true);
 		this.keysettings = OmniKryptecEngine.instance().getGameSettings().getKeySettings();
 		setTexture(ResourceLoader.currentInstance().getTexture("mensch.png"));
 		getTransform().setScale(2f);
@@ -57,8 +57,4 @@ public class Player extends Sprite {
 				getTransform().getPosition(true).y + getHeight() / 2, 0);
 	}
 	
-	@Override
-	public void added() {
-		
-	}
 }
