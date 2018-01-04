@@ -42,12 +42,13 @@ public class Planet {
 	private Scene2D planet;
 	private long id = Instant.now().toEpochMilli();
 	private String name;
-	private long radius=100;
+	private long radius=40;
 	
 	
 	private Chunk[][] chunks;
 	private int chunksSize;
 	private Random random;
+	private int planetseed=1;
 	
 	public Planet(String name) {
 		planet = new PlanetScene(name+id);
@@ -57,10 +58,10 @@ public class Planet {
 		}
 		chunksSize <<= 1;
 		chunks = new Chunk[chunksSize][chunksSize];
-		random = new Random();
+		random = new Random(planetseed);
 		this.name = name;
 	}
-	
+		
 	public Planet setAsScene(Player p) {
 		OmniKryptecEngine.instance().addAndSetScene(planet);
 		planet.addGameObject(p);
@@ -79,7 +80,8 @@ public class Planet {
 			return null;
 		}
 		if(chunks[cx+(chunksSize>>1)][cy+(chunksSize>>1)]==null) {
-			chunks[cx+(chunksSize>>1)][cy+(chunksSize>>1)] = new Chunk(cx, cy).generate(random, radius, radius-40).preRender().addTo(planet);
+			random.setSeed((cx*3+cy*2+1)/2+planetseed);
+			chunks[cx+(chunksSize>>1)][cy+(chunksSize>>1)] = new Chunk(cx, cy).generate(random, radius, radius-25).preRender().addTo(planet);
 		}
 		return chunks[cx+(chunksSize>>1)][cy+(chunksSize>>1)];
 	}

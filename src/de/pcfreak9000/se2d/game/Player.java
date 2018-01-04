@@ -20,14 +20,14 @@ public class Player extends Sprite {
 	
 	public Player() {
 		this.setUpdateType(UpdateType.DYNAMIC);
-		//this.setGlobal(true);
 		this.keysettings = OmniKryptecEngine.instance().getGameSettings().getKeySettings();
 		setTexture(ResourceLoader.currentInstance().getTexture("mensch.png"));
 		getTransform().setScale(2f);
 		setLayer(1);
 		light1 = new Light2D(null, ResourceLoader.currentInstance().getTexture("light1.png"));
 		light1.getTransform().setScale(1).increasePosition(getWidth()/2, getHeight()/2);
-	//	addChild(light1);
+		light1.getColor().set(1, 0.5f, 0.5f);
+		addChild(light1);
 	}
 
 	private SmoothFloat dx = new SmoothFloat(0, 10);

@@ -4,7 +4,7 @@ import omnikryptec.resource.texture.Texture;
 
 public class TileDefinition {
 
-	public static final float TILE_SIZE = 64;
+	public static final float TILE_SIZE = 48;
 	public static final float TILE_LAYER = 0;
 	
 	private Texture tex;

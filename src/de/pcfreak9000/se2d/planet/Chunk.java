@@ -16,14 +16,14 @@ import omnikryptec.util.Maths;
 
 public class Chunk extends Sprite {
 
-	public static final int CHUNKSIZE_T = 20;
+	public static final int CHUNKSIZE_T = 27;
 	public static final float CHUNKSIZE = CHUNKSIZE_T * TileDefinition.TILE_SIZE;
 
 	private RenderMap<Texture, float[]> data = new RenderMap<>(Texture.class);
 	private int x, y;
 
 	public Chunk(int x, int y) {
-		getTransform().setPosition(x*CHUNKSIZE+000.1f, y*CHUNKSIZE+000.1f);
+		getTransform().setPosition(x*CHUNKSIZE+0.001f, y*CHUNKSIZE+0.001f);
 		this.x = x;
 		this.y = y;
 	}
@@ -32,12 +32,15 @@ public class Chunk extends Sprite {
 	private Tile[][] array = new Tile[CHUNKSIZE_T][CHUNKSIZE_T];
 	private ArrayList<Sprite> others = new ArrayList<>();
 
+	private double validratio;
+	
 	private TileDefinition TMP_T = new TileDefinition(ResourceLoader.currentInstance().getTexture("grassy.png"));
-
+	
 	public Chunk generate(Random random, long maxr, long fader) {
 		maxr *= TileDefinition.TILE_SIZE;
 		fader *= TileDefinition.TILE_SIZE;
 		float tx, ty, txw, tyw, distancesq, randfl;
+		int countvalid=0;
 		Tile tile;
 		for (int x = 0; x < CHUNKSIZE_T; x++) {
 			for (int y = 0; y < CHUNKSIZE_T; y++) {
@@ -58,6 +61,8 @@ public class Chunk extends Sprite {
 					} else {
 						tile.getColor().setAll(1);
 					}
+				}else {
+					countvalid++;
 				}
 				tile.getTransform().setPosition(tx, ty);
 				array[x][y] = tile;
@@ -71,8 +76,9 @@ public class Chunk extends Sprite {
 				}
 			}
 		}
+		validratio = countvalid / (double)(CHUNKSIZE_T*CHUNKSIZE_T);
 		int max=100;
-		for (int i = 0; i < 30; i++) {
+		for (int i = 0; i < 30*validratio; i++) {
 			float x = random.nextFloat() * CHUNKSIZE;
 			float y = random.nextFloat() * CHUNKSIZE;
 			Tile t = array[(int) (x / TileDefinition.TILE_SIZE)][(int) (y / TileDefinition.TILE_SIZE)];
