@@ -3,10 +3,14 @@ package de.pcfreak9000.se2d.planet;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.dyn4j.dynamics.Body;
+import org.dyn4j.geometry.MassType;
+import org.dyn4j.geometry.Rectangle;
 import org.joml.Math;
 
 import de.pcfreak9000.se2d.main.Launcher;
 import omnikryptec.gameobject.Sprite;
+import omnikryptec.gameobject.component.PhysicsComponent2D;
 import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.main.Scene2D;
 import omnikryptec.renderer.d3.RenderMap;
@@ -87,6 +91,11 @@ public class Chunk extends Sprite {
 				sprite.getTransform().setPosition(x+this.x*CHUNKSIZE, y+this.y*CHUNKSIZE);
 				sprite.setLayer(1);
 				others.add(sprite);
+				Body body = new Body();
+				body.setAsleep(true);
+				body.getTransform().setTranslation(sprite.getTransform().getPosition(true).x, sprite.getTransform().getPosition(true).y);
+				body.addFixture(new Rectangle(20, 40));
+				sprite.addComponent(new PhysicsComponent2D(body));
 			} else {
 				max--;
 				if(max<0) {

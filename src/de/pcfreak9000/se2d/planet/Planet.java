@@ -6,10 +6,9 @@ import java.util.Random;
 import de.pcfreak9000.se2d.game.Player;
 import de.pcfreak9000.se2d.game.SpaceExplorer2D;
 import de.pcfreak9000.se2d.renderer.PlanetRenderer;
-import omnikryptec.gameobject.Light2D;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene2D;
-import omnikryptec.resource.loader.ResourceLoader;
+import omnikryptec.physics.Dyn4JPhysicsWorld;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -21,6 +20,7 @@ public class Planet {
 			super(name, SpaceExplorer2D.getSpaceExplorer2D().getPlanetCamera());
 			setRenderer(RENDERER);
 			setAmbientColor(0.2f, 0.2f, 0.2f);
+			setPhysicsWorld(new Dyn4JPhysicsWorld());
 		}
 		
 		@Override
@@ -48,7 +48,7 @@ public class Planet {
 	private Chunk[][] chunks;
 	private int chunksSize;
 	private Random random;
-	private int planetseed=1;
+	private int planetseed=4;
 	
 	public Planet(String name) {
 		planet = new PlanetScene(name+id);
