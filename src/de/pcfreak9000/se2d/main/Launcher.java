@@ -42,7 +42,7 @@ public class Launcher {
 						.setInteger(GameSettings.CHUNK_OFFSET_2D_X, 1).setInteger(GameSettings.CHUNK_OFFSET_2D_Y, 1)
 						.setBoolean(GameSettings.DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE, true),
 				new GLFWInfo(3, 2, true, false, 1280, 720));
-		Display.setAspectRatio(ASPECT_RATIO, true);
+		Display.setAspectRatio(ASPECT_RATIO);
 		OmniKryptecEngine.instance().getGameSettings().setKeySettings(new KeySettings());
 		KeyManager.init();
 		new SpaceExplorer2D(new AdvancedFile(false, FOLDER, RESOURCEPACKS));
