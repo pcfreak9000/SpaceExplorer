@@ -38,7 +38,7 @@ public class Player extends Sprite {
 		light1.getColor().set(1, 1, 1);
 		addChild(light1);
 		body = new AdvancedBody().setOffsetXY(0, getHeight()/4);
-		body.setLinearDamping(100);
+		body.setLinearDamping(60);
 		body.addFixture(new Rectangle(getWidth(), getHeight()/4));
 		body.setMass(MassType.FIXED_ANGULAR_VELOCITY);
 		addComponent(new PhysicsComponent2D(body));

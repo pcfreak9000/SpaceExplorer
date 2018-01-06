@@ -92,11 +92,11 @@ public class Chunk extends Sprite {
 				Sprite sprite = new Sprite(ResourceLoader.currentInstance().getTexture("treetest.png"));
 				sprite.getTransform().setPosition(x+this.x*CHUNKSIZE, y+this.y*CHUNKSIZE);
 				sprite.setLayer(1);
-				sprite.setColor(new Color(1, 1, 1, 0.5f));
+				sprite.setColor(new Color(1, 1, 1, 0.9f));
 				others.add(sprite);
-				AdvancedBody body = new AdvancedBody().setOffsetXY(-sprite.getWidth()/2+20, 10);
+				AdvancedBody body = new AdvancedBody().setOffsetXY(-sprite.getWidth()/2+20, 5);
 				body.getTransform().setTranslation(sprite.getTransform().getPosition(true).x, sprite.getTransform().getPosition(true).y);
-				body.addFixture(new Rectangle(20, 10));
+				body.addFixture(new Rectangle(20, 8));
 				sprite.addComponent(new PhysicsComponent2D(body));
 			} else {
 				max--;
