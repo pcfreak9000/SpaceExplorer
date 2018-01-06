@@ -20,7 +20,9 @@ public class Planet {
 			super(name, SpaceExplorer2D.getSpaceExplorer2D().getPlanetCamera());
 			setRenderer(RENDERER);
 			setAmbientColor(0.2f, 0.2f, 0.2f);
-			setPhysicsWorld(new Dyn4JPhysicsWorld());
+			Dyn4JPhysicsWorld phw = new Dyn4JPhysicsWorld();
+			setPhysicsWorld(phw);
+			//phw.getWorld().getSettings().setStepFrequency(1/1000.0);
 		}
 		
 		@Override
