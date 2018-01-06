@@ -42,7 +42,7 @@ public class Planet {
 	private Scene2D planet;
 	private long id = Instant.now().toEpochMilli();
 	private String name;
-	private long radius=40;
+	private long radius=400;
 	
 	
 	private Chunk[][] chunks;

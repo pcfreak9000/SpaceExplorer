@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<properties>
+  <file name="mensch.png">
+    <property name="TEX_MAG" value="GL_NEAREST"/>
+  </file>
+</properties>

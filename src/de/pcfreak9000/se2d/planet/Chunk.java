@@ -92,7 +92,6 @@ public class Chunk extends Sprite {
 				sprite.setLayer(1);
 				others.add(sprite);
 				Body body = new Body();
-				body.setAsleep(true);
 				body.getTransform().setTranslation(sprite.getTransform().getPosition(true).x, sprite.getTransform().getPosition(true).y);
 				body.addFixture(new Rectangle(20, 40));
 				sprite.addComponent(new PhysicsComponent2D(body));
