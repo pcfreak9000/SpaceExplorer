@@ -19,8 +19,8 @@ import omnikryptec.util.SmoothFloat;
 
 public class Player extends Sprite {
 
-	private static final float DY_SPEED = 200;
-	private static final float DX_SPEED = 200;
+	private static final float DY_SPEED = 10000;
+	private static final float DX_SPEED = 10000;
 
 	private KeySettings keysettings;
 	private Light2D light1;
@@ -36,13 +36,13 @@ public class Player extends Sprite {
 		light1.getTransform().setScale(1).increasePosition(getWidth()/2, getHeight()/2);
 		light1.getColor().set(1, 0.5f, 0.5f);
 		addChild(light1);
-		body = new Body().setMass(MassType.NORMAL);
+		body = new Body();
+		body.setLinearDamping(100);
 		body.addFixture(new Rectangle(20, 40));
+		body.setMass(MassType.FIXED_ANGULAR_VELOCITY);
 		addComponent(new PhysicsComponent2D(body));
 	}
 
-	private SmoothFloat dx = new SmoothFloat(0, 10);
-	private SmoothFloat dy = new SmoothFloat(0, 10);
 
 	@Override
 	protected void update() {
@@ -67,8 +67,7 @@ public class Player extends Sprite {
 		}
 		//dx.update(Instance.getDeltaTimeSf());
 		//dy.update(Instance.getDeltaTimeSf());
-		body.setLinearVelocity(vel);
-		System.out.println(body.getLinearVelocity());
+		body.applyImpulse(vel);
 		SpaceExplorer2D.getSpaceExplorer2D().getPlanetCamera().getTransform().setPosition(
 				getTransform().getPosition(true).x + getWidth() / 2,
 				getTransform().getPosition(true).y + getHeight() / 2, 0);
