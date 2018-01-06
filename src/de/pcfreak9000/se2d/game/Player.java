@@ -8,6 +8,7 @@ import org.dyn4j.geometry.Vector2;
 import de.pcfreak9000.se2d.main.KeyManager;
 import omnikryptec.gameobject.Light2D;
 import omnikryptec.gameobject.Sprite;
+import omnikryptec.gameobject.component.AdvancedBody;
 import omnikryptec.gameobject.component.PhysicsComponent2D;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.physics.Dyn4JPhysicsWorld;
@@ -24,7 +25,7 @@ public class Player extends Sprite {
 
 	private KeySettings keysettings;
 	private Light2D light1;
-	private Body body;
+	private AdvancedBody body;
 
 	public Player() {
 		this.setUpdateType(UpdateType.DYNAMIC);
@@ -36,9 +37,9 @@ public class Player extends Sprite {
 		light1.getTransform().setScale(1).increasePosition(getWidth() / 2, getHeight() / 2);
 		light1.getColor().set(1, 1, 1);
 		addChild(light1);
-		body = new Body();
+		body = new AdvancedBody().setOffsetXY(0, getHeight()/4);
 		body.setLinearDamping(100);
-		body.addFixture(new Rectangle(20, 40));
+		body.addFixture(new Rectangle(getWidth(), getHeight()/4));
 		body.setMass(MassType.FIXED_ANGULAR_VELOCITY);
 		addComponent(new PhysicsComponent2D(body));
 	}

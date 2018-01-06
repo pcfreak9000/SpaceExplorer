@@ -10,12 +10,14 @@ import org.joml.Math;
 
 import de.pcfreak9000.se2d.main.Launcher;
 import omnikryptec.gameobject.Sprite;
+import omnikryptec.gameobject.component.AdvancedBody;
 import omnikryptec.gameobject.component.PhysicsComponent2D;
 import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.main.Scene2D;
 import omnikryptec.renderer.d3.RenderMap;
 import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.resource.texture.Texture;
+import omnikryptec.util.Color;
 import omnikryptec.util.Maths;
 
 public class Chunk extends Sprite {
@@ -90,10 +92,11 @@ public class Chunk extends Sprite {
 				Sprite sprite = new Sprite(ResourceLoader.currentInstance().getTexture("treetest.png"));
 				sprite.getTransform().setPosition(x+this.x*CHUNKSIZE, y+this.y*CHUNKSIZE);
 				sprite.setLayer(1);
+				sprite.setColor(new Color(1, 1, 1, 0.5f));
 				others.add(sprite);
-				Body body = new Body();
+				AdvancedBody body = new AdvancedBody().setOffsetXY(-sprite.getWidth()/2+20, 10);
 				body.getTransform().setTranslation(sprite.getTransform().getPosition(true).x, sprite.getTransform().getPosition(true).y);
-				body.addFixture(new Rectangle(20, 40));
+				body.addFixture(new Rectangle(20, 10));
 				sprite.addComponent(new PhysicsComponent2D(body));
 			} else {
 				max--;
