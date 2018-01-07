@@ -1,6 +1,7 @@
 package de.pcfreak9000.se2d.planet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import org.dyn4j.dynamics.Body;
@@ -22,7 +23,7 @@ import omnikryptec.util.Maths;
 
 public class Chunk extends Sprite {
 
-	public static final int CHUNKSIZE_T = 27;
+	public static final int CHUNKSIZE_T = 53;
 	public static final float CHUNKSIZE = CHUNKSIZE_T * TileDefinition.TILE_SIZE;
 
 	private RenderMap<Texture, float[]> data = new RenderMap<>(Texture.class);
@@ -41,7 +42,9 @@ public class Chunk extends Sprite {
 	private double validratio;
 	
 	private TileDefinition TMP_T = new TileDefinition(ResourceLoader.currentInstance().getTexture("grassy.png"));
-	
+	private TileDefinition TMP_T_2 = new TileDefinition(ResourceLoader.currentInstance().getTexture("water.png"));
+
+
 	public Chunk generate(Random random, long maxr, long fader) {
 		maxr *= TileDefinition.TILE_SIZE;
 		fader *= TileDefinition.TILE_SIZE;
@@ -50,7 +53,8 @@ public class Chunk extends Sprite {
 		Tile tile;
 		for (int x = 0; x < CHUNKSIZE_T; x++) {
 			for (int y = 0; y < CHUNKSIZE_T; y++) {
-				tile = new Tile(TMP_T);
+				boolean b = random.nextBoolean();
+				tile = new Tile(b?TMP_T_2:TMP_T);
 				tx = this.x * CHUNKSIZE + x * TileDefinition.TILE_SIZE;
 				ty = this.y * CHUNKSIZE + y * TileDefinition.TILE_SIZE;
 				txw = tx - TileDefinition.TILE_SIZE / 2;
@@ -162,7 +166,7 @@ public class Chunk extends Sprite {
 	public void paint(SpriteBatch batch) {
 		batch.color().set(1, 1, 1, 1);
 		for (Texture t : data.keysArray()) {
-			t.bindToUnitOptimized(0);
+			//t.bindToUnitOptimized(0); <- everything explodes!
 			batch.drawPolygon(t, data.get(t), data.get(t).length / SpriteBatch.FLOATS_PER_VERTEX);
 		}
 		if(Launcher.DEBUG) {

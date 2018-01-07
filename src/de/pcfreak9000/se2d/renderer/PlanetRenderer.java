@@ -21,7 +21,7 @@ public class PlanetRenderer extends DefaultRenderer2D{
 	};
 	
 	public PlanetRenderer() {
-		super(new SpriteBatch(100_0));
+		super(new SpriteBatch(100_00));
 		clearColor().set(0.1f, 0.1f, 0.1f, 1);
 	}
 	

@@ -21,6 +21,7 @@ public class Planet {
 			setRenderer(RENDERER);
 			setAmbientColor(0.2f, 0.2f, 0.2f);
 			Dyn4JPhysicsWorld phw = new Dyn4JPhysicsWorld();
+			//phw.setSimulationSpeed(1000);
 			setPhysicsWorld(phw);
 			//phw.getWorld().getSettings().setStepFrequency(1/1000.0);
 		}
