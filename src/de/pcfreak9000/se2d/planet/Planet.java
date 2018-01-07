@@ -44,7 +44,7 @@ public class Planet {
 	private Scene2D planet;
 	private long id = Instant.now().toEpochMilli();
 	private String name;
-	private long radius=400;
+	private long radius=100;
 	
 	
 	private Chunk[][] chunks;
@@ -54,7 +54,7 @@ public class Planet {
 	
 	public Planet(String name) {
 		planet = new PlanetScene(name+id);
-		chunksSize = (int) Math.ceil(radius/Chunk.CHUNKSIZE_T);
+		chunksSize = (int) Math.ceil((double)radius/Chunk.CHUNKSIZE_T);
 		if(chunksSize>(Integer.MAX_VALUE>>1)-10) {
 			Logger.log("Planetsize exceeds Integer.MAX_VALUE!", LogLevel.WARNING);
 		}

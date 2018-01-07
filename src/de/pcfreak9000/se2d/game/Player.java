@@ -20,8 +20,8 @@ import omnikryptec.util.SmoothFloat;
 
 public class Player extends Sprite {
 
-	private static final float DY_SPEED = 20000;
-	private static final float DX_SPEED = 20000;
+	private static final float DY_SPEED = 2000000;
+	private static final float DX_SPEED = 2000000;
 
 	private KeySettings keysettings;
 	private Light2D light1;
