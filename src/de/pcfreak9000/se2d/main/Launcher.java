@@ -3,6 +3,7 @@ package de.pcfreak9000.se2d.main;
 import de.codemakers.io.file.AdvancedFile;
 import de.pcfreak9000.se2d.game.SpaceExplorer2D;
 import de.pcfreak9000.se2d.planet.Chunk;
+import de.pcfreak9000.se2d.planet.TileDefinition;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
@@ -24,6 +25,9 @@ public class Launcher {
 	public static final String RESOURCEPACKS = "resourcepacks";
 	public static final double ASPECT_RATIO = 16 / 9.0;
 
+	private static final double PIXELS_PER_METER = TileDefinition.TILE_SIZE;
+
+	
 	public static void main(String[] args) {
 		new Launcher();
 	}
@@ -36,11 +40,11 @@ public class Launcher {
 		DisplayManager.createDisplay("SpaceExplorer2D",
 				new GameSettings().setAnisotropicLevel(16).setMultisamples(16).setUseRenderChunking(true)
 						.setUseFrustrumCulling(true).setInteger(GameSettings.FPS_CAP, 0)
-						.setInteger(GameSettings.DYN4J_MAX_SUBSTEPS, 10).setBoolean(GameSettings.LIGHT_2D, true)
+						.setInteger(GameSettings.DYN4J_MAX_SUBSTEPS, 1000).setBoolean(GameSettings.LIGHT_2D, true)
 						.setInteger(GameSettings.CHUNK_WIDTH_2D, (int) Chunk.CHUNKSIZE)
 						.setInteger(GameSettings.CHUNK_HEIGHT_2D, (int) Chunk.CHUNKSIZE)
 						.setInteger(GameSettings.CHUNK_OFFSET_2D_X, 1).setInteger(GameSettings.CHUNK_OFFSET_2D_Y, 1)
-						.setBoolean(GameSettings.DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE, true),
+						.setBoolean(GameSettings.DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE, true).setBoolean(GameSettings.DYN4J_PHYSICS_VAR_TS, false).setPixelsPerMeter(PIXELS_PER_METER),
 				new GLFWInfo(3, 2, true, false, 1280, 720));
 		Display.setAspectRatio(ASPECT_RATIO);
 		OmniKryptecEngine.instance().getGameSettings().setKeySettings(new KeySettings());

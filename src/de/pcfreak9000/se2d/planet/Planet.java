@@ -14,6 +14,7 @@ import omnikryptec.util.logger.Logger;
 
 public class Planet {
 	
+	
 	private class PlanetScene extends Scene2D{
 		
 		PlanetScene(String name){
@@ -23,7 +24,7 @@ public class Planet {
 			Dyn4JPhysicsWorld phw = new Dyn4JPhysicsWorld();
 			//phw.setSimulationSpeed(1000);
 			setPhysicsWorld(phw);
-			//phw.getWorld().getSettings().setStepFrequency(1/1000.0);
+			phw.getWorld().getSettings().setStepFrequency(1/1000.0);
 		}
 		
 		@Override
