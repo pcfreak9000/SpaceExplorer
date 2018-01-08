@@ -1,12 +1,8 @@
 package de.pcfreak9000.se2d.planet;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
-import org.dyn4j.dynamics.Body;
-import org.dyn4j.geometry.MassType;
-import org.dyn4j.geometry.Rectangle;
 import org.joml.Math;
 
 import de.pcfreak9000.se2d.main.Launcher;
@@ -32,7 +28,7 @@ public class Chunk extends Sprite {
 	private int x, y;
 
 	public Chunk(int x, int y) {
-		getTransform().setPosition(x*CHUNKSIZE+0.001f, y*CHUNKSIZE+0.001f);
+		getTransform().setPosition(x * CHUNKSIZE + 0.001f, y * CHUNKSIZE + 0.001f);
 		this.x = x;
 		this.y = y;
 	}
@@ -42,21 +38,20 @@ public class Chunk extends Sprite {
 	private ArrayList<Sprite> others = new ArrayList<>();
 
 	private double validratio;
-	
+
 	private TileDefinition TMP_T = new TileDefinition(ResourceLoader.currentInstance().getTexture("grassy.png"));
 	private TileDefinition TMP_T_2 = new TileDefinition(ResourceLoader.currentInstance().getTexture("water.png"));
-
 
 	public Chunk generate(Random random, long maxr, long fader) {
 		maxr *= TileDefinition.TILE_SIZE;
 		fader *= TileDefinition.TILE_SIZE;
 		float tx, ty, txw, tyw, distancesq, randfl;
-		int countvalid=0;
+		int countvalid = 0;
 		Tile tile;
 		for (int x = 0; x < CHUNKSIZE_T; x++) {
 			for (int y = 0; y < CHUNKSIZE_T; y++) {
 				boolean b = random.nextBoolean();
-				tile = new Tile(b?TMP_T_2:TMP_T);
+				tile = new Tile(b ? TMP_T_2 : TMP_T);
 				tx = this.x * CHUNKSIZE + x * TileDefinition.TILE_SIZE;
 				ty = this.y * CHUNKSIZE + y * TileDefinition.TILE_SIZE;
 				txw = tx - TileDefinition.TILE_SIZE / 2;
@@ -73,7 +68,7 @@ public class Chunk extends Sprite {
 					} else {
 						tile.getColor().setAll(1);
 					}
-				}else {
+				} else {
 					countvalid++;
 				}
 				tile.getTransform().setPosition(tx, ty);
@@ -88,25 +83,26 @@ public class Chunk extends Sprite {
 				}
 			}
 		}
-		validratio = countvalid / (double)(CHUNKSIZE_T*CHUNKSIZE_T);
-		int max=100;
-		for (int i = 0; i < 30*validratio; i++) {
+		validratio = countvalid / (double) (CHUNKSIZE_T * CHUNKSIZE_T);
+		int max = 100;
+		for (int i = 0; i < 30 * validratio; i++) {
 			float x = random.nextFloat() * CHUNKSIZE;
 			float y = random.nextFloat() * CHUNKSIZE;
 			Tile t = array[(int) (x / TileDefinition.TILE_SIZE)][(int) (y / TileDefinition.TILE_SIZE)];
-			if (t!=null&&t.isValid()) {
+			if (t != null && t.isValid()) {
 				Sprite sprite = new Sprite(ResourceLoader.currentInstance().getTexture("treetest.png"));
-				sprite.getTransform().setPosition(x+this.x*CHUNKSIZE, y+this.y*CHUNKSIZE);
+				sprite.getTransform().setPosition(x + this.x * CHUNKSIZE, y + this.y * CHUNKSIZE);
 				sprite.setLayer(1);
 				sprite.setColor(new Color(1, 1, 1, 0.9f));
 				others.add(sprite);
-				AdvancedBody body = new AdvancedBody().setOffsetXY(-sprite.getWidth()/2+20, 5);
-				body.getTransform().setTranslation(ConverterUtil.convertToPhysics2D(sprite.getTransform().getPosition(true)));
+				AdvancedBody body = new AdvancedBody().setOffsetXY(-sprite.getWidth() / 2 + 20, 5);
+				body.getTransform()
+						.setTranslation(ConverterUtil.convertToPhysics2D(sprite.getTransform().getPosition(true)));
 				body.addFixture(new AdvancedRectangle(20f, 8f));
 				sprite.addComponent(new PhysicsComponent2D(body));
 			} else {
 				max--;
-				if(max<0) {
+				if (max < 0) {
 					break;
 				}
 				i--;
@@ -119,10 +115,9 @@ public class Chunk extends Sprite {
 		if (x >= 1) {
 			return 0;
 		}
-		return (float) java.lang.Math.pow(Maths.E, -(x * x))*1.5f;
+		return (float) java.lang.Math.pow(Maths.E, -(x * x)) * 1.5f;
 	}
 
-	
 	public Tile getTile(int crtx, int crty) {
 		return array[crtx][crty];
 	}
@@ -168,11 +163,11 @@ public class Chunk extends Sprite {
 	public void paint(SpriteBatch batch) {
 		batch.color().set(1, 1, 1, 1);
 		for (Texture t : data.keysArray()) {
-			//t.bindToUnitOptimized(0); <- everything explodes!
+			// t.bindToUnitOptimized(0); <- everything explodes!
 			batch.drawPolygon(t, data.get(t), data.get(t).length / SpriteBatch.FLOATS_PER_VERTEX);
 		}
-		if(Launcher.DEBUG) {
-			batch.drawRect(x*CHUNKSIZE, y*CHUNKSIZE, CHUNKSIZE, CHUNKSIZE);
+		if (Launcher.DEBUG) {
+			batch.drawRect(x * CHUNKSIZE, y * CHUNKSIZE, CHUNKSIZE, CHUNKSIZE);
 		}
 	}
 
@@ -180,14 +175,14 @@ public class Chunk extends Sprite {
 	public float getWidth() {
 		return CHUNKSIZE;
 	}
-	
+
 	@Override
 	public float getHeight() {
 		return CHUNKSIZE;
 	}
-	
+
 	public static final int toChunk(float f) {
-		return (int) Maths.fastFloor(f/CHUNKSIZE);
+		return (int) Maths.fastFloor(f / CHUNKSIZE);
 	}
-	
+
 }

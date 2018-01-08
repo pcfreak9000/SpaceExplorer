@@ -17,7 +17,7 @@ import omnikryptec.util.logger.Logger;
 
 public class Launcher {
 
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 
 	public static final String NAME = "SpaceExplorer2D";
 	public static final AdvancedFile FOLDER = OSUtil.getAppDataFolder(NAME);
@@ -27,7 +27,6 @@ public class Launcher {
 
 	private static final double PIXELS_PER_METER = TileDefinition.TILE_SIZE;
 
-	
 	public static void main(String[] args) {
 		new Launcher();
 	}
@@ -40,11 +39,12 @@ public class Launcher {
 		DisplayManager.createDisplay("SpaceExplorer2D",
 				new GameSettings().setAnisotropicLevel(16).setMultisamples(16).setUseRenderChunking(true)
 						.setUseFrustrumCulling(true).setInteger(GameSettings.FPS_CAP, 0)
-						.setInteger(GameSettings.DYN4J_MAX_SUBSTEPS, 1000).setBoolean(GameSettings.LIGHT_2D, true)
+						.setInteger(GameSettings.DYN4J_MAX_SUBSTEPS, 100).setBoolean(GameSettings.LIGHT_2D, true)
 						.setInteger(GameSettings.CHUNK_WIDTH_2D, (int) Chunk.CHUNKSIZE)
 						.setInteger(GameSettings.CHUNK_HEIGHT_2D, (int) Chunk.CHUNKSIZE)
 						.setInteger(GameSettings.CHUNK_OFFSET_2D_X, 1).setInteger(GameSettings.CHUNK_OFFSET_2D_Y, 1)
-						.setBoolean(GameSettings.DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE, true).setBoolean(GameSettings.DYN4J_PHYSICS_VAR_TS, false).setPixelsPerMeter(PIXELS_PER_METER),
+						.setBoolean(GameSettings.DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE, true)
+						.setBoolean(GameSettings.DYN4J_PHYSICS_VAR_TS, false).setPixelsPerMeter(PIXELS_PER_METER),
 				new GLFWInfo(3, 2, true, false, 1280, 720));
 		Display.setAspectRatio(ASPECT_RATIO);
 		OmniKryptecEngine.instance().getGameSettings().setKeySettings(new KeySettings());

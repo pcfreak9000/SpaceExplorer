@@ -6,14 +6,14 @@ public class TileDefinition {
 
 	public static final float TILE_SIZE = 24;
 	public static final float TILE_LAYER = 0;
-	
+
 	private Texture tex;
 	private boolean prerenderable = true;
 
 	public TileDefinition(Texture t) {
 		this(t, true);
 	}
-	
+
 	public TileDefinition(Texture t, boolean prerenderable) {
 		this.tex = t;
 	}
