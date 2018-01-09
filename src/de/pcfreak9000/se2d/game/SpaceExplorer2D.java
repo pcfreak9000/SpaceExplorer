@@ -28,7 +28,9 @@ public class SpaceExplorer2D {
 	private AdvancedFile resourcepacks;
 	private Player currentPlayer = null;
 	private Camera planetCamera;
-
+	//move in other class
+	private double gameTimeSec=0;
+	
 	public SpaceExplorer2D(AdvancedFile resourcepacks) {
 		if (instance != null) {
 			throw new IllegalStateException("SpaceExplorer2D is already created!");
@@ -67,4 +69,8 @@ public class SpaceExplorer2D {
 		return PLANETPROJ;
 	}
 
+	public double getGameTime() {
+		return gameTimeSec;
+	}
+	
 }

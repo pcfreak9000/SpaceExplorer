@@ -1,8 +1,11 @@
 package de.pcfreak9000.se2d.main;
 
+import java.util.Random;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.pcfreak9000.se2d.game.SpaceExplorer2D;
 import de.pcfreak9000.se2d.planet.Chunk;
+import de.pcfreak9000.se2d.planet.PlanetData;
 import de.pcfreak9000.se2d.planet.TileDefinition;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
@@ -10,6 +13,7 @@ import omnikryptec.display.GLFWInfo;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.settings.KeySettings;
+import omnikryptec.util.Maths;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.OSUtil;
 import omnikryptec.util.logger.LogLevel;
@@ -32,6 +36,17 @@ public class Launcher {
 	}
 
 	public Launcher() {
+//		double all = 0;
+//		double min = Double.POSITIVE_INFINITY;
+//		double max = Double.NEGATIVE_INFINITY;
+//		int am=1000;
+//		for (int i = 0; i < am; i++) {
+//			double d = new PlanetData(new Random().nextInt()).getsmth();
+//			min = Math.min(min, d);
+//			max = Math.max(max, d);
+//			all += d;
+//		}
+//		System.out.println("Avg: " + (all / am) + " Max: " + max + " Min: " + min);
 		NativesLoader.loadNatives(null, new AdvancedFile(false, FOLDER, NATIVES_DIR_NAME));
 		Logger.enableLoggerRedirection(true);
 		Logger.setDebugMode(DEBUG);
