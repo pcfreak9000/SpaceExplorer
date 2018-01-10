@@ -1,5 +1,6 @@
 package de.pcfreak9000.se2d.planet;
 
+import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.Random;
 
@@ -17,7 +18,7 @@ public class Planet {
 	private class PlanetScene extends Scene2D {
 
 		PlanetScene(String name) {
-			super(name, SpaceExplorer2D.getSpaceExplorer2D().getPlanetCamera());
+			super(name, SpaceExplorer2D.getSpaceExplorer2D().getUniverse().getPlanetCamera());
 			setRenderer(RENDERER);
 			setAmbientColor(0.2f, 0.2f, 0.2f);
 			Dyn4JPhysicsWorld phw = new Dyn4JPhysicsWorld();
@@ -42,24 +43,23 @@ public class Planet {
 
 	private Scene2D planet;
 	private long id = Instant.now().toEpochMilli();
-	private String name;
-	private long radius = 100;
 
 	private Chunk[][] chunks;
 	private int chunksSize;
 	private Random random;
-	private int planetseed = 4;
 
-	public Planet(String name) {
-		planet = new PlanetScene(name + id);
-		chunksSize = (int) Math.ceil((double) radius / Chunk.CHUNKSIZE_T);
+	private PlanetData planetData;
+	
+	public Planet(int seed) {
+		planetData = new PlanetData(seed);
+		planet = new PlanetScene(planetData.getName() + id);
+		chunksSize = (int) Math.ceil((double) planetData.getMaxRadius() / Chunk.CHUNKSIZE_T);
 		if (chunksSize > (Integer.MAX_VALUE >> 1) - 10) {
 			Logger.log("Planetsize exceeds Integer.MAX_VALUE!", LogLevel.WARNING);
 		}
 		chunksSize <<= 1;
 		chunks = new Chunk[chunksSize][chunksSize];
-		random = new Random(planetseed);
-		this.name = name;
+		random = new Random(planetData.getSeed());
 	}
 
 	public Planet setAsScene(Player p) {
@@ -79,11 +79,20 @@ public class Planet {
 			return null;
 		}
 		if (chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)] == null) {
-			random.setSeed((cx * 3 + cy * 2 + 1) / 2 + planetseed);
+			random.setSeed((cx * 3 + cy * 2 + 1) / 2 + planetData.getSeed());
 			chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)] = new Chunk(cx, cy)
-					.generate(random, radius, radius - 25).preRender().addTo(planet);
+					.generate(random, planetData.getMaxRadius(), planetData.getFadeRadius()).preRender().addTo(planet);
 		}
 		return chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)];
 	}
 
+	
+	@Override
+	public String toString() {
+		return planetData.toString();
+	}
+
+	public PlanetData getPlanetData() {
+		return planetData;
+	}
 }

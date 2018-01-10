@@ -2,6 +2,7 @@ package de.pcfreak9000.se2d.game;
 
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Vector2;
+import org.joml.Vector2f;
 
 import de.pcfreak9000.se2d.main.KeyManager;
 import omnikryptec.gameobject.Light2D;
@@ -12,6 +13,7 @@ import omnikryptec.physics.AdvancedBody;
 import omnikryptec.physics.AdvancedRectangle;
 import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.settings.KeySettings;
+import omnikryptec.util.ConverterUtil;
 import omnikryptec.util.EnumCollection.UpdateType;
 import omnikryptec.util.Instance;
 
@@ -55,8 +57,8 @@ public class Player extends Sprite {
 			vel.x = DX_SPEED;
 		}
 		// meh but makes it timeindependent
-		body.applyVelocityImpulse(vel.multiply(Instance.getDeltaTimeSf() * 100));
-		SpaceExplorer2D.getSpaceExplorer2D().getPlanetCamera().getTransform().setPosition(
+		body.applyVelocityImpulse(vel.multiply(Instance.getDeltaTimeSf()*100));
+		SpaceExplorer2D.getSpaceExplorer2D().getUniverse().getPlanetCamera().getTransform().setPosition(
 				getTransform().getPosition(true).x + getWidth() / 2,
 				getTransform().getPosition(true).y + getHeight() / 2, 0);
 	}
