@@ -5,6 +5,9 @@ import java.util.Random;
 
 import org.joml.Math;
 
+import de.pcfreak9000.noise.components.NoiseWrapper;
+import de.pcfreak9000.noise.noises.Noise;
+import de.pcfreak9000.noise.noises.OpenSimplexNoise;
 import de.pcfreak9000.se2d.main.Launcher;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.gameobject.component.PhysicsComponent2D;
@@ -42,6 +45,8 @@ public class Chunk extends Sprite {
 	private TileDefinition TMP_T = new TileDefinition(ResourceLoader.currentInstance().getTexture("grassy.png"));
 	private TileDefinition TMP_T_2 = new TileDefinition(ResourceLoader.currentInstance().getTexture("water.png"));
 
+	private static Noise noise = new NoiseWrapper(new OpenSimplexNoise()).setXScale(1.0/500).setYScale(1.0/500);
+	
 	public Chunk generate(Random random, long maxr, long fader) {
 		maxr *= TileDefinition.TILE_SIZE;
 		fader *= TileDefinition.TILE_SIZE;
@@ -50,10 +55,9 @@ public class Chunk extends Sprite {
 		Tile tile;
 		for (int x = 0; x < CHUNKSIZE_T; x++) {
 			for (int y = 0; y < CHUNKSIZE_T; y++) {
-				boolean b = random.nextBoolean();
-				tile = new Tile(b ? TMP_T_2 : TMP_T);
 				tx = this.x * CHUNKSIZE + x * TileDefinition.TILE_SIZE;
 				ty = this.y * CHUNKSIZE + y * TileDefinition.TILE_SIZE;
+				tile = new Tile(noise.valueAt(tx, ty)>0.4 ? TMP_T_2 : TMP_T);
 				txw = tx - TileDefinition.TILE_SIZE / 2;
 				tyw = ty - TileDefinition.TILE_SIZE / 2;
 				if (txw * txw + tyw * tyw > maxr * maxr) {
@@ -83,31 +87,31 @@ public class Chunk extends Sprite {
 				}
 			}
 		}
-		validratio = countvalid / (double) (CHUNKSIZE_T * CHUNKSIZE_T);
-		int max = 100;
-		for (int i = 0; i < 30 * validratio; i++) {
-			float x = random.nextFloat() * CHUNKSIZE;
-			float y = random.nextFloat() * CHUNKSIZE;
-			Tile t = array[(int) (x / TileDefinition.TILE_SIZE)][(int) (y / TileDefinition.TILE_SIZE)];
-			if (t != null && t.isValid()) {
-				Sprite sprite = new Sprite(ResourceLoader.currentInstance().getTexture("treetest.png"));
-				sprite.getTransform().setPosition(x + this.x * CHUNKSIZE, y + this.y * CHUNKSIZE);
-				sprite.setLayer(1);
-				sprite.setColor(new Color(1, 1, 1, 0.9f));
-				others.add(sprite);
-				AdvancedBody body = new AdvancedBody().setOffsetXY(-sprite.getWidth() / 2 + 20, 5);
-				body.getTransform()
-						.setTranslation(ConverterUtil.convertToPhysics2D(sprite.getTransform().getPosition(true)));
-				body.addFixture(new AdvancedRectangle(20f, 8f));
-				sprite.addComponent(new PhysicsComponent2D(body));
-			} else {
-				max--;
-				if (max < 0) {
-					break;
-				}
-				i--;
-			}
-		}
+//		validratio = countvalid / (double) (CHUNKSIZE_T * CHUNKSIZE_T);
+//		int max = 100;
+//		for (int i = 0; i < 30 * validratio; i++) {
+//			float x = random.nextFloat() * CHUNKSIZE;
+//			float y = random.nextFloat() * CHUNKSIZE;
+//			Tile t = array[(int) (x / TileDefinition.TILE_SIZE)][(int) (y / TileDefinition.TILE_SIZE)];
+//			if (t != null && t.isValid()) {
+//				Sprite sprite = new Sprite(ResourceLoader.currentInstance().getTexture("treetest.png"));
+//				sprite.getTransform().setPosition(x + this.x * CHUNKSIZE, y + this.y * CHUNKSIZE);
+//				sprite.setLayer(1);
+//				sprite.setColor(new Color(1, 1, 1, 0.9f));
+//				others.add(sprite);
+//				AdvancedBody body = new AdvancedBody().setOffsetXY(-sprite.getWidth() / 2 + 20, 5);
+//				body.getTransform()
+//						.setTranslation(ConverterUtil.convertToPhysics2D(sprite.getTransform().getPosition(true)));
+//				body.addFixture(new AdvancedRectangle(20f, 8f));
+//				sprite.addComponent(new PhysicsComponent2D(body));
+//			} else {
+//				max--;
+//				if (max < 0) {
+//					break;
+//				}
+//				i--;
+//			}
+//		}
 		return this;
 	}
 

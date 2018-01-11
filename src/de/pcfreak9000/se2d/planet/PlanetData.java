@@ -2,6 +2,7 @@ package de.pcfreak9000.se2d.planet;
 
 import java.util.Random;
 
+import de.pcfreak9000.noise.noises.Noise;
 import de.pcfreak9000.se2d.game.SpaceExplorer2D;
 import omnikryptec.util.Instance;
 import omnikryptec.util.Maths;
@@ -16,10 +17,12 @@ public class PlanetData {
 	private static final int MAXDAYSEC = 60 * 60;
 
 	private static final double MINDISSTAR = 10_000;
-	private static final double MAXDISSTAR = 100_000_000_000.0;
+	private static final double MAXDISSTAR = 10_000_000_000.0;
 
 	private static final double MINTEMPDIF = 10;
 	private static final double MAXTEMPDIF = 500;
+
+	private static final double TEMPOFFSET = 50;
 
 	private static double calculateAvgPlanetTemp(double lumin, double albedo, double distanceStar,
 			double daytimepercent) {
@@ -53,25 +56,38 @@ public class PlanetData {
 
 	private double maxDifHumidity = 0.5;
 
+	private Noise tempNoise, humidityNoise, heightsNoise;
+
 	public PlanetData(int seed) {
 		this.seed = seed;
 		Random random = new Random(seed);
 		name = generateName(random);
 		albedo = random.nextDouble();
-		distanceToStar = (Maths.normalStandardDistribution((random.nextDouble() + 0) * 6)) * (MAXDISSTAR - MINDISSTAR)
-				+ MINDISSTAR;// MINDISSTAR + random.nextDouble() * (MAXDISSTAR-MINDISSTAR);
-		radiusMax = (long) (Maths.normalStandardDistribution(random.nextDouble() * 3) * MAX_RADIUS);
+		distanceToStar = /*
+							 * (Maths.normalStandardDistribution((random.nextDouble() + 0) * 6)) *
+							 * (MAXDISSTAR - MINDISSTAR) + MINDISSTAR;
+							 */ MINDISSTAR + random.nextDouble() * (MAXDISSTAR - MINDISSTAR);
+		radiusMax = (long) (Maths.normalStandardDistribution(random.nextDouble() * 2) * MAX_RADIUS);
 		radiusFade = radiusMax - (long) Math.min(Math.max(0, random.nextInt(40) + 10), radiusMax * 0.1);
 		daytimePercentage = (float) (random.nextDouble() * 0.6 + 0.2);
 		avgLengthOfDay = MINDAYSEC + random.nextInt(MAXDAYSEC - MINDAYSEC);
 		timeOffset = random.nextInt(avgLengthOfDay);
-		avgTempKelvin = calculateAvgPlanetTemp(10000000000000.0, albedo, distanceToStar, daytimePercentage);
+		avgTempKelvin = calculateAvgPlanetTemp(10000000000000.0, albedo, distanceToStar, daytimePercentage)
+				+ (random.nextDouble() * 0.2 + 0.9) * TEMPOFFSET;
 		maxTempDifKelvin = MINTEMPDIF
 				+ Maths.normalStandardDistribution((1 - random.nextDouble()) * 7) * (MAXTEMPDIF - MINTEMPDIF);
 	}
 
 	public float getTemperature(float x, float y) {
-		return (float) avgTempKelvin;
+		return (float) (avgTempKelvin + maxTempDifKelvin * tempNoise.valueAt(x, y));
+	}
+
+	public float getHumidity(float x, float y) {
+		return (float) (humidity + maxDifHumidity * humidityNoise.valueAt(x, y));
+	}
+
+	public float getHeight(float x, float y) {
+		return (float) heightsNoise.valueAt(x, y);
 	}
 
 	public double getPlanetTimeSec() {
@@ -97,7 +113,8 @@ public class PlanetData {
 		builder.append("Avg length of day: ").append(avgLengthOfDay).append("s UT offset: ").append(timeOffset)
 				.append("s").append(Util.LINE_TERM);
 		builder.append("Daytime percentage: ").append(daytimePercentage).append(Util.LINE_TERM);
-		builder.append("Humidity: ").append(humidity*100).append("% Max dif humidity: ").append(maxDifHumidity*100).append("%").append(Util.LINE_TERM);
+		builder.append("Humidity: ").append(humidity * 100).append("% Max dif humidity: ").append(maxDifHumidity * 100)
+				.append("%").append(Util.LINE_TERM);
 		return builder.toString();
 	}
 
@@ -156,6 +173,5 @@ public class PlanetData {
 	public float getDaytimePercentage() {
 		return daytimePercentage;
 	}
-	
 
 }
