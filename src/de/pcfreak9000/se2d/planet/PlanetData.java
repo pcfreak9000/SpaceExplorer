@@ -34,7 +34,7 @@ public class PlanetData {
 
 	private String name;
 
-	private int seed = 0;
+	private long seed = 0;
 
 	private long radiusMax, radiusFade;
 	// meter
@@ -58,24 +58,26 @@ public class PlanetData {
 
 	private Noise tempNoise, humidityNoise, heightsNoise;
 
-	public PlanetData(int seed) {
+	private Random plRandom;
+	
+	public PlanetData(long seed) {
 		this.seed = seed;
-		Random random = new Random(seed);
-		name = generateName(random);
-		albedo = random.nextDouble();
+		plRandom = new Random(seed);
+		name = generateName(plRandom);
+		albedo = plRandom.nextDouble();
 		distanceToStar = /*
 							 * (Maths.normalStandardDistribution((random.nextDouble() + 0) * 6)) *
 							 * (MAXDISSTAR - MINDISSTAR) + MINDISSTAR;
-							 */ MINDISSTAR + random.nextDouble() * (MAXDISSTAR - MINDISSTAR);
-		radiusMax = (long) (Maths.normalStandardDistribution(random.nextDouble() * 2) * MAX_RADIUS);
-		radiusFade = radiusMax - (long) Math.min(Math.max(0, random.nextInt(40) + 10), radiusMax * 0.1);
-		daytimePercentage = (float) (random.nextDouble() * 0.6 + 0.2);
-		avgLengthOfDay = MINDAYSEC + random.nextInt(MAXDAYSEC - MINDAYSEC);
-		timeOffset = random.nextInt(avgLengthOfDay);
+							 */ MINDISSTAR + plRandom.nextDouble() * (MAXDISSTAR - MINDISSTAR);
+		radiusMax = (long) (Maths.normalStandardDistribution(plRandom.nextDouble() * 2) * MAX_RADIUS);
+		radiusFade = radiusMax - (long) Math.min(Math.max(0, plRandom.nextInt(40) + 10), radiusMax * 0.1);
+		daytimePercentage = (float) (plRandom.nextDouble() * 0.6 + 0.2);
+		avgLengthOfDay = MINDAYSEC + plRandom.nextInt(MAXDAYSEC - MINDAYSEC);
+		timeOffset = plRandom.nextInt(avgLengthOfDay);
 		avgTempKelvin = calculateAvgPlanetTemp(10000000000000.0, albedo, distanceToStar, daytimePercentage)
-				+ (random.nextDouble() * 0.2 + 0.9) * TEMPOFFSET;
+				+ (plRandom.nextDouble() * 0.2 + 0.9) * TEMPOFFSET;
 		maxTempDifKelvin = MINTEMPDIF
-				+ Maths.normalStandardDistribution((1 - random.nextDouble()) * 7) * (MAXTEMPDIF - MINTEMPDIF);
+				+ Maths.normalStandardDistribution((1 - plRandom.nextDouble()) * 7) * (MAXTEMPDIF - MINTEMPDIF);
 	}
 
 	public float getTemperature(float x, float y) {
@@ -98,6 +100,10 @@ public class PlanetData {
 		return "haha";
 	}
 
+	public Random getRandom() {
+		return plRandom;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -122,7 +128,7 @@ public class PlanetData {
 		return avgTempKelvin;
 	}
 
-	public int getSeed() {
+	public long getSeed() {
 		return seed;
 	}
 

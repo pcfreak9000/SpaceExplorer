@@ -32,7 +32,7 @@ public class Planet {
 			int camY = Chunk.toChunk(getCamera().getTransform().getPosition(true).y);
 			for (int i = -1; i <= 1; i++) {
 				for (int j = -1; j <= 1; j++) {
-					getChunk(camX + i, camY + j);
+					getChunkOrGen(camX + i, camY + j);
 				}
 			}
 		}
@@ -50,7 +50,7 @@ public class Planet {
 
 	private PlanetData planetData;
 	
-	public Planet(int seed) {
+	public Planet(long seed) {
 		planetData = new PlanetData(seed);
 		planet = new PlanetScene(planetData.getName() + id);
 		chunksSize = (int) Math.ceil((double) planetData.getMaxRadius() / Chunk.CHUNKSIZE_T);
@@ -74,12 +74,28 @@ public class Planet {
 		return this;
 	}
 
-	public Chunk getChunk(int cx, int cy) {
+	public Tile getTile(float tx, float ty) {
+		int cx = Chunk.tileToChunk(tx);
+		int cy = Chunk.tileToChunk(ty);
+		if(!isChunkGenerated(cx, cy)) {
+			return null;
+		}
+		return chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)].getTile((int)(tx-cx*Chunk.CHUNKSIZE_T), (int)(ty-cy*Chunk.CHUNKSIZE_T));
+	}
+	
+	public boolean isChunkGenerated(int cx, int cy) {
+		if (cx >= (chunksSize >> 1) || cy >= (chunksSize >> 1) || cx < -(chunksSize >> 1) || cy < -(chunksSize >> 1)) {
+			return false;
+		}
+		return chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)] == null;
+	}
+	
+	public Chunk getChunkOrGen(int cx, int cy) {
 		if (cx >= (chunksSize >> 1) || cy >= (chunksSize >> 1) || cx < -(chunksSize >> 1) || cy < -(chunksSize >> 1)) {
 			return null;
 		}
 		if (chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)] == null) {
-			random.setSeed((cx * 3 + cy * 2 + 1) / 2 + planetData.getSeed());
+			random.setSeed(cx ^ cy ^ planetData.getSeed());
 			chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)] = new Chunk(cx, cy)
 					.generate(random, planetData.getMaxRadius(), planetData.getFadeRadius()).preRender().addTo(planet);
 		}

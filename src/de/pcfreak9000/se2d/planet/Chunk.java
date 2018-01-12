@@ -57,7 +57,7 @@ public class Chunk extends Sprite {
 			for (int y = 0; y < CHUNKSIZE_T; y++) {
 				tx = this.x * CHUNKSIZE + x * TileDefinition.TILE_SIZE;
 				ty = this.y * CHUNKSIZE + y * TileDefinition.TILE_SIZE;
-				tile = new Tile(noise.valueAt(tx, ty)>0.4 ? TMP_T_2 : TMP_T);
+				tile = new Tile(noise.valueAt(tx, ty)>0.4 ? TMP_T_2 : TMP_T, null);
 				txw = tx - TileDefinition.TILE_SIZE / 2;
 				tyw = ty - TileDefinition.TILE_SIZE / 2;
 				if (txw * txw + tyw * tyw > maxr * maxr) {
@@ -189,4 +189,8 @@ public class Chunk extends Sprite {
 		return (int) Maths.fastFloor(f / CHUNKSIZE);
 	}
 
+	public static final int tileToChunk(float tx) {
+		return (int) Maths.fastFloor(tx/CHUNKSIZE_T);
+	}
+	
 }

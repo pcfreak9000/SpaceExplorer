@@ -1,5 +1,6 @@
 package de.pcfreak9000.se2d.planet;
 
+import de.pcfreak9000.se2d.planet.biome.BiomeDefinition;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.util.EnumCollection.FixedSizeMode;
 import omnikryptec.util.Maths;
@@ -7,11 +8,14 @@ import omnikryptec.util.Maths;
 public class Tile extends Sprite {
 
 	private TileDefinition myDefinition;
+	private BiomeDefinition myBiome;
 	private boolean validPosition = true;
 
-	public Tile(TileDefinition def) {
+	
+	public Tile(TileDefinition def, BiomeDefinition biomedef) {
 		super(def.getTexture());
 		myDefinition = def;
+		myBiome = biomedef;
 		setFixedSizeMode(FixedSizeMode.ON);
 		setFixedSize(TileDefinition.TILE_SIZE, TileDefinition.TILE_SIZE);
 		setLayer(TileDefinition.TILE_LAYER);
@@ -32,8 +36,13 @@ public class Tile extends Sprite {
 	void invalidate() {
 		validPosition = false;
 	}
-
+	
+	public BiomeDefinition getBiome() {
+		return myBiome;
+	}
+	
 	public boolean isValid() {
 		return validPosition;
 	}
+
 }
