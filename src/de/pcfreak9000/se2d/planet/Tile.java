@@ -25,11 +25,11 @@ public class Tile extends Sprite {
 		return myDefinition;
 	}
 
-	public long getX() {
+	public long getTileX() {
 		return Maths.fastFloor(getTransform().getPosition(true).x / TileDefinition.TILE_SIZE);
 	}
 
-	public long getY() {
+	public long getTileY() {
 		return Maths.fastFloor(getTransform().getPosition(true).y / TileDefinition.TILE_SIZE);
 	}
 

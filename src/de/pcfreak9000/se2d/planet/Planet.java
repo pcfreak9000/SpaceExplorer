@@ -74,20 +74,20 @@ public class Planet {
 		return this;
 	}
 
-	public Tile getTile(float tx, float ty) {
+	public Tile getTile(int tx, int ty) {
 		int cx = Chunk.tileToChunk(tx);
 		int cy = Chunk.tileToChunk(ty);
 		if(!isChunkGenerated(cx, cy)) {
 			return null;
 		}
-		return chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)].getTile((int)(tx-cx*Chunk.CHUNKSIZE_T), (int)(ty-cy*Chunk.CHUNKSIZE_T));
+		return chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)].getTile((tx-cx*Chunk.CHUNKSIZE_T), (ty-cy*Chunk.CHUNKSIZE_T));
 	}
 	
 	public boolean isChunkGenerated(int cx, int cy) {
 		if (cx >= (chunksSize >> 1) || cy >= (chunksSize >> 1) || cx < -(chunksSize >> 1) || cy < -(chunksSize >> 1)) {
 			return false;
 		}
-		return chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)] == null;
+		return chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)] != null;
 	}
 	
 	public Chunk getChunkOrGen(int cx, int cy) {
@@ -97,7 +97,7 @@ public class Planet {
 		if (chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)] == null) {
 			random.setSeed(cx ^ cy ^ planetData.getSeed());
 			chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)] = new Chunk(cx, cy)
-					.generate(random, planetData.getMaxRadius(), planetData.getFadeRadius()).preRender().addTo(planet);
+					.generate(random, this).preRender().addTo(planet);
 		}
 		return chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)];
 	}

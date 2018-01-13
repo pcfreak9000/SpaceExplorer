@@ -9,6 +9,8 @@ import de.pcfreak9000.noise.components.NoiseWrapper;
 import de.pcfreak9000.noise.noises.Noise;
 import de.pcfreak9000.noise.noises.OpenSimplexNoise;
 import de.pcfreak9000.se2d.main.Launcher;
+import de.pcfreak9000.se2d.planet.biome.BiomeDefinition;
+import de.pcfreak9000.se2d.planet.biome.BiomeRegistry;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.gameobject.component.PhysicsComponent2D;
 import omnikryptec.graphics.SpriteBatch;
@@ -31,7 +33,7 @@ public class Chunk extends Sprite {
 	private int x, y;
 
 	public Chunk(int x, int y) {
-		getTransform().setPosition(x * CHUNKSIZE + 0.001f, y * CHUNKSIZE + 0.001f);
+		getTransform().setPosition(x * CHUNKSIZE, y * CHUNKSIZE);
 		this.x = x;
 		this.y = y;
 	}
@@ -42,30 +44,32 @@ public class Chunk extends Sprite {
 
 	private double validratio;
 
-	private TileDefinition TMP_T = new TileDefinition(ResourceLoader.currentInstance().getTexture("grassy.png"));
-	private TileDefinition TMP_T_2 = new TileDefinition(ResourceLoader.currentInstance().getTexture("water.png"));
-
-	private static Noise noise = new NoiseWrapper(new OpenSimplexNoise()).setXScale(1.0/500).setYScale(1.0/500);
-	
-	public Chunk generate(Random random, long maxr, long fader) {
-		maxr *= TileDefinition.TILE_SIZE;
-		fader *= TileDefinition.TILE_SIZE;
-		float tx, ty, txw, tyw, distancesq, randfl;
+	public Chunk generate(Random random, Planet planet) {
+		float maxr = planet.getPlanetData().getMaxRadius() * TileDefinition.TILE_SIZE;
+		float fader = planet.getPlanetData().getFadeRadius() * TileDefinition.TILE_SIZE;
+		float wx, wy, txwh, tywh, distancesq, randfl;
+		int tx, ty;
 		int countvalid = 0;
 		Tile tile;
 		for (int x = 0; x < CHUNKSIZE_T; x++) {
 			for (int y = 0; y < CHUNKSIZE_T; y++) {
-				tx = this.x * CHUNKSIZE + x * TileDefinition.TILE_SIZE;
-				ty = this.y * CHUNKSIZE + y * TileDefinition.TILE_SIZE;
-				tile = new Tile(noise.valueAt(tx, ty)>0.4 ? TMP_T_2 : TMP_T, null);
-				txw = tx - TileDefinition.TILE_SIZE / 2;
-				tyw = ty - TileDefinition.TILE_SIZE / 2;
-				if (txw * txw + tyw * tyw > maxr * maxr) {
+				tx = this.x * CHUNKSIZE_T + x;
+				ty = this.y * CHUNKSIZE_T + y;
+				// get BiomeDefinition for this tile
+				BiomeDefinition biomedef = checkNeighbours(planet, tx, ty);
+				tile = new Tile(biomedef.getTileDefinition(planet.getPlanetData(), tx, ty), biomedef);
+				// World coords and world coords in the middle of the tile
+				wx = tx * TileDefinition.TILE_SIZE;
+				wy = ty * TileDefinition.TILE_SIZE;
+				txwh = wx + TileDefinition.TILE_SIZE / 2;
+				tywh = wy + TileDefinition.TILE_SIZE / 2;
+				if (txwh * txwh + tywh * tywh > maxr * maxr) {
 					continue;
 				}
-				if (txw * txw + tyw * tyw > fader * fader) {
+				if (txwh * txwh + tywh * tywh > fader * fader) {
+					// on this tile no decoration is allowed
 					tile.invalidate();
-					distancesq = 1 - ((float) Math.sqrt(txw * txw + tyw * tyw) - (fader)) / (maxr - fader);
+					distancesq = 1 - ((float) Math.sqrt(txwh * txwh + tywh * tywh) - (fader)) / (maxr - fader);
 					randfl = random.nextFloat();
 					if (randfl * distancesq <= e(distancesq)) {
 						tile.getColor().set(1, 1, 1, randfl * distancesq * distancesq * distancesq);
@@ -75,7 +79,7 @@ public class Chunk extends Sprite {
 				} else {
 					countvalid++;
 				}
-				tile.getTransform().setPosition(tx, ty);
+				tile.getTransform().setPosition(wx, wy);
 				array[x][y] = tile;
 				if (tile.getDefinition().isPrerenderable()) {
 					if (tiles.get(tile.getTexture()) == null) {
@@ -87,32 +91,55 @@ public class Chunk extends Sprite {
 				}
 			}
 		}
-//		validratio = countvalid / (double) (CHUNKSIZE_T * CHUNKSIZE_T);
-//		int max = 100;
-//		for (int i = 0; i < 30 * validratio; i++) {
-//			float x = random.nextFloat() * CHUNKSIZE;
-//			float y = random.nextFloat() * CHUNKSIZE;
-//			Tile t = array[(int) (x / TileDefinition.TILE_SIZE)][(int) (y / TileDefinition.TILE_SIZE)];
-//			if (t != null && t.isValid()) {
-//				Sprite sprite = new Sprite(ResourceLoader.currentInstance().getTexture("treetest.png"));
-//				sprite.getTransform().setPosition(x + this.x * CHUNKSIZE, y + this.y * CHUNKSIZE);
-//				sprite.setLayer(1);
-//				sprite.setColor(new Color(1, 1, 1, 0.9f));
-//				others.add(sprite);
-//				AdvancedBody body = new AdvancedBody().setOffsetXY(-sprite.getWidth() / 2 + 20, 5);
-//				body.getTransform()
-//						.setTranslation(ConverterUtil.convertToPhysics2D(sprite.getTransform().getPosition(true)));
-//				body.addFixture(new AdvancedRectangle(20f, 8f));
-//				sprite.addComponent(new PhysicsComponent2D(body));
-//			} else {
-//				max--;
-//				if (max < 0) {
-//					break;
-//				}
-//				i--;
-//			}
-//		}
+		validratio = countvalid / (double) (CHUNKSIZE_T * CHUNKSIZE_T);
+		// int max = 100;
+		// for (int i = 0; i < 30 * validratio; i++) {
+		// float x = random.nextFloat() * CHUNKSIZE;
+		// float y = random.nextFloat() * CHUNKSIZE;
+		// Tile t = array[(int) (x / TileDefinition.TILE_SIZE)][(int) (y /
+		// TileDefinition.TILE_SIZE)];
+		// if (t != null && t.isValid()) {
+		// Sprite sprite = new
+		// Sprite(ResourceLoader.currentInstance().getTexture("treetest.png"));
+		// sprite.getTransform().setPosition(x + this.x * CHUNKSIZE, y + this.y *
+		// CHUNKSIZE);
+		// sprite.setLayer(1);
+		// sprite.setColor(new Color(1, 1, 1, 0.9f));
+		// others.add(sprite);
+		// AdvancedBody body = new AdvancedBody().setOffsetXY(-sprite.getWidth() / 2 +
+		// 20, 5);
+		// body.getTransform()
+		// .setTranslation(ConverterUtil.convertToPhysics2D(sprite.getTransform().getPosition(true)));
+		// body.addFixture(new AdvancedRectangle(20f, 8f));
+		// sprite.addComponent(new PhysicsComponent2D(body));
+		// } else {
+		// max--;
+		// if (max < 0) {
+		// break;
+		// }
+		// i--;
+		// }
+		// }
 		return this;
+	}
+
+	private BiomeDefinition checkNeighbours(Planet planet, int i, int j) {
+		BiomeDefinition[] defs = new BiomeDefinition[4];
+		defs[0] = planet.getTile(i - 1, j) == null ? null : planet.getTile(i - 1, j).getBiome();
+		defs[1] = planet.getTile(i + 1, j) == null ? null : planet.getTile(i + 1, j).getBiome();
+		defs[2] = planet.getTile(i, j + 1) == null ? null : planet.getTile(i, j + 1).getBiome();
+		defs[3] = planet.getTile(i, j - 1) == null ? null : planet.getTile(i, j - 1).getBiome();
+		// if neighbour has a biome and that is applicable for T(i, j) that biome will
+		// be used.
+		for (BiomeDefinition d : defs) {
+			if (d != null) {
+				if (d.likes(planet.getPlanetData(), i, j)) {
+					return d;
+				}
+			}
+		}
+		// no matching biomes around T8i, j) found, get a new one
+		return BiomeRegistry.getBiomeDefinition(planet.getPlanetData(), i, j);
 	}
 
 	private float e(float x) {
@@ -189,8 +216,16 @@ public class Chunk extends Sprite {
 		return (int) Maths.fastFloor(f / CHUNKSIZE);
 	}
 
-	public static final int tileToChunk(float tx) {
-		return (int) Maths.fastFloor(tx/CHUNKSIZE_T);
+	public static final int tileToChunk(int t) {
+		float f = t / (float) CHUNKSIZE_T;
+		int ret = (int) Maths.fastFloor(f);
+		if(ret!=(int)Math.floor(f)) {
+//			System.out.println(f);
+//			System.out.println(ret);
+//			System.out.println((int)Math.floor(f));
+//			System.out.println("=====");
+		}
+		return ret;
 	}
-	
+
 }
