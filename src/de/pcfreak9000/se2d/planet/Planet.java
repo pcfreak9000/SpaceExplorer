@@ -96,8 +96,9 @@ public class Planet {
 		}
 		if (chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)] == null) {
 			random.setSeed(cx ^ cy ^ planetData.getSeed());
-			chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)] = new Chunk(cx, cy)
-					.generate(random, this).preRender().addTo(planet);
+			Chunk chunk = new Chunk(cx,  cy);
+			chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)] = chunk;
+			chunk.generate(random, this).preRender().addTo(planet);
 		}
 		return chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)];
 	}

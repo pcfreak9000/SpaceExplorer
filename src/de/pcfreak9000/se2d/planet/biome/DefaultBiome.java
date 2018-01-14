@@ -9,9 +9,13 @@ import omnikryptec.resource.loader.ResourceLoader;
 
 public class DefaultBiome extends BiomeDefinition{
 
+	public DefaultBiome() {
+		super(BiomeRegistry.ENVIRONMENT_SENSITIVE);
+	}
+
 	@Override
 	public boolean likes(PlanetData data, int tilex, int tiley) {
-		return true;
+		return data.getTemperature(tilex, tiley)<50;
 	}
 
 	private TileDefinition TMP_T = new TileDefinition(ResourceLoader.currentInstance().getTexture("grassy.png"));

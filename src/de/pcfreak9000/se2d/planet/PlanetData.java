@@ -2,7 +2,9 @@ package de.pcfreak9000.se2d.planet;
 
 import java.util.Random;
 
+import de.pcfreak9000.noise.components.NoiseWrapper;
 import de.pcfreak9000.noise.noises.Noise;
+import de.pcfreak9000.noise.noises.OpenSimplexNoise;
 import de.pcfreak9000.se2d.game.SpaceExplorer2D;
 import omnikryptec.util.Instance;
 import omnikryptec.util.Maths;
@@ -78,6 +80,9 @@ public class PlanetData {
 				+ (plRandom.nextDouble() * 0.2 + 0.9) * TEMPOFFSET;
 		maxTempDifKelvin = MINTEMPDIF
 				+ Maths.normalStandardDistribution((1 - plRandom.nextDouble()) * 7) * (MAXTEMPDIF - MINTEMPDIF);
+		
+		
+		tempNoise = new NoiseWrapper(new OpenSimplexNoise(seed)).setXScale(1/5.0).setYScale(1/5.0);
 	}
 
 	public float getTemperature(float x, float y) {

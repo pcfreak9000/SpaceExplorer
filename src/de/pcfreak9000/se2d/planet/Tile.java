@@ -45,4 +45,9 @@ public class Tile extends Sprite {
 		return validPosition;
 	}
 
+	@Override
+	public String toString() {
+		return super.toString()+": "+myDefinition.toString()+" IN BIOME: "+myBiome.toString();
+	}
+	
 }
