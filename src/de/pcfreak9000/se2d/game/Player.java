@@ -19,8 +19,8 @@ import omnikryptec.util.Instance;
 
 public class Player extends Sprite {
 
-	private static final float DY_SPEED = 20f;
-	private static final float DX_SPEED = 20f;
+	private static final float DY_SPEED = 2f;
+	private static final float DX_SPEED = 2f;
 
 	private KeySettings keysettings;
 	private Light2D light1;

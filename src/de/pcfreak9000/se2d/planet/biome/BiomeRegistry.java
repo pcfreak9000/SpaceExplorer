@@ -58,7 +58,7 @@ public class BiomeRegistry {
 		}
 	}
 
-	private static Noise noise = new NoiseWrapper(new OpenSimplexNoise()).setXScale(1.0/50).setYScale(1.0/50);
+	private static Noise noise = new NoiseWrapper(new OpenSimplexNoise()).setXScale(1.0/75).setYScale(1.0/75);
 	
 	private static BiomeDefinition getWeightedRandom(Random random, HashMap<BiomeDefinition, Integer> defs, int x, int y) {
 		double totalWeight = 0.0d;

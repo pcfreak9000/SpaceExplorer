@@ -46,7 +46,6 @@ public class Planet {
 
 	private Chunk[][] chunks;
 	private int chunksSize;
-	private Random random;
 
 	private PlanetData planetData;
 	
@@ -59,7 +58,6 @@ public class Planet {
 		}
 		chunksSize <<= 1;
 		chunks = new Chunk[chunksSize][chunksSize];
-		random = new Random(planetData.getSeed());
 	}
 
 	public Planet setAsScene(Player p) {
@@ -95,10 +93,9 @@ public class Planet {
 			return null;
 		}
 		if (chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)] == null) {
-			random.setSeed(cx ^ cy ^ planetData.getSeed());
 			Chunk chunk = new Chunk(cx,  cy);
 			chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)] = chunk;
-			chunk.generate(random, this).preRender().addTo(planet);
+			chunk.generate(planetData.getChunkRandom(cx, cy), this).preRender().addTo(planet);
 		}
 		return chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)];
 	}

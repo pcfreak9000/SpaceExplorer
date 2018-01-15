@@ -1,5 +1,6 @@
 package de.pcfreak9000.se2d.planet;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import de.pcfreak9000.noise.components.NoiseWrapper;
@@ -25,6 +26,10 @@ public class PlanetData {
 	private static final double MAXTEMPDIF = 500;
 
 	private static final double TEMPOFFSET = 50;
+
+	private static final char[] CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
+	private static final int NAME_R_LENGTH = 5;
+	private static final ArrayList<String> names = new ArrayList<>();
 
 	private static double calculateAvgPlanetTemp(double lumin, double albedo, double distanceStar,
 			double daytimepercent) {
@@ -61,10 +66,13 @@ public class PlanetData {
 	private Noise tempNoise, humidityNoise, heightsNoise;
 
 	private Random plRandom;
+
+	private Random chRandom;
 	
 	public PlanetData(long seed) {
 		this.seed = seed;
 		plRandom = new Random(seed);
+		chRandom = new Random();
 		name = generateName(plRandom);
 		albedo = plRandom.nextDouble();
 		distanceToStar = /*
@@ -76,13 +84,12 @@ public class PlanetData {
 		daytimePercentage = (float) (plRandom.nextDouble() * 0.6 + 0.2);
 		avgLengthOfDay = MINDAYSEC + plRandom.nextInt(MAXDAYSEC - MINDAYSEC);
 		timeOffset = plRandom.nextInt(avgLengthOfDay);
-		avgTempKelvin = calculateAvgPlanetTemp(10000000000000.0, albedo, distanceToStar, daytimePercentage)
+		avgTempKelvin = calculateAvgPlanetTemp(100000000000000.0, albedo, distanceToStar, daytimePercentage)
 				+ (plRandom.nextDouble() * 0.2 + 0.9) * TEMPOFFSET;
 		maxTempDifKelvin = MINTEMPDIF
 				+ Maths.normalStandardDistribution((1 - plRandom.nextDouble()) * 7) * (MAXTEMPDIF - MINTEMPDIF);
-		
-		
-		tempNoise = new NoiseWrapper(new OpenSimplexNoise(seed)).setXScale(1/5.0).setYScale(1/5.0);
+
+		tempNoise = new NoiseWrapper(new OpenSimplexNoise(seed)).setXScale(1 / 200.0).setYScale(1 / 200.0);
 	}
 
 	public float getTemperature(float x, float y) {
@@ -93,6 +100,12 @@ public class PlanetData {
 		return (float) (humidity + maxDifHumidity * humidityNoise.valueAt(x, y));
 	}
 
+	/**
+	 * [-1;1]
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public float getHeight(float x, float y) {
 		return (float) heightsNoise.valueAt(x, y);
 	}
@@ -101,12 +114,28 @@ public class PlanetData {
 		return SpaceExplorer2D.getSpaceExplorer2D().getUniverse().getWorldTimeSec() + timeOffset;
 	}
 
-	private static String generateName(Random r) {
-		return "haha";
+	private String generateName(Random r) {
+		String s;
+		do {
+			s = SpaceExplorer2D.getSpaceExplorer2D().getUniverse().getGalaxyName(0, 0);
+			for (int i = 0; i < NAME_R_LENGTH; i++) {
+				if (i == 2) {
+					s += "-";
+				}
+				s += CHARSET[r.nextInt(CHARSET.length)];
+			}
+		} while (names.contains(s));
+		names.add(s);
+		return s;
 	}
 
 	public Random getRandom() {
 		return plRandom;
+	}
+
+	public Random getChunkRandom(int x, int y) {
+		chRandom.setSeed(x ^ y ^ seed);
+		return chRandom;
 	}
 	
 	@Override
@@ -129,9 +158,9 @@ public class PlanetData {
 		return builder.toString();
 	}
 
-	public double getsmth() {
-		return avgTempKelvin;
-	}
+//	public double getsmth() {
+//		return avgTempKelvin;
+//	}
 
 	public long getSeed() {
 		return seed;

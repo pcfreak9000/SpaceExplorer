@@ -1,11 +1,9 @@
-package de.pcfreak9000.se2d.main;
+package de.pcfreak9000.se2d.game;
 
 import java.util.Random;
 
 import org.joml.Vector2f;
 
-import de.pcfreak9000.se2d.game.Player;
-import de.pcfreak9000.se2d.game.SpaceExplorer2D;
 import de.pcfreak9000.se2d.planet.Planet;
 import de.pcfreak9000.se2d.planet.TileDefinition;
 import omnikryptec.gameobject.Camera;
@@ -41,5 +39,9 @@ public class Universe {
 		System.out.println(planet.toString());
 		player.getComponent(PhysicsComponent2D.class).getBody().getTransform().setTranslation(ConverterUtil.convertToPhysics2D(new Vector2f(0, planet.getPlanetData().getFadeRadius()*TileDefinition.TILE_SIZE)));
 		planet.setAsScene(player);
+	}
+	
+	public String getGalaxyName(double x, double y) {
+		return "P";
 	}
 }

@@ -21,7 +21,7 @@ import omnikryptec.util.logger.Logger;
 
 public class Launcher {
 
-	public static final boolean DEBUG = false;
+	public static final boolean DEBUG = true;
 
 	public static final String NAME = "SpaceExplorer2D";
 	public static final AdvancedFile FOLDER = OSUtil.getAppDataFolder(NAME);
@@ -48,11 +48,6 @@ public class Launcher {
 //			all += d;
 //		}
 //		System.out.println("Avg: " + (all / am) + " Max: " + max + " Min: " + min);
-		for(float f = -16*1024*2; f<=10; f+=0.001f) {
-			if((int)Math.floor(f)!=(int)Maths.fastFloor(f)) {
-				System.out.println(f);
-			}
-		}
 		NativesLoader.loadNatives(null, new AdvancedFile(false, FOLDER, NATIVES_DIR_NAME));
 		Logger.enableLoggerRedirection(true);
 		Logger.setDebugMode(DEBUG);
