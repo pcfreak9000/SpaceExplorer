@@ -1,11 +1,13 @@
-package de.pcfreak9000.se2d.game;
+package de.pcfreak9000.se2d.universe;
 
 import java.util.Random;
 
 import org.joml.Vector2f;
 
-import de.pcfreak9000.se2d.planet.Planet;
-import de.pcfreak9000.se2d.planet.TileDefinition;
+import de.pcfreak9000.se2d.game.Player;
+import de.pcfreak9000.se2d.game.SpaceExplorer2D;
+import de.pcfreak9000.se2d.universe.planet.Planet;
+import de.pcfreak9000.se2d.universe.planet.TileDefinition;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.component.PhysicsComponent2D;
 import omnikryptec.main.OmniKryptecEngine;

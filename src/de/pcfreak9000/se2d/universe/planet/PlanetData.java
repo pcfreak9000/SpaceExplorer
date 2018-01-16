@@ -1,4 +1,4 @@
-package de.pcfreak9000.se2d.planet;
+package de.pcfreak9000.se2d.universe.planet;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -7,7 +7,7 @@ import de.pcfreak9000.noise.components.NoiseWrapper;
 import de.pcfreak9000.noise.noises.Noise;
 import de.pcfreak9000.noise.noises.OpenSimplexNoise;
 import de.pcfreak9000.se2d.game.SpaceExplorer2D;
-import omnikryptec.util.Instance;
+import de.pcfreak9000.se2d.universe.star.StarData;
 import omnikryptec.util.Maths;
 import omnikryptec.util.Util;
 
@@ -43,6 +43,8 @@ public class PlanetData {
 
 	private long seed = 0;
 
+	private StarData star;
+
 	private long radiusMax, radiusFade;
 	// meter
 	private double distanceToStar = 100;
@@ -68,9 +70,10 @@ public class PlanetData {
 	private Random plRandom;
 
 	private Random chRandom;
-	
-	public PlanetData(long seed) {
+
+	public PlanetData(long seed, StarData data) {
 		this.seed = seed;
+		this.star = data;
 		plRandom = new Random(seed);
 		chRandom = new Random();
 		name = generateName(plRandom);
@@ -84,12 +87,17 @@ public class PlanetData {
 		daytimePercentage = (float) (plRandom.nextDouble() * 0.6 + 0.2);
 		avgLengthOfDay = MINDAYSEC + plRandom.nextInt(MAXDAYSEC - MINDAYSEC);
 		timeOffset = plRandom.nextInt(avgLengthOfDay);
-		avgTempKelvin = calculateAvgPlanetTemp(100000000000000.0, albedo, distanceToStar, daytimePercentage)
+		avgTempKelvin = calculateAvgPlanetTemp(star.getLuminosity(), albedo, distanceToStar, daytimePercentage)
 				+ (plRandom.nextDouble() * 0.2 + 0.9) * TEMPOFFSET;
 		maxTempDifKelvin = MINTEMPDIF
 				+ Maths.normalStandardDistribution((1 - plRandom.nextDouble()) * 7) * (MAXTEMPDIF - MINTEMPDIF);
 
-		tempNoise = new NoiseWrapper(new OpenSimplexNoise(seed)).setXScale(1 / 200.0).setYScale(1 / 200.0);
+		tempNoise = new NoiseWrapper(new OpenSimplexNoise(seed ^ (long) avgTempKelvin)).setXScale(1 / 300.0)
+				.setYScale(1 / 300.0);
+		heightsNoise = new NoiseWrapper(new OpenSimplexNoise(seed ^ 0)).setXScale(1 / 100.0).setYScale(1 / 100.0);
+		humidityNoise = new NoiseWrapper(new OpenSimplexNoise(seed ^ (long) humidity)).setXScale(1 / 200.0)
+				.setYScale(1 / 200.0);
+
 	}
 
 	public float getTemperature(float x, float y) {
@@ -102,6 +110,7 @@ public class PlanetData {
 
 	/**
 	 * [-1;1]
+	 * 
 	 * @param x
 	 * @param y
 	 * @return
@@ -137,7 +146,7 @@ public class PlanetData {
 		chRandom.setSeed(x ^ y ^ seed);
 		return chRandom;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -158,9 +167,9 @@ public class PlanetData {
 		return builder.toString();
 	}
 
-//	public double getsmth() {
-//		return avgTempKelvin;
-//	}
+	// public double getsmth() {
+	// return avgTempKelvin;
+	// }
 
 	public long getSeed() {
 		return seed;

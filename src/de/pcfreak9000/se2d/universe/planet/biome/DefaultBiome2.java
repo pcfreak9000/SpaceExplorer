@@ -1,10 +1,10 @@
-package de.pcfreak9000.se2d.planet.biome;
+package de.pcfreak9000.se2d.universe.planet.biome;
 
 import de.pcfreak9000.noise.components.NoiseWrapper;
 import de.pcfreak9000.noise.noises.Noise;
 import de.pcfreak9000.noise.noises.OpenSimplexNoise;
-import de.pcfreak9000.se2d.planet.PlanetData;
-import de.pcfreak9000.se2d.planet.TileDefinition;
+import de.pcfreak9000.se2d.universe.planet.PlanetData;
+import de.pcfreak9000.se2d.universe.planet.TileDefinition;
 import omnikryptec.resource.loader.ResourceLoader;
 
 public class DefaultBiome2 extends BiomeDefinition{

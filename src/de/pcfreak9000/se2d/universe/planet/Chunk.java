@@ -1,27 +1,18 @@
-package de.pcfreak9000.se2d.planet;
+package de.pcfreak9000.se2d.universe.planet;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 import org.joml.Math;
 
-import de.pcfreak9000.noise.components.NoiseWrapper;
-import de.pcfreak9000.noise.noises.Noise;
-import de.pcfreak9000.noise.noises.OpenSimplexNoise;
-import de.pcfreak9000.se2d.main.Launcher;
-import de.pcfreak9000.se2d.planet.biome.BiomeDefinition;
-import de.pcfreak9000.se2d.planet.biome.BiomeRegistry;
+import de.pcfreak9000.se2d.game.Launcher;
+import de.pcfreak9000.se2d.universe.planet.biome.BiomeDefinition;
+import de.pcfreak9000.se2d.universe.planet.biome.BiomeRegistry;
 import omnikryptec.gameobject.Sprite;
-import omnikryptec.gameobject.component.PhysicsComponent2D;
 import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.main.Scene2D;
-import omnikryptec.physics.AdvancedBody;
-import omnikryptec.physics.AdvancedRectangle;
 import omnikryptec.renderer.d3.RenderMap;
-import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.resource.texture.Texture;
-import omnikryptec.util.Color;
-import omnikryptec.util.ConverterUtil;
 import omnikryptec.util.Maths;
 
 public class Chunk extends Sprite {

@@ -1,14 +1,13 @@
 package de.pcfreak9000.se2d.game;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.pcfreak9000.se2d.planet.Planet;
-import de.pcfreak9000.se2d.planet.biome.BiomeRegistry;
-import de.pcfreak9000.se2d.planet.biome.DefaultBiome;
-import de.pcfreak9000.se2d.planet.biome.DefaultBiome2;
+import de.pcfreak9000.se2d.universe.Universe;
+import de.pcfreak9000.se2d.universe.planet.biome.BiomeRegistry;
+import de.pcfreak9000.se2d.universe.planet.biome.DefaultBiome;
+import de.pcfreak9000.se2d.universe.planet.biome.DefaultBiome2;
 import omnikryptec.event.event.Event;
 import omnikryptec.event.event.EventType;
 import omnikryptec.event.event.IEventHandler;
-import omnikryptec.gameobject.Camera;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.resource.texture.Texture;

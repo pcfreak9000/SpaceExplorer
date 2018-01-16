@@ -1,19 +1,14 @@
-package de.pcfreak9000.se2d.main;
-
-import java.util.Random;
+package de.pcfreak9000.se2d.game;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.pcfreak9000.se2d.game.SpaceExplorer2D;
-import de.pcfreak9000.se2d.planet.Chunk;
-import de.pcfreak9000.se2d.planet.PlanetData;
-import de.pcfreak9000.se2d.planet.TileDefinition;
+import de.pcfreak9000.se2d.universe.planet.Chunk;
+import de.pcfreak9000.se2d.universe.planet.TileDefinition;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.settings.KeySettings;
-import omnikryptec.util.Maths;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.OSUtil;
 import omnikryptec.util.logger.LogLevel;

@@ -1,12 +1,11 @@
-package de.pcfreak9000.se2d.planet;
+package de.pcfreak9000.se2d.universe.planet;
 
-import java.nio.ByteBuffer;
 import java.time.Instant;
-import java.util.Random;
 
 import de.pcfreak9000.se2d.game.Player;
 import de.pcfreak9000.se2d.game.SpaceExplorer2D;
 import de.pcfreak9000.se2d.renderer.PlanetRenderer;
+import de.pcfreak9000.se2d.universe.star.StarData;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene2D;
 import omnikryptec.physics.Dyn4JPhysicsWorld;
@@ -50,7 +49,7 @@ public class Planet {
 	private PlanetData planetData;
 	
 	public Planet(long seed) {
-		planetData = new PlanetData(seed);
+		planetData = new PlanetData(seed, new StarData());
 		planet = new PlanetScene(planetData.getName() + id);
 		chunksSize = (int) Math.ceil((double) planetData.getMaxRadius() / Chunk.CHUNKSIZE_T);
 		if (chunksSize > (Integer.MAX_VALUE >> 1) - 10) {
