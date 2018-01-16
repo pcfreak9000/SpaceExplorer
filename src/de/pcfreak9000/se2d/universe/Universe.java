@@ -23,7 +23,7 @@ public class Universe {
 		gametime += OmniKryptecEngine.instance().getDeltaTimef();
 	}
 	
-	public double getWorldTimeSec() {
+	public double getUniverseTimeSec() {
 		return gametime;
 	}
 	
