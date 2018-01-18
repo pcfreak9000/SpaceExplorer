@@ -1,5 +1,7 @@
 package de.pcfreak9000.se2d.universe.planet.biome;
 
+import com.google.common.collect.MapDifference.ValueDifference;
+
 import de.pcfreak9000.noise.components.NoiseWrapper;
 import de.pcfreak9000.noise.noises.Noise;
 import de.pcfreak9000.noise.noises.OpenSimplexNoise;
@@ -10,12 +12,15 @@ import omnikryptec.resource.loader.ResourceLoader;
 public class DefaultBiome2 extends BiomeDefinition{
 
 	public DefaultBiome2() {
-		super(BiomeRegistry.ENVIRONMENT_SENSITIVE);
+		super(0);
 	}
 
+	private BiomeValue value = new BiomeValue().setTemperature(new SingleValue(BiomeValueMode.MORE_IS_BETTER, 50, 1.5f)).setHumidity(new SingleValue(BiomeValueMode.LESS_IS_BETTER, 0.4f, 1));
+
+	
 	@Override
-	public boolean likes(PlanetData data, int tilex, int tiley) {
-		return data.getTemperature(tilex, tiley)<45;
+	public float likes(PlanetData data, int tilex, int tiley) {
+		return value.getFor(data, tilex, tiley);
 	}
 
 	private TileDefinition TMP_T = new TileDefinition(ResourceLoader.currentInstance().getTexture("desert.png"));

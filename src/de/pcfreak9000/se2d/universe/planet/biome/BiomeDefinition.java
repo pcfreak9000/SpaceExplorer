@@ -11,7 +11,7 @@ public abstract class BiomeDefinition {
 		this.flags = flags;
 	}
 	
-	public abstract boolean likes(PlanetData data, int tilex, int tiley);
+	public abstract float likes(PlanetData data, int tilex, int tiley);
 
 	public abstract TileDefinition getTileDefinition(PlanetData data, int tilex, int tiley);
 	
@@ -23,4 +23,5 @@ public abstract class BiomeDefinition {
 		return (flags&flag)==flag;
 	}
 	
+
 }

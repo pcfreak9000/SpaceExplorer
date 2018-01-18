@@ -94,20 +94,20 @@ public class PlanetData {
 		humidity = plRandom.nextDouble();
 		maxDifHumidity = plRandom.nextDouble();
 		
-		tempNoise = new NoiseWrapper(new OpenSimplexNoise(seed ^ (long) avgTempKelvin)).setXScale(1 / 300.0)
-				.setYScale(1 / 300.0);
+		tempNoise = new NoiseWrapper(new OpenSimplexNoise(seed ^ (long) avgTempKelvin)).setXScale(1 / 50.0)
+				.setYScale(1 / 50.0);
 		heightsNoise = new NoiseWrapper(new OpenSimplexNoise(seed ^ 0)).setXScale(1 / 100.0).setYScale(1 / 100.0);
-		humidityNoise = new NoiseWrapper(new OpenSimplexNoise(seed ^ (long) humidity)).setXScale(1 / 200.0)
-				.setYScale(1 / 200.0);
+		humidityNoise = new NoiseWrapper(new OpenSimplexNoise(seed ^ (long) humidity)).setXScale(1 / 50.0)
+				.setYScale(1 / 50.0);
 
 	}
 
-	public float getTemperature(float x, float y) {
+	public float getTemperature(int x, int y) {
 		return (float) (avgTempKelvin + maxTempDifKelvin * tempNoise.valueAt(x, y));
 	}
 
-	public float getHumidity(float x, float y) {
-		return (float) (humidity + maxDifHumidity * humidityNoise.valueAt(x, y));
+	public float getHumidity(int x, int y) {
+		return (float) (humidity + maxDifHumidity * humidityNoise.valueAt(x, y))*0.25f+0.5f;
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class PlanetData {
 	 * @param y
 	 * @return
 	 */
-	public float getHeight(float x, float y) {
+	public float getHeight(int x, int y) {
 		return (float) heightsNoise.valueAt(x, y);
 	}
 
@@ -213,7 +213,7 @@ public class PlanetData {
 		return timeOffset;
 	}
 
-	public double getHumidity() {
+	public double getAvgHumidity() {
 		return humidity;
 	}
 

@@ -10,12 +10,14 @@ import omnikryptec.resource.loader.ResourceLoader;
 public class DefaultBiome extends BiomeDefinition{
 
 	public DefaultBiome() {
-		super(BiomeRegistry.ENVIRONMENT_SENSITIVE);
+		super(0);
 	}
 
+	private BiomeValue value = new BiomeValue().setTemperature(new SingleValue(BiomeValueMode.THIS_IS_BEST, 45, 2)).setHumidity(new SingleValue(BiomeValueMode.THIS_IS_BEST, 0.6f, 1));
+	
 	@Override
-	public boolean likes(PlanetData data, int tilex, int tiley) {
-		return data.getTemperature(tilex, tiley)<50;
+	public float likes(PlanetData data, int tilex, int tiley) {
+		return value.getFor(data, tilex, tiley);
 	}
 
 	private TileDefinition TMP_T = new TileDefinition(ResourceLoader.currentInstance().getTexture("grassy.png"));
@@ -25,7 +27,9 @@ public class DefaultBiome extends BiomeDefinition{
 	
 	@Override
 	public TileDefinition getTileDefinition(PlanetData data, int tilex, int tiley) {
-		return noise.valueAt(tilex, tiley)>0.4?TMP_T_2:TMP_T;
+		return noise.valueAt(tilex, tiley)>0.4&&data.getHumidity(tilex, tiley)>0.5f?TMP_T_2:TMP_T;
 	}
 
+
+	
 }
