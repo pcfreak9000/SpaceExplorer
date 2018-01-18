@@ -31,18 +31,18 @@ public class Launcher {
 	}
 
 	public Launcher() {
-//		double all = 0;
-//		double min = Double.POSITIVE_INFINITY;
-//		double max = Double.NEGATIVE_INFINITY;
-//		int am=20;
-//		for (int i = 0; i < am; i++) {
-//			double d = new PlanetData(new Random().nextInt()).getsmth();
-//			System.out.println(d);
-//			min = Math.min(min, d);
-//			max = Math.max(max, d);
-//			all += d;
-//		}
-//		System.out.println("Avg: " + (all / am) + " Max: " + max + " Min: " + min);
+		// double all = 0;
+		// double min = Double.POSITIVE_INFINITY;
+		// double max = Double.NEGATIVE_INFINITY;
+		// int am=20;
+		// for (int i = 0; i < am; i++) {
+		// double d = new PlanetData(new Random().nextInt()).getsmth();
+		// System.out.println(d);
+		// min = Math.min(min, d);
+		// max = Math.max(max, d);
+		// all += d;
+		// }
+		// System.out.println("Avg: " + (all / am) + " Max: " + max + " Min: " + min);
 		NativesLoader.loadNatives(null, new AdvancedFile(false, FOLDER, NATIVES_DIR_NAME));
 		Logger.enableLoggerRedirection(true);
 		Logger.setDebugMode(DEBUG);

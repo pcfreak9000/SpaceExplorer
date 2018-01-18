@@ -25,5 +25,5 @@ public class TileDefinition {
 	public boolean isPrerenderable() {
 		return prerenderable;
 	}
-	
+
 }

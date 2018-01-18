@@ -39,7 +39,7 @@ public class Chunk extends Sprite {
 		float maxr = planet.getPlanetData().getMaxRadius() * TileDefinition.TILE_SIZE;
 		float fader = planet.getPlanetData().getFadeRadius() * TileDefinition.TILE_SIZE;
 		int countvalid = 0;
-//		line(true, 0, random, planet, maxr, fader);
+		// line(true, 0, random, planet, maxr, fader);
 		for (int x = 0; x < CHUNKSIZE_T; x++) {
 			for (int y = 0; y < CHUNKSIZE_T; y++) {
 				placeTile(x, y, random, planet, maxr, fader);
@@ -78,14 +78,14 @@ public class Chunk extends Sprite {
 	}
 
 	private void line(boolean incrY, int n, Random random, Planet planet, float maxr, float fader) {
-		for(int i=0; i<CHUNKSIZE_T; i++) {
-			placeTile(incrY?n:i, incrY?i:n, random, planet, maxr, fader);
+		for (int i = 0; i < CHUNKSIZE_T; i++) {
+			placeTile(incrY ? n : i, incrY ? i : n, random, planet, maxr, fader);
 		}
 	}
-	
+
 	private void placeTile(int x, int y, Random random, Planet planet, float maxr, float fader) {
 		float randfl, distancesq;
-		//Tile coords
+		// Tile coords
 		int tx = this.x * CHUNKSIZE_T + x;
 		int ty = this.y * CHUNKSIZE_T + y;
 		// World coords and world coords in the middle of the tile
@@ -99,7 +99,7 @@ public class Chunk extends Sprite {
 		// get BiomeDefinition for this tile
 		BiomeDefinition biomedef = checkNeighbours(planet, tx, ty);
 		Tile tile = new Tile(biomedef.getTileDefinition(planet.getPlanetData(), tx, ty), biomedef);
-		//tile is to be faded?
+		// tile is to be faded?
 		if (txwh * txwh + tywh * tywh > fader * fader) {
 			// on this tile no decoration is allowed
 			tile.invalidate();
@@ -122,24 +122,30 @@ public class Chunk extends Sprite {
 			others.add(tile);
 		}
 	}
-	
+
 	private BiomeDefinition checkNeighbours(Planet planet, int i, int j) {
-//		BiomeDefinition[] defs = new BiomeDefinition[4];
-//		defs[0] = planet.getTile(i - 1, j) == null ? null : planet.getTile(i - 1, j).getBiome();
-//		defs[1] = planet.getTile(i + 1, j) == null ? null : planet.getTile(i + 1, j).getBiome();
-//		defs[2] = planet.getTile(i, j + 1) == null ? null : planet.getTile(i, j + 1).getBiome();
-//		defs[3] = planet.getTile(i, j - 1) == null ? null : planet.getTile(i, j - 1).getBiome();
-//		// if neighbour has a biome and that is applicable for T(i, j) that biome will
-//		// be used.
-//		//System.out.println(planet.getTile(i, j-1));
-//		for (BiomeDefinition d : defs) {
-//			if (d != null) {
-//				if (d.isFlagSet(BiomeRegistry.ENVIRONMENT_UNSENSITIVE) || d.likes(planet.getPlanetData(), i, j)) {
-//					return d;
-//				}
-//			}
-//		}
-		//System.out.println("sdfsdfsdfsdfsdfsdfsdfsdfsdf");
+		// BiomeDefinition[] defs = new BiomeDefinition[4];
+		// defs[0] = planet.getTile(i - 1, j) == null ? null : planet.getTile(i - 1,
+		// j).getBiome();
+		// defs[1] = planet.getTile(i + 1, j) == null ? null : planet.getTile(i + 1,
+		// j).getBiome();
+		// defs[2] = planet.getTile(i, j + 1) == null ? null : planet.getTile(i, j +
+		// 1).getBiome();
+		// defs[3] = planet.getTile(i, j - 1) == null ? null : planet.getTile(i, j -
+		// 1).getBiome();
+		// // if neighbour has a biome and that is applicable for T(i, j) that biome
+		// will
+		// // be used.
+		// //System.out.println(planet.getTile(i, j-1));
+		// for (BiomeDefinition d : defs) {
+		// if (d != null) {
+		// if (d.isFlagSet(BiomeRegistry.ENVIRONMENT_UNSENSITIVE) ||
+		// d.likes(planet.getPlanetData(), i, j)) {
+		// return d;
+		// }
+		// }
+		// }
+		// System.out.println("sdfsdfsdfsdfsdfsdfsdfsdfsdf");
 		// no matching biomes around T(i, j) found, get a new one
 		return BiomeRegistry.getBiomeDefinition(planet.getPlanetData(), i, j);
 	}

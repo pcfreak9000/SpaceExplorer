@@ -21,13 +21,15 @@ public class BiomeRegistry {
 
 	static {
 		registerBiomeDefinition(1, new BiomeDefinition(ENVIRONMENT_UNSENSITIVE) {
-			
+
 			@Override
 			public boolean likes(PlanetData data, int tilex, int tiley) {
 				// TODO Auto-generated method stub
 				return true;
 			}
+
 			private TileDefinition def = new TileDefinition(ResourceLoader.MISSING_TEXTURE);
+
 			@Override
 			public TileDefinition getTileDefinition(PlanetData data, int tilex, int tiley) {
 				// TODO Auto-generated method stub
@@ -35,7 +37,7 @@ public class BiomeRegistry {
 			}
 		});
 	}
-	
+
 	public static BiomeDefinition getBiomeDefinition(PlanetData data, int tilex, int tiley) {
 		HashMap<BiomeDefinition, Integer> results = new HashMap<>();
 		for (Entry<BiomeDefinition, Integer> def : registeredBiomes.entrySet()) {
@@ -58,15 +60,16 @@ public class BiomeRegistry {
 		}
 	}
 
-	private static Noise noise = new NoiseWrapper(new OpenSimplexNoise()).setXScale(1.0/75).setYScale(1.0/75);
-	
-	private static BiomeDefinition getWeightedRandom(Random random, HashMap<BiomeDefinition, Integer> defs, int x, int y) {
+	private static Noise noise = new NoiseWrapper(new OpenSimplexNoise()).setXScale(1.0 / 75).setYScale(1.0 / 75);
+
+	private static BiomeDefinition getWeightedRandom(Random random, HashMap<BiomeDefinition, Integer> defs, int x,
+			int y) {
 		double totalWeight = 0.0d;
 		for (BiomeDefinition i : defs.keySet()) {
 			totalWeight += defs.get(i);
 		}
 		// Now choose a random item
-		double rand = (noise.valueAt(x, y)*0.5+0.5) * totalWeight;
+		double rand = (noise.valueAt(x, y) * 0.5 + 0.5) * totalWeight;
 		for (BiomeDefinition i : defs.keySet()) {
 			rand -= defs.get(i);
 			if (rand <= 0) {

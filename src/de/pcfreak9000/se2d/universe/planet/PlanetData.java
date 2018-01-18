@@ -93,7 +93,7 @@ public class PlanetData {
 				+ Maths.normalStandardDistribution((1 - plRandom.nextDouble()) * 7) * (MAXTEMPDIF - MINTEMPDIF);
 		humidity = plRandom.nextDouble();
 		maxDifHumidity = plRandom.nextDouble();
-		
+
 		tempNoise = new NoiseWrapper(new OpenSimplexNoise(seed ^ (long) avgTempKelvin)).setXScale(1 / 300.0)
 				.setYScale(1 / 300.0);
 		heightsNoise = new NoiseWrapper(new OpenSimplexNoise(seed ^ 0)).setXScale(1 / 100.0).setYScale(1 / 100.0);
@@ -224,9 +224,9 @@ public class PlanetData {
 	public float getDaytimePercentage() {
 		return daytimePercentage;
 	}
-	
+
 	public double getPlanetTime() {
-		return SpaceExplorer2D.getSpaceExplorer2D().getUniverse().getUniverseTimeSec()+timeOffset;
+		return SpaceExplorer2D.getSpaceExplorer2D().getUniverse().getUniverseTimeSec() + timeOffset;
 	}
 
 }

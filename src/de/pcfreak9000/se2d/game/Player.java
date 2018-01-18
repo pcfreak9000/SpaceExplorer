@@ -54,7 +54,7 @@ public class Player extends Sprite {
 			vel.x = DX_SPEED;
 		}
 		// meh but makes it timeindependent
-		body.applyVelocityImpulse(vel.multiply(Instance.getDeltaTimeSf()*100));
+		body.applyVelocityImpulse(vel.multiply(Instance.getDeltaTimeSf() * 100));
 		SpaceExplorer2D.getSpaceExplorer2D().getUniverse().getPlanetCamera().getTransform().setPosition(
 				getTransform().getPosition(true).x + getWidth() / 2,
 				getTransform().getPosition(true).y + getHeight() / 2, 0);

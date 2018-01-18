@@ -11,7 +11,6 @@ public class Tile extends Sprite {
 	private BiomeDefinition myBiome;
 	private boolean validPosition = true;
 
-	
 	public Tile(TileDefinition def, BiomeDefinition biomedef) {
 		super(def.getTexture());
 		myDefinition = def;
@@ -36,18 +35,18 @@ public class Tile extends Sprite {
 	void invalidate() {
 		validPosition = false;
 	}
-	
+
 	public BiomeDefinition getBiome() {
 		return myBiome;
 	}
-	
+
 	public boolean isValid() {
 		return validPosition;
 	}
 
 	@Override
 	public String toString() {
-		return super.toString()+": "+myDefinition.toString()+" IN BIOME: "+myBiome.toString();
+		return super.toString() + ": " + myDefinition.toString() + " IN BIOME: " + myBiome.toString();
 	}
-	
+
 }

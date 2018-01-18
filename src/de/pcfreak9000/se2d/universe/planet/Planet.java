@@ -47,7 +47,7 @@ public class Planet {
 	private int chunksSize;
 
 	private PlanetData planetData;
-	
+
 	public Planet(long seed) {
 		planetData = new PlanetData(seed, new StarData());
 		planet = new PlanetScene(planetData.getName() + id);
@@ -74,32 +74,32 @@ public class Planet {
 	public Tile getTile(int tx, int ty) {
 		int cx = Chunk.tileToChunk(tx);
 		int cy = Chunk.tileToChunk(ty);
-		if(!isChunkGenerated(cx, cy)) {
+		if (!isChunkGenerated(cx, cy)) {
 			return null;
 		}
-		return chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)].getTile((tx-cx*Chunk.CHUNKSIZE_T), (ty-cy*Chunk.CHUNKSIZE_T));
+		return chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)].getTile((tx - cx * Chunk.CHUNKSIZE_T),
+				(ty - cy * Chunk.CHUNKSIZE_T));
 	}
-	
+
 	public boolean isChunkGenerated(int cx, int cy) {
 		if (cx >= (chunksSize >> 1) || cy >= (chunksSize >> 1) || cx < -(chunksSize >> 1) || cy < -(chunksSize >> 1)) {
 			return false;
 		}
 		return chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)] != null;
 	}
-	
+
 	public Chunk getChunkOrGen(int cx, int cy) {
 		if (cx >= (chunksSize >> 1) || cy >= (chunksSize >> 1) || cx < -(chunksSize >> 1) || cy < -(chunksSize >> 1)) {
 			return null;
 		}
 		if (chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)] == null) {
-			Chunk chunk = new Chunk(cx,  cy);
+			Chunk chunk = new Chunk(cx, cy);
 			chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)] = chunk;
 			chunk.generate(planetData.getChunkRandom(cx, cy), this).preRender().addTo(planet);
 		}
 		return chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)];
 	}
 
-	
 	@Override
 	public String toString() {
 		return planetData.toString();
