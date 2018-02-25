@@ -1,12 +1,20 @@
 package de.pcfreak9000.se2d.game;
 
+import org.joml.Vector2f;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.pcfreak9000.se2d.universe.planet.Chunk;
+import de.pcfreak9000.se2d.universe.planet.Planet;
 import de.pcfreak9000.se2d.universe.planet.TileDefinition;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
 import omnikryptec.main.OmniKryptecEngine;
+import omnikryptec.postprocessing.main.PostProcessingDebugStage;
+import omnikryptec.postprocessing.stages.BloomStage;
+import omnikryptec.postprocessing.stages.CompleteGaussianBlurStage;
+import omnikryptec.postprocessing.stages.ContrastchangeStage;
+import omnikryptec.postprocessing.stages.Light2DProcessor;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.settings.KeySettings;
 import omnikryptec.util.NativesLoader;
@@ -55,10 +63,14 @@ public class Launcher {
 						.setInteger(GameSettings.CHUNK_HEIGHT_2D, (int) Chunk.CHUNKSIZE)
 						.setInteger(GameSettings.CHUNK_OFFSET_2D_X, 1).setInteger(GameSettings.CHUNK_OFFSET_2D_Y, 1)
 						.setBoolean(GameSettings.DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE, true)
-						.setBoolean(GameSettings.DYN4J_PHYSICS_VAR_TS, false).setPixelsPerMeter(PIXELS_PER_METER),
+						.setBoolean(GameSettings.DYN4J_PHYSICS_VAR_TS, false).setDouble(GameSettings.PIXELS_PER_METER, PIXELS_PER_METER),
 				new GLFWInfo(3, 2, true, false, 1280, 720));
 		Display.setAspectRatio(ASPECT_RATIO);
 		OmniKryptecEngine.instance().getGameSettings().setKeySettings(new KeySettings());
+		OmniKryptecEngine.instance().getPostprocessor().addStage(new Light2DProcessor(Planet.RENDERER));
+		OmniKryptecEngine.instance().getPostprocessor().addStage(new PostProcessingDebugStage());
+		//OmniKryptecEngine.instance().getPostprocessor().addStage(new ContrastchangeStage(1));
+		//OmniKryptecEngine.instance().getPostprocessor().addStage(new BloomStage(new CompleteGaussianBlurStage(true, 100, 100), new Vector2f(1)));
 		KeyManager.init();
 		new SpaceExplorer2D(new AdvancedFile(false, FOLDER, RESOURCEPACKS));
 	}

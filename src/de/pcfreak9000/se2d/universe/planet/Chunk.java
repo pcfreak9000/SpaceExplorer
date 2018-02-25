@@ -23,17 +23,18 @@ public class Chunk extends Sprite {
 	private RenderMap<Texture, float[]> data = new RenderMap<>(Texture.class);
 	private int x, y;
 
+	private RenderMap<Texture, ArrayList<Tile>> tiles = new RenderMap<>(Texture.class);
+	private Tile[][] array = new Tile[CHUNKSIZE_T][CHUNKSIZE_T];
+	private ArrayList<Sprite> others = new ArrayList<>();
+
+	private double validratio;
+	
 	public Chunk(int x, int y) {
 		getTransform().setPosition(x * CHUNKSIZE, y * CHUNKSIZE);
 		this.x = x;
 		this.y = y;
 	}
 
-	private RenderMap<Texture, ArrayList<Tile>> tiles = new RenderMap<>(Texture.class);
-	private Tile[][] array = new Tile[CHUNKSIZE_T][CHUNKSIZE_T];
-	private ArrayList<Sprite> others = new ArrayList<>();
-
-	private double validratio;
 
 	public Chunk generate(Random random, Planet planet) {
 		float maxr = planet.getPlanetData().getMaxRadius() * TileDefinition.TILE_SIZE;
@@ -171,6 +172,7 @@ public class Chunk extends Sprite {
 			data.put(t, batch.getData());
 		}
 		batch.end();
+		tiles.clear();
 		return this;
 	}
 
