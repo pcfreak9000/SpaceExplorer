@@ -45,6 +45,8 @@ public class PlanetData {
 
 	private StarData star;
 
+	private Atmosphere atmo;
+	
 	private long radiusMax, radiusFade;
 	// meter
 	private double distanceToStar = 100;
@@ -67,6 +69,7 @@ public class PlanetData {
 
 	private Noise tempNoise, humidityNoise, heightsNoise;
 
+	
 	private Random plRandom;
 
 	private Random chRandom;
