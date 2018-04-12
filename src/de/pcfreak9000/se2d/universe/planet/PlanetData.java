@@ -45,7 +45,7 @@ public class PlanetData {
 
 	private StarData star;
 
-	private Atmosphere atmo;
+	private Atmosphere atmosphere;
 	
 	private long radiusMax, radiusFade;
 	// meter
