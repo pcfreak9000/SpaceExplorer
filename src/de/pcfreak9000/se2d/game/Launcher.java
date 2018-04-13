@@ -42,25 +42,25 @@ public class Launcher {
 	}
 
 	public Launcher() {
-		 double all = 0;
-		 double min = Double.POSITIVE_INFINITY;
-		 double max = Double.NEGATIVE_INFINITY;
-		 int am=1000;
-		 Random random = new Random();
-		 for (int i = 0; i < am; i++) {
-		double d = /*random.nextDouble()*(10000000000L-10000)+10000;*/Math.pow(10, random.nextInt(6))*10000;
-			 
-		 //System.out.println(d);
-		 min = Math.min(min, d);
-		 max = Math.max(max, d);
-		 all += d;
-		 }
-		 System.out.println("Avg: " + (all / am) + " Max: " + max + " Min: " + min);
-//		
-//		for(int i=0; i<20; i++) {
-//			System.out.println();
-//			System.out.println();
-//		}
+//		 double all = 0;
+//		 double min = Double.POSITIVE_INFINITY;
+//		 double max = Double.NEGATIVE_INFINITY;
+//		 int am=1000;
+//		 Random random = new Random();
+//		 for (int i = 0; i < am; i++) {
+//		double d = /*random.nextDouble()*(10000000000L-10000)+10000;*/Math.pow(10, random.nextInt(6))*10000;
+//			 
+//		 //System.out.println(d);
+//		 min = Math.min(min, d);
+//		 max = Math.max(max, d);
+//		 all += d;
+//		 }
+//		 System.out.println("Avg: " + (all / am) + " Max: " + max + " Min: " + min);
+////		
+////		for(int i=0; i<20; i++) {
+////			System.out.println();
+////			System.out.println();
+////		}
 		NativesLoader.loadNatives(null, new AdvancedFile(false, FOLDER, NATIVES_DIR_NAME));
 		Logger.enableLoggerRedirection(true);
 		Logger.setDebugMode(DEBUG);
