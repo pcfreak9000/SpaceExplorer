@@ -1,4 +1,4 @@
-package de.pcfreak9000.se2d.universe.planet;
+package de.pcfreak9000.se2d.universe.celestialbody;
 
 import omnikryptec.resource.texture.Texture;
 

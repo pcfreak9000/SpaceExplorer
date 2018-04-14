@@ -6,8 +6,8 @@ import org.joml.Vector2f;
 
 import de.pcfreak9000.se2d.game.Player;
 import de.pcfreak9000.se2d.game.SpaceExplorer2D;
-import de.pcfreak9000.se2d.universe.planet.Planet;
-import de.pcfreak9000.se2d.universe.planet.TileDefinition;
+import de.pcfreak9000.se2d.universe.celestialbody.Planet;
+import de.pcfreak9000.se2d.universe.celestialbody.TileDefinition;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.component.PhysicsComponent2D;
 import omnikryptec.main.OmniKryptecEngine;

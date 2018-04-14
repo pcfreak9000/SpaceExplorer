@@ -1,4 +1,4 @@
-package de.pcfreak9000.se2d.universe.planet;
+package de.pcfreak9000.se2d.universe.celestialbody;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -6,8 +6,8 @@ import java.util.Random;
 import org.joml.Math;
 
 import de.pcfreak9000.se2d.game.Launcher;
-import de.pcfreak9000.se2d.universe.planet.biome.BiomeDefinition;
-import de.pcfreak9000.se2d.universe.planet.biome.BiomeRegistry;
+import de.pcfreak9000.se2d.universe.celestialbody.biome.BiomeDefinition;
+import de.pcfreak9000.se2d.universe.celestialbody.biome.BiomeRegistry;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.main.Scene2D;

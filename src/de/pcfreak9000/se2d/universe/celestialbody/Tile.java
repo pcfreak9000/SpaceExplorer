@@ -1,6 +1,5 @@
-package de.pcfreak9000.se2d.universe.planet;
+package de.pcfreak9000.se2d.universe.celestialbody;
 
-import de.pcfreak9000.se2d.universe.planet.biome.BiomeDefinition;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.util.EnumCollection.FixedSizeMode;
 import omnikryptec.util.Maths;
