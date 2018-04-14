@@ -22,15 +22,24 @@ public class SpaceExplorer2D implements IEventHandler {
 		return instance;
 	}
 
-	private AdvancedFile resourcepacks;
+	private AdvancedFile resourcepacks,modsfolder;
 	private Universe currentWorld = null;
 
-	public SpaceExplorer2D(AdvancedFile resourcepacks) {
+	public SpaceExplorer2D(AdvancedFile resourcepacks, AdvancedFile modsfolder) {
 		if (instance != null) {
 			throw new IllegalStateException("SpaceExplorer2D is already created!");
 		}
 		instance = this;
 		this.resourcepacks = resourcepacks;
+		if(!resourcepacks.toFile().exists()) {
+			resourcepacks.setShouldBeFile(false);
+			resourcepacks.toFile().mkdirs();
+		}
+		this.modsfolder = modsfolder;
+		if(!modsfolder.toFile().exists()) {
+			modsfolder.setShouldBeFile(false);
+			modsfolder.toFile().mkdirs();
+		}
 		ResourceLoader.createInstanceDefault(true, false);
 		OmniKryptecEngine.instance().getEventsystem().addEventHandler(this, EventType.BEFORE_FRAME);
 		loadRes();

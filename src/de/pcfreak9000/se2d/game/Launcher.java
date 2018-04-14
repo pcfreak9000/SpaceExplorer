@@ -19,7 +19,14 @@ import omnikryptec.util.logger.Logger;
 public class Launcher {
 
 	public static final boolean DEBUG = false;
-
+	
+	private static String[] smthStupid(String[] sa, String s) {
+		String[] array = new String[sa.length+1];
+		System.arraycopy(sa, 0, array, 0, sa.length);
+		array[sa.length] = s;
+		return array;
+	}
+	
 	public static final String NAME = "SpaceExplorer2D";
 	public static final AdvancedFile FOLDER = OSUtil.getAppDataFolder(NAME);
 	public static final String NATIVES_DIR_NAME = "natives";
@@ -75,7 +82,7 @@ public class Launcher {
 //		OmniKryptecEngine.instance().getPostprocessor().addStage(new PostProcessingDebugStage());
 
 		KeyManager.init();
-		new SpaceExplorer2D(new AdvancedFile(false, FOLDER, RESOURCEPACKS));
+		new SpaceExplorer2D(new AdvancedFile(false, FOLDER, RESOURCEPACKS), new AdvancedFile(false, smthStupid(FOLDER.getPaths(), "mods")));
 	}
 
 }
