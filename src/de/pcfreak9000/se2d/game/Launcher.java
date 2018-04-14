@@ -1,9 +1,5 @@
 package de.pcfreak9000.se2d.game;
 
-import java.util.Random;
-
-import org.joml.Vector2f;
-
 import de.codemakers.io.file.AdvancedFile;
 import de.pcfreak9000.se2d.universe.planet.Chunk;
 import de.pcfreak9000.se2d.universe.planet.Planet;
@@ -12,11 +8,6 @@ import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.postprocessing.main.PostProcessingDebugStage;
-import omnikryptec.postprocessing.stages.BloomStage;
-import omnikryptec.postprocessing.stages.ColorSpaceStage;
-import omnikryptec.postprocessing.stages.CompleteGaussianBlurStage;
-import omnikryptec.postprocessing.stages.ContrastchangeStage;
 import omnikryptec.postprocessing.stages.Light2DProcessor;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.settings.KeySettings;

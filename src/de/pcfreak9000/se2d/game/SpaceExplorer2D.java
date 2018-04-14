@@ -2,9 +2,6 @@ package de.pcfreak9000.se2d.game;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.pcfreak9000.se2d.universe.Universe;
-import de.pcfreak9000.se2d.universe.planet.biome.BiomeRegistry;
-import de.pcfreak9000.se2d.universe.planet.biome.DefaultBiome;
-import de.pcfreak9000.se2d.universe.planet.biome.DefaultBiome2;
 import omnikryptec.event.event.Event;
 import omnikryptec.event.event.EventType;
 import omnikryptec.event.event.IEventHandler;
@@ -37,8 +34,6 @@ public class SpaceExplorer2D implements IEventHandler {
 		ResourceLoader.createInstanceDefault(true, false);
 		OmniKryptecEngine.instance().getEventsystem().addEventHandler(this, EventType.BEFORE_FRAME);
 		loadRes();
-		BiomeRegistry.registerBiomeDefinition(1, new DefaultBiome());
-		BiomeRegistry.registerBiomeDefinition(1, new DefaultBiome2());
 		currentWorld = new Universe();
 		currentWorld.loadWorld();
 		OmniKryptecEngine.instance().startLoop();
