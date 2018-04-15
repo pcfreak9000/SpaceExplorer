@@ -1,5 +1,7 @@
 package de.pcfreak9000.se2d.game;
 
+import java.io.File;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.pcfreak9000.se2d.universe.celestialbody.Chunk;
 import de.pcfreak9000.se2d.universe.celestialbody.Planet;
@@ -31,9 +33,11 @@ public class Launcher {
 	public static final AdvancedFile FOLDER = OSUtil.getAppDataFolder(NAME);
 	public static final String NATIVES_DIR_NAME = "natives";
 	public static final String RESOURCEPACKS = "resourcepacks";
+	public static final String MODS = "mods";
 	public static final double ASPECT_RATIO = 16 / 9.0;
 
 	private static final double PIXELS_PER_METER = TileDefinition.TILE_SIZE;
+	public static final String VERSION = "0.0.1";
 
 	public static void main(String[] args) {
 		new Launcher();
@@ -82,7 +86,7 @@ public class Launcher {
 //		OmniKryptecEngine.instance().getPostprocessor().addStage(new PostProcessingDebugStage());
 
 		KeyManager.init();
-		new SpaceExplorer2D(new AdvancedFile(false, FOLDER, RESOURCEPACKS), new AdvancedFile(false, smthStupid(FOLDER.getPaths(), "mods")));
+		new SpaceExplorer2D(new AdvancedFile(false, FOLDER, RESOURCEPACKS), new AdvancedFile(false, FOLDER.toString()+File.separator+MODS));
 	}
 
 }

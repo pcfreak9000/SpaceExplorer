@@ -1,6 +1,7 @@
 package de.pcfreak9000.se2d.game;
 
 import de.codemakers.io.file.AdvancedFile;
+import de.pcfreak9000.se2d.mod.ModManager;
 import de.pcfreak9000.se2d.universe.Universe;
 import omnikryptec.event.event.Event;
 import omnikryptec.event.event.EventType;
@@ -23,9 +24,12 @@ public class SpaceExplorer2D implements IEventHandler {
 	}
 
 	private AdvancedFile resourcepacks,modsfolder;
+	private ModManager manager;
 	private Universe currentWorld = null;
 
 	public SpaceExplorer2D(AdvancedFile resourcepacks, AdvancedFile modsfolder) {
+		System.out.println(resourcepacks);
+		System.out.println(modsfolder);
 		if (instance != null) {
 			throw new IllegalStateException("SpaceExplorer2D is already created!");
 		}
@@ -40,12 +44,14 @@ public class SpaceExplorer2D implements IEventHandler {
 			modsfolder.setShouldBeFile(false);
 			modsfolder.toFile().mkdirs();
 		}
+		manager = new ModManager();
+		manager.load(modsfolder);
 		ResourceLoader.createInstanceDefault(true, false);
 		OmniKryptecEngine.instance().getEventsystem().addEventHandler(this, EventType.BEFORE_FRAME);
 		loadRes();
 		currentWorld = new Universe();
-		currentWorld.loadWorld();
-		OmniKryptecEngine.instance().startLoop();
+		//currentWorld.loadWorld();
+		//OmniKryptecEngine.instance().startLoop();
 	}
 
 	private void loadRes() {
