@@ -21,14 +21,14 @@ import omnikryptec.util.logger.Logger;
 public class Launcher {
 
 	public static final boolean DEBUG = false;
-	
+
 	private static String[] smthStupid(String[] sa, String s) {
-		String[] array = new String[sa.length+1];
+		String[] array = new String[sa.length + 1];
 		System.arraycopy(sa, 0, array, 0, sa.length);
 		array[sa.length] = s;
 		return array;
 	}
-	
+
 	public static final String NAME = "SpaceExplorer2D";
 	public static final AdvancedFile FOLDER = OSUtil.getAppDataFolder(NAME);
 	public static final String NATIVES_DIR_NAME = "natives";
@@ -44,25 +44,26 @@ public class Launcher {
 	}
 
 	public Launcher() {
-//		 double all = 0;
-//		 double min = Double.POSITIVE_INFINITY;
-//		 double max = Double.NEGATIVE_INFINITY;
-//		 int am=1000;
-//		 Random random = new Random();
-//		 for (int i = 0; i < am; i++) {
-//		double d = /*random.nextDouble()*(10000000000L-10000)+10000;*/Math.pow(10, random.nextInt(6))*10000;
-//			 
-//		 //System.out.println(d);
-//		 min = Math.min(min, d);
-//		 max = Math.max(max, d);
-//		 all += d;
-//		 }
-//		 System.out.println("Avg: " + (all / am) + " Max: " + max + " Min: " + min);
-////		
-////		for(int i=0; i<20; i++) {
-////			System.out.println();
-////			System.out.println();
-////		}
+		// double all = 0;
+		// double min = Double.POSITIVE_INFINITY;
+		// double max = Double.NEGATIVE_INFINITY;
+		// int am=1000;
+		// Random random = new Random();
+		// for (int i = 0; i < am; i++) {
+		// double d = /*random.nextDouble()*(10000000000L-10000)+10000;*/Math.pow(10,
+		// random.nextInt(6))*10000;
+		//
+		// //System.out.println(d);
+		// min = Math.min(min, d);
+		// max = Math.max(max, d);
+		// all += d;
+		// }
+		// System.out.println("Avg: " + (all / am) + " Max: " + max + " Min: " + min);
+		////
+		//// for(int i=0; i<20; i++) {
+		//// System.out.println();
+		//// System.out.println();
+		//// }
 		NativesLoader.loadNatives(null, new AdvancedFile(false, FOLDER, NATIVES_DIR_NAME));
 		Logger.enableLoggerRedirection(true);
 		Logger.setDebugMode(DEBUG);
@@ -75,18 +76,23 @@ public class Launcher {
 						.setInteger(GameSettings.CHUNK_HEIGHT_2D, (int) Chunk.CHUNKSIZE)
 						.setInteger(GameSettings.CHUNK_OFFSET_2D_X, 1).setInteger(GameSettings.CHUNK_OFFSET_2D_Y, 1)
 						.setBoolean(GameSettings.DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE, true)
-						.setBoolean(GameSettings.DYN4J_PHYSICS_VAR_TS, false).setDouble(GameSettings.PIXELS_PER_METER, PIXELS_PER_METER),
+						.setBoolean(GameSettings.DYN4J_PHYSICS_VAR_TS, false).setDouble(GameSettings.PIXELS_PER_METER,
+								PIXELS_PER_METER),
 				new GLFWInfo(3, 2, true, false, 1280, 720));
 		Display.setAspectRatio(ASPECT_RATIO);
 		OmniKryptecEngine.instance().getGameSettings().setKeySettings(new KeySettings());
-//		OmniKryptecEngine.instance().getPostprocessor().addStage(new ColorSpaceStage(8, 8, 8));
+		// OmniKryptecEngine.instance().getPostprocessor().addStage(new
+		// ColorSpaceStage(8, 8, 8));
 
 		OmniKryptecEngine.instance().getPostprocessor().addStage(new Light2DProcessor(Planet.RENDERER));
-//		OmniKryptecEngine.instance().getPostprocessor().addStage(new BloomStage(new CompleteGaussianBlurStage(true, 100, 100), new Vector2f(1)));
-//		OmniKryptecEngine.instance().getPostprocessor().addStage(new PostProcessingDebugStage());
+		// OmniKryptecEngine.instance().getPostprocessor().addStage(new BloomStage(new
+		// CompleteGaussianBlurStage(true, 100, 100), new Vector2f(1)));
+		// OmniKryptecEngine.instance().getPostprocessor().addStage(new
+		// PostProcessingDebugStage());
 
 		KeyManager.init();
-		new SpaceExplorer2D(new AdvancedFile(false, FOLDER, RESOURCEPACKS), new AdvancedFile(false, FOLDER.toString()+File.separator+MODS));
+		new SpaceExplorer2D(new AdvancedFile(false, FOLDER, RESOURCEPACKS),
+				new AdvancedFile(false, FOLDER.toString() + File.separator + MODS));
 	}
 
 }

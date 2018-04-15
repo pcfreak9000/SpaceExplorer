@@ -7,22 +7,22 @@ import java.util.regex.Pattern;
 
 public class ModDiscoverer {
 
-	private static Pattern zipJar = Pattern.compile("(.+).(zip|jar)$");	
-	
+	private static Pattern zipJar = Pattern.compile("(.+).(zip|jar)$");
+
 	ModDiscoverer discover(List<File> candidates, File dir) {
 		__discover(candidates, dir);
 		return this;
 	}
-	
+
 	private void __discover(List<File> files, File f) {
-		if(f.isDirectory()) {
+		if (f.isDirectory()) {
 			File[] innerFiles = f.listFiles();
-			for(File inner : innerFiles) {
+			for (File inner : innerFiles) {
 				__discover(files, inner);
 			}
-		}else {
+		} else {
 			Matcher matcher = zipJar.matcher(f.getName());
-			if(matcher.matches()) {
+			if (matcher.matches()) {
 				files.add(f);
 			}
 		}

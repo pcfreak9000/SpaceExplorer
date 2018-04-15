@@ -23,7 +23,7 @@ public class SpaceExplorer2D implements IEventHandler {
 		return instance;
 	}
 
-	private AdvancedFile resourcepacks,modsfolder;
+	private AdvancedFile resourcepacks, modsfolder;
 	private ModManager manager;
 	private Universe currentWorld = null;
 
@@ -33,12 +33,12 @@ public class SpaceExplorer2D implements IEventHandler {
 		}
 		instance = this;
 		this.resourcepacks = resourcepacks;
-		if(!resourcepacks.toFile().exists()) {
+		if (!resourcepacks.toFile().exists()) {
 			resourcepacks.setShouldBeFile(false);
 			resourcepacks.toFile().mkdirs();
 		}
 		this.modsfolder = modsfolder;
-		if(!modsfolder.toFile().exists()) {
+		if (!modsfolder.toFile().exists()) {
 			modsfolder.setShouldBeFile(false);
 			modsfolder.toFile().mkdirs();
 		}
@@ -48,8 +48,8 @@ public class SpaceExplorer2D implements IEventHandler {
 		OmniKryptecEngine.instance().getEventsystem().addEventHandler(this, EventType.BEFORE_FRAME);
 		loadRes();
 		currentWorld = new Universe();
-		//currentWorld.loadWorld();
-		//OmniKryptecEngine.instance().startLoop();
+		// currentWorld.loadWorld();
+		// OmniKryptecEngine.instance().startLoop();
 	}
 
 	private void loadRes() {

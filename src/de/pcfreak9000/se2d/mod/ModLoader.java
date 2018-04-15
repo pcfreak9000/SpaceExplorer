@@ -11,18 +11,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.regex.Pattern;
 
-import de.codemakers.io.file.AdvancedFile;
 import de.pcfreak9000.se2d.game.Launcher;
-import de.pcfreak9000.se2d.game.SpaceExplorer2D;
 import de.pcfreak9000.se2d.util.Se2Dlog;
-import omnikryptec.resource.loader.Loader;
-import omnikryptec.resource.loader.LoadingType;
-import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.util.logger.LogLevel;
 
 public class ModLoader {
@@ -52,26 +45,26 @@ public class ModLoader {
 	private List<Class<?>> modClasses = new ArrayList<>();
 
 	void preInit() {
-		
+
 	}
-	
+
 	void init() {
-		
+
 	}
-	
+
 	void postInit() {
-			
+
 	}
 
 	private boolean contains(Object o, Object[] os) {
-		for(Object po : os) {
-			if(po.equals(o)) {
+		for (Object po : os) {
+			if (po.equals(o)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	List<ModContainer> instantiate() {
 		Se2Dlog.log("Instantiating mods...");
 		List<ModContainer> containers = new ArrayList<>();
@@ -96,10 +89,12 @@ public class ModLoader {
 						+ Arrays.toString(container.getMod().version()) + ")");
 				continue;
 			} else {
+				Se2Dlog.log("Found mod: "+container);
 				containers.add(container);
 			}
-			if(!contains(Launcher.VERSION, container.getMod().se2dversion())) {
-				Se2Dlog.log(LogLevel.WARNING, "The mod "+container+" may not be compatible with this Se2D-Version!");
+			if (!contains(Launcher.VERSION, container.getMod().se2dversion())) {
+				Se2Dlog.log(LogLevel.WARNING,
+						"The mod " + container + " may not be compatible with this Se2D-Version!");
 			}
 		}
 		for (ModContainer container : containers) {
@@ -122,9 +117,12 @@ public class ModLoader {
 								continue;
 							}
 							if (wantedContainer.getMod().id().equals(wanted.id())) {
-								if(wanted.requiredVersion().length>0) {
-									if(!Arrays.equals(wantedContainer.getMod().version(), wanted.requiredVersion())) {
-										Se2Dlog.log(LogLevel.WARNING, "The mod "+container+" requires the version "+Arrays.toString(wanted.requiredVersion())+" from the mod "+wantedContainer);
+								if (wanted.requiredVersion().length > 0) {
+									if (!Arrays.equals(wantedContainer.getMod().version(), wanted.requiredVersion())) {
+										Se2Dlog.log(LogLevel.WARNING,
+												"The mod " + container + " requires the version "
+														+ Arrays.toString(wanted.requiredVersion()) + " from the mod "
+														+ wantedContainer);
 										break;
 									}
 								}
@@ -137,7 +135,7 @@ public class ModLoader {
 										Se2Dlog.logErr("Illegal access @ " + container, e);
 									}
 								} else {
-									Se2Dlog.log(wantedContainer+" is not accessible!");
+									Se2Dlog.log(wantedContainer + " is not accessible for the mod " + container + "!");
 								}
 								break;
 							}
@@ -148,14 +146,13 @@ public class ModLoader {
 		}
 		return containers;
 	}
-	
 
 	void classLoadMods(File moddir) {
 		List<File> candidates = new ArrayList<>();
 		new ModDiscoverer().discover(candidates, moddir);
 		load(candidates.toArray(new File[0]));
 	}
-	
+
 	@SuppressWarnings("resource")
 	private void load(File[] candidates) {
 		URL[] urlarray = new URL[candidates.length];
@@ -185,9 +182,9 @@ public class ModLoader {
 						continue;
 					}
 					if (clazz.isAnnotationPresent(Mod.class)) {
-						Mod mod = clazz.getAnnotation(Mod.class);
-						Se2Dlog.log(LogLevel.FINE, "The mod with ID " + mod.id() + ", namely " + mod.name()
-								+ ", in version " + Arrays.toString(mod.version()) + " has been discovered!");
+//						Mod mod = clazz.getAnnotation(Mod.class);
+//						Se2Dlog.log(LogLevel.FINE, "The mod with ID " + mod.id() + ", namely " + mod.name()
+//								+ ", in version " + Arrays.toString(mod.version()) + " has been discovered!");
 						modClasses.add(clazz);
 					}
 				}

@@ -28,13 +28,12 @@ public class Chunk extends Sprite {
 	private ArrayList<Sprite> others = new ArrayList<>();
 
 	private double validratio;
-	
+
 	public Chunk(int x, int y) {
 		getTransform().setPosition(x * CHUNKSIZE, y * CHUNKSIZE);
 		this.x = x;
 		this.y = y;
 	}
-
 
 	public Chunk generate(Random random, Planet planet) {
 		float maxr = planet.getPlanetData().getMaxRadius() * TileDefinition.TILE_SIZE;
