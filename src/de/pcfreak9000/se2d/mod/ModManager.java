@@ -20,4 +20,8 @@ public class ModManager {
 		mods = loader.instantiate();
 	}
 	
+	public List<ModContainer> getMods(){
+		return mods;
+	}
+	
 }

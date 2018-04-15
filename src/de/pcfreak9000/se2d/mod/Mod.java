@@ -16,6 +16,6 @@ public @interface Mod{
 	String name();
 	long[] version();
 	
-	String se2dversion() default Launcher.VERSION;
+	String[] se2dversion() default {Launcher.VERSION};
 	boolean accessible() default true;
 }

@@ -28,8 +28,6 @@ public class SpaceExplorer2D implements IEventHandler {
 	private Universe currentWorld = null;
 
 	public SpaceExplorer2D(AdvancedFile resourcepacks, AdvancedFile modsfolder) {
-		System.out.println(resourcepacks);
-		System.out.println(modsfolder);
 		if (instance != null) {
 			throw new IllegalStateException("SpaceExplorer2D is already created!");
 		}

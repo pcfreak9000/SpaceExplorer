@@ -17,6 +17,8 @@ import java.util.jar.JarFile;
 import java.util.regex.Pattern;
 
 import de.codemakers.io.file.AdvancedFile;
+import de.pcfreak9000.se2d.game.Launcher;
+import de.pcfreak9000.se2d.game.SpaceExplorer2D;
 import de.pcfreak9000.se2d.util.Se2Dlog;
 import omnikryptec.resource.loader.Loader;
 import omnikryptec.resource.loader.LoadingType;
@@ -49,26 +51,42 @@ public class ModLoader {
 
 	private List<Class<?>> modClasses = new ArrayList<>();
 
-	void classLoadMods(File moddir) {
-		List<File> candidates = new ArrayList<>();
-		new ModDiscoverer().discover(candidates, moddir);
-		load(candidates.toArray(new File[0]));
+	void preInit() {
+		
+	}
+	
+	void init() {
+		
+	}
+	
+	void postInit() {
+			
 	}
 
+	private boolean contains(Object o, Object[] os) {
+		for(Object po : os) {
+			if(po.equals(o)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	List<ModContainer> instantiate() {
 		Se2Dlog.log("Instantiating mods...");
 		List<ModContainer> containers = new ArrayList<>();
 		for (Class<?> cl : modClasses) {
 			Object instance = null;
 			try {
+				cl.getConstructor().setAccessible(true);
 				instance = cl.newInstance();
-			} catch (InstantiationException e) {
+			} catch (InstantiationException | NoSuchMethodException e) {
 				Se2Dlog.logErr(
 						"Mod could not be instantiated. Make sure you supply a nullary-constructor and your Mod class is non-abstract etc: "
 								+ cl.getAnnotation(Mod.class).id(),
 						e);
 				continue;
-			} catch (IllegalAccessException e) {
+			} catch (IllegalAccessException | SecurityException e) {
 				Se2Dlog.logErr("Illegal Access: " + cl.getAnnotation(Mod.class).id(), e);
 				continue;
 			}
@@ -79,6 +97,9 @@ public class ModLoader {
 				continue;
 			} else {
 				containers.add(container);
+			}
+			if(!contains(Launcher.VERSION, container.getMod().se2dversion())) {
+				Se2Dlog.log(LogLevel.WARNING, "The mod "+container+" may not be compatible with this Se2D-Version!");
 			}
 		}
 		for (ModContainer container : containers) {
@@ -101,6 +122,12 @@ public class ModLoader {
 								continue;
 							}
 							if (wantedContainer.getMod().id().equals(wanted.id())) {
+								if(wanted.requiredVersion().length>0) {
+									if(!Arrays.equals(wantedContainer.getMod().version(), wanted.requiredVersion())) {
+										Se2Dlog.log(LogLevel.WARNING, "The mod "+container+" requires the version "+Arrays.toString(wanted.requiredVersion())+" from the mod "+wantedContainer);
+										break;
+									}
+								}
 								if (wantedContainer.getMod().accessible()) {
 									try {
 										f.set(container.getInstance(), wantedContainer.getInstance());
@@ -112,6 +139,7 @@ public class ModLoader {
 								} else {
 									Se2Dlog.log(wantedContainer+" is not accessible!");
 								}
+								break;
 							}
 						}
 					}
@@ -120,7 +148,14 @@ public class ModLoader {
 		}
 		return containers;
 	}
+	
 
+	void classLoadMods(File moddir) {
+		List<File> candidates = new ArrayList<>();
+		new ModDiscoverer().discover(candidates, moddir);
+		load(candidates.toArray(new File[0]));
+	}
+	
 	@SuppressWarnings("resource")
 	private void load(File[] candidates) {
 		URL[] urlarray = new URL[candidates.length];
@@ -151,8 +186,8 @@ public class ModLoader {
 					}
 					if (clazz.isAnnotationPresent(Mod.class)) {
 						Mod mod = clazz.getAnnotation(Mod.class);
-						Se2Dlog.log(LogLevel.FINE, "The mod with ID \"" + mod.id() + "\", namely \"" + mod.name()
-								+ "\", in version \"" + Arrays.toString(mod.version()) + "\" has been discovered!");
+						Se2Dlog.log(LogLevel.FINE, "The mod with ID " + mod.id() + ", namely " + mod.name()
+								+ ", in version " + Arrays.toString(mod.version()) + " has been discovered!");
 						modClasses.add(clazz);
 					}
 				}
