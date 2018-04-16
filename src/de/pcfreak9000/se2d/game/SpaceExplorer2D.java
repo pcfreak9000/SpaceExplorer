@@ -1,6 +1,9 @@
 package de.pcfreak9000.se2d.game;
 
+import java.util.Iterator;
+
 import de.codemakers.io.file.AdvancedFile;
+import de.pcfreak9000.se2d.mod.EventTest;
 import de.pcfreak9000.se2d.mod.ModManager;
 import de.pcfreak9000.se2d.universe.Universe;
 import omnikryptec.event.event.Event;
@@ -47,6 +50,7 @@ public class SpaceExplorer2D implements IEventHandler {
 		ResourceLoader.createInstanceDefault(true, false);
 		OmniKryptecEngine.instance().getEventsystem().addEventHandler(this, EventType.BEFORE_FRAME);
 		loadRes();
+		new EventTest().call();
 		currentWorld = new Universe();
 		// currentWorld.loadWorld();
 		// OmniKryptecEngine.instance().startLoop();

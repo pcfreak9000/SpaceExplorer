@@ -16,6 +16,7 @@ import java.util.jar.JarFile;
 
 import de.pcfreak9000.se2d.game.Launcher;
 import de.pcfreak9000.se2d.util.Se2Dlog;
+import omnikryptec.event.eventV2.EventSystem;
 import omnikryptec.util.logger.LogLevel;
 
 public class ModLoader {
@@ -191,6 +192,7 @@ public class ModLoader {
 			}
 		}
 		modClasses.sort(comp);
+		EventSystem.findEventAnnotations(classloader, null);
 	}
 
 }
