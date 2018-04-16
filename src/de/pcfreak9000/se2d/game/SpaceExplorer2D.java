@@ -50,7 +50,6 @@ public class SpaceExplorer2D implements IEventHandler {
 		ResourceLoader.createInstanceDefault(true, false);
 		OmniKryptecEngine.instance().getEventsystem().addEventHandler(this, EventType.BEFORE_FRAME);
 		loadRes();
-		new EventTest().call();
 		currentWorld = new Universe();
 		// currentWorld.loadWorld();
 		// OmniKryptecEngine.instance().startLoop();
