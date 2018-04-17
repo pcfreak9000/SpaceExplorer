@@ -76,7 +76,7 @@ public class ModLoader {
 				instance = cl.newInstance();
 			} catch (InstantiationException | NoSuchMethodException e) {
 				Se2Dlog.logErr(
-						"Mod could not be instantiated. Make sure you supply a nullary-constructor and your Mod class is non-abstract etc: "
+						"Mod could not be instantiated. Make sure you supply a nullary-constructor and your mod class is non-abstract etc: "
 								+ cl.getAnnotation(Mod.class).id(),
 						e);
 				continue;
@@ -192,6 +192,7 @@ public class ModLoader {
 			}
 		}
 		modClasses.sort(comp);
+		Se2Dlog.log("Finding and adding event-handling methods...");
 		EventSystem.findEventAnnotations(classloader, null);
 	}
 

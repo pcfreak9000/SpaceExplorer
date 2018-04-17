@@ -30,8 +30,8 @@ public class Universe {
 	public void loadWorld() {
 		planetCamera = new Camera()
 				.setOrthographicProjection2D(SpaceExplorer2D.getSpaceExplorer2D().getProjectionData());
-		currentPlayer = new Player();
-		setPlanetAndPlayer(new Planet(new Random().nextInt()), currentPlayer);
+		//currentPlayer = new Player();
+		//setPlanetAndPlayer(new Planet(new Random().nextInt()), currentPlayer);
 	}
 
 	public Camera getPlanetCamera() {

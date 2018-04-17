@@ -51,8 +51,8 @@ public class SpaceExplorer2D implements IEventHandler {
 		OmniKryptecEngine.instance().getEventsystem().addEventHandler(this, EventType.BEFORE_FRAME);
 		loadRes();
 		currentWorld = new Universe();
-		// currentWorld.loadWorld();
-		// OmniKryptecEngine.instance().startLoop();
+		currentWorld.loadWorld();
+		OmniKryptecEngine.instance().startLoop();
 	}
 
 	private void loadRes() {
@@ -74,6 +74,7 @@ public class SpaceExplorer2D implements IEventHandler {
 	@Override
 	public void onEvent(Event ev) {
 		if (ev.getType() == EventType.BEFORE_FRAME && currentWorld != null) {
+			System.out.println("updating");
 			currentWorld.update();
 		}
 	}

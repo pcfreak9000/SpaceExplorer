@@ -88,7 +88,7 @@ public class Launcher {
 		// OmniKryptecEngine.instance().getPostprocessor().addStage(new
 		// ColorSpaceStage(8, 8, 8));
 
-		OmniKryptecEngine.instance().getPostprocessor().addStage(new Light2DProcessor(Planet.RENDERER));
+		//OmniKryptecEngine.instance().getPostprocessor().addStage(new Light2DProcessor(Planet.RENDERER));
 		// OmniKryptecEngine.instance().getPostprocessor().addStage(new BloomStage(new
 		// CompleteGaussianBlurStage(true, 100, 100), new Vector2f(1)));
 		// OmniKryptecEngine.instance().getPostprocessor().addStage(new
