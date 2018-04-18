@@ -1,7 +1,5 @@
 package de.pcfreak9000.se2d.universe;
 
-import java.util.Random;
-
 import org.joml.Vector2f;
 
 import de.pcfreak9000.se2d.game.Player;

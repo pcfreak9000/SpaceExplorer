@@ -66,9 +66,8 @@ public class ModLoader {
 		return false;
 	}
 
-	List<ModContainer> instantiate() {
+	void instantiate(List<ModContainer> containers) {
 		Se2Dlog.log("Instantiating mods...");
-		List<ModContainer> containers = new ArrayList<>();
 		for (Class<?> cl : modClasses) {
 			Object instance = null;
 			try {
@@ -98,6 +97,17 @@ public class ModLoader {
 						"The mod " + container + " may not be compatible with this Se2D-Version!");
 			}
 		}
+	}
+
+	void registerEvents(List<ModContainer> containers) {
+		Se2Dlog.log("Registering container event handlers...");
+		for(ModContainer container : containers) {
+			EventSystem.registerEventHandler(container.getInstance());
+		}
+	}
+	
+	void dispatchInstances(List<ModContainer> containers) {
+		Se2Dlog.log("Dispatching instances...");
 		for (ModContainer container : containers) {
 			Field[] fields = container.getModClass().getDeclaredFields();
 			for (Field f : fields) {
@@ -145,9 +155,8 @@ public class ModLoader {
 				}
 			}
 		}
-		return containers;
 	}
-
+	
 	void classLoadMods(File moddir) {
 		List<File> candidates = new ArrayList<>();
 		new ModDiscoverer().discover(candidates, moddir);
@@ -183,17 +192,13 @@ public class ModLoader {
 						continue;
 					}
 					if (clazz.isAnnotationPresent(Mod.class)) {
-//						Mod mod = clazz.getAnnotation(Mod.class);
-//						Se2Dlog.log(LogLevel.FINE, "The mod with ID " + mod.id() + ", namely " + mod.name()
-//								+ ", in version " + Arrays.toString(mod.version()) + " has been discovered!");
 						modClasses.add(clazz);
 					}
 				}
 			}
 		}
+		EventSystem.findStaticEventAnnotations(classloader, null);
 		modClasses.sort(comp);
-		Se2Dlog.log("Finding and adding event-handling methods...");
-		EventSystem.findEventAnnotations(classloader, null);
 	}
 
 }

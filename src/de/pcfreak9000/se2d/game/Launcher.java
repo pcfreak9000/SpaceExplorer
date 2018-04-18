@@ -1,19 +1,14 @@
 package de.pcfreak9000.se2d.game;
 
 import java.io.File;
-import java.lang.reflect.Field;
-import java.util.Iterator;
-import java.util.Vector;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.pcfreak9000.se2d.universe.celestialbody.Chunk;
-import de.pcfreak9000.se2d.universe.celestialbody.Planet;
 import de.pcfreak9000.se2d.universe.celestialbody.TileDefinition;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.postprocessing.stages.Light2DProcessor;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.settings.KeySettings;
 import omnikryptec.util.NativesLoader;
@@ -24,13 +19,6 @@ import omnikryptec.util.logger.Logger;
 public class Launcher {
 
 	public static final boolean DEBUG = false;
-
-	private static String[] smthStupid(String[] sa, String s) {
-		String[] array = new String[sa.length + 1];
-		System.arraycopy(sa, 0, array, 0, sa.length);
-		array[sa.length] = s;
-		return array;
-	}
 
 	public static final String NAME = "SpaceExplorer2D";
 	public static final AdvancedFile FOLDER = OSUtil.getAppDataFolder(NAME);

@@ -1,19 +1,18 @@
 package de.pcfreak9000.se2d.game;
 
-import java.util.Iterator;
-
 import de.codemakers.io.file.AdvancedFile;
 import de.pcfreak9000.se2d.mod.EventTest;
 import de.pcfreak9000.se2d.mod.ModManager;
 import de.pcfreak9000.se2d.universe.Universe;
-import omnikryptec.event.event.Event;
-import omnikryptec.event.event.EventType;
-import omnikryptec.event.event.IEventHandler;
+import omnikryptec.event.eventV2.EventSubscription;
+import omnikryptec.event.eventV2.EventSystem;
+import omnikryptec.event.eventV2.engineevents.FrameEvent;
+import omnikryptec.event.eventV2.engineevents.FrameEvent.FrameType;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.resource.texture.Texture;
 
-public class SpaceExplorer2D implements IEventHandler {
+public class SpaceExplorer2D  {
 
 	private static final AdvancedFile RESOURCELOCATION = new AdvancedFile(true, "", "de", "pcfreak9000", "se2d", "res");
 	private static final float[] PLANETPROJ = { -1920 / 2, -1080 / 2, 1920, 1080 };
@@ -48,10 +47,11 @@ public class SpaceExplorer2D implements IEventHandler {
 		manager = new ModManager();
 		manager.load(modsfolder);
 		ResourceLoader.createInstanceDefault(true, false);
-		OmniKryptecEngine.instance().getEventsystem().addEventHandler(this, EventType.BEFORE_FRAME);
 		loadRes();
 		currentWorld = new Universe();
 		currentWorld.loadWorld();
+		EventSystem.registerEventHandler(this);
+		new EventTest().call();
 		OmniKryptecEngine.instance().startLoop();
 	}
 
@@ -71,10 +71,9 @@ public class SpaceExplorer2D implements IEventHandler {
 		return currentWorld;
 	}
 
-	@Override
-	public void onEvent(Event ev) {
-		if (ev.getType() == EventType.BEFORE_FRAME && currentWorld != null) {
-			System.out.println("updating");
+	@EventSubscription
+	public void onEvent(FrameEvent ev) {
+		if (ev.getType() == FrameType.PRE && currentWorld != null) {
 			currentWorld.update();
 		}
 	}
