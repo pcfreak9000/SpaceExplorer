@@ -5,12 +5,13 @@ import de.pcfreak9000.se2d.mod.EventTest;
 import de.pcfreak9000.se2d.mod.ModManager;
 import de.pcfreak9000.se2d.universe.Universe;
 import omnikryptec.event.eventV2.EventSubscription;
-import omnikryptec.event.eventV2.EventSystem;
+import omnikryptec.event.eventV2.EventBus;
 import omnikryptec.event.eventV2.engineevents.FrameEvent;
 import omnikryptec.event.eventV2.engineevents.FrameEvent.FrameType;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.resource.texture.Texture;
+import omnikryptec.util.Instance;
 
 public class SpaceExplorer2D  {
 
@@ -27,12 +28,14 @@ public class SpaceExplorer2D  {
 
 	private AdvancedFile resourcepacks, modsfolder;
 	private ModManager manager;
+	private final EventBus se2d_events;
 	private Universe currentWorld = null;
 
 	public SpaceExplorer2D(AdvancedFile resourcepacks, AdvancedFile modsfolder) {
 		if (instance != null) {
 			throw new IllegalStateException("SpaceExplorer2D is already created!");
 		}
+		se2d_events = new EventBus(2, 2);
 		instance = this;
 		this.resourcepacks = resourcepacks;
 		if (!resourcepacks.toFile().exists()) {
@@ -50,11 +53,15 @@ public class SpaceExplorer2D  {
 		loadRes();
 		currentWorld = new Universe();
 		currentWorld.loadWorld();
-		EventSystem.registerEventHandler(this);
+		Instance.engineBus().registerEventHandler(this);
 		new EventTest().call();
 		OmniKryptecEngine.instance().startLoop();
 	}
-
+	
+	public EventBus getEventBus() {
+		return se2d_events;
+	}
+	
 	private void loadRes() {
 		ResourceLoader.currentInstance().clearStagedAdvancedFiles();
 		ResourceLoader.currentInstance().stageAdvancedFiles(0, 0, resourcepacks);

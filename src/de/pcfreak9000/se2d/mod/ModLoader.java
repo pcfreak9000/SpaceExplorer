@@ -15,8 +15,9 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import de.pcfreak9000.se2d.game.Launcher;
+import de.pcfreak9000.se2d.game.SpaceExplorer2D;
 import de.pcfreak9000.se2d.util.Se2Dlog;
-import omnikryptec.event.eventV2.EventSystem;
+import omnikryptec.event.eventV2.EventBus;
 import omnikryptec.util.logger.LogLevel;
 
 public class ModLoader {
@@ -102,7 +103,7 @@ public class ModLoader {
 	void registerEvents(List<ModContainer> containers) {
 		Se2Dlog.log("Registering container event handlers...");
 		for(ModContainer container : containers) {
-			EventSystem.registerEventHandler(container.getInstance());
+			SpaceExplorer2D.getSpaceExplorer2D().getEventBus().registerEventHandler(container.getInstance());
 		}
 	}
 	
@@ -197,7 +198,7 @@ public class ModLoader {
 				}
 			}
 		}
-		EventSystem.findStaticEventAnnotations(classloader, null);
+		SpaceExplorer2D.getSpaceExplorer2D().getEventBus().findStaticEventAnnotations(classloader, null);
 		modClasses.sort(comp);
 	}
 
