@@ -20,8 +20,13 @@ public class ModManager {
 		loader.instantiate(mods);
 		loader.dispatchInstances(mods);
 		loader.registerEvents(mods);
+		loader.preInit();
+		loader.init();
+		loader.postInit();
 	}
 
+	
+	
 	public List<ModContainer> getMods() {
 		return mods;
 	}

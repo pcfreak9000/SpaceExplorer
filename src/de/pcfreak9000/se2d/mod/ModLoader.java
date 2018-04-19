@@ -16,9 +16,13 @@ import java.util.jar.JarFile;
 
 import de.pcfreak9000.se2d.game.Launcher;
 import de.pcfreak9000.se2d.game.SpaceExplorer2D;
+import de.pcfreak9000.se2d.mod.event.Se2DModInitEvent;
+import de.pcfreak9000.se2d.mod.event.Se2DModPostInitEvent;
+import de.pcfreak9000.se2d.mod.event.Se2DModPreInitEvent;
 import de.pcfreak9000.se2d.util.Se2Dlog;
 import omnikryptec.event.eventV2.EventBus;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 public class ModLoader {
 
@@ -47,15 +51,18 @@ public class ModLoader {
 	private List<Class<?>> modClasses = new ArrayList<>();
 
 	void preInit() {
-
+		Logger.log("Pre-Init Event...");
+		new Se2DModPreInitEvent().call();
 	}
 
 	void init() {
-
+		Logger.log("Init Event...");
+		new Se2DModInitEvent().call();
 	}
 
 	void postInit() {
-
+		Logger.log("Post-Init Event...");
+		new Se2DModPostInitEvent().call();
 	}
 
 	private boolean contains(Object o, Object[] os) {
@@ -68,7 +75,7 @@ public class ModLoader {
 	}
 
 	void instantiate(List<ModContainer> containers) {
-		Se2Dlog.log("Instantiating mods...");
+		Logger.log("Instantiating mods...");
 		for (Class<?> cl : modClasses) {
 			Object instance = null;
 			try {
@@ -90,7 +97,7 @@ public class ModLoader {
 						+ Arrays.toString(container.getMod().version()) + ")");
 				continue;
 			} else {
-				Se2Dlog.log("Found mod: "+container);
+				Logger.log("Found mod: "+container);
 				containers.add(container);
 			}
 			if (!contains(Launcher.VERSION, container.getMod().se2dversion())) {
@@ -101,14 +108,14 @@ public class ModLoader {
 	}
 
 	void registerEvents(List<ModContainer> containers) {
-		Se2Dlog.log("Registering container event handlers...");
+		Logger.log("Registering container event handlers...");
 		for(ModContainer container : containers) {
 			SpaceExplorer2D.getSpaceExplorer2D().getEventBus().registerEventHandler(container.getInstance());
 		}
 	}
 	
 	void dispatchInstances(List<ModContainer> containers) {
-		Se2Dlog.log("Dispatching instances...");
+		Logger.log("Dispatching instances...");
 		for (ModContainer container : containers) {
 			Field[] fields = container.getModClass().getDeclaredFields();
 			for (Field f : fields) {
@@ -147,7 +154,7 @@ public class ModLoader {
 										Se2Dlog.logErr("Illegal access @ " + container, e);
 									}
 								} else {
-									Se2Dlog.log(wantedContainer + " is not accessible for the mod " + container + "!");
+									Logger.log(wantedContainer + " is not accessible for the mod " + container + "!");
 								}
 								break;
 							}
@@ -161,7 +168,7 @@ public class ModLoader {
 	void classLoadMods(File moddir) {
 		List<File> candidates = new ArrayList<>();
 		new ModDiscoverer().discover(candidates, moddir);
-		load(candidates.toArray(new File[0]));
+		load(candidates.toArray(new File[candidates.size()]));
 	}
 
 	@SuppressWarnings("resource")
@@ -198,7 +205,8 @@ public class ModLoader {
 				}
 			}
 		}
-		SpaceExplorer2D.getSpaceExplorer2D().getEventBus().findStaticEventAnnotations(classloader, null);
+		//Naja ist doof...
+		//SpaceExplorer2D.getSpaceExplorer2D().getEventBus().findStaticEventAnnotations(classloader, null);
 		modClasses.sort(comp);
 	}
 

@@ -20,8 +20,10 @@ public class SpaceExplorer2D  {
 	// private static final float[] PLANETPROJ = { -19200 / 2, -10800 / 2, 19200,
 	// 10800 };
 
+	public static final String EVENTBUSNAME = "SpaceExplorer2D_EVENT_BUS-2718";
+	
 	private static SpaceExplorer2D instance;
-
+	
 	public static SpaceExplorer2D getSpaceExplorer2D() {
 		return instance;
 	}
@@ -31,30 +33,29 @@ public class SpaceExplorer2D  {
 	private final EventBus se2d_events;
 	private Universe currentWorld = null;
 
-	public SpaceExplorer2D(AdvancedFile resourcepacks, AdvancedFile modsfolder) {
+	public SpaceExplorer2D(AdvancedFile resourcepacksp, AdvancedFile modsfolderp) {
 		if (instance != null) {
 			throw new IllegalStateException("SpaceExplorer2D is already created!");
 		}
-		se2d_events = new EventBus(2, 2);
+		se2d_events = new EventBus(EVENTBUSNAME, 2, 2);
 		instance = this;
-		this.resourcepacks = resourcepacks;
+		this.resourcepacks = resourcepacksp;
 		if (!resourcepacks.toFile().exists()) {
 			resourcepacks.setShouldBeFile(false);
 			resourcepacks.toFile().mkdirs();
 		}
-		this.modsfolder = modsfolder;
+		this.modsfolder = modsfolderp;
 		if (!modsfolder.toFile().exists()) {
 			modsfolder.setShouldBeFile(false);
 			modsfolder.toFile().mkdirs();
 		}
+		ResourceLoader.createInstanceDefault(true, false);
 		manager = new ModManager();
 		manager.load(modsfolder);
-		ResourceLoader.createInstanceDefault(true, false);
 		loadRes();
 		currentWorld = new Universe();
 		currentWorld.loadWorld();
 		Instance.engineBus().registerEventHandler(this);
-		new EventTest().call();
 		OmniKryptecEngine.instance().startLoop();
 	}
 	
@@ -79,7 +80,7 @@ public class SpaceExplorer2D  {
 	}
 
 	@EventSubscription
-	public void onEvent(FrameEvent ev) {
+	public void roflXD(FrameEvent ev) {
 		if (ev.getType() == FrameType.PRE && currentWorld != null) {
 			currentWorld.update();
 		}

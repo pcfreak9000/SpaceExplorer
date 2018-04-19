@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public class ModDiscoverer {
 
 	private static Pattern zipJar = Pattern.compile("(.+).(zip|jar)$");
-
+	
 	ModDiscoverer discover(List<File> candidates, File dir) {
 		__discover(candidates, dir);
 		return this;
