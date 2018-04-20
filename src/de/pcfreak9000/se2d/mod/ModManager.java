@@ -15,8 +15,8 @@ public class ModManager {
 	}
 
 	public void load(AdvancedFile modsfolder) {
-		loader.classLoadMods(modsfolder.toFile());
 		mods = new ArrayList<>();
+		loader.classLoadMods(modsfolder.toFile());
 		loader.instantiate(mods);
 		loader.dispatchInstances(mods);
 		loader.registerEvents(mods);
@@ -25,7 +25,10 @@ public class ModManager {
 		loader.postInit();
 	}
 
-	
+	public void stageRessourceLoading() {
+		loader.stageRes();
+	}
+
 	
 	public List<ModContainer> getMods() {
 		return mods;

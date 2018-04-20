@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import de.codemakers.io.file.AdvancedFile;
 import de.pcfreak9000.se2d.game.Launcher;
 import de.pcfreak9000.se2d.game.SpaceExplorer2D;
 import de.pcfreak9000.se2d.mod.event.Se2DModInitEvent;
@@ -21,17 +22,28 @@ import de.pcfreak9000.se2d.mod.event.Se2DModPostInitEvent;
 import de.pcfreak9000.se2d.mod.event.Se2DModPreInitEvent;
 import de.pcfreak9000.se2d.util.Se2Dlog;
 import omnikryptec.event.eventV2.EventBus;
+import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
 public class ModLoader {
 
-	private static Comparator<Class<?>> comp = new Comparator<Class<?>>() {
+	private static class TmpHolder {
+		private File file;
+		private Class<?> modclass;
+
+		private TmpHolder(Class<?> clazz, File file) {
+			this.file = file;
+			this.modclass = clazz;
+		}
+	}
+
+	private static Comparator<TmpHolder> comp = new Comparator<TmpHolder>() {
 
 		@Override
-		public int compare(Class<?> o1, Class<?> o2) {
-			Mod m1 = o1.getAnnotation(Mod.class);
-			Mod m2 = o2.getAnnotation(Mod.class);
+		public int compare(TmpHolder o1, TmpHolder o2) {
+			Mod m1 = o1.modclass.getAnnotation(Mod.class);
+			Mod m2 = o2.modclass.getAnnotation(Mod.class);
 			int vt = m1.id().compareToIgnoreCase(m2.id());
 			if (vt != 0) {
 				return vt;
@@ -48,7 +60,7 @@ public class ModLoader {
 		}
 	};
 
-	private List<Class<?>> modClasses = new ArrayList<>();
+	private List<TmpHolder> modClasses = new ArrayList<>();
 
 	void preInit() {
 		Logger.log("Pre-Init Event...");
@@ -76,14 +88,15 @@ public class ModLoader {
 
 	void instantiate(List<ModContainer> containers) {
 		Logger.log("Instantiating mods...");
-		for (Class<?> cl : modClasses) {
+		for (TmpHolder th : modClasses) {
+			Class<?> cl = th.modclass;
 			Object instance = null;
 			try {
 				cl.getConstructor().setAccessible(true);
 				instance = cl.newInstance();
 			} catch (InstantiationException | NoSuchMethodException e) {
 				Se2Dlog.logErr(
-						"Mod could not be instantiated. Make sure you supply a nullary-constructor and your mod class is non-abstract etc: "
+						"Mod could not be instantiated. Make sure a nullary-constructor is available and your mod class is non-abstract etc: "
 								+ cl.getAnnotation(Mod.class).id(),
 						e);
 				continue;
@@ -97,7 +110,7 @@ public class ModLoader {
 						+ Arrays.toString(container.getMod().version()) + ")");
 				continue;
 			} else {
-				Logger.log("Found mod: "+container);
+				Logger.log("Instantiating mod: " + container);
 				containers.add(container);
 			}
 			if (!contains(Launcher.VERSION, container.getMod().se2dversion())) {
@@ -107,13 +120,19 @@ public class ModLoader {
 		}
 	}
 
+	void stageRes() {
+		for (TmpHolder th : modClasses) {
+			ResourceLoader.currentInstance().stageAdvancedFiles(1, ResourceLoader.LOAD_XML_INFO, new AdvancedFile(false, th.file.getAbsolutePath()));
+		}
+	}
+
 	void registerEvents(List<ModContainer> containers) {
 		Logger.log("Registering container event handlers...");
-		for(ModContainer container : containers) {
+		for (ModContainer container : containers) {
 			SpaceExplorer2D.getSpaceExplorer2D().getEventBus().registerEventHandler(container.getInstance());
 		}
 	}
-	
+
 	void dispatchInstances(List<ModContainer> containers) {
 		Logger.log("Dispatching instances...");
 		for (ModContainer container : containers) {
@@ -164,7 +183,7 @@ public class ModLoader {
 			}
 		}
 	}
-	
+
 	void classLoadMods(File moddir) {
 		List<File> candidates = new ArrayList<>();
 		new ModDiscoverer().discover(candidates, moddir);
@@ -200,13 +219,14 @@ public class ModLoader {
 						continue;
 					}
 					if (clazz.isAnnotationPresent(Mod.class)) {
-						modClasses.add(clazz);
+						modClasses.add(new TmpHolder(clazz, candidates[i]));
 					}
 				}
 			}
 		}
-		//Naja ist doof...
-		//SpaceExplorer2D.getSpaceExplorer2D().getEventBus().findStaticEventAnnotations(classloader, null);
+		// Naja ist doof...
+		// SpaceExplorer2D.getSpaceExplorer2D().getEventBus().findStaticEventAnnotations(classloader,
+		// null);
 		modClasses.sort(comp);
 	}
 

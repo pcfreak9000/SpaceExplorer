@@ -65,8 +65,9 @@ public class SpaceExplorer2D  {
 	
 	private void loadRes() {
 		ResourceLoader.currentInstance().clearStagedAdvancedFiles();
-		ResourceLoader.currentInstance().stageAdvancedFiles(0, 0, resourcepacks);
+		ResourceLoader.currentInstance().stageAdvancedFiles(0, ResourceLoader.LOAD_XML_INFO, resourcepacks);
 		ResourceLoader.currentInstance().stageAdvancedFiles(1, ResourceLoader.LOAD_XML_INFO, RESOURCELOCATION);
+		manager.stageRessourceLoading();
 		ResourceLoader.currentInstance().loadStagedAdvancedFiles(true);
 		ResourceLoader.currentInstance().actions(Texture.class, (t) -> t.invertV());
 	}
