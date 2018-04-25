@@ -1,24 +1,22 @@
-package de.pcfreak9000.se2d.universe.celestialbody;
-
-import omnikryptec.resource.texture.Texture;
+package de.pcfreak9000.se2d.universe.celestial;
 
 public class TileDefinition {
 
 	public static final float TILE_SIZE = 24;
 	public static final float TILE_LAYER = 0;
 
-	private Texture tex;
+	private String tex;
 	private boolean prerenderable = true;
 
-	public TileDefinition(Texture t) {
+	public TileDefinition(String t) {
 		this(t, true);
 	}
 
-	public TileDefinition(Texture t, boolean prerenderable) {
+	public TileDefinition(String t, boolean prerenderable) {
 		this.tex = t;
 	}
 
-	public Texture getTexture() {
+	public String getTexture() {
 		return tex;
 	}
 

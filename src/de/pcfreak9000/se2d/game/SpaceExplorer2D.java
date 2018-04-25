@@ -29,8 +29,9 @@ public class SpaceExplorer2D  {
 	}
 
 	private AdvancedFile resourcepacks, modsfolder;
+	
 	private ModManager manager;
-	private final EventBus se2d_events;
+	private EventBus se2d_events;
 	private Universe currentWorld = null;
 
 	public SpaceExplorer2D(AdvancedFile resourcepacksp, AdvancedFile modsfolderp) {

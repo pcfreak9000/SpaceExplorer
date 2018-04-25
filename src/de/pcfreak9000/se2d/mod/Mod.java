@@ -17,6 +17,8 @@ public @interface Mod {
 
 	long[] version();
 
+	String resourceLocation();
+	
 	String[] se2dversion() default { Launcher.VERSION };
 
 	boolean accessible() default true;

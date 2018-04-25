@@ -1,4 +1,4 @@
-package de.pcfreak9000.se2d.universe.celestialbody;
+package de.pcfreak9000.se2d.universe.celestial;
 
 import java.time.Instant;
 
