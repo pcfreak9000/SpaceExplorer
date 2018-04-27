@@ -7,5 +7,6 @@ public interface Generator<T extends CelestialBody> {
 
 	T generate(long seed, SpaceCoordinates sc);
 	Biome getBiome(T body, int tx, int ty);
+	void populateChunk(Chunk c);
 	
 }
