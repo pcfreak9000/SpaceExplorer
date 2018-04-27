@@ -7,13 +7,12 @@ import omnikryptec.util.Maths;
 public class Tile extends Sprite {
 
 	private TileDefinition myDefinition;
-	private BiomeDefinition myBiome;
+	
 	private boolean validPosition = true;
 
-	public Tile(TileDefinition def, BiomeDefinition biomedef) {
-		super(def.getTexture());
+	public Tile(TileDefinition def) {
+		//super(def.getTexture());
 		myDefinition = def;
-		myBiome = biomedef;
 		setFixedSizeMode(FixedSizeMode.ON);
 		setFixedSize(TileDefinition.TILE_SIZE, TileDefinition.TILE_SIZE);
 		setLayer(TileDefinition.TILE_LAYER);
@@ -35,17 +34,13 @@ public class Tile extends Sprite {
 		validPosition = false;
 	}
 
-	public BiomeDefinition getBiome() {
-		return myBiome;
-	}
-
 	public boolean isValid() {
 		return validPosition;
 	}
 
 	@Override
 	public String toString() {
-		return super.toString() + ": " + myDefinition.toString() + " IN BIOME: " + myBiome.toString();
+		return super.toString() + ": " + myDefinition.toString();
 	}
 
 }
