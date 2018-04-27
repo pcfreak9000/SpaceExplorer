@@ -1,4 +1,4 @@
-package de.pcfreak9000.se2d.game;
+package de.pcfreak9000.se2d.game.launch;
 
 import java.io.File;
 
@@ -34,7 +34,6 @@ public class Launcher {
 		new Launcher();
 	}
 
-	
 	public Launcher() {
 		// double all = 0;
 		// double min = Double.POSITIVE_INFINITY;
@@ -76,7 +75,8 @@ public class Launcher {
 		// OmniKryptecEngine.instance().getPostprocessor().addStage(new
 		// ColorSpaceStage(8, 8, 8));
 
-		//OmniKryptecEngine.instance().getPostprocessor().addStage(new Light2DProcessor(Planet.RENDERER));
+		// OmniKryptecEngine.instance().getPostprocessor().addStage(new
+		// Light2DProcessor(Planet.RENDERER));
 		// OmniKryptecEngine.instance().getPostprocessor().addStage(new BloomStage(new
 		// CompleteGaussianBlurStage(true, 100, 100), new Vector2f(1)));
 		// OmniKryptecEngine.instance().getPostprocessor().addStage(new

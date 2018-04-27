@@ -1,15 +1,9 @@
 package de.pcfreak9000.se2d.universe;
 
-import org.joml.Vector2f;
-
-import de.pcfreak9000.se2d.game.Player;
-import de.pcfreak9000.se2d.game.SpaceExplorer2D;
-import de.pcfreak9000.se2d.universe.celestial.Planet;
-import de.pcfreak9000.se2d.universe.celestial.TileDefinition;
+import de.pcfreak9000.se2d.game.core.Player;
+import de.pcfreak9000.se2d.game.launch.SpaceExplorer2D;
 import omnikryptec.gameobject.Camera;
-import omnikryptec.gameobject.component.PhysicsComponent2D;
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.util.ConverterUtil;
 
 public class Universe {
 
@@ -37,7 +31,7 @@ public class Universe {
 		return planetCamera;
 	}
 
-	public void setPlanetAndPlayer(Planet planet, Player player) {
+	public void setPlanetAndPlayer(Player player) {
 		// System.out.println(planet.toString());
 		// player.getComponent(PhysicsComponent2D.class).getBody().getTransform()
 		// .setTranslation(ConverterUtil.convertToPhysics2D(

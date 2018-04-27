@@ -2,7 +2,7 @@ package de.pcfreak9000.se2d.universe.celestial;
 
 import java.util.ArrayList;
 
-import de.pcfreak9000.se2d.game.Launcher;
+import de.pcfreak9000.se2d.game.launch.Launcher;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.main.Scene2D;

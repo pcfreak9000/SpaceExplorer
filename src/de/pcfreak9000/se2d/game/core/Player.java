@@ -1,8 +1,10 @@
-package de.pcfreak9000.se2d.game;
+package de.pcfreak9000.se2d.game.core;
 
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Vector2;
 
+import de.pcfreak9000.se2d.game.launch.KeyManager;
+import de.pcfreak9000.se2d.game.launch.SpaceExplorer2D;
 import omnikryptec.gameobject.Light2D;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.gameobject.component.PhysicsComponent2D;

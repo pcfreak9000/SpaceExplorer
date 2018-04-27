@@ -1,4 +1,4 @@
-package de.pcfreak9000.se2d.game;
+package de.pcfreak9000.se2d.game.launch;
 
 import org.lwjgl.glfw.GLFW;
 

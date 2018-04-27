@@ -1,6 +1,6 @@
 package de.pcfreak9000.se2d.universe.celestial;
 
-public class ChunkCompilationStatusException extends RuntimeException{
+public class ChunkCompilationStatusException extends RuntimeException {
 
 	/**
 	 * whatever
@@ -10,5 +10,5 @@ public class ChunkCompilationStatusException extends RuntimeException{
 	public ChunkCompilationStatusException(String msg) {
 		super(msg);
 	}
-	
+
 }

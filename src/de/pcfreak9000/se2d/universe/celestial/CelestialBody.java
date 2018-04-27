@@ -1,9 +1,6 @@
 package de.pcfreak9000.se2d.universe.celestial;
 
-import de.pcfreak9000.se2d.game.SpaceExplorer2D;
 import de.pcfreak9000.se2d.universe.Orbit;
-import omnikryptec.main.Scene2D;
-import omnikryptec.physics.Dyn4JPhysicsWorld;
 
 public abstract class CelestialBody {
 
@@ -31,5 +28,5 @@ public abstract class CelestialBody {
 	}
 
 	public abstract void generateChunk(Chunk c);
-	
+
 }

@@ -29,7 +29,6 @@ public class ModManager {
 		loader.stageRes();
 	}
 
-	
 	public List<ModContainer> getMods() {
 		return mods;
 	}

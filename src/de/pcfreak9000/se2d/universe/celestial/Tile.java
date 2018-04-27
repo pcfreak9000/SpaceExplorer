@@ -7,11 +7,11 @@ import omnikryptec.util.Maths;
 public class Tile extends Sprite {
 
 	private TileDefinition myDefinition;
-	
+
 	private boolean validPosition = true;
 
 	public Tile(TileDefinition def) {
-		//super(def.getTexture());
+		// super(def.getTexture());
 		myDefinition = def;
 		setFixedSizeMode(FixedSizeMode.ON);
 		setFixedSize(TileDefinition.TILE_SIZE, TileDefinition.TILE_SIZE);

@@ -15,8 +15,8 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.pcfreak9000.se2d.game.Launcher;
-import de.pcfreak9000.se2d.game.SpaceExplorer2D;
+import de.pcfreak9000.se2d.game.launch.Launcher;
+import de.pcfreak9000.se2d.game.launch.SpaceExplorer2D;
 import de.pcfreak9000.se2d.mod.event.Se2DModInitEvent;
 import de.pcfreak9000.se2d.mod.event.Se2DModPostInitEvent;
 import de.pcfreak9000.se2d.mod.event.Se2DModPreInitEvent;
@@ -121,7 +121,8 @@ public class ModLoader {
 
 	void stageRes() {
 		for (TmpHolder th : modClasses) {
-			ResourceLoader.currentInstance().stageAdvancedFiles(1, ResourceLoader.LOAD_XML_INFO, new AdvancedFile(false, th.file.getAbsolutePath()));
+			ResourceLoader.currentInstance().stageAdvancedFiles(1, ResourceLoader.LOAD_XML_INFO,
+					new AdvancedFile(false, th.file.getAbsolutePath()));
 		}
 	}
 
