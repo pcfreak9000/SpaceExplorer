@@ -21,6 +21,7 @@ public class CelestialBody {
 	private long seed;
 
 	public CelestialBody(CelestialBodyDefinition generator, Orbit orbit, World world, String name, long seed) {
+		Catalog.checkRegistered(generator);
 		this.generator = generator;
 		this.orbit = orbit;
 		this.world = world;

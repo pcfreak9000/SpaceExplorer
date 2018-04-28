@@ -19,4 +19,10 @@ public class Catalog {
 		return content.containsKey(classname);
 	}
 
+	public static void checkRegistered(CelestialBodyDefinition def) {
+		if(!exists(def.getClass().getName())) {
+			throw new IllegalStateException("CelestialBodyDefinition "+def.getClass().getName()+" is unregistered!");
+		}
+	}
+	
 }
