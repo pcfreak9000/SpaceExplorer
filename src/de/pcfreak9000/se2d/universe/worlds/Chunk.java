@@ -1,4 +1,4 @@
-package de.pcfreak9000.se2d.universe.celestial;
+package de.pcfreak9000.se2d.universe.worlds;
 
 import java.util.ArrayList;
 
@@ -127,11 +127,11 @@ public class Chunk extends Sprite {
 	public int getChunkX() {
 		return cx;
 	}
-	
+
 	public int getChunkY() {
 		return cy;
 	}
-	
+
 	public static final int toChunk(float f) {
 		return (int) Maths.fastFloor(f / CHUNKSIZE);
 	}

@@ -1,12 +1,17 @@
 package de.pcfreak9000.se2d.universe.celestial;
 
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import de.pcfreak9000.se2d.universe.Orbit;
 import de.pcfreak9000.se2d.universe.biome.Biome;
 import de.pcfreak9000.se2d.universe.biome.BiomeDefinition;
+import de.pcfreak9000.se2d.universe.worlds.Chunk;
+import de.pcfreak9000.se2d.universe.worlds.Tile;
+import de.pcfreak9000.se2d.universe.worlds.TileDefinition;
+import de.pcfreak9000.se2d.universe.worlds.World;
 
-public abstract class CelestialBody {
+public class CelestialBody {
 
 	private CelestialBodyDefinition generator;
 	private Orbit orbit;
@@ -14,7 +19,7 @@ public abstract class CelestialBody {
 
 	private String name;
 	private long seed;
-	
+
 	public CelestialBody(CelestialBodyDefinition generator, Orbit orbit, World world, String name, long seed) {
 		this.generator = generator;
 		this.orbit = orbit;
@@ -35,28 +40,62 @@ public abstract class CelestialBody {
 		return name;
 	}
 
+	public long getSeed() {
+		return seed;
+	}
+
+	public CelestialBodyDefinition getDefinition() {
+		return generator;
+	}
+
+	public boolean isVisitable() {
+		return world != null;
+	}
+
 	public void generateChunk(Chunk c) {
+		if (!isVisitable()) {
+			throw new IllegalStateException("The CelestialBody " + this.getClass().getName()
+					+ " is not visitable so it should not be generated!");
+		}
 		for (int x = 0; x < Chunk.CHUNKSIZE_T; x++) {
 			for (int y = 0; y < Chunk.CHUNKSIZE_T; y++) {
 				int globalTileX = x + c.getChunkX() * Chunk.CHUNKSIZE_T;
 				int globalTileY = y + c.getChunkY() * Chunk.CHUNKSIZE_T;
-				if(inBounds(globalTileX, globalTileY)) {
-					Biome biome = getBiomeDefinition(generator.getBiomeDefinitions(), globalTileX, globalTileY).getBiome(seed);
+				if (inBounds(globalTileX, globalTileY)) {
+					Biome biome = getBiomeDefinition(generator.getBiomeDefinitions().stream()
+							.filter((def) -> def.likes(this)).collect(Collectors.toList()), globalTileX, globalTileY)
+									.getBiome(seed);
 					Tile tile = biome.getTileDefinition(globalTileX, globalTileY).newTile();
+					tile.getTransform().setPosition(globalTileX * TileDefinition.TILE_SIZE,
+							globalTileY * TileDefinition.TILE_SIZE);
 					adjustTile(tile);
-					c.addTile(tile,x,y);
-					if(tile.isValid()) {
+					c.addTile(tile, x, y);
+					if (tile.isValid()) {
 						biome.decorate(tile);
 					}
 				}
 			}
 		}
 	}
-	
-	public abstract BiomeDefinition getBiomeDefinition(Set<BiomeDefinition> possibilities, int globalTileX, int globalTileY);
-	
-	public abstract boolean inBounds(int globalTileX, int globalTileY);
-	
-	public abstract void adjustTile(Tile t);
+
+	/**
+	 * For the same position the same BiomeDefinition must be returned for this
+	 * CelestialBody.
+	 * 
+	 * @param possibilities
+	 * @param globalTileX
+	 * @param globalTileY
+	 * @return
+	 */
+	public BiomeDefinition getBiomeDefinition(List<BiomeDefinition> possibilities, int globalTileX, int globalTileY) {
+		return possibilities.get(0);
+	}
+
+	public boolean inBounds(int globalTileX, int globalTileY) {
+		return true;
+	}
+
+	public void adjustTile(Tile t) {
+	}
 
 }

@@ -1,8 +1,9 @@
-package de.pcfreak9000.se2d.universe.celestial;
+package de.pcfreak9000.se2d.universe.worlds;
 
 import de.pcfreak9000.se2d.game.core.Player;
 import de.pcfreak9000.se2d.game.launch.SpaceExplorer2D;
 import de.pcfreak9000.se2d.renderer.PlanetRenderer;
+import de.pcfreak9000.se2d.universe.celestial.CelestialBody;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene2D;
 import omnikryptec.physics.Dyn4JPhysicsWorld;

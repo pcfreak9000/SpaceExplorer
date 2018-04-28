@@ -1,4 +1,4 @@
-package de.pcfreak9000.se2d.universe.celestial;
+package de.pcfreak9000.se2d.universe.worlds;
 
 public class TileDefinition {
 
@@ -27,5 +27,5 @@ public class TileDefinition {
 	public Tile newTile() {
 		return new Tile(this);
 	}
-	
+
 }

@@ -3,8 +3,8 @@ package de.pcfreak9000.se2d.game.launch;
 import java.io.File;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.pcfreak9000.se2d.universe.celestial.Chunk;
-import de.pcfreak9000.se2d.universe.celestial.TileDefinition;
+import de.pcfreak9000.se2d.universe.worlds.Chunk;
+import de.pcfreak9000.se2d.universe.worlds.TileDefinition;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
