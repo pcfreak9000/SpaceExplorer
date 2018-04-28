@@ -28,7 +28,7 @@ public class World {
 			int camY = Chunk.toChunk(getCamera().getTransform().getPosition(true).y);
 			for (int i = -1; i <= 1; i++) {
 				for (int j = -1; j <= 1; j++) {
-					// getChunkOrGen(camX + i, camY + j);
+					generateNeeded(camX, camY);
 				}
 			}
 		}
@@ -37,7 +37,7 @@ public class World {
 
 	public static final PlanetRenderer RENDERER = new PlanetRenderer();
 
-	private CelestialBody myBoss;
+	private CelestialBody body;
 	private WorldScene scene;
 	private Chunk[][] chunks;
 
@@ -45,7 +45,7 @@ public class World {
 
 	public World(CelestialBody body, int tileRadius) {
 		this.chunksSize = (int) Math.ceil((double) tileRadius / Chunk.CHUNKSIZE_T);
-		this.myBoss = body;
+		this.body = body;
 		if (chunksSize > (Integer.MAX_VALUE >> 1) - 10) {
 			Logger.log("Planetsize exceeds Integer#MAX_VALUE!", LogLevel.WARNING);
 		}
@@ -79,7 +79,7 @@ public class World {
 	public void generateNeeded(int cx, int cy) {
 		if (inBounds(cx, cy) && getChunk(cx, cy) == null) {
 			Chunk newChunk = new Chunk(cx, cy);
-			myBoss.generateChunk(newChunk);
+			body.generateChunk(newChunk);
 			newChunk.compile();
 			chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)] = newChunk;
 		}

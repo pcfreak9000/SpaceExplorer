@@ -30,7 +30,7 @@ public class Tile extends Sprite {
 		return Maths.fastFloor(getTransform().getPosition(true).y / TileDefinition.TILE_SIZE);
 	}
 
-	void invalidate() {
+	public void invalidate() {
 		validPosition = false;
 	}
 

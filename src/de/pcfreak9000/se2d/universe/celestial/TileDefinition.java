@@ -24,4 +24,8 @@ public class TileDefinition {
 		return prerenderable;
 	}
 
+	public Tile newTile() {
+		return new Tile(this);
+	}
+	
 }

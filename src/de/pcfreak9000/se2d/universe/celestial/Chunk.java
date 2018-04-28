@@ -124,6 +124,14 @@ public class Chunk extends Sprite {
 		return CHUNKSIZE;
 	}
 
+	public int getChunkX() {
+		return cx;
+	}
+	
+	public int getChunkY() {
+		return cy;
+	}
+	
 	public static final int toChunk(float f) {
 		return (int) Maths.fastFloor(f / CHUNKSIZE);
 	}
