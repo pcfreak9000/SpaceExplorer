@@ -20,13 +20,13 @@ public class CelestialBody {
 	private String name;
 	private long seed;
 
-	public CelestialBody(CelestialBodyDefinition generator, Orbit orbit, World world, String name, long seed) {
+	public CelestialBody(CelestialBodyDefinition generator, Orbit orbit, int world_radius, String name, long seed) {
 		Catalog.checkRegistered(generator);
 		this.generator = generator;
 		this.orbit = orbit;
-		this.world = world;
 		this.name = name;
 		this.seed = seed;
+		this.world = new World(this, world_radius);
 	}
 
 	public Orbit getOrbit() {

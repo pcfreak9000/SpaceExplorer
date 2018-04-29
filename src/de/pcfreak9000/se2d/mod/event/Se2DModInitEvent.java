@@ -7,6 +7,7 @@ public class Se2DModInitEvent extends Event {
 
 	public Se2DModInitEvent() {
 		super(SpaceExplorer2D.getSpaceExplorer2D().getEventBus());
+		this.consumeable = false;
 	}
 
 }

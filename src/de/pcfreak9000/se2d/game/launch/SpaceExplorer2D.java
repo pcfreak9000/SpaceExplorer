@@ -54,7 +54,7 @@ public class SpaceExplorer2D {
 		manager.load(modsfolder);
 		loadRes();
 		currentWorld = new Universe();
-		currentWorld.loadWorld();
+		currentWorld.loadWorld(1);
 		Instance.engineBus().registerEventHandler(this);
 		OmniKryptecEngine.instance().startLoop();
 	}
@@ -85,7 +85,7 @@ public class SpaceExplorer2D {
 	}
 
 	@EventSubscription
-	public void roflXD(FrameEvent ev) {
+	public void someFrameUpdateEventHandlerMethod(FrameEvent ev) {
 		if (ev.getType() == FrameType.PRE && currentWorld != null) {
 			currentWorld.update();
 		}

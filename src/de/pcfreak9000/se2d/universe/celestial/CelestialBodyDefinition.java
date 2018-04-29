@@ -1,12 +1,15 @@
 package de.pcfreak9000.se2d.universe.celestial;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import de.pcfreak9000.se2d.universe.SpaceCoordinates;
 import de.pcfreak9000.se2d.universe.biome.BiomeDefinition;
 
-public interface CelestialBodyDefinition {
-
+public abstract class CelestialBodyDefinition {
+	
+	private Set<BiomeDefinition> definitions = new HashSet<>();
+	
 	/**
 	 * either the position or the parent can be null!
 	 * @param seed
@@ -14,10 +17,17 @@ public interface CelestialBodyDefinition {
 	 * @param parent
 	 * @return
 	 */
-	CelestialBody generate(long seed, SpaceCoordinates sc, CelestialBody parent);
+	public abstract CelestialBody generate(long seed, SpaceCoordinates sc, CelestialBody parent);
 
-	Set<BiomeDefinition> getBiomeDefinitions();
+	public Set<BiomeDefinition> getBiomeDefinitions(){
+		return definitions;
+	}
 
-	void addBiomeDefinition(BiomeDefinition bd);
-
+	public void addBiomeDefinition(BiomeDefinition bd) {
+		definitions.add(bd);
+	}
+	
+	public boolean isStartCapable() {
+		return false;
+	}
 }
