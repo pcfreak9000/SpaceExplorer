@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import javax.management.RuntimeErrorException;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.pcfreak9000.se2d.game.launch.Launcher;
 import de.pcfreak9000.se2d.game.launch.SpaceExplorer2D;
@@ -94,13 +96,15 @@ public class ModLoader {
 				cl.getConstructor().setAccessible(true);
 				instance = cl.newInstance();
 			} catch (InstantiationException | NoSuchMethodException e) {
-				Se2Dlog.logErr(
+				Se2Dlog.log(LogLevel.ERROR,
 						"Mod could not be instantiated. Make sure a nullary-constructor is available and your mod class is non-abstract etc: "
-								+ cl.getAnnotation(Mod.class).id(),
-						e);
+								+ cl.getAnnotation(Mod.class).id());
 				continue;
 			} catch (IllegalAccessException | SecurityException e) {
 				Se2Dlog.logErr("Illegal Access: " + cl.getAnnotation(Mod.class).id(), e);
+				continue;
+			} catch(LinkageError e) {
+				Se2Dlog.log(LogLevel.ERROR, "Incompatible Mod: "+th.modclass);
 				continue;
 			}
 			ModContainer container = new ModContainer(cl, cl.getAnnotation(Mod.class), instance);
@@ -145,9 +149,9 @@ public class ModLoader {
 						try {
 							f.set(container.getInstance(), container.getInstance());
 						} catch (IllegalArgumentException e) {
-							Se2Dlog.logErr("Wrong arg @ " + container, e);
+							Se2Dlog.log(LogLevel.WARNING, "Wrong arg @ " + container);
 						} catch (IllegalAccessException e) {
-							Se2Dlog.logErr("Illegal access @ " + container, e);
+							Se2Dlog.log(LogLevel.WARNING, "Illegal access @ " + container);
 						}
 					} else {
 						for (ModContainer wantedContainer : containers) {
@@ -168,9 +172,9 @@ public class ModLoader {
 									try {
 										f.set(container.getInstance(), wantedContainer.getInstance());
 									} catch (IllegalArgumentException e) {
-										Se2Dlog.logErr("Wrong arg @ " + container, e);
+										Se2Dlog.log(LogLevel.WARNING, "Wrong arg @ " + container);
 									} catch (IllegalAccessException e) {
-										Se2Dlog.logErr("Illegal access @ " + container, e);
+										Se2Dlog.log(LogLevel.WARNING, "Illegal access @ " + container);
 									}
 								} else {
 									Logger.log(wantedContainer + " is not accessible for the mod " + container + "!");
@@ -206,7 +210,7 @@ public class ModLoader {
 			try {
 				jarfile = new JarFile(candidates[i]);
 			} catch (IOException e) {
-				Se2Dlog.logErr("Could not read mod container: " + candidates[i], e);
+				Se2Dlog.log(LogLevel.WARNING, "Could not read mod container: " + candidates[i]);
 				continue;
 			}
 			for (JarEntry entry : Collections.list(jarfile.entries())) {
@@ -215,7 +219,11 @@ public class ModLoader {
 					try {
 						clazz = classloader.loadClass(entry.getName().replace("/", ".").replace(".class", ""));
 					} catch (ClassNotFoundException e) {
-						Se2Dlog.logErr("Could not load: " + entry.getName(), e);
+						Se2Dlog.log(LogLevel.ERROR, "Could not load: " + entry.getName());
+						continue;
+					} catch(LinkageError e) {
+						Se2Dlog.log(LogLevel.INFO, "Unexpected behaviour of a class detected: "+entry.getName().replace("/", ".").replace(".class", ""));
+						//Se2Dlog.log(LogLevel.ERROR, "Incompatible Mod: "+entry.getName());
 						continue;
 					}
 					if (clazz.isAnnotationPresent(Mod.class)) {

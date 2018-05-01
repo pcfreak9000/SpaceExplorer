@@ -3,6 +3,9 @@ package de.pcfreak9000.se2d.universe.worlds;
 import java.util.ArrayList;
 
 import de.pcfreak9000.se2d.game.launch.Launcher;
+import de.pcfreak9000.se2d.universe.tiles.Tile;
+import de.pcfreak9000.se2d.universe.tiles.TileDefinition;
+import de.pcfreak9000.se2d.universe.tiles.TileRegistry;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.main.Scene2D;
@@ -38,6 +41,7 @@ public class Chunk extends Sprite {
 		if (compiled) {
 			throw new ChunkCompilationStatusException("Can't add tiles to an already compiled Chunk!");
 		}
+		TileRegistry.checkRegistered(tile.getDefinition());
 		array[crtx][crty] = tile;
 		if (tile.getDefinition().isPrerenderable()) {
 			if (tiles.get(tile.getTexture()) == null) {

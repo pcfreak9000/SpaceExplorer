@@ -1,7 +1,7 @@
 package de.pcfreak9000.se2d.universe.biome;
 
-import de.pcfreak9000.se2d.universe.worlds.Tile;
-import de.pcfreak9000.se2d.universe.worlds.TileDefinition;
+import de.pcfreak9000.se2d.universe.tiles.Tile;
+import de.pcfreak9000.se2d.universe.tiles.TileDefinition;
 
 public interface Biome {
 

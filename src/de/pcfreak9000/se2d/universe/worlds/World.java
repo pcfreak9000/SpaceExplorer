@@ -3,7 +3,6 @@ package de.pcfreak9000.se2d.universe.worlds;
 import de.pcfreak9000.se2d.game.core.Player;
 import de.pcfreak9000.se2d.game.launch.SpaceExplorer2D;
 import de.pcfreak9000.se2d.renderer.PlanetRenderer;
-import de.pcfreak9000.se2d.universe.celestial.CelestialBody;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene2D;
 import omnikryptec.physics.Dyn4JPhysicsWorld;
@@ -29,7 +28,7 @@ public class World {
 			int camY = Chunk.toChunk(getCamera().getTransform().getPosition(true).y);
 			for (int i = -1; i <= 1; i++) {
 				for (int j = -1; j <= 1; j++) {
-					generateNeeded(camX, camY);
+					generateNeeded(camX+i, camY+j);
 				}
 			}
 		}
@@ -38,21 +37,21 @@ public class World {
 
 	public static final PlanetRenderer RENDERER = new PlanetRenderer();
 
-	private CelestialBody body;
+	private ChunkGenerator generator;
 	private WorldScene scene;
 	private Chunk[][] chunks;
 
 	private int chunksSize;
 
-	public World(CelestialBody body, int tileRadius) {
+	public World(String name, ChunkGenerator generator, int tileRadius) {
 		this.chunksSize = (int) Math.ceil((double) tileRadius / Chunk.CHUNKSIZE_T);
-		this.body = body;
+		this.generator = generator;
 		if (chunksSize > (Integer.MAX_VALUE >> 1) - 10) {
 			Logger.log("Planetsize exceeds Integer#MAX_VALUE!", LogLevel.WARNING);
 		}
 		chunksSize <<= 1;
 		chunks = new Chunk[chunksSize][chunksSize];
-		scene = new WorldScene(body.getName());
+		scene = new WorldScene(name);
 	}
 
 	public void load(Player p) {
@@ -80,7 +79,7 @@ public class World {
 	public void generateNeeded(int cx, int cy) {
 		if (inBounds(cx, cy) && getChunk(cx, cy) == null) {
 			Chunk newChunk = new Chunk(cx, cy);
-			body.generateChunk(newChunk);
+			generator.generateChunk(newChunk);
 			newChunk.compile();
 			chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)] = newChunk;
 		}

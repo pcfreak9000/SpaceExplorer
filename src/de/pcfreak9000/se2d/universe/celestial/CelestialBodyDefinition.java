@@ -10,6 +10,10 @@ public abstract class CelestialBodyDefinition {
 	
 	private Set<BiomeDefinition> definitions = new HashSet<>();
 	
+	public CelestialBodyDefinition() {
+		addBiomeDefinition(Catalog.DEFAULT_BIOME);
+	}
+	
 	/**
 	 * either the position or the parent can be null!
 	 * @param seed

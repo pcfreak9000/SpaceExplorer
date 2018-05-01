@@ -1,4 +1,4 @@
-package de.pcfreak9000.se2d.universe.worlds;
+package de.pcfreak9000.se2d.universe.tiles;
 
 public class TileDefinition {
 

@@ -3,12 +3,14 @@ package de.pcfreak9000.se2d.game.launch;
 import java.io.File;
 
 import de.codemakers.io.file.AdvancedFile;
+import de.pcfreak9000.se2d.universe.tiles.TileDefinition;
 import de.pcfreak9000.se2d.universe.worlds.Chunk;
-import de.pcfreak9000.se2d.universe.worlds.TileDefinition;
+import de.pcfreak9000.se2d.universe.worlds.World;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
 import omnikryptec.main.OmniKryptecEngine;
+import omnikryptec.postprocessing.stages.Light2DProcessor;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.settings.KeySettings;
 import omnikryptec.util.NativesLoader;
@@ -75,8 +77,8 @@ public class Launcher {
 		// OmniKryptecEngine.instance().getPostprocessor().addStage(new
 		// ColorSpaceStage(8, 8, 8));
 
-		// OmniKryptecEngine.instance().getPostprocessor().addStage(new
-		// Light2DProcessor(Planet.RENDERER));
+		 OmniKryptecEngine.instance().getPostprocessor().addStage(new
+		 Light2DProcessor(World.RENDERER));
 		// OmniKryptecEngine.instance().getPostprocessor().addStage(new BloomStage(new
 		// CompleteGaussianBlurStage(true, 100, 100), new Vector2f(1)));
 		// OmniKryptecEngine.instance().getPostprocessor().addStage(new

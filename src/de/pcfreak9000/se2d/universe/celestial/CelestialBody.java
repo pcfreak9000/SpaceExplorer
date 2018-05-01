@@ -6,12 +6,13 @@ import java.util.stream.Collectors;
 import de.pcfreak9000.se2d.universe.Orbit;
 import de.pcfreak9000.se2d.universe.biome.Biome;
 import de.pcfreak9000.se2d.universe.biome.BiomeDefinition;
+import de.pcfreak9000.se2d.universe.tiles.Tile;
+import de.pcfreak9000.se2d.universe.tiles.TileDefinition;
 import de.pcfreak9000.se2d.universe.worlds.Chunk;
-import de.pcfreak9000.se2d.universe.worlds.Tile;
-import de.pcfreak9000.se2d.universe.worlds.TileDefinition;
+import de.pcfreak9000.se2d.universe.worlds.ChunkGenerator;
 import de.pcfreak9000.se2d.universe.worlds.World;
 
-public class CelestialBody {
+public class CelestialBody implements ChunkGenerator{
 
 	private CelestialBodyDefinition generator;
 	private Orbit orbit;
@@ -26,7 +27,7 @@ public class CelestialBody {
 		this.orbit = orbit;
 		this.name = name;
 		this.seed = seed;
-		this.world = new World(this, world_radius);
+		this.world = new World(name, this, world_radius);
 	}
 
 	public Orbit getOrbit() {
@@ -52,7 +53,8 @@ public class CelestialBody {
 	public boolean isVisitable() {
 		return world != null;
 	}
-
+	
+	@Override
 	public void generateChunk(Chunk c) {
 		if (!isVisitable()) {
 			throw new IllegalStateException("The CelestialBody " + this.getClass().getName()

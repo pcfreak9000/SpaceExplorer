@@ -5,8 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Catalog {
+import de.pcfreak9000.se2d.universe.biome.DefaultBiome;
 
+public class Catalog {
+	
+	public static final DefaultBiome DEFAULT_BIOME = new DefaultBiome();
+	
 	private static Map<String, CelestialBodyDefinition> content = new HashMap<>();
 	private static List<CelestialBodyDefinition> startCapable = new ArrayList<>();
 	

@@ -1,6 +1,7 @@
-package de.pcfreak9000.se2d.universe.worlds;
+package de.pcfreak9000.se2d.universe.tiles;
 
 import omnikryptec.gameobject.Sprite;
+import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.util.EnumCollection.FixedSizeMode;
 import omnikryptec.util.Maths;
 
@@ -11,7 +12,7 @@ public class Tile extends Sprite {
 	private boolean validPosition = true;
 
 	public Tile(TileDefinition def) {
-		// super(def.getTexture());
+		super(ResourceLoader.MISSING_TEXTURE);
 		myDefinition = def;
 		setFixedSizeMode(FixedSizeMode.ON);
 		setFixedSize(TileDefinition.TILE_SIZE, TileDefinition.TILE_SIZE);

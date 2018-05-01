@@ -1,7 +1,5 @@
 package de.pcfreak9000.se2d.coregame;
 
-import javax.swing.text.PlainDocument;
-
 import de.pcfreak9000.se2d.coregame.start.PlanetDefinition;
 import de.pcfreak9000.se2d.coregame.start.StartPlanetDef;
 import de.pcfreak9000.se2d.mod.Instance;

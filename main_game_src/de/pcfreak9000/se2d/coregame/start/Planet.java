@@ -6,7 +6,7 @@ import de.pcfreak9000.se2d.universe.Orbit;
 import de.pcfreak9000.se2d.universe.biome.BiomeDefinition;
 import de.pcfreak9000.se2d.universe.celestial.CelestialBody;
 import de.pcfreak9000.se2d.universe.celestial.CelestialBodyDefinition;
-import de.pcfreak9000.se2d.universe.worlds.Tile;
+import de.pcfreak9000.se2d.universe.tiles.Tile;
 
 public class Planet extends CelestialBody{
 
