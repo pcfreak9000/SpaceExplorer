@@ -223,7 +223,6 @@ public class ModLoader {
 						continue;
 					} catch(LinkageError e) {
 						Se2Dlog.log(LogLevel.INFO, "Unexpected behaviour of a class detected: "+entry.getName().replace("/", ".").replace(".class", ""));
-						//Se2Dlog.log(LogLevel.ERROR, "Incompatible Mod: "+entry.getName());
 						continue;
 					}
 					if (clazz.isAnnotationPresent(Mod.class)) {
