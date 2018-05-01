@@ -11,7 +11,7 @@ public abstract class CelestialBodyDefinition {
 	private Set<BiomeDefinition> definitions = new HashSet<>();
 	
 	public CelestialBodyDefinition() {
-		addBiomeDefinition(Catalog.DEFAULT_BIOME);
+		addBiomeDefinition(CelestialBodyRegistry.DEFAULT_BIOME);
 	}
 	
 	/**

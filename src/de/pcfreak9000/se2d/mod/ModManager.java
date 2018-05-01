@@ -9,7 +9,7 @@ public class ModManager {
 
 	private ModLoader loader;
 	private List<ModContainer> mods;
-
+	
 	public ModManager() {
 		loader = new ModLoader();
 	}

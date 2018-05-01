@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import javax.management.RuntimeErrorException;
-
 import de.codemakers.io.file.AdvancedFile;
 import de.pcfreak9000.se2d.game.launch.Launcher;
 import de.pcfreak9000.se2d.game.launch.SpaceExplorer2D;

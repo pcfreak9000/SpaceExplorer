@@ -3,6 +3,7 @@ package de.pcfreak9000.se2d.universe.celestial;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import de.pcfreak9000.se2d.game.core.GameRegistry;
 import de.pcfreak9000.se2d.universe.Orbit;
 import de.pcfreak9000.se2d.universe.biome.Biome;
 import de.pcfreak9000.se2d.universe.biome.BiomeDefinition;
@@ -22,7 +23,7 @@ public class CelestialBody implements ChunkGenerator{
 	private long seed;
 
 	public CelestialBody(CelestialBodyDefinition generator, Orbit orbit, int world_radius, String name, long seed) {
-		Catalog.checkRegistered(generator);
+		GameRegistry.getCelestialBodyRegistry().checkRegistered(generator);
 		this.generator = generator;
 		this.orbit = orbit;
 		this.name = name;

@@ -82,6 +82,7 @@ public class World {
 			generator.generateChunk(newChunk);
 			newChunk.compile();
 			chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)] = newChunk;
+			newChunk.addTo(scene);
 		}
 	}
 
