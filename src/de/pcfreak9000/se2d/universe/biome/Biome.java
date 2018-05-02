@@ -2,6 +2,7 @@ package de.pcfreak9000.se2d.universe.biome;
 
 import de.pcfreak9000.se2d.universe.tiles.Tile;
 import de.pcfreak9000.se2d.universe.tiles.TileDefinition;
+import de.pcfreak9000.se2d.universe.worlds.Chunk;
 
 public interface Biome {
 
@@ -14,6 +15,6 @@ public interface Biome {
 	 */
 	public TileDefinition getTileDefinition(int gtx, int gty);
 
-	public void decorate(Tile tile);
+	public void decorate(Chunk c, Tile tile);
 
 }

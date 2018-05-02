@@ -5,6 +5,7 @@ import java.util.HashMap;
 import de.pcfreak9000.se2d.universe.biome.BiomeDefinition;
 import de.pcfreak9000.se2d.universe.biome.DefaultBiome;
 import de.pcfreak9000.se2d.universe.celestial.CelestialBodyRegistry;
+import de.pcfreak9000.se2d.universe.objects.WorldObjectDefinition;
 import de.pcfreak9000.se2d.universe.tiles.TileDefinition;
 import de.pcfreak9000.se2d.util.Se2Dlog;
 
@@ -13,7 +14,8 @@ public class GameRegistry<T> {
 	private static final GameRegistry<TileDefinition> tileRegistry;
 	private static final GameRegistry<BiomeDefinition> biomeRegistry;
 	private static final CelestialBodyRegistry celestialBodyRegistry;
-
+	private static final GameRegistry<WorldObjectDefinition> worldObjectRegistry;
+	
 	public static final TileDefinition MISSING_DEFINITION;
 	public static final DefaultBiome DEFAULT_BIOME;
 
@@ -25,6 +27,7 @@ public class GameRegistry<T> {
 		DEFAULT_BIOME = new DefaultBiome();
 		biomeRegistry.register("default_biome", DEFAULT_BIOME);
 		celestialBodyRegistry = new CelestialBodyRegistry();
+		worldObjectRegistry = new GameRegistry<>();
 	}
 
 	public static GameRegistry<TileDefinition> getTileRegistry() {
@@ -37,6 +40,10 @@ public class GameRegistry<T> {
 
 	public static CelestialBodyRegistry getCelestialBodyRegistry() {
 		return celestialBodyRegistry;
+	}
+	
+	public static GameRegistry<WorldObjectDefinition> getWorldObjectRegistry() {
+		return worldObjectRegistry;
 	}
 
 	private HashMap<String, T> registered = new HashMap<>();
@@ -66,5 +73,6 @@ public class GameRegistry<T> {
 			throw new IllegalStateException(data.getClass().getSimpleName() + " " + data + " is unregistered!");
 		}
 	}
+
 
 }

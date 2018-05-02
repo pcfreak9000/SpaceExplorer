@@ -4,6 +4,7 @@ import de.pcfreak9000.se2d.game.core.GameRegistry;
 import de.pcfreak9000.se2d.universe.celestial.CelestialBody;
 import de.pcfreak9000.se2d.universe.tiles.Tile;
 import de.pcfreak9000.se2d.universe.tiles.TileDefinition;
+import de.pcfreak9000.se2d.universe.worlds.Chunk;
 
 public class DefaultBiome implements BiomeDefinition, Biome{
 
@@ -28,7 +29,7 @@ public class DefaultBiome implements BiomeDefinition, Biome{
 	}
 
 	@Override
-	public void decorate(Tile tile) {
+	public void decorate(Chunk c, Tile tile) {
 		
 	}
 

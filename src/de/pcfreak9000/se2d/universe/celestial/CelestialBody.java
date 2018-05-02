@@ -72,10 +72,10 @@ public class CelestialBody implements ChunkGenerator{
 					Tile tile = biome.getTileDefinition(globalTileX, globalTileY).newTile();
 					tile.getTransform().setPosition(globalTileX * TileDefinition.TILE_SIZE,
 							globalTileY * TileDefinition.TILE_SIZE);
-					adjustTile(tile);
+					adjustTile(c, biome, tile);
 					c.addTile(tile, x, y);
 					if (tile.isValid()) {
-						biome.decorate(tile);
+						biome.decorate(c, tile);
 					}
 				}
 			}
@@ -99,7 +99,14 @@ public class CelestialBody implements ChunkGenerator{
 		return true;
 	}
 
-	public void adjustTile(Tile t) {
+	/**
+	 * invalidate the tile, whatever
+	 * @param c
+	 * @param b
+	 * @param t
+	 */
+	public void adjustTile(Chunk c, Biome b, Tile t) {
 	}
 
+	
 }

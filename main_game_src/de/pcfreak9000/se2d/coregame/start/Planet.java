@@ -3,10 +3,12 @@ package de.pcfreak9000.se2d.coregame.start;
 import java.util.List;
 
 import de.pcfreak9000.se2d.universe.Orbit;
+import de.pcfreak9000.se2d.universe.biome.Biome;
 import de.pcfreak9000.se2d.universe.biome.BiomeDefinition;
 import de.pcfreak9000.se2d.universe.celestial.CelestialBody;
 import de.pcfreak9000.se2d.universe.celestial.CelestialBodyDefinition;
 import de.pcfreak9000.se2d.universe.tiles.Tile;
+import de.pcfreak9000.se2d.universe.worlds.Chunk;
 
 public class Planet extends CelestialBody{
 
@@ -23,9 +25,9 @@ public class Planet extends CelestialBody{
 	public boolean inBounds(int globalTileX, int globalTileY) {
 		return true;
 	}
-
-	@Override
-	public void adjustTile(Tile t) {
-	}
 	
+	@Override
+	public void adjustTile(Chunk c, Biome b, Tile t) {
+	}
+
 }
