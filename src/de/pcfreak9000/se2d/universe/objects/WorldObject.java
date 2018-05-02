@@ -7,6 +7,7 @@ import omnikryptec.physics.AdvancedBody;
 import omnikryptec.physics.AdvancedRectangle;
 import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.util.ConverterUtil;
+import omnikryptec.util.EnumCollection.UpdateType;
 
 public class WorldObject extends Sprite {
 
@@ -20,6 +21,7 @@ public class WorldObject extends Sprite {
 		super(ResourceLoader.MISSING_TEXTURE);
 		GameRegistry.getWorldObjectRegistry().checkRegistered(def);
 		this.mydef = def;
+		setUpdateType(UpdateType.STATIC);
 		addBody(w, h, offsetx, offsety);
 	}
 
