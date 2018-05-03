@@ -3,7 +3,7 @@ package de.pcfreak9000.se2d.universe.worlds;
 import java.util.ArrayList;
 
 import de.pcfreak9000.se2d.game.launch.Launcher;
-import de.pcfreak9000.se2d.universe.objects.WorldObject;
+import de.pcfreak9000.se2d.universe.objects.Entity;
 import de.pcfreak9000.se2d.universe.tiles.Tile;
 import de.pcfreak9000.se2d.universe.tiles.TileDefinition;
 import omnikryptec.gameobject.Sprite;
@@ -52,7 +52,7 @@ public class Chunk extends Sprite {
 		}
 	}
 
-	public void addNonTile(WorldObject obj) {
+	public void addNonTile(Entity obj) {
 		others.add(obj);
 	}
 	
