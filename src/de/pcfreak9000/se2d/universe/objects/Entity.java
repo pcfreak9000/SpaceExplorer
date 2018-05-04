@@ -9,14 +9,13 @@ import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.util.ConverterUtil;
 import omnikryptec.util.EnumCollection.UpdateType;
 
-public class Entity {
+public class Entity extends Sprite{
 
 	private EntityDefinition mydef;
 	private Sprite sprite;
 	
 	public Entity(EntityDefinition def) {
-		sprite = new Sprite(ResourceLoader.MISSING_TEXTURE);
-		//super(ResourceLoader.MISSING_TEXTURE);
+		super(ResourceLoader.MISSING_TEXTURE);
 		GameRegistry.getWorldObjectRegistry().checkRegistered(def);
 		this.mydef = def;
 		sprite.setUpdateType(UpdateType.STATIC);

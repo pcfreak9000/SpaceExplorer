@@ -74,13 +74,15 @@ public class Launcher {
 								PIXELS_PER_METER),
 				new GLFWInfo(3, 2, true, false, 1280, 720));
 		Display.setAspectRatio(ASPECT_RATIO);
+		OmniKryptecEngine.instance().setFboModes(OmniKryptecEngine.FboModes.SCENE);
+		OmniKryptecEngine.instance().refreshFbos();
 		DefaultGameLoop l = (DefaultGameLoop)OmniKryptecEngine.instance().getLoop();
 		l.setMode( DefaultGameLoop.MODE_2D | DefaultGameLoop.MODE_GUI | DefaultGameLoop.MODE_PP | DefaultGameLoop.MODE_GL_TASKS);
 		OmniKryptecEngine.instance().getGameSettings().setKeySettings(new KeySettings());
 		// OmniKryptecEngine.instance().getPostprocessor().addStage(new
 		// ColorSpaceStage(8, 8, 8));
 
-		 OmniKryptecEngine.instance().getPostprocessor().addStage(new Light2DProcessor(World.RENDERER));
+		OmniKryptecEngine.instance().getPostprocessor().addStage(new Light2DProcessor(World.RENDERER));
 		// OmniKryptecEngine.instance().getPostprocessor().addStage(new BloomStage(new
 		// CompleteGaussianBlurStage(true, 100, 100), new Vector2f(1)));
 		// OmniKryptecEngine.instance().getPostprocessor().addStage(new

@@ -8,6 +8,7 @@ import de.pcfreak9000.se2d.game.launch.SpaceExplorer2D;
 import de.pcfreak9000.se2d.universe.celestial.CelestialBody;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.main.OmniKryptecEngine;
+import omnikryptec.util.Instance;
 
 public class Universe {
 
@@ -17,7 +18,7 @@ public class Universe {
 	private double gametime = 0;
 
 	public void update() {
-		// System.out.println(Instance.getFPSCounted());
+		System.out.println(Instance.getFPSCounted());
 		gametime += OmniKryptecEngine.instance().getDeltaTimef();
 	}
 
