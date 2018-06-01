@@ -11,6 +11,8 @@ import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
 import omnikryptec.main.DefaultGameLoop;
 import omnikryptec.main.OmniKryptecEngine;
+import omnikryptec.postprocessing.stages.ColorSpaceStage;
+import omnikryptec.postprocessing.stages.ContrastchangeStage;
 import omnikryptec.postprocessing.stages.Light2DProcessor;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.settings.KeySettings;
@@ -79,10 +81,9 @@ public class Launcher {
 		DefaultGameLoop l = (DefaultGameLoop)OmniKryptecEngine.instance().getLoop();
 		l.setMode( DefaultGameLoop.MODE_2D | DefaultGameLoop.MODE_GUI | DefaultGameLoop.MODE_PP | DefaultGameLoop.MODE_GL_TASKS);
 		OmniKryptecEngine.instance().getGameSettings().setKeySettings(new KeySettings());
-		// OmniKryptecEngine.instance().getPostprocessor().addStage(new
-		// ColorSpaceStage(8, 8, 8));
+		//OmniKryptecEngine.instance().getPostprocessor().addStage(new ContrastchangeStage(-100));
 
-		OmniKryptecEngine.instance().getPostprocessor().addStage(new Light2DProcessor(World.RENDERER));
+		//OmniKryptecEngine.instance().getPostprocessor().addStage(new Light2DProcessor(World.RENDERER));
 		// OmniKryptecEngine.instance().getPostprocessor().addStage(new BloomStage(new
 		// CompleteGaussianBlurStage(true, 100, 100), new Vector2f(1)));
 		// OmniKryptecEngine.instance().getPostprocessor().addStage(new

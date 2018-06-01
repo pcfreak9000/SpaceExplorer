@@ -18,7 +18,7 @@ public class Universe {
 	private double gametime = 0;
 
 	public void update() {
-		System.out.println(Instance.getFPSCounted());
+		//System.out.println(Instance.getFPSCounted());
 		gametime += OmniKryptecEngine.instance().getDeltaTimef();
 	}
 
