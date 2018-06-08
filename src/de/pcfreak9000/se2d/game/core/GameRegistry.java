@@ -2,6 +2,7 @@ package de.pcfreak9000.se2d.game.core;
 
 import java.util.HashMap;
 
+import de.pcfreak9000.se2d.items.Item;
 import de.pcfreak9000.se2d.universe.biome.BiomeDefinition;
 import de.pcfreak9000.se2d.universe.biome.DefaultBiome;
 import de.pcfreak9000.se2d.universe.celestial.CelestialBodyRegistry;
@@ -15,6 +16,7 @@ public class GameRegistry<T> {
 	private static final GameRegistry<BiomeDefinition> biomeRegistry;
 	private static final CelestialBodyRegistry celestialBodyRegistry;
 	private static final GameRegistry<EntityDefinition> worldObjectRegistry;
+	private static final GameRegistry<Item> itemRegistry;
 	
 	public static final TileDefinition MISSING_DEFINITION;
 	public static final DefaultBiome DEFAULT_BIOME;
@@ -28,6 +30,7 @@ public class GameRegistry<T> {
 		biomeRegistry.register("default_biome", DEFAULT_BIOME);
 		celestialBodyRegistry = new CelestialBodyRegistry();
 		worldObjectRegistry = new GameRegistry<>();
+		itemRegistry = new GameRegistry<>();
 	}
 
 	public static GameRegistry<TileDefinition> getTileRegistry() {
@@ -46,6 +49,10 @@ public class GameRegistry<T> {
 		return worldObjectRegistry;
 	}
 
+	public static GameRegistry<Item> getItemRegistry(){
+		return itemRegistry;
+	}
+	
 	private HashMap<String, T> registered = new HashMap<>();
 
 	public GameRegistry<T> register(String name, T data) {
