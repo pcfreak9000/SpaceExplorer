@@ -83,7 +83,7 @@ public class Launcher {
 		OmniKryptecEngine.instance().getGameSettings().setKeySettings(new KeySettings());
 		//OmniKryptecEngine.instance().getPostprocessor().addStage(new ContrastchangeStage(-100));
 
-		//OmniKryptecEngine.instance().getPostprocessor().addStage(new Light2DProcessor(World.RENDERER));
+		OmniKryptecEngine.instance().getPostprocessor().addStage(new Light2DProcessor(World.RENDERER));
 		// OmniKryptecEngine.instance().getPostprocessor().addStage(new BloomStage(new
 		// CompleteGaussianBlurStage(true, 100, 100), new Vector2f(1)));
 		// OmniKryptecEngine.instance().getPostprocessor().addStage(new
