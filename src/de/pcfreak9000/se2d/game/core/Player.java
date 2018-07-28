@@ -45,6 +45,10 @@ public class Player extends Sprite {
 	@Override
 	protected void update() {
 		Vector2 vel = new Vector2();
+		float m = 1;
+		if(keysettings.isPressed(KeyManager.KEY_FASTER)) {
+			m = 10;
+		}
 		if (keysettings.isPressed(KeyManager.KEY_PLAYER_MOVE_FORWARD)) {
 			vel.y = DY_SPEED;
 		} else if (keysettings.isPressed(KeyManager.KEY_PLAYER_MOVE_BACKWARD)) {
@@ -55,6 +59,7 @@ public class Player extends Sprite {
 		} else if (keysettings.isPressed(KeyManager.KEY_PLAYER_MOVE_RIGHT)) {
 			vel.x = DX_SPEED;
 		}
+		vel.multiply(m);
 		// meh but makes it timeindependent
 		body.applyVelocityImpulse(vel.multiply(Instance.getDeltaTimeSf() * 100));
 		SpaceExplorer2D.getSpaceExplorer2D().getUniverse().getPlanetCamera().getTransform().setPosition(

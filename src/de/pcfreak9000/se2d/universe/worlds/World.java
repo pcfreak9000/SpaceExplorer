@@ -86,8 +86,8 @@ public class World {
 		}
 	}
 
-	public int getRadius() {
-		return chunksSize;
+	public int getChunkRadius() {
+		return chunksSize>>1;
 	}
 
 }

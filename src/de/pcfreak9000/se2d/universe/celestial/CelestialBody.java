@@ -21,13 +21,16 @@ public class CelestialBody implements ChunkGenerator{
 
 	private String name;
 	private long seed;
-
+	private int tileRadius;
+	
 	public CelestialBody(CelestialBodyDefinition generator, Orbit orbit, int world_radius, String name, long seed) {
 		GameRegistry.getCelestialBodyRegistry().checkRegistered(generator);
 		this.generator = generator;
 		this.orbit = orbit;
 		this.name = name;
 		this.seed = seed;
+		this.tileRadius = world_radius;
+		//If not visitable don't do this:
 		this.world = new World(name, this, world_radius);
 	}
 
@@ -47,6 +50,10 @@ public class CelestialBody implements ChunkGenerator{
 		return seed;
 	}
 
+	public int getTileRadius() {
+		return tileRadius;
+	}
+	
 	public CelestialBodyDefinition getDefinition() {
 		return generator;
 	}
@@ -108,5 +115,8 @@ public class CelestialBody implements ChunkGenerator{
 	public void adjustTile(Chunk c, Biome b, Tile t) {
 	}
 
-	
+	@Override
+	public String toString() {
+		return "CB "+this.getClass().getSimpleName()+", name=\""+name+"\", r="+tileRadius+"ts; "+generator.toString()+", s="+seed;
+	}
 }

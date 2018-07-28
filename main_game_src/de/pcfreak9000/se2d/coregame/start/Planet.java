@@ -23,7 +23,7 @@ public class Planet extends CelestialBody{
 
 	@Override
 	public boolean inBounds(int globalTileX, int globalTileY) {
-		return true;
+		return globalTileX*globalTileX+globalTileY*globalTileY<=getTileRadius()*getTileRadius();
 	}
 	
 	@Override

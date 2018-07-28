@@ -9,7 +9,7 @@ public class StartPlanetDef extends CelestialBodyDefinition{
 
 	@Override
 	public CelestialBody generate(long seed, SpaceCoordinates sc, CelestialBody parent) {
-		Planet planet = new Planet(this, new Orbit(), 10000, "tstst", sc.adjustSeedToPos(seed));
+		Planet planet = new Planet(this, new Orbit(), 1000, "tstst", sc.adjustSeedToPos(seed));
 		return planet;
 	}
 

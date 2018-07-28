@@ -34,4 +34,9 @@ public abstract class CelestialBodyDefinition {
 	public boolean isStartCapable() {
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return "CBD "+this.getClass().getSimpleName()+" isSC="+isStartCapable();
+	}
 }

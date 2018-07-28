@@ -36,6 +36,7 @@ public class Universe {
 				.get(rand.nextInt(GameRegistry.getCelestialBodyRegistry().getStartCapables().size()))
 				.generate(seed, new SpaceCoordinates(), null);
 		p.getWorld().load(currentPlayer);
+		System.out.println(p);
 	}
 
 	public Camera getPlanetCamera() {
