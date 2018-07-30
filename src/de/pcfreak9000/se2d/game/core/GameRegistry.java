@@ -17,7 +17,7 @@ public class GameRegistry<T> {
 	private static final CelestialBodyRegistry celestialBodyRegistry;
 	private static final GameRegistry<EntityDefinition> worldObjectRegistry;
 	private static final GameRegistry<Item> itemRegistry;
-	
+
 	public static final TileDefinition MISSING_DEFINITION;
 	public static final DefaultBiome DEFAULT_BIOME;
 
@@ -44,15 +44,15 @@ public class GameRegistry<T> {
 	public static CelestialBodyRegistry getCelestialBodyRegistry() {
 		return celestialBodyRegistry;
 	}
-	
+
 	public static GameRegistry<EntityDefinition> getWorldObjectRegistry() {
 		return worldObjectRegistry;
 	}
 
-	public static GameRegistry<Item> getItemRegistry(){
+	public static GameRegistry<Item> getItemRegistry() {
 		return itemRegistry;
 	}
-	
+
 	private HashMap<String, T> registered = new HashMap<>();
 
 	public GameRegistry<T> register(String name, T data) {
@@ -80,6 +80,5 @@ public class GameRegistry<T> {
 			throw new IllegalStateException(data.getClass().getSimpleName() + " " + data + " is unregistered!");
 		}
 	}
-
 
 }

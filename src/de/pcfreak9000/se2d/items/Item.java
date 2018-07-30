@@ -6,22 +6,21 @@ public class Item {
 	private String description;
 	private int maxstacksize = ItemStack.MAX_STACKSIZE;
 	private String texture;
-	
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public int getMaxStackSize() {
 		return maxstacksize;
 	}
-	
+
 	public String getTexture() {
 		return texture;
 	}
-	
+
 }

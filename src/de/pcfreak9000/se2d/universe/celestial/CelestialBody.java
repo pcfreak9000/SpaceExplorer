@@ -13,7 +13,7 @@ import de.pcfreak9000.se2d.universe.worlds.Chunk;
 import de.pcfreak9000.se2d.universe.worlds.ChunkGenerator;
 import de.pcfreak9000.se2d.universe.worlds.World;
 
-public class CelestialBody implements ChunkGenerator{
+public class CelestialBody implements ChunkGenerator {
 
 	private CelestialBodyDefinition generator;
 	private Orbit orbit;
@@ -22,7 +22,7 @@ public class CelestialBody implements ChunkGenerator{
 	private String name;
 	private long seed;
 	private int tileRadius;
-	
+
 	public CelestialBody(CelestialBodyDefinition generator, Orbit orbit, int world_radius, String name, long seed) {
 		GameRegistry.getCelestialBodyRegistry().checkRegistered(generator);
 		this.generator = generator;
@@ -30,7 +30,7 @@ public class CelestialBody implements ChunkGenerator{
 		this.name = name;
 		this.seed = seed;
 		this.tileRadius = world_radius;
-		//If not visitable don't do this:
+		// If not visitable don't do this:
 		this.world = new World(name, this, world_radius);
 	}
 
@@ -53,7 +53,7 @@ public class CelestialBody implements ChunkGenerator{
 	public int getTileRadius() {
 		return tileRadius;
 	}
-	
+
 	public CelestialBodyDefinition getDefinition() {
 		return generator;
 	}
@@ -61,7 +61,7 @@ public class CelestialBody implements ChunkGenerator{
 	public boolean isVisitable() {
 		return world != null;
 	}
-	
+
 	@Override
 	public void generateChunk(Chunk c) {
 		if (!isVisitable()) {
@@ -76,7 +76,7 @@ public class CelestialBody implements ChunkGenerator{
 					Biome biome = getBiomeDefinition(generator.getBiomeDefinitions().stream()
 							.filter((def) -> def.likes(this)).collect(Collectors.toList()), globalTileX, globalTileY)
 									.getBiome(seed);
-					Tile tile = biome.getTileDefinition(globalTileX, globalTileY).newTile();
+					Tile tile = biome.getTileDefinition(globalTileX, globalTileY).newTile(globalTileX, globalTileY);
 					tile.getTransform().setPosition(globalTileX * TileDefinition.TILE_SIZE,
 							globalTileY * TileDefinition.TILE_SIZE);
 					adjustTile(c, biome, tile);
@@ -108,6 +108,7 @@ public class CelestialBody implements ChunkGenerator{
 
 	/**
 	 * invalidate the tile, whatever
+	 * 
 	 * @param c
 	 * @param b
 	 * @param t
@@ -117,6 +118,7 @@ public class CelestialBody implements ChunkGenerator{
 
 	@Override
 	public String toString() {
-		return "CB "+this.getClass().getSimpleName()+", name=\""+name+"\", r="+tileRadius+"ts; "+generator.toString()+", s="+seed;
+		return "CB " + this.getClass().getSimpleName() + ", name=\"" + name + "\", r=" + tileRadius + "ts; "
+				+ generator.toString() + ", s=" + seed;
 	}
 }

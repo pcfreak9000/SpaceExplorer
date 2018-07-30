@@ -11,8 +11,7 @@ public class KeyManager {
 	public static final String KEY_PLAYER_MOVE_RIGHT = "KEY_PLAYER_MOVE_RIGHT";
 	public static final String KEY_PLAYER_MOVE_LEFT = "KEY_PLAYER_MOVE_LEFT";
 	public static final String KEY_FASTER = "KEY_FASTER";
-	
-	
+
 	static {
 		Instance.getKeySettings().setKey(KEY_PLAYER_MOVE_FORWARD, GLFW.GLFW_KEY_W, true);
 		Instance.getKeySettings().setKey(KEY_PLAYER_MOVE_BACKWARD, GLFW.GLFW_KEY_S, true);

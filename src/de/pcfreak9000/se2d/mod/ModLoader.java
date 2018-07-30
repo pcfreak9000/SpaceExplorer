@@ -101,8 +101,8 @@ public class ModLoader {
 			} catch (IllegalAccessException | SecurityException e) {
 				Se2Dlog.logErr("Illegal Access: " + cl.getAnnotation(Mod.class).id(), e);
 				continue;
-			} catch(LinkageError e) {
-				Se2Dlog.log(LogLevel.ERROR, "Incompatible Mod: "+th.modclass);
+			} catch (LinkageError e) {
+				Se2Dlog.log(LogLevel.ERROR, "Incompatible Mod: " + th.modclass);
 				continue;
 			}
 			ModContainer container = new ModContainer(cl, cl.getAnnotation(Mod.class), instance);
@@ -219,8 +219,9 @@ public class ModLoader {
 					} catch (ClassNotFoundException e) {
 						Se2Dlog.log(LogLevel.ERROR, "Could not load: " + entry.getName());
 						continue;
-					} catch(LinkageError e) {
-						Se2Dlog.log(LogLevel.INFO, "Unexpected behaviour of a class detected: "+entry.getName().replace("/", ".").replace(".class", ""));
+					} catch (LinkageError e) {
+						Se2Dlog.log(LogLevel.INFO, "Unexpected behaviour of a class detected: "
+								+ entry.getName().replace("/", ".").replace(".class", ""));
 						continue;
 					}
 					if (clazz.isAnnotationPresent(Mod.class)) {

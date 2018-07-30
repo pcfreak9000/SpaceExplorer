@@ -4,16 +4,15 @@ import de.pcfreak9000.se2d.game.core.GameRegistry;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.gameobject.component.PhysicsComponent2D;
 import omnikryptec.physics.AdvancedBody;
-import omnikryptec.physics.AdvancedRectangle;
 import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.util.ConverterUtil;
 import omnikryptec.util.EnumCollection.UpdateType;
 
-public class Entity extends Sprite{
+public class Entity extends Sprite {
 
 	private EntityDefinition mydef;
 	private Sprite sprite;
-	
+
 	public Entity(EntityDefinition def) {
 		super(ResourceLoader.MISSING_TEXTURE);
 		GameRegistry.getWorldObjectRegistry().checkRegistered(def);
@@ -27,11 +26,11 @@ public class Entity extends Sprite{
 		mydef.configureBody(body);
 		body.getTransform().setTranslation(ConverterUtil.convertToPhysics2D(sprite.getTransform().getPosition(true)));
 		sprite.addComponent(new PhysicsComponent2D(body));
-		
+
 	}
 
 	public EntityDefinition getDefinition() {
 		return mydef;
 	}
-	
+
 }

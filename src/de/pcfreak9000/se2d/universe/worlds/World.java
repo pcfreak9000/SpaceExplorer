@@ -28,7 +28,7 @@ public class World {
 			int camY = Chunk.toChunk(getCamera().getTransform().getPosition(true).y);
 			for (int i = -1; i <= 1; i++) {
 				for (int j = -1; j <= 1; j++) {
-					generateNeeded(camX+i, camY+j);
+					generateNeeded(camX + i, camY + j);
 				}
 			}
 		}
@@ -87,7 +87,7 @@ public class World {
 	}
 
 	public int getChunkRadius() {
-		return chunksSize>>1;
+		return chunksSize >> 1;
 	}
 
 }

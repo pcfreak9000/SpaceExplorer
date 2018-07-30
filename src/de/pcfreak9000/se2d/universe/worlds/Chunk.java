@@ -55,7 +55,7 @@ public class Chunk extends Sprite {
 	public void addNonTile(Entity obj) {
 		others.add(obj);
 	}
-	
+
 	public void compile() {
 		if (!compiled) {
 			compiled = true;

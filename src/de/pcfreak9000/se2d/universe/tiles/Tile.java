@@ -4,16 +4,18 @@ import de.pcfreak9000.se2d.game.core.GameRegistry;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.util.EnumCollection.FixedSizeMode;
-import omnikryptec.util.Maths;
 
 public class Tile extends Sprite {
 
 	private TileDefinition myDefinition;
 
 	private boolean validPosition = true;
+	private int gtx, gty;
 
-	public Tile(TileDefinition def) {
+	public Tile(TileDefinition def, int gtx, int gty) {
 		super(ResourceLoader.MISSING_TEXTURE);
+		this.gtx = gtx;
+		this.gty = gty;
 		GameRegistry.getTileRegistry().checkRegistered(def);
 		myDefinition = def;
 		setFixedSizeMode(FixedSizeMode.ON);
@@ -25,20 +27,20 @@ public class Tile extends Sprite {
 		return myDefinition;
 	}
 
-	public long getTileX() {
-		return Maths.fastFloor(getTransform().getPosition(true).x / TileDefinition.TILE_SIZE);
-	}
-
-	public long getTileY() {
-		return Maths.fastFloor(getTransform().getPosition(true).y / TileDefinition.TILE_SIZE);
-	}
-
 	public void invalidate() {
 		validPosition = false;
 	}
 
 	public boolean isValid() {
 		return validPosition;
+	}
+
+	public int getTileX() {
+		return gtx;
+	}
+
+	public int getTileY() {
+		return gty;
 	}
 
 	@Override

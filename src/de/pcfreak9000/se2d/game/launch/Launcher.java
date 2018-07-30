@@ -11,8 +11,6 @@ import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
 import omnikryptec.main.DefaultGameLoop;
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.postprocessing.stages.ColorSpaceStage;
-import omnikryptec.postprocessing.stages.ContrastchangeStage;
 import omnikryptec.postprocessing.stages.Light2DProcessor;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.settings.KeySettings;
@@ -71,17 +69,20 @@ public class Launcher {
 						.setInteger(GameSettings.CHUNK_WIDTH_2D, (int) Chunk.CHUNKSIZE)
 						.setInteger(GameSettings.CHUNK_HEIGHT_2D, (int) Chunk.CHUNKSIZE)
 						.setInteger(GameSettings.CHUNK_OFFSET_2D_X, 1).setInteger(GameSettings.CHUNK_OFFSET_2D_Y, 1)
-						.setBoolean(GameSettings.DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE, true)
+						.setBoolean(GameSettings.DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE, false)// <<-- WTF wieso war das
+																							// true?
 						.setBoolean(GameSettings.DYN4J_PHYSICS_VAR_TS, false).setDouble(GameSettings.PIXELS_PER_METER,
 								PIXELS_PER_METER),
 				new GLFWInfo(3, 2, true, false, 1280, 720));
 		Display.setAspectRatio(ASPECT_RATIO);
 		OmniKryptecEngine.instance().setFboModes(OmniKryptecEngine.FboModes.SCENE);
 		OmniKryptecEngine.instance().refreshFbos();
-		DefaultGameLoop l = (DefaultGameLoop)OmniKryptecEngine.instance().getLoop();
-		l.setMode( DefaultGameLoop.MODE_2D | DefaultGameLoop.MODE_GUI | DefaultGameLoop.MODE_PP | DefaultGameLoop.MODE_GL_TASKS);
+		DefaultGameLoop l = (DefaultGameLoop) OmniKryptecEngine.instance().getLoop();
+		l.setMode(DefaultGameLoop.MODE_2D | DefaultGameLoop.MODE_GUI | DefaultGameLoop.MODE_PP
+				| DefaultGameLoop.MODE_GL_TASKS);
 		OmniKryptecEngine.instance().getGameSettings().setKeySettings(new KeySettings());
-		//OmniKryptecEngine.instance().getPostprocessor().addStage(new ContrastchangeStage(-100));
+		// OmniKryptecEngine.instance().getPostprocessor().addStage(new
+		// ContrastchangeStage(-100));
 
 		OmniKryptecEngine.instance().getPostprocessor().addStage(new Light2DProcessor(World.RENDERER));
 		// OmniKryptecEngine.instance().getPostprocessor().addStage(new BloomStage(new

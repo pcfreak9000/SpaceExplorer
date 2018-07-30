@@ -6,10 +6,10 @@ import de.pcfreak9000.se2d.universe.tiles.Tile;
 import de.pcfreak9000.se2d.universe.tiles.TileDefinition;
 import de.pcfreak9000.se2d.universe.worlds.Chunk;
 
-public class DefaultBiome implements BiomeDefinition, Biome{
+public class DefaultBiome implements BiomeDefinition, Biome {
 
 	@Override
-	public Biome getBiome(long seed) {		
+	public Biome getBiome(long seed) {
 		return this;
 	}
 
@@ -30,7 +30,7 @@ public class DefaultBiome implements BiomeDefinition, Biome{
 
 	@Override
 	public void decorate(Chunk c, Tile tile) {
-		
+
 	}
 
 }
