@@ -18,6 +18,7 @@ public class Tile extends Sprite {
 		this.gty = gty;
 		GameRegistry.getTileRegistry().checkRegistered(def);
 		myDefinition = def;
+		setUpdateType(def.getUpdateType());
 		setFixedSizeMode(FixedSizeMode.ON);
 		setFixedSize(TileDefinition.TILE_SIZE, TileDefinition.TILE_SIZE);
 		setLayer(TileDefinition.TILE_LAYER);

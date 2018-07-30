@@ -1,5 +1,7 @@
 package de.pcfreak9000.se2d.universe.tiles;
 
+import omnikryptec.util.EnumCollection.UpdateType;
+
 public class TileDefinition {
 
 	public static final float TILE_SIZE = 24;
@@ -7,6 +9,7 @@ public class TileDefinition {
 
 	private String tex;
 	private boolean prerenderable = true;
+	private UpdateType type = UpdateType.STATIC;
 
 	public TileDefinition(String t) {
 		this(t, true);
@@ -22,6 +25,15 @@ public class TileDefinition {
 
 	public boolean isPrerenderable() {
 		return prerenderable;
+	}
+
+	public UpdateType getUpdateType() {
+		return type;
+	}
+
+	public TileDefinition setUpdateType(UpdateType t) {
+		this.type = t;
+		return this;
 	}
 
 	public Tile newTile(int gtx, int gty) {
