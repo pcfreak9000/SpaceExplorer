@@ -5,6 +5,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.pcfreak9000.se2d.util.Private;
+
+/**
+ * Discovers mods
+ * @author pcfreak9000
+ *
+ */
+@Private
 public class ModDiscoverer {
 
 	private static Pattern zipJar = Pattern.compile("(.+).(zip|jar)$");

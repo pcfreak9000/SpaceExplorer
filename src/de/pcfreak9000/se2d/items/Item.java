@@ -1,5 +1,10 @@
 package de.pcfreak9000.se2d.items;
 
+/**
+ * represents an Item
+ * @author pcfreak9000
+ *
+ */
 public class Item {
 
 	private String name;

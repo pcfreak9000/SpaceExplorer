@@ -2,6 +2,14 @@ package de.pcfreak9000.se2d.mod;
 
 import java.util.Arrays;
 
+import de.pcfreak9000.se2d.util.Private;
+
+/**
+ * contains a mod
+ * @author pcfreak9000
+ *
+ */
+@Private
 public class ModContainer {
 
 	private Mod mod;

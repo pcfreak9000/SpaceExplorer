@@ -8,8 +8,15 @@ import de.pcfreak9000.se2d.universe.biome.DefaultBiome;
 import de.pcfreak9000.se2d.universe.celestial.CelestialBodyRegistry;
 import de.pcfreak9000.se2d.universe.objects.EntityDefinition;
 import de.pcfreak9000.se2d.universe.tiles.TileDefinition;
+import de.pcfreak9000.se2d.util.RegisterSensitive;
 import de.pcfreak9000.se2d.util.Se2Dlog;
 
+/**
+ * used to register everything annotated by {@link RegisterSensitive}
+ * @author pcfreak9000
+ *
+ * @param <T> the Type of whats being registered
+ */
 public class GameRegistry<T> {
 
 	private static final GameRegistry<TileDefinition> tileRegistry;

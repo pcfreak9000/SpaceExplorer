@@ -2,10 +2,12 @@ package de.pcfreak9000.se2d.renderer;
 
 import java.util.Comparator;
 
+import de.pcfreak9000.se2d.util.Private;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.renderer.d2.DefaultRenderer2D;
 
+@Private
 public class PlanetRenderer extends DefaultRenderer2D {
 
 	private static final Comparator<Sprite> COMP = new Comparator<Sprite>() {

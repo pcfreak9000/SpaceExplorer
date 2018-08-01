@@ -4,7 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.codemakers.io.file.AdvancedFile;
+import de.pcfreak9000.se2d.util.Private;
 
+/**
+ * coordinates mod discovering, loading and event steps.
+ * @author pcfreak9000
+ *
+ */
+@Private
 public class ModManager {
 
 	private ModLoader loader;

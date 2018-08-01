@@ -5,7 +5,9 @@ import de.pcfreak9000.se2d.universe.celestial.CelestialBody;
 import de.pcfreak9000.se2d.universe.tiles.Tile;
 import de.pcfreak9000.se2d.universe.tiles.TileDefinition;
 import de.pcfreak9000.se2d.universe.worlds.Chunk;
+import de.pcfreak9000.se2d.util.Private;
 
+@Private
 public class DefaultBiome implements BiomeDefinition, Biome {
 
 	@Override

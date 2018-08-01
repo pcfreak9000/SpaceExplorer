@@ -3,6 +3,11 @@ package de.pcfreak9000.se2d.mod.event;
 import de.pcfreak9000.se2d.game.launch.SpaceExplorer2D;
 import omnikryptec.event.eventV2.Event;
 
+/**
+ * the first mod init event.
+ * @author pcfreak9000
+ *
+ */
 public class Se2DModPreInitEvent extends Event {
 
 	public Se2DModPreInitEvent() {

@@ -20,11 +20,18 @@ import de.pcfreak9000.se2d.game.launch.SpaceExplorer2D;
 import de.pcfreak9000.se2d.mod.event.Se2DModInitEvent;
 import de.pcfreak9000.se2d.mod.event.Se2DModPostInitEvent;
 import de.pcfreak9000.se2d.mod.event.Se2DModPreInitEvent;
+import de.pcfreak9000.se2d.util.Private;
 import de.pcfreak9000.se2d.util.Se2Dlog;
 import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
+/**
+ * loads mods.
+ * @author pcfreak9000
+ *
+ */
+@Private
 public class ModLoader {
 
 	private static class TmpHolder {
