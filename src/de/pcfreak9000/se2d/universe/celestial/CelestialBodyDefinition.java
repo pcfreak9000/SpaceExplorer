@@ -3,9 +3,17 @@ package de.pcfreak9000.se2d.universe.celestial;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.pcfreak9000.se2d.game.core.GameRegistry;
 import de.pcfreak9000.se2d.universe.SpaceCoordinates;
 import de.pcfreak9000.se2d.universe.biome.BiomeDefinition;
+import de.pcfreak9000.se2d.util.RegisterSensitive;
 
+/**
+ * Defines the general properties of a {@link CelestialBody}.
+ * @author pcfreak9000
+ *
+ */
+@RegisterSensitive
 public abstract class CelestialBodyDefinition {
 
 	private Set<BiomeDefinition> definitions = new HashSet<>();

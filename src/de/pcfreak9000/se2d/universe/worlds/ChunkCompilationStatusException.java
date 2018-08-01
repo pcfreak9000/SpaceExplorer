@@ -1,5 +1,13 @@
 package de.pcfreak9000.se2d.universe.worlds;
 
+import de.pcfreak9000.se2d.util.Private;
+
+/**
+ * Thrown in the {@link Chunk}
+ * @author pcfreak9000
+ *
+ */
+@Private
 public class ChunkCompilationStatusException extends RuntimeException {
 
 	/**

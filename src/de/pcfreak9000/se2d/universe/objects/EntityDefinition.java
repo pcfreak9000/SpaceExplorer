@@ -1,7 +1,9 @@
 package de.pcfreak9000.se2d.universe.objects;
 
+import de.pcfreak9000.se2d.util.RegisterSensitive;
 import omnikryptec.physics.AdvancedBody;
 
+@RegisterSensitive
 public class EntityDefinition {
 
 	private String texture;

@@ -9,10 +9,21 @@ import omnikryptec.physics.Dyn4JPhysicsWorld;
 import omnikryptec.util.ConverterUtil;
 import omnikryptec.util.Instance;
 
+/**
+ * An easy to use static solid Body (e.g. can be used as wall)
+ * @author pcfreak9000
+ *
+ */
 public class StaticRectCollider {
 
 	private Body body;
 
+	/**
+	 * 
+	 * @param w width
+	 * @param h height
+	 * @param pos global position
+	 */
 	public StaticRectCollider(float w, float h, Vector2f pos) {
 		body = new Body();
 		body.addFixture(new AdvancedRectangle(TileDefinition.TILE_SIZE, TileDefinition.TILE_SIZE));
@@ -23,6 +34,10 @@ public class StaticRectCollider {
 		body.setMass(MassType.INFINITE);
 	}
 
+	/**
+	 * adds this Body to the physics world
+	 * @return
+	 */
 	public StaticRectCollider add() {
 		((Dyn4JPhysicsWorld) Instance.getCurrent2DScene().getPhysicsWorld()).getWorld().addBody(body);
 		return this;

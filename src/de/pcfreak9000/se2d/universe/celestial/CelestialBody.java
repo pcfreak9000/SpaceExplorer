@@ -13,6 +13,11 @@ import de.pcfreak9000.se2d.universe.worlds.Chunk;
 import de.pcfreak9000.se2d.universe.worlds.ChunkGenerator;
 import de.pcfreak9000.se2d.universe.worlds.World;
 
+/**
+ * Represents all kinds of CelestialBodys
+ * @author pcfreak9000
+ *
+ */
 public class CelestialBody implements ChunkGenerator {
 
 	private CelestialBodyDefinition generator;
@@ -23,6 +28,14 @@ public class CelestialBody implements ChunkGenerator {
 	private long seed;
 	private int tileRadius;
 
+	/**
+	 * 
+	 * @param generator the CBs generating {@link CelestialBodyDefinition}
+	 * @param orbit instance of {@link Orbit} containing information about this CBs orbit
+	 * @param world_radius the biggest radius of the {@link World}, negative values will result in a non-visitable CB
+	 * @param name the CBs name
+	 * @param seed a seed for this CB at this position
+	 */
 	public CelestialBody(CelestialBodyDefinition generator, Orbit orbit, int world_radius, String name, long seed) {
 		GameRegistry.getCelestialBodyRegistry().checkRegistered(generator);
 		this.generator = generator;
@@ -30,8 +43,9 @@ public class CelestialBody implements ChunkGenerator {
 		this.name = name;
 		this.seed = seed;
 		this.tileRadius = world_radius;
-		// If not visitable don't do this:
-		this.world = new World(name, this, world_radius);
+		if(tileRadius>0) {
+			this.world = new World(name, this, world_radius);
+		}
 	}
 
 	public Orbit getOrbit() {
@@ -90,28 +104,34 @@ public class CelestialBody implements ChunkGenerator {
 	}
 
 	/**
-	 * For the same position the same BiomeDefinition must be returned for this
+	 * For the same position the same {@link BiomeDefinition} must be returned for this
 	 * CelestialBody.
 	 * 
-	 * @param possibilities
+	 * @param possibilities possible BiomeDefinitions
 	 * @param globalTileX
 	 * @param globalTileY
-	 * @return
+	 * @return a {@link BiomeDefinition}
 	 */
 	public BiomeDefinition getBiomeDefinition(List<BiomeDefinition> possibilities, int globalTileX, int globalTileY) {
 		return possibilities.get(0);
 	}
 
+	/**
+	 * Is the position in the boundaries of the {@link CelestialBody}?
+	 * @param globalTileX
+	 * @param globalTileY
+	 * @return
+	 */
 	public boolean inBounds(int globalTileX, int globalTileY) {
 		return true;
 	}
 
 	/**
-	 * invalidate the tile, whatever
+	 * e.g. invalidate the {@link Tile}
 	 * 
-	 * @param c
-	 * @param b
-	 * @param t
+	 * @param c the tile's {@link Chunk}
+	 * @param b the tile's {@link Biome}
+	 * @param t the tile itself
 	 */
 	public void adjustTile(Chunk c, Biome b, Tile t) {
 	}

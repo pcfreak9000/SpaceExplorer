@@ -1,19 +1,31 @@
 package de.pcfreak9000.se2d.universe.biome;
 
 import de.pcfreak9000.se2d.universe.celestial.CelestialBody;
+import de.pcfreak9000.se2d.util.RegisterSensitive;
 
+/**
+ * Defines the general properties of a {@link Biome}. Usually generates a {@link Biome} for a given seed.
+ * @author pcfreak9000
+ *
+ */
+@RegisterSensitive
 public interface BiomeDefinition {
 
 	/**
-	 * For the same seed the same Biome with the same properties must be produced.
+	 * For the same seed the same {@link Biome} with the same properties must be produced.
 	 * 
-	 * @param seed
-	 * @return
+	 * @param seed the Biome's seed
+	 * @return a {@link Biome}
 	 */
 	Biome getBiome(long seed);
 
 	float evaluate(CelestialBody body);
 
+	/**
+	 * can this {@link BiomeDefinition} be used with that {@link CelestialBody}?
+	 * @param body the {@link CelestialBody}
+	 * @return boolean
+	 */
 	boolean likes(CelestialBody body);
 
 }

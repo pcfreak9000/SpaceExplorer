@@ -3,12 +3,19 @@ package de.pcfreak9000.se2d.universe.worlds;
 import de.pcfreak9000.se2d.game.core.Player;
 import de.pcfreak9000.se2d.game.launch.SpaceExplorer2D;
 import de.pcfreak9000.se2d.renderer.PlanetRenderer;
+import de.pcfreak9000.se2d.universe.tiles.Tile;
+import de.pcfreak9000.se2d.util.Private;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene2D;
 import omnikryptec.physics.Dyn4JPhysicsWorld;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
+/**
+ * The data structure representing a World of {@link Tile}s and other objects.
+ * @author pcfreak9000
+ *
+ */
 public class World {
 
 	private class WorldScene extends Scene2D {
@@ -35,6 +42,7 @@ public class World {
 
 	}
 
+	@Private
 	public static final PlanetRenderer RENDERER = new PlanetRenderer();
 
 	private ChunkGenerator generator;
@@ -43,6 +51,12 @@ public class World {
 
 	private int chunksSize;
 
+	/**
+	 * 
+	 * @param name the name of this Worlds Scene
+	 * @param generator the {@link ChunkGenerator} of this {@link World}
+	 * @param tileRadius the positive radius of this {@link World} in {@link Tile}s
+	 */
 	public World(String name, ChunkGenerator generator, int tileRadius) {
 		this.chunksSize = (int) Math.ceil((double) tileRadius / Chunk.CHUNKSIZE_T);
 		this.generator = generator;
@@ -54,16 +68,30 @@ public class World {
 		scene = new WorldScene(name);
 	}
 
+	/**
+	 * sets this {@link World} as displayed {@link World}
+	 * @param p
+	 */
 	public void load(Player p) {
 		OmniKryptecEngine.instance().addAndSetScene(scene);
 		scene.addGameObject(p);
 	}
 
+	/**
+	 * removes this {@link World} from the Display
+	 * @param p
+	 */
 	public void unload(Player p) {
 		OmniKryptecEngine.instance().setScene2D(null);
 		scene.removeGameObject(p);
 	}
 
+	/**
+	 * 
+	 * @param cx global chunk x
+	 * @param cy global chunk y
+	 * @return a Chunk
+	 */
 	public Chunk getChunk(int cx, int cy) {
 		if (!inBounds(cx, cy)) {
 			return null;
@@ -71,11 +99,22 @@ public class World {
 		return chunks[cx + (chunksSize >> 1)][cy + (chunksSize >> 1)];
 	}
 
+	/**
+	 * Is the chunk position contained in the boundaries of this {@link World}?
+	 * @param cx global chunk x
+	 * @param cy global chunk y
+	 * @return boolean
+	 */
 	public boolean inBounds(int cx, int cy) {
 		return !(cx >= (chunksSize >> 1) || cy >= (chunksSize >> 1) || cx < -(chunksSize >> 1)
 				|| cy < -(chunksSize >> 1));
 	}
 
+	/**
+	 * 
+	 * @param cx global chunk x
+	 * @param cy global chunk y
+	 */
 	public void generateNeeded(int cx, int cy) {
 		if (inBounds(cx, cy) && getChunk(cx, cy) == null) {
 			Chunk newChunk = new Chunk(cx, cy);

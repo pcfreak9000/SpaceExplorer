@@ -6,6 +6,7 @@ import de.pcfreak9000.se2d.game.launch.Launcher;
 import de.pcfreak9000.se2d.universe.objects.Entity;
 import de.pcfreak9000.se2d.universe.tiles.Tile;
 import de.pcfreak9000.se2d.universe.tiles.TileDefinition;
+import de.pcfreak9000.se2d.util.Private;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.main.Scene2D;
@@ -13,6 +14,12 @@ import omnikryptec.renderer.d3.RenderMap;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.util.Maths;
 
+/**
+ * a Chunk represents a collection of {@link Tile}s and other Objects. Automatically created by a {@link World}
+ * @author pcfreak9000
+ *
+ */
+@Private
 public class Chunk extends Sprite {
 
 	public static final int CHUNKSIZE_T = 53;
@@ -27,16 +34,34 @@ public class Chunk extends Sprite {
 	private int cx, cy;
 	private boolean compiled = false;
 
+	/**
+	 * 
+	 * @param x global chunk x
+	 * @param y global chunk y
+	 */
 	public Chunk(int x, int y) {
 		getTransform().setPosition(x * CHUNKSIZE, y * CHUNKSIZE);
 		this.cx = x;
 		this.cy = y;
 	}
 
+	/**
+	 * 
+	 * @param crtx chunk tile x
+	 * @param crty chunk tile y
+	 * @return the {@link Tile} at the specified position
+	 */
 	public Tile getTile(int crtx, int crty) {
 		return array[crtx][crty];
 	}
 
+	/**
+	 * adds a {@link Tile} to this {@link Chunk} at the specified position.
+	 * @param tile the {@link Tile}
+	 * @param crtx chunk tile x
+	 * @param crty chunk tile y
+	 * @throws ChunkCompilationStatusException if this {@link Chunk} is already compiled.
+	 */
 	public void addTile(Tile tile, int crtx, int crty) {
 		if (compiled) {
 			throw new ChunkCompilationStatusException("Can't add tiles to an already compiled Chunk!");
@@ -52,6 +77,10 @@ public class Chunk extends Sprite {
 		}
 	}
 
+	/**
+	 * adds a {@link Entity} to this {@link Chunk}
+	 * @param obj the {@link Entity}
+	 */
 	public void addNonTile(Entity obj) {
 		others.add(obj);
 	}
@@ -84,6 +113,12 @@ public class Chunk extends Sprite {
 		return fsize;
 	}
 
+	/**
+	 * adds this {@link Chunk} and its contents to a Scene.
+	 * @param s the Scene
+	 * @return this {@link Chunk}
+	 * @throws ChunkCompilationStatusException if this {@link Chunk} is not compiled yet.
+	 */
 	public Chunk addTo(Scene2D s) {
 		if (!compiled) {
 			throw new ChunkCompilationStatusException("Can't add an uncompiled Chunk!");
@@ -95,6 +130,11 @@ public class Chunk extends Sprite {
 		return this;
 	}
 
+	/**
+	 * removes this {@link Chunk} and its contents from a Scene 
+	 * @param s the Scene
+	 * @return this {@link Chunk}
+	 */
 	public Chunk removeFrom(Scene2D s) {
 		if (!compiled) {
 			throw new ChunkCompilationStatusException("Can't remove an uncompiled Chunk!");
@@ -106,6 +146,11 @@ public class Chunk extends Sprite {
 		return this;
 	}
 
+	/**
+	 * Draws this {@link Chunk} and its contents on a SpriteBatch
+	 * 
+	 * @throws ChunkCompilationStatusException if this {@link Chunk} is has not been compiled yet
+	 */
 	@Override
 	public void paint(SpriteBatch batch) {
 		if (!compiled) {

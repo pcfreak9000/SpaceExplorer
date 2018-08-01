@@ -1,10 +1,17 @@
 package de.pcfreak9000.se2d.universe.tiles;
 
 import de.pcfreak9000.se2d.game.core.GameRegistry;
+import de.pcfreak9000.se2d.universe.celestial.CelestialBody;
+import de.pcfreak9000.se2d.universe.worlds.World;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.util.EnumCollection.FixedSizeMode;
 
+/**
+ * the class representing a Tile in the {@link World}
+ * @author pcfreak9000
+ *
+ */
 public class Tile extends Sprite {
 
 	private TileDefinition myDefinition;
@@ -12,6 +19,12 @@ public class Tile extends Sprite {
 	private boolean validPosition = true;
 	private int gtx, gty;
 
+	/**
+	 * Constructs a new Tile.That is usually done in {@link TileDefinition#newTile(int, int)}
+	 * @param def the Tile's {@link TileDefinition}
+	 * @param gtx global tile x
+	 * @param gty global tile y
+	 */
 	public Tile(TileDefinition def, int gtx, int gty) {
 		super(ResourceLoader.MISSING_TEXTURE);
 		this.gtx = gtx;
@@ -28,6 +41,9 @@ public class Tile extends Sprite {
 		return myDefinition;
 	}
 
+	/**
+	 * Only during the generation of a {@link World}. Usually, an invalid Tile does not support decoration (e.g. this can be used for the edge of a {@link CelestialBody})
+	 */
 	public void invalidate() {
 		validPosition = false;
 	}
