@@ -7,34 +7,43 @@ import de.pcfreak9000.se2d.game.core.GameRegistry;
 import de.pcfreak9000.se2d.universe.Orbit;
 import de.pcfreak9000.se2d.universe.biome.Biome;
 import de.pcfreak9000.se2d.universe.biome.BiomeDefinition;
+import de.pcfreak9000.se2d.universe.biome.Field;
 import de.pcfreak9000.se2d.universe.tiles.Tile;
 import de.pcfreak9000.se2d.universe.tiles.TileDefinition;
 import de.pcfreak9000.se2d.universe.worlds.Chunk;
-import de.pcfreak9000.se2d.universe.worlds.ChunkGenerator;
+import de.pcfreak9000.se2d.universe.worlds.Generatable;
 import de.pcfreak9000.se2d.universe.worlds.World;
 
 /**
  * Represents all kinds of CelestialBodys
+ * 
  * @author pcfreak9000
  *
  */
-public class CelestialBody implements ChunkGenerator {
+public class CelestialBody implements Generatable {
 
 	private CelestialBodyDefinition generator;
 	private Orbit orbit;
 	private World world;
-
+		
 	private String name;
 	private long seed;
 	private int tileRadius;
 
 	/**
 	 * 
-	 * @param generator the CBs generating {@link CelestialBodyDefinition}
-	 * @param orbit instance of {@link Orbit} containing information about this CBs orbit
-	 * @param world_radius the biggest radius of the {@link World}, negative values will result in a non-visitable CB
-	 * @param name the CBs name
-	 * @param seed a seed for this CB at this position
+	 * @param generator
+	 *            the CBs generating {@link CelestialBodyDefinition}
+	 * @param orbit
+	 *            instance of {@link Orbit} containing information about this CBs
+	 *            orbit
+	 * @param world_radius
+	 *            the biggest radius of the {@link World}, negative values will
+	 *            result in a non-visitable CB
+	 * @param name
+	 *            the CBs name
+	 * @param seed
+	 *            a seed for this CB at this position
 	 */
 	public CelestialBody(CelestialBodyDefinition generator, Orbit orbit, int world_radius, String name, long seed) {
 		GameRegistry.getCelestialBodyRegistry().checkRegistered(generator);
@@ -43,7 +52,7 @@ public class CelestialBody implements ChunkGenerator {
 		this.name = name;
 		this.seed = seed;
 		this.tileRadius = world_radius;
-		if(tileRadius>0) {
+		if (tileRadius > 0) {
 			this.world = new World(name, this, world_radius);
 		}
 	}
@@ -71,7 +80,7 @@ public class CelestialBody implements ChunkGenerator {
 	public CelestialBodyDefinition getDefinition() {
 		return generator;
 	}
-
+	
 	public boolean isVisitable() {
 		return world != null;
 	}
@@ -104,10 +113,11 @@ public class CelestialBody implements ChunkGenerator {
 	}
 
 	/**
-	 * For the same position the same {@link BiomeDefinition} must be returned for this
-	 * CelestialBody.
+	 * For the same position the same {@link BiomeDefinition} must be returned for
+	 * this CelestialBody.
 	 * 
-	 * @param possibilities possible BiomeDefinitions
+	 * @param possibilities
+	 *            possible BiomeDefinitions
 	 * @param globalTileX
 	 * @param globalTileY
 	 * @return a {@link BiomeDefinition}
@@ -118,6 +128,7 @@ public class CelestialBody implements ChunkGenerator {
 
 	/**
 	 * Is the position in the boundaries of the {@link CelestialBody}?
+	 * 
 	 * @param globalTileX
 	 * @param globalTileY
 	 * @return
@@ -129,9 +140,12 @@ public class CelestialBody implements ChunkGenerator {
 	/**
 	 * e.g. invalidate the {@link Tile}
 	 * 
-	 * @param c the tile's {@link Chunk}
-	 * @param b the tile's {@link Biome}
-	 * @param t the tile itself
+	 * @param c
+	 *            the tile's {@link Chunk}
+	 * @param b
+	 *            the tile's {@link Biome}
+	 * @param t
+	 *            the tile itself
 	 */
 	public void adjustTile(Chunk c, Biome b, Tile t) {
 	}

@@ -23,6 +23,11 @@ public class SpaceCoordinates {
 		return spacey;
 	}
 
+	public long distanceSquared(SpaceCoordinates others) {
+		return (others.spacex - spacex) * (others.spacex - spacex)
+				+ (others.spacey - spacey) * (others.spacey - spacey);
+	}
+
 	public long adjustSeedToPos(long seed) {
 		return seed ^ spacex ^ spacey;
 	}

@@ -28,6 +28,7 @@ import omnikryptec.util.logger.Logger;
 
 /**
  * loads mods.
+ * 
  * @author pcfreak9000
  *
  */
@@ -159,11 +160,13 @@ public class ModLoader {
 							Se2Dlog.log(LogLevel.WARNING, "Illegal access @ " + container);
 						}
 					} else {
+						boolean found = false;
 						for (ModContainer wantedContainer : containers) {
 							if (wantedContainer == container) {
 								continue;
 							}
 							if (wantedContainer.getMod().id().equals(wanted.id())) {
+								found = true;
 								if (wanted.requiredVersion().length > 0) {
 									if (!Arrays.equals(wantedContainer.getMod().version(), wanted.requiredVersion())) {
 										Se2Dlog.log(LogLevel.WARNING,
@@ -182,10 +185,13 @@ public class ModLoader {
 										Se2Dlog.log(LogLevel.WARNING, "Illegal access @ " + container);
 									}
 								} else {
-									Logger.log(wantedContainer + " is not accessible for the mod " + container + "!");
+									Logger.log(wantedContainer + " is not accessible for the mod " + container);
 								}
 								break;
 							}
+						}
+						if (!found) {
+							Se2Dlog.log(LogLevel.WARNING, "Could not find " + wanted.id());
 						}
 					}
 				}

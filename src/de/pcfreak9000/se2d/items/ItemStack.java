@@ -4,6 +4,7 @@ import de.pcfreak9000.se2d.game.core.GameRegistry;
 
 /**
  * a Stack of {@link Item}s
+ * 
  * @author pcfreak9000
  *
  */

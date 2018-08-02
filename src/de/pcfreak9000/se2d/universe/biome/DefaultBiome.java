@@ -5,6 +5,7 @@ import de.pcfreak9000.se2d.universe.celestial.CelestialBody;
 import de.pcfreak9000.se2d.universe.tiles.Tile;
 import de.pcfreak9000.se2d.universe.tiles.TileDefinition;
 import de.pcfreak9000.se2d.universe.worlds.Chunk;
+import de.pcfreak9000.se2d.universe.worlds.Generatable;
 import de.pcfreak9000.se2d.util.Private;
 
 @Private
@@ -16,12 +17,12 @@ public class DefaultBiome implements BiomeDefinition, Biome {
 	}
 
 	@Override
-	public float evaluate(CelestialBody body) {
+	public float evaluate(Generatable body) {
 		return Float.NEGATIVE_INFINITY;
 	}
 
 	@Override
-	public boolean likes(CelestialBody body) {
+	public boolean likes(Generatable body) {
 		return true;
 	}
 

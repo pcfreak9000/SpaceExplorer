@@ -9,6 +9,7 @@ import omnikryptec.util.EnumCollection.FixedSizeMode;
 
 /**
  * the class representing a Tile in the {@link World}
+ * 
  * @author pcfreak9000
  *
  */
@@ -20,10 +21,15 @@ public class Tile extends Sprite {
 	private int gtx, gty;
 
 	/**
-	 * Constructs a new Tile.That is usually done in {@link TileDefinition#newTile(int, int)}
-	 * @param def the Tile's {@link TileDefinition}
-	 * @param gtx global tile x
-	 * @param gty global tile y
+	 * Constructs a new Tile.That is usually done in
+	 * {@link TileDefinition#newTile(int, int)}
+	 * 
+	 * @param def
+	 *            the Tile's {@link TileDefinition}
+	 * @param gtx
+	 *            global tile x
+	 * @param gty
+	 *            global tile y
 	 */
 	public Tile(TileDefinition def, int gtx, int gty) {
 		super(ResourceLoader.MISSING_TEXTURE);
@@ -42,7 +48,9 @@ public class Tile extends Sprite {
 	}
 
 	/**
-	 * Only during the generation of a {@link World}. Usually, an invalid Tile does not support decoration (e.g. this can be used for the edge of a {@link CelestialBody})
+	 * Only during the generation of a {@link World}. Usually, an invalid Tile does
+	 * not support decoration (e.g. this can be used for the edge of a
+	 * {@link CelestialBody})
 	 */
 	public void invalidate() {
 		validPosition = false;

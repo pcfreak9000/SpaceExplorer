@@ -6,6 +6,7 @@ import de.pcfreak9000.se2d.util.Private;
 
 /**
  * contains a mod
+ * 
  * @author pcfreak9000
  *
  */

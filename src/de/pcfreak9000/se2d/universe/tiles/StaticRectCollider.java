@@ -11,6 +11,7 @@ import omnikryptec.util.Instance;
 
 /**
  * An easy to use static solid Body (e.g. can be used as wall)
+ * 
  * @author pcfreak9000
  *
  */
@@ -20,9 +21,12 @@ public class StaticRectCollider {
 
 	/**
 	 * 
-	 * @param w width
-	 * @param h height
-	 * @param pos global position
+	 * @param w
+	 *            width
+	 * @param h
+	 *            height
+	 * @param pos
+	 *            global position
 	 */
 	public StaticRectCollider(float w, float h, Vector2f pos) {
 		body = new Body();
@@ -36,6 +40,7 @@ public class StaticRectCollider {
 
 	/**
 	 * adds this Body to the physics world
+	 * 
 	 * @return
 	 */
 	public StaticRectCollider add() {

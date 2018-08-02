@@ -3,13 +3,13 @@ package de.pcfreak9000.se2d.universe.celestial;
 import java.util.HashSet;
 import java.util.Set;
 
-import de.pcfreak9000.se2d.game.core.GameRegistry;
 import de.pcfreak9000.se2d.universe.SpaceCoordinates;
 import de.pcfreak9000.se2d.universe.biome.BiomeDefinition;
 import de.pcfreak9000.se2d.util.RegisterSensitive;
 
 /**
  * Defines the general properties of a {@link CelestialBody}.
+ * 
  * @author pcfreak9000
  *
  */
@@ -40,6 +40,10 @@ public abstract class CelestialBodyDefinition {
 		definitions.add(bd);
 	}
 
+	/**
+	 * Can the player start here? (e.g. if he won't suffocate here because of no atmosphere)
+	 * @return
+	 */
 	public boolean isStartCapable() {
 		return false;
 	}

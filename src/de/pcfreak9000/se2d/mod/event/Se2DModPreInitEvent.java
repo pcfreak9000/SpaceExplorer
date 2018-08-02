@@ -5,6 +5,7 @@ import omnikryptec.event.eventV2.Event;
 
 /**
  * the first mod init event.
+ * 
  * @author pcfreak9000
  *
  */

@@ -47,7 +47,7 @@ public class Field {
 	}
 
 	public boolean isConstant() {
-		return noise == null;
+		return noise == null || min == max;
 	}
 
 }

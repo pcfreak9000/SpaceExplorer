@@ -13,9 +13,11 @@ import de.pcfreak9000.se2d.util.Se2Dlog;
 
 /**
  * used to register everything annotated by {@link RegisterSensitive}
+ * 
  * @author pcfreak9000
  *
- * @param <T> the Type of whats being registered
+ * @param <T>
+ *            the Type of whats being registered
  */
 public class GameRegistry<T> {
 

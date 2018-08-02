@@ -4,6 +4,7 @@ import de.pcfreak9000.se2d.util.Private;
 
 /**
  * Thrown in the {@link Chunk}
+ * 
  * @author pcfreak9000
  *
  */
