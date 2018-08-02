@@ -1,4 +1,4 @@
-package de.pcfreak9000.se2d.universe.celestial;
+package de.pcfreak9000.se2d.universe.worlds;
 
 import java.util.HashMap;
 import java.util.Map;

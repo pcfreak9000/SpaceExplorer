@@ -19,7 +19,7 @@ import de.pcfreak9000.se2d.universe.worlds.World;
  * @author pcfreak9000
  *
  */
-public class CelestialBody implements Generatable {
+public class CelestialBody extends Generatable {
 
 	private CelestialBodyDefinition generator;
 	private Orbit orbit;
@@ -36,23 +36,23 @@ public class CelestialBody implements Generatable {
 	 * @param orbit
 	 *            instance of {@link Orbit} containing information about this CBs
 	 *            orbit
-	 * @param world_radius
-	 *            the biggest radius of the {@link World}, negative values will
+	 * @param worldRadius
+	 *            the biggest radius of the {@link World}, negative values and zero will
 	 *            result in a non-visitable CB
 	 * @param name
 	 *            the CBs name
 	 * @param seed
 	 *            a seed for this CB at this position
 	 */
-	public CelestialBody(CelestialBodyDefinition generator, Orbit orbit, int world_radius, String name, long seed) {
+	public CelestialBody(CelestialBodyDefinition generator, Orbit orbit, int worldRadius, String name, long seed) {
 		GameRegistry.getCelestialBodyRegistry().checkRegistered(generator);
 		this.generator = generator;
 		this.orbit = orbit;
 		this.name = name;
 		this.seed = seed;
-		this.tileRadius = world_radius;
+		this.tileRadius = worldRadius;
 		if (tileRadius > 0) {
-			this.world = new World(name, this, world_radius);
+			this.world = new World(name, this, worldRadius);
 		}
 	}
 
