@@ -16,8 +16,7 @@ public class SpaceExplorer2D {
 
 	private static final AdvancedFile RESOURCELOCATION = new AdvancedFile(true, "", "de", "pcfreak9000", "se2d", "res");
 	private static final float[] PLANETPROJ = { -1920 / 2, -1080 / 2, 1920, 1080 };
-	// private static final float[] PLANETPROJ = { -19200 / 2, -10800 / 2, 19200,
-	// 10800 };
+	//private static final float[] PLANETPROJ = { -19200 / 2, -10800 / 2, 19200, 10800 };
 
 	public static final String EVENTBUSNAME = "SpaceExplorer2D_EVENT_BUS-2718";
 
