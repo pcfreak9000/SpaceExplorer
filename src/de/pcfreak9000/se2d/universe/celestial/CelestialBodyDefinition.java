@@ -41,7 +41,9 @@ public abstract class CelestialBodyDefinition {
 	}
 
 	/**
-	 * Can the player start here? (e.g. if he won't suffocate here because of no atmosphere)
+	 * Can the player start here? (e.g. if he won't suffocate here because of no
+	 * atmosphere)
+	 * 
 	 * @return
 	 */
 	public boolean isStartCapable() {

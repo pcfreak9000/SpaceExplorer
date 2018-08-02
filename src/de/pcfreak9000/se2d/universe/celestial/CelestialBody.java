@@ -7,7 +7,6 @@ import de.pcfreak9000.se2d.game.core.GameRegistry;
 import de.pcfreak9000.se2d.universe.Orbit;
 import de.pcfreak9000.se2d.universe.biome.Biome;
 import de.pcfreak9000.se2d.universe.biome.BiomeDefinition;
-import de.pcfreak9000.se2d.universe.biome.Field;
 import de.pcfreak9000.se2d.universe.tiles.Tile;
 import de.pcfreak9000.se2d.universe.tiles.TileDefinition;
 import de.pcfreak9000.se2d.universe.worlds.Chunk;
@@ -25,7 +24,7 @@ public class CelestialBody implements Generatable {
 	private CelestialBodyDefinition generator;
 	private Orbit orbit;
 	private World world;
-		
+
 	private String name;
 	private long seed;
 	private int tileRadius;
@@ -80,7 +79,7 @@ public class CelestialBody implements Generatable {
 	public CelestialBodyDefinition getDefinition() {
 		return generator;
 	}
-	
+
 	public boolean isVisitable() {
 		return world != null;
 	}
