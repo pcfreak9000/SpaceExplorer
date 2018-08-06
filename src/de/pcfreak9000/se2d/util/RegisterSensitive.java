@@ -1,5 +1,6 @@
 package de.pcfreak9000.se2d.util;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
@@ -15,6 +16,7 @@ import de.pcfreak9000.se2d.game.core.GameRegistry;
  * @author pcfreak9000
  *
  */
+@Documented
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.TYPE)
 @Inherited

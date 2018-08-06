@@ -1,5 +1,6 @@
 package de.pcfreak9000.se2d.util;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -9,6 +10,7 @@ import java.lang.annotation.RetentionPolicy;
  * @author pcfreak9000
  *
  */
+@Documented
 @Retention(RetentionPolicy.SOURCE)
 @Private
 public @interface Private {
