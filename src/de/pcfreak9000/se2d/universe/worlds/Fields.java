@@ -21,7 +21,7 @@ public class Fields {
 		return attributes.get(name);
 	}
 
-	public Fields addAttribute(String name, Field field) {
+	public Fields addField(String name, Field field) {
 		attributes.putIfAbsent(name, field);
 		return this;
 	}
