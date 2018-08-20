@@ -16,7 +16,7 @@ public class StartPlanetDef extends CelestialBodyDefinition {
 		Random random = new Random(seed);
 		Planet planet = new Planet(this, new Orbit(), random.nextInt(100) + 50, "Lord Kek", sc.adjustSeedToPos(seed));
 		planet.putAttribute(Fields.class, new Fields());
-		planet.getAttribute(Fields.class).addField(Fields.TEMPERATURE, new Field(-100));
+		planet.getAttributeCK(Fields.class).addField(Fields.TEMPERATURE, new Field(-100));
 		return planet;
 	}
 

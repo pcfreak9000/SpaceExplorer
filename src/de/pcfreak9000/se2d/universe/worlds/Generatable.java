@@ -14,7 +14,7 @@ import de.pcfreak9000.se2d.universe.tiles.Tile;
  */
 public abstract class Generatable {
 
-	private Map<Class<?>, Object> attributes = new HashMap<>();
+	private Map<Object, Object> attributes = new HashMap<>();
 
 	/**
 	 * populate the given {@link Chunk} with {@link Tile}s and {@link Entity}s etc
@@ -23,17 +23,67 @@ public abstract class Generatable {
 	 */
 	public abstract void generateChunk(Chunk c);
 
-	public boolean hasAttribute(Class<?> clazz) {
-		return attributes.containsKey(clazz);
+	/**
+	 * Checks if an attribute is present in this {@link Generatable}
+	 * 
+	 * @param key the key the attribute is associated with
+	 * @return boolean
+	 */
+	public boolean hasAttribute(Object key) {
+		return attributes.containsKey(key);
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T>T getAttribute(Class<T> clazz) {
-		return (T) attributes.get(clazz);
+	/**
+	 * Returns the attribute for a given Class if present
+	 * 
+	 * @param clazz the class
+	 * @return the attribute
+	 */
+	public <T> T getAttributeCK(Class<T> clazz) {
+		return (T) getAttribute(clazz);
 	}
 
-	public <T> Generatable putAttribute(Class<T> clazz, T object) {
-		attributes.put(clazz, object);
+	/**
+	 * Returns the attribute for a given Key if present. Auto-casts the attribute.
+	 * 
+	 * @param key the key
+	 * @return the attribute
+	 * @see #getAttribute(Object)
+	 */
+	public <T> T getAttributeAC(Object key) {
+		return (T) getAttribute(key);
+	}
+
+	/**
+	 * Returns the attribute for a given Key if present
+	 * 
+	 * @param key the key
+	 * @return the attribute
+	 */
+	public Object getAttribute(Object key) {
+		return attributes.get(key);
+	}
+
+	/**
+	 * Adds an attribute with the objects class as key
+	 * 
+	 * @param object the attribute
+	 * @return this {@link Generatable}
+	 */
+	public <T> Generatable putAttributeCK(T object) {
+		putAttribute(object.getClass(), object);
+		return this;
+	}
+
+	/**
+	 * Adds an attribute with a key
+	 * 
+	 * @param key the key
+	 * @param obj the attribute
+	 * @return this {@link Generatable}
+	 */
+	public Generatable putAttribute(Object key, Object obj) {
+		attributes.put(key, obj);
 		return this;
 	}
 

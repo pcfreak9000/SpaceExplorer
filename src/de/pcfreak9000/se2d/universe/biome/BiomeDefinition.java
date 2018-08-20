@@ -18,8 +18,7 @@ public interface BiomeDefinition {
 	 * For the same seed the same {@link Biome} with the same properties must be
 	 * produced.
 	 * 
-	 * @param seed
-	 *            the Biome's seed
+	 * @param seed the Biome's seed
 	 * @return a {@link Biome}
 	 */
 	Biome getBiome(long seed);
@@ -29,8 +28,7 @@ public interface BiomeDefinition {
 	/**
 	 * can this {@link BiomeDefinition} be used with that {@link CelestialBody}?
 	 * 
-	 * @param body
-	 *            the {@link CelestialBody}
+	 * @param body the {@link CelestialBody}
 	 * @return boolean
 	 */
 	boolean likes(Generatable body);

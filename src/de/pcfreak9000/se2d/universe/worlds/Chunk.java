@@ -38,10 +38,8 @@ public class Chunk extends Sprite {
 
 	/**
 	 * 
-	 * @param x
-	 *            global chunk x
-	 * @param y
-	 *            global chunk y
+	 * @param x global chunk x
+	 * @param y global chunk y
 	 */
 	public Chunk(int x, int y) {
 		getTransform().setPosition(x * CHUNKSIZE, y * CHUNKSIZE);
@@ -51,10 +49,8 @@ public class Chunk extends Sprite {
 
 	/**
 	 * 
-	 * @param crtx
-	 *            chunk tile x
-	 * @param crty
-	 *            chunk tile y
+	 * @param crtx chunk tile x
+	 * @param crty chunk tile y
 	 * @return the {@link Tile} at the specified position
 	 */
 	public Tile getTile(int crtx, int crty) {
@@ -64,14 +60,11 @@ public class Chunk extends Sprite {
 	/**
 	 * adds a {@link Tile} to this {@link Chunk} at the specified position.
 	 * 
-	 * @param tile
-	 *            the {@link Tile}
-	 * @param crtx
-	 *            chunk tile x
-	 * @param crty
-	 *            chunk tile y
-	 * @throws ChunkCompilationStatusException
-	 *             if this {@link Chunk} is already compiled.
+	 * @param tile the {@link Tile}
+	 * @param crtx chunk tile x
+	 * @param crty chunk tile y
+	 * @throws ChunkCompilationStatusException if this {@link Chunk} is already
+	 *                                         compiled.
 	 */
 	public void addTile(Tile tile, int crtx, int crty) {
 		if (compiled) {
@@ -91,8 +84,7 @@ public class Chunk extends Sprite {
 	/**
 	 * adds a {@link Entity} to this {@link Chunk}
 	 * 
-	 * @param obj
-	 *            the {@link Entity}
+	 * @param obj the {@link Entity}
 	 */
 	public void addNonTile(Entity obj) {
 		others.add(obj);
@@ -129,11 +121,10 @@ public class Chunk extends Sprite {
 	/**
 	 * adds this {@link Chunk} and its contents to a Scene.
 	 * 
-	 * @param s
-	 *            the Scene
+	 * @param s the Scene
 	 * @return this {@link Chunk}
-	 * @throws ChunkCompilationStatusException
-	 *             if this {@link Chunk} is not compiled yet.
+	 * @throws ChunkCompilationStatusException if this {@link Chunk} is not compiled
+	 *                                         yet.
 	 */
 	public Chunk addTo(Scene2D s) {
 		if (!compiled) {
@@ -149,8 +140,7 @@ public class Chunk extends Sprite {
 	/**
 	 * removes this {@link Chunk} and its contents from a Scene
 	 * 
-	 * @param s
-	 *            the Scene
+	 * @param s the Scene
 	 * @return this {@link Chunk}
 	 */
 	public Chunk removeFrom(Scene2D s) {
@@ -167,8 +157,8 @@ public class Chunk extends Sprite {
 	/**
 	 * Draws this {@link Chunk} and its contents on a SpriteBatch
 	 * 
-	 * @throws ChunkCompilationStatusException
-	 *             if this {@link Chunk} is has not been compiled yet
+	 * @throws ChunkCompilationStatusException if this {@link Chunk} is has not been
+	 *                                         compiled yet
 	 */
 	@Override
 	public void paint(SpriteBatch batch) {

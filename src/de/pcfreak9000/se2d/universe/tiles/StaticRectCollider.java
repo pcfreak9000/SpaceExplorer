@@ -21,12 +21,9 @@ public class StaticRectCollider {
 
 	/**
 	 * 
-	 * @param w
-	 *            width
-	 * @param h
-	 *            height
-	 * @param pos
-	 *            global position
+	 * @param w   width
+	 * @param h   height
+	 * @param pos global position
 	 */
 	public StaticRectCollider(float w, float h, Vector2f pos) {
 		body = new Body();

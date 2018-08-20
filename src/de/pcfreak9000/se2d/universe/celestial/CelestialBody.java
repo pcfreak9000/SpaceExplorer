@@ -31,18 +31,13 @@ public class CelestialBody extends Generatable {
 
 	/**
 	 * 
-	 * @param generator
-	 *            the CBs generating {@link CelestialBodyDefinition}
-	 * @param orbit
-	 *            instance of {@link Orbit} containing information about this CBs
-	 *            orbit
-	 * @param worldRadius
-	 *            the biggest radius of the {@link World}, negative values and zero will
-	 *            result in a non-visitable CB
-	 * @param name
-	 *            the CBs name
-	 * @param seed
-	 *            a seed for this CB at this position
+	 * @param generator   the CBs generating {@link CelestialBodyDefinition}
+	 * @param orbit       instance of {@link Orbit} containing information about
+	 *                    this CBs orbit
+	 * @param worldRadius the biggest radius of the {@link World}, negative values
+	 *                    and zero will result in a non-visitable CB
+	 * @param name        the CBs name
+	 * @param seed        a seed for this CB at this position
 	 */
 	public CelestialBody(CelestialBodyDefinition generator, Orbit orbit, int worldRadius, String name, long seed) {
 		GameRegistry.getCelestialBodyRegistry().checkRegistered(generator);
@@ -115,10 +110,9 @@ public class CelestialBody extends Generatable {
 	 * For the same position the same {@link BiomeDefinition} must be returned for
 	 * this CelestialBody.
 	 * 
-	 * @param possibilities
-	 *            possible BiomeDefinitions
-	 * @param globalTileX
-	 * @param globalTileY
+	 * @param possibilities possible BiomeDefinitions
+	 * @param globalTileX   global tile x
+	 * @param globalTileY   global tile y
 	 * @return a {@link BiomeDefinition}
 	 */
 	public BiomeDefinition getBiomeDefinition(List<BiomeDefinition> possibilities, int globalTileX, int globalTileY) {
@@ -128,9 +122,9 @@ public class CelestialBody extends Generatable {
 	/**
 	 * Is the position in the boundaries of the {@link CelestialBody}?
 	 * 
-	 * @param globalTileX
-	 * @param globalTileY
-	 * @return
+	 * @param globalTileX global tile x
+	 * @param globalTileY global tile y
+	 * @return boolean
 	 */
 	public boolean inBounds(int globalTileX, int globalTileY) {
 		return true;
@@ -139,12 +133,9 @@ public class CelestialBody extends Generatable {
 	/**
 	 * e.g. invalidate the {@link Tile}
 	 * 
-	 * @param c
-	 *            the tile's {@link Chunk}
-	 * @param b
-	 *            the tile's {@link Biome}
-	 * @param t
-	 *            the tile itself
+	 * @param c the tile's {@link Chunk}
+	 * @param b the tile's {@link Biome}
+	 * @param t the tile itself
 	 */
 	public void adjustTile(Chunk c, Biome b, Tile t) {
 	}

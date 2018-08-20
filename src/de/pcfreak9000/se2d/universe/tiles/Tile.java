@@ -24,12 +24,9 @@ public class Tile extends Sprite {
 	 * Constructs a new Tile.That is usually done in
 	 * {@link TileDefinition#newTile(int, int)}
 	 * 
-	 * @param def
-	 *            the Tile's {@link TileDefinition}
-	 * @param gtx
-	 *            global tile x
-	 * @param gty
-	 *            global tile y
+	 * @param def the Tile's {@link TileDefinition}
+	 * @param gtx global tile x
+	 * @param gty global tile y
 	 */
 	public Tile(TileDefinition def, int gtx, int gty) {
 		super(ResourceLoader.MISSING_TEXTURE);

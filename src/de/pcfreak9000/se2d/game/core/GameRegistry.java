@@ -16,8 +16,7 @@ import de.pcfreak9000.se2d.util.Se2Dlog;
  * 
  * @author pcfreak9000
  *
- * @param <T>
- *            the Type of whats being registered
+ * @param <T> the Type of whats being registered
  */
 public class GameRegistry<T> {
 

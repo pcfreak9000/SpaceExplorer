@@ -54,12 +54,9 @@ public class World {
 
 	/**
 	 * 
-	 * @param name
-	 *            the name of this Worlds Scene
-	 * @param generator
-	 *            the {@link Generatable} of this {@link World}
-	 * @param tileRadius
-	 *            the positive radius of this {@link World} in {@link Tile}s
+	 * @param name       the name of this Worlds Scene
+	 * @param generator  the {@link Generatable} of this {@link World}
+	 * @param tileRadius the positive radius of this {@link World} in {@link Tile}s
 	 */
 	public World(String name, Generatable generator, int tileRadius) {
 		this.chunksSize = (int) Math.ceil((double) tileRadius / Chunk.CHUNKSIZE_T);
@@ -95,10 +92,8 @@ public class World {
 
 	/**
 	 * 
-	 * @param cx
-	 *            global chunk x
-	 * @param cy
-	 *            global chunk y
+	 * @param cx global chunk x
+	 * @param cy global chunk y
 	 * @return a Chunk
 	 */
 	public Chunk getChunk(int cx, int cy) {
@@ -111,10 +106,8 @@ public class World {
 	/**
 	 * Is the chunk position contained in the boundaries of this {@link World}?
 	 * 
-	 * @param cx
-	 *            global chunk x
-	 * @param cy
-	 *            global chunk y
+	 * @param cx global chunk x
+	 * @param cy global chunk y
 	 * @return boolean
 	 */
 	public boolean inBounds(int cx, int cy) {
@@ -124,10 +117,8 @@ public class World {
 
 	/**
 	 * 
-	 * @param cx
-	 *            global chunk x
-	 * @param cy
-	 *            global chunk y
+	 * @param cx global chunk x
+	 * @param cy global chunk y
 	 */
 	public void generateNeeded(int cx, int cy) {
 		if (inBounds(cx, cy) && getChunk(cx, cy) == null) {
