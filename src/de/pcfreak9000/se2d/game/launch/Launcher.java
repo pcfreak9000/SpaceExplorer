@@ -9,9 +9,11 @@ import de.pcfreak9000.se2d.universe.worlds.World;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
+import omnikryptec.gui.GuiObject;
 import omnikryptec.main.DefaultGameLoop;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.postprocessing.stages.Light2DProcessor;
+import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.settings.KeySettings;
 import omnikryptec.util.NativesLoader;
@@ -77,6 +79,7 @@ public class Launcher {
 		Display.setAspectRatio(ASPECT_RATIO);
 		OmniKryptecEngine.instance().setFboModes(OmniKryptecEngine.FboModes.SCENE);
 		OmniKryptecEngine.instance().refreshFbos();
+		OmniKryptecEngine.instance().setGui(new GuiObject(ResourceLoader.MISSING_TEXTURE, 0,0));
 		DefaultGameLoop l = (DefaultGameLoop) OmniKryptecEngine.instance().getLoop();
 		l.setMode(DefaultGameLoop.MODE_2D | DefaultGameLoop.MODE_GUI | DefaultGameLoop.MODE_PP
 				| DefaultGameLoop.MODE_GL_TASKS);

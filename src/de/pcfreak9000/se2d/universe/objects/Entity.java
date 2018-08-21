@@ -14,7 +14,7 @@ public class Entity extends Sprite {
 	private Sprite sprite;
 
 	public Entity(EntityDefinition def) {
-		super(ResourceLoader.MISSING_TEXTURE);
+		super(ResourceLoader.currentInstance().getTexture(def.getTexture()));
 		GameRegistry.getWorldObjectRegistry().checkRegistered(def);
 		this.mydef = def;
 		sprite.setUpdateType(UpdateType.STATIC);
