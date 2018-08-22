@@ -9,7 +9,7 @@ import de.pcfreak9000.se2d.universe.worlds.World;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
-import omnikryptec.gui.TexturedGuiObject;
+import omnikryptec.gui.TexturedGuiContainer;
 import omnikryptec.main.DefaultGameLoop;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.postprocessing.stages.Light2DProcessor;
