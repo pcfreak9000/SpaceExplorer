@@ -7,6 +7,7 @@ import omnikryptec.event.eventV2.EventBus;
 import omnikryptec.event.eventV2.EventSubscription;
 import omnikryptec.event.eventV2.engineevents.FrameEvent;
 import omnikryptec.event.eventV2.engineevents.FrameEvent.FrameType;
+import omnikryptec.gui.TexturedGuiObject;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.resource.texture.Texture;
@@ -56,6 +57,7 @@ public class SpaceExplorer2D {
 		currentWorld = new Universe();
 		currentWorld.loadWorld(1);
 		Instance.engineBus().registerEventHandler(this);
+		OmniKryptecEngine.instance().setGui(new TexturedGuiObject(ResourceLoader.MISSING_TEXTURE, 0.75f,0.75f));
 		OmniKryptecEngine.instance().startLoop();
 	}
 
@@ -73,7 +75,6 @@ public class SpaceExplorer2D {
 		manager.stageRessourceLoading();
 		ResourceLoader.currentInstance().loadStagedAdvancedFiles(false);
 		ResourceLoader.currentInstance().clearStagedAdvancedFiles();
-		ResourceLoader.currentInstance().actions(Texture.class, (t) -> t.invertV());
 	}
 
 	public float[] getProjectionData() {
