@@ -1,7 +1,7 @@
 package de.pcfreak9000.se2d.universe.tiles;
 
+import de.omnikryptec.util.EnumCollection.UpdateType;
 import de.pcfreak9000.se2d.util.RegisterSensitive;
-import omnikryptec.util.EnumCollection.UpdateType;
 
 /**
  * Defines the general properties of a {@link Tile}.

@@ -2,17 +2,17 @@ package de.pcfreak9000.se2d.universe.worlds;
 
 import java.util.ArrayList;
 
+import de.omnikryptec.gameobject.Sprite;
+import de.omnikryptec.graphics.SpriteBatch;
+import de.omnikryptec.main.Scene2D;
+import de.omnikryptec.renderer.d3.RenderMap;
+import de.omnikryptec.resource.texture.Texture;
+import de.omnikryptec.util.Maths;
 import de.pcfreak9000.se2d.game.launch.Launcher;
 import de.pcfreak9000.se2d.universe.objects.Entity;
 import de.pcfreak9000.se2d.universe.tiles.Tile;
 import de.pcfreak9000.se2d.universe.tiles.TileDefinition;
 import de.pcfreak9000.se2d.util.Private;
-import omnikryptec.gameobject.Sprite;
-import omnikryptec.graphics.SpriteBatch;
-import omnikryptec.main.Scene2D;
-import omnikryptec.renderer.d3.RenderMap;
-import omnikryptec.resource.texture.Texture;
-import omnikryptec.util.Maths;
 
 /**
  * a Chunk represents a collection of {@link Tile}s and other Objects.

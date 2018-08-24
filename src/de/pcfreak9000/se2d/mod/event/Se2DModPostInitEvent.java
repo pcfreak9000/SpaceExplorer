@@ -1,7 +1,7 @@
 package de.pcfreak9000.se2d.mod.event;
 
+import de.omnikryptec.event.eventV2.Event;
 import de.pcfreak9000.se2d.game.launch.SpaceExplorer2D;
-import omnikryptec.event.eventV2.Event;
 
 /**
  * the third mod init event.

@@ -2,24 +2,24 @@ package de.pcfreak9000.se2d.game.launch;
 
 import java.io.File;
 
+import org.lwjgl.system.Configuration;
+
 import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.display.Display;
+import de.omnikryptec.display.DisplayManager;
+import de.omnikryptec.display.GLFWInfo;
+import de.omnikryptec.main.DefaultGameLoop;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.postprocessing.stages.Light2DProcessor;
+import de.omnikryptec.settings.GameSettings;
+import de.omnikryptec.settings.KeySettings;
+import de.omnikryptec.util.NativesLoader;
+import de.omnikryptec.util.OSUtil;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 import de.pcfreak9000.se2d.universe.tiles.TileDefinition;
 import de.pcfreak9000.se2d.universe.worlds.Chunk;
 import de.pcfreak9000.se2d.universe.worlds.World;
-import omnikryptec.display.Display;
-import omnikryptec.display.DisplayManager;
-import omnikryptec.display.GLFWInfo;
-import omnikryptec.gui.TexturedGuiContainer;
-import omnikryptec.main.DefaultGameLoop;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.postprocessing.stages.Light2DProcessor;
-import omnikryptec.resource.loader.ResourceLoader;
-import omnikryptec.settings.GameSettings;
-import omnikryptec.settings.KeySettings;
-import omnikryptec.util.NativesLoader;
-import omnikryptec.util.OSUtil;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
 
 public class Launcher {
 

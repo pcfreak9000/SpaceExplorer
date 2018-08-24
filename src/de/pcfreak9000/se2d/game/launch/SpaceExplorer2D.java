@@ -4,18 +4,17 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.event.eventV2.EventBus;
+import de.omnikryptec.event.eventV2.EventSubscription;
+import de.omnikryptec.event.eventV2.engineevents.FrameEvent;
+import de.omnikryptec.event.eventV2.engineevents.FrameEvent.FrameType;
+import de.omnikryptec.event.input.InputManager;
+import de.omnikryptec.gui.ProgressBar;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.resource.loader.ResourceLoader;
+import de.omnikryptec.util.Instance;
 import de.pcfreak9000.se2d.mod.ModManager;
 import de.pcfreak9000.se2d.universe.Universe;
-import omnikryptec.event.eventV2.EventBus;
-import omnikryptec.event.eventV2.EventSubscription;
-import omnikryptec.event.eventV2.engineevents.FrameEvent;
-import omnikryptec.event.eventV2.engineevents.FrameEvent.FrameType;
-import omnikryptec.gui.ProgressBar;
-import omnikryptec.gui.TexturedGuiContainer;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.resource.loader.ResourceLoader;
-import omnikryptec.resource.texture.Texture;
-import omnikryptec.util.Instance;
 
 public class SpaceExplorer2D {
 
@@ -61,38 +60,39 @@ public class SpaceExplorer2D {
 		currentWorld = new Universe();
 		currentWorld.loadWorld(1);
 		Instance.engineBus().registerEventHandler(this);
-		//TEST
+		// TEST
 		ProgressBar b = new ProgressBar(null, null, 0.25f, 0.25f);
 		b.getColor().set(0, 0.5f, 0.5f);
 		b.getBarColor().set(0, 0, 1);
 		b.setW(0.5f).setH(0.05f);
-		
+
 		ProgressBar b2 = new ProgressBar(null, null, 0.25f, 0.5f);
 		b2.getColor().set(0, 0.5f, 0.5f);
 		b2.getBarColor().set(1, 0, 0);
 		b2.setW(0.5f).setH(0.025f);
-		
+
 		b.add(b2);
 		Timer ttt = new Timer();
 		ttt.schedule(new TimerTask() {
-			
+
 			@Override
 			public void run() {
-				if(b.getValue()<1) {
-					b.setValue(b.getValue()+0.02f);
-				}else {
+				if (b.getValue() < 1) {
+					b.setValue(b.getValue() + 0.02f);
+				} else {
 					b.setValue(0);
-					if(b2.getValue()==1) {
+					if (b2.getValue() == 1) {
 						b2.setValue(0);
 					}
-					b2.setValue(b2.getValue()+0.1f);
-					
+					b2.setValue(b2.getValue() + 0.1f);
+
 				}
 			}
 		}, 0, 10);
 		OmniKryptecEngine.instance().setGui(b);
-		//OmniKryptecEngine.instance().setGui(new TexturedGuiObject(ResourceLoader.MISSING_TEXTURE, 0.75f,0.75f));
-		//TEST
+		// OmniKryptecEngine.instance().setGui(new
+		// TexturedGuiObject(ResourceLoader.MISSING_TEXTURE, 0.75f,0.75f));
+		// TEST
 		OmniKryptecEngine.instance().startLoop();
 	}
 
@@ -123,6 +123,7 @@ public class SpaceExplorer2D {
 	@EventSubscription
 	public void someFrameUpdateEventHandlerMethod(FrameEvent ev) {
 		if (ev.getType() == FrameType.PRE && currentWorld != null) {
+			System.out.println(InputManager.getMouseHandler().getPosition());
 			currentWorld.update();
 		}
 	}

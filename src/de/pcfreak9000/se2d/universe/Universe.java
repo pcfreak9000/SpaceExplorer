@@ -2,12 +2,12 @@ package de.pcfreak9000.se2d.universe;
 
 import java.util.Random;
 
+import de.omnikryptec.gameobject.Camera;
+import de.omnikryptec.main.OmniKryptecEngine;
 import de.pcfreak9000.se2d.game.core.GameRegistry;
 import de.pcfreak9000.se2d.game.core.Player;
 import de.pcfreak9000.se2d.game.launch.SpaceExplorer2D;
 import de.pcfreak9000.se2d.universe.celestial.CelestialBody;
-import omnikryptec.gameobject.Camera;
-import omnikryptec.main.OmniKryptecEngine;
 
 public class Universe {
 

@@ -4,10 +4,10 @@ import org.dyn4j.dynamics.Body;
 import org.dyn4j.geometry.MassType;
 import org.joml.Vector2f;
 
-import omnikryptec.physics.AdvancedRectangle;
-import omnikryptec.physics.Dyn4JPhysicsWorld;
-import omnikryptec.util.ConverterUtil;
-import omnikryptec.util.Instance;
+import de.omnikryptec.physics.AdvancedRectangle;
+import de.omnikryptec.physics.Dyn4JPhysicsWorld;
+import de.omnikryptec.util.ConverterUtil;
+import de.omnikryptec.util.Instance;
 
 /**
  * An easy to use static solid Body (e.g. can be used as wall)

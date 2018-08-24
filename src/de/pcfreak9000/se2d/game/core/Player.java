@@ -3,18 +3,18 @@ package de.pcfreak9000.se2d.game.core;
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Vector2;
 
+import de.omnikryptec.gameobject.Light2D;
+import de.omnikryptec.gameobject.Sprite;
+import de.omnikryptec.gameobject.component.PhysicsComponent2D;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.physics.AdvancedBody;
+import de.omnikryptec.physics.AdvancedRectangle;
+import de.omnikryptec.resource.loader.ResourceLoader;
+import de.omnikryptec.settings.KeySettings;
+import de.omnikryptec.util.EnumCollection.UpdateType;
+import de.omnikryptec.util.Instance;
 import de.pcfreak9000.se2d.game.launch.KeyManager;
 import de.pcfreak9000.se2d.game.launch.SpaceExplorer2D;
-import omnikryptec.gameobject.Light2D;
-import omnikryptec.gameobject.Sprite;
-import omnikryptec.gameobject.component.PhysicsComponent2D;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.physics.AdvancedBody;
-import omnikryptec.physics.AdvancedRectangle;
-import omnikryptec.resource.loader.ResourceLoader;
-import omnikryptec.settings.KeySettings;
-import omnikryptec.util.EnumCollection.UpdateType;
-import omnikryptec.util.Instance;
 
 public class Player extends Sprite {
 

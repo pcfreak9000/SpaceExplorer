@@ -2,6 +2,7 @@ package de.pcfreak9000.se2d.coregame.start;
 
 import java.util.List;
 
+import de.omnikryptec.util.Color;
 import de.pcfreak9000.se2d.universe.Orbit;
 import de.pcfreak9000.se2d.universe.biome.Biome;
 import de.pcfreak9000.se2d.universe.biome.BiomeDefinition;
@@ -11,7 +12,6 @@ import de.pcfreak9000.se2d.universe.tiles.StaticRectCollider;
 import de.pcfreak9000.se2d.universe.tiles.Tile;
 import de.pcfreak9000.se2d.universe.tiles.TileDefinition;
 import de.pcfreak9000.se2d.universe.worlds.Chunk;
-import omnikryptec.util.Color;
 
 public class Planet extends CelestialBody {
 

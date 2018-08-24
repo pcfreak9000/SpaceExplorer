@@ -1,7 +1,7 @@
 package de.pcfreak9000.se2d.util;
 
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 
 public class Se2Dlog {
 

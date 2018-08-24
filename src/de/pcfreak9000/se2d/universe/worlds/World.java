@@ -1,15 +1,15 @@
 package de.pcfreak9000.se2d.universe.worlds;
 
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.main.Scene2D;
+import de.omnikryptec.physics.Dyn4JPhysicsWorld;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 import de.pcfreak9000.se2d.game.core.Player;
 import de.pcfreak9000.se2d.game.launch.SpaceExplorer2D;
 import de.pcfreak9000.se2d.renderer.PlanetRenderer;
 import de.pcfreak9000.se2d.universe.tiles.Tile;
 import de.pcfreak9000.se2d.util.Private;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.Scene2D;
-import omnikryptec.physics.Dyn4JPhysicsWorld;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
 
 /**
  * The data structure representing a World of {@link Tile}s and other objects.
