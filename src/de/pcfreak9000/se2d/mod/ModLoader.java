@@ -35,6 +35,8 @@ import de.pcfreak9000.se2d.util.Se2Dlog;
 @Private
 public class ModLoader {
 
+	public static final String THIS_INSTANCE_ID = "this";
+	
 	private static class TmpHolder {
 		private File file;
 		private Class<?> modclass;
@@ -113,13 +115,17 @@ public class ModLoader {
 				Se2Dlog.log(LogLevel.ERROR, "Incompatible Mod: " + th.modclass);
 				continue;
 			}
+			if(cl.getAnnotation(Mod.class).id().equals(THIS_INSTANCE_ID)) {
+				Se2Dlog.log(LogLevel.ERROR, "The String \""+THIS_INSTANCE_ID+"\" can not be used as Mod-ID: "+cl);
+				continue;
+			}
 			ModContainer container = new ModContainer(cl, cl.getAnnotation(Mod.class), instance);
 			if (containers.contains(container)) {
 				Se2Dlog.log(LogLevel.INFO, "Skipping already loaded mod: " + container.getMod().id() + " (version "
 						+ Arrays.toString(container.getMod().version()) + ")");
 				continue;
 			} else {
-				Logger.log("Instantiating mod: " + container);
+				Logger.log("Instantiated mod: " + container);
 				containers.add(container);
 			}
 			if (!contains(Launcher.VERSION, container.getMod().se2dversion())) {
@@ -151,7 +157,7 @@ public class ModLoader {
 				f.setAccessible(true);
 				if (f.isAnnotationPresent(Instance.class)) {
 					Instance wanted = f.getAnnotation(Instance.class);
-					if (wanted.id().equals(container.getMod().id())) {
+					if (wanted.id().equals(container.getMod().id()) || wanted.id().equals(THIS_INSTANCE_ID)) {
 						try {
 							f.set(container.getInstance(), container.getInstance());
 						} catch (IllegalArgumentException e) {
@@ -215,33 +221,47 @@ public class ModLoader {
 				Se2Dlog.logErr("Could not create some URL: " + candidates[i], e);
 			}
 		}
-		ClassLoader classloader = new URLClassLoader(urlarray);
+		URLClassLoader classloader = new URLClassLoader(urlarray);
 		for (int i = 0; i < candidates.length; i++) {
-			JarFile jarfile;
+			JarFile jarfile = null;
 			try {
 				jarfile = new JarFile(candidates[i]);
+
+				for (JarEntry entry : Collections.list(jarfile.entries())) {
+					if (entry.getName().toLowerCase().endsWith(".class")) {
+						Class<?> clazz = null;
+						try {
+							clazz = classloader.loadClass(entry.getName().replace("/", ".").replace(".class", ""));
+						} catch (ClassNotFoundException e) {
+							Se2Dlog.log(LogLevel.ERROR, "Could not load: " + entry.getName());
+							continue;
+						} catch (LinkageError e) {
+							Se2Dlog.log(LogLevel.INFO, "Unexpected behaviour of a class detected: "
+									+ entry.getName().replace("/", ".").replace(".class", ""));
+							continue;
+						}
+						if (clazz.isAnnotationPresent(Mod.class)) {
+							modClasses.add(new TmpHolder(clazz, candidates[i]));
+						}
+					}
+				}
 			} catch (IOException e) {
 				Se2Dlog.log(LogLevel.WARNING, "Could not read mod container: " + candidates[i]);
 				continue;
-			}
-			for (JarEntry entry : Collections.list(jarfile.entries())) {
-				if (entry.getName().toLowerCase().endsWith(".class")) {
-					Class<?> clazz = null;
+			} finally {
+				if (jarfile != null) {
 					try {
-						clazz = classloader.loadClass(entry.getName().replace("/", ".").replace(".class", ""));
-					} catch (ClassNotFoundException e) {
-						Se2Dlog.log(LogLevel.ERROR, "Could not load: " + entry.getName());
-						continue;
-					} catch (LinkageError e) {
-						Se2Dlog.log(LogLevel.INFO, "Unexpected behaviour of a class detected: "
-								+ entry.getName().replace("/", ".").replace(".class", ""));
-						continue;
-					}
-					if (clazz.isAnnotationPresent(Mod.class)) {
-						modClasses.add(new TmpHolder(clazz, candidates[i]));
+						jarfile.close();
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
 				}
 			}
+		}
+		try {
+			classloader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		// Naja ist doof...
 		// SpaceExplorer2D.getSpaceExplorer2D().getEventBus().findStaticEventAnnotations(classloader,

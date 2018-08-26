@@ -85,7 +85,7 @@ public class GameRegistry<T> {
 
 	public void checkRegistered(T data) {
 		if (!isRegistered(data)) {
-			throw new IllegalStateException(data.getClass().getSimpleName() + " " + data + " is unregistered!");
+			throw new IllegalStateException(data.getClass().getSimpleName() + " " + data + " is not registered!");
 		}
 	}
 

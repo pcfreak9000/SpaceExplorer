@@ -28,7 +28,7 @@ public abstract class CelestialBodyDefinition {
 	 * @param seed
 	 * @param sc
 	 * @param parent
-	 * @return
+	 * @return {@link CelestialBody}
 	 */
 	public abstract CelestialBody generate(long seed, SpaceCoordinates sc, CelestialBody parent);
 
@@ -44,7 +44,7 @@ public abstract class CelestialBodyDefinition {
 	 * Can the player start here? (e.g. if he won't suffocate here because of no
 	 * atmosphere)
 	 * 
-	 * @return
+	 * @return boolean
 	 */
 	public boolean isStartCapable() {
 		return false;
