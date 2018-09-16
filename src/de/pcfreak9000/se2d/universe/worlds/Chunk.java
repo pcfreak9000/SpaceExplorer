@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import de.omnikryptec.gameobject.Sprite;
 import de.omnikryptec.graphics.SpriteBatch;
 import de.omnikryptec.main.Scene2D;
-import de.omnikryptec.renderer.d3.RenderMap;
+import de.omnikryptec.renderer.d3.KeyArrayHashMap;
 import de.omnikryptec.resource.texture.Texture;
 import de.omnikryptec.util.Maths;
 import de.pcfreak9000.se2d.game.launch.Launcher;
@@ -28,9 +28,9 @@ public class Chunk extends Sprite {
 	public static final float CHUNKSIZE = CHUNKSIZE_T * TileDefinition.TILE_SIZE;
 
 	private Tile[][] array = new Tile[CHUNKSIZE_T][CHUNKSIZE_T];
-	private RenderMap<Texture, float[]> data = new RenderMap<>(Texture.class);
+	private KeyArrayHashMap<Texture, float[]> data = new KeyArrayHashMap<>(Texture.class);
 
-	private RenderMap<Texture, ArrayList<Tile>> tiles = new RenderMap<>(Texture.class);
+	private KeyArrayHashMap<Texture, ArrayList<Tile>> tiles = new KeyArrayHashMap<>(Texture.class);
 	private ArrayList<Sprite> others = new ArrayList<>();
 
 	private int cx, cy;
@@ -110,7 +110,7 @@ public class Chunk extends Sprite {
 		return compiled;
 	}
 
-	private int getSize(RenderMap<Texture, ArrayList<Tile>> tiles) {
+	private int getSize(KeyArrayHashMap<Texture, ArrayList<Tile>> tiles) {
 		int fsize = 0;
 		for (Texture t : tiles.keysArray()) {
 			fsize += tiles.get(t).size();
