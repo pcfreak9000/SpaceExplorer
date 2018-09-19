@@ -2,7 +2,7 @@ package de.pcfreak9000.se2d.game.launch;
 
 import org.lwjgl.glfw.GLFW;
 
-import de.omnikryptec.util.Instance;
+import de.omnikryptec.old.util.Instance;
 
 public class KeyManager {
 

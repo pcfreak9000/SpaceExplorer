@@ -1,10 +1,10 @@
 package de.pcfreak9000.se2d.universe.worlds;
 
-import de.omnikryptec.main.OmniKryptecEngine;
-import de.omnikryptec.main.Scene2D;
-import de.omnikryptec.physics.Dyn4JPhysicsWorld;
-import de.omnikryptec.util.logger.LogLevel;
-import de.omnikryptec.util.logger.Logger;
+import de.omnikryptec.old.main.OmniKryptecEngine;
+import de.omnikryptec.old.main.Scene2D;
+import de.omnikryptec.old.physics.Dyn4JPhysicsWorld;
+import de.omnikryptec.old.util.logger.LogLevel;
+import de.omnikryptec.old.util.logger.Logger;
 import de.pcfreak9000.se2d.game.core.Player;
 import de.pcfreak9000.se2d.game.launch.SpaceExplorer2D;
 import de.pcfreak9000.se2d.renderer.PlanetRenderer;

@@ -15,9 +15,9 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.resource.loader.ResourceLoader;
-import de.omnikryptec.util.logger.LogLevel;
-import de.omnikryptec.util.logger.Logger;
+import de.omnikryptec.old.util.logger.LogLevel;
+import de.omnikryptec.old.util.logger.Logger;
+import de.omnikryptec.old.resource.loader.ResourceLoader;
 import de.pcfreak9000.se2d.game.launch.Launcher;
 import de.pcfreak9000.se2d.game.launch.SpaceExplorer2D;
 import de.pcfreak9000.se2d.mod.event.Se2DModInitEvent;

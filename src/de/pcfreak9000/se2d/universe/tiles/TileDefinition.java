@@ -1,6 +1,6 @@
 package de.pcfreak9000.se2d.universe.tiles;
 
-import de.omnikryptec.util.EnumCollection.UpdateType;
+import de.omnikryptec.old.util.EnumCollection.UpdateType;
 import de.pcfreak9000.se2d.util.RegisterSensitive;
 
 /**

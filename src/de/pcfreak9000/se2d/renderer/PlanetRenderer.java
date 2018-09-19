@@ -2,9 +2,9 @@ package de.pcfreak9000.se2d.renderer;
 
 import java.util.Comparator;
 
-import de.omnikryptec.gameobject.Sprite;
-import de.omnikryptec.graphics.SpriteBatch;
-import de.omnikryptec.renderer.d2.DefaultRenderer2D;
+import de.omnikryptec.old.gameobject.Sprite;
+import de.omnikryptec.old.graphics.SpriteBatch;
+import de.omnikryptec.old.renderer.d2.DefaultRenderer2D;
 import de.pcfreak9000.se2d.util.Private;
 
 @Private

@@ -2,12 +2,12 @@ package de.pcfreak9000.se2d.universe.worlds;
 
 import java.util.ArrayList;
 
-import de.omnikryptec.gameobject.Sprite;
-import de.omnikryptec.graphics.SpriteBatch;
-import de.omnikryptec.main.Scene2D;
-import de.omnikryptec.renderer.d3.KeyArrayHashMap;
-import de.omnikryptec.resource.texture.Texture;
-import de.omnikryptec.util.Maths;
+import de.omnikryptec.old.gameobject.Sprite;
+import de.omnikryptec.old.graphics.SpriteBatch;
+import de.omnikryptec.old.main.Scene2D;
+import de.omnikryptec.old.resource.texture.Texture;
+import de.omnikryptec.old.util.KeyArrayHashMap;
+import de.omnikryptec.old.util.Maths;
 import de.pcfreak9000.se2d.game.launch.Launcher;
 import de.pcfreak9000.se2d.universe.objects.Entity;
 import de.pcfreak9000.se2d.universe.tiles.Tile;

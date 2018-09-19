@@ -1,11 +1,11 @@
 package de.pcfreak9000.se2d.universe.objects;
 
-import de.omnikryptec.gameobject.Sprite;
-import de.omnikryptec.gameobject.component.PhysicsComponent2D;
-import de.omnikryptec.physics.AdvancedBody;
-import de.omnikryptec.resource.loader.ResourceLoader;
-import de.omnikryptec.util.ConverterUtil;
-import de.omnikryptec.util.EnumCollection.UpdateType;
+import de.omnikryptec.old.gameobject.Sprite;
+import de.omnikryptec.old.gameobject.component.PhysicsComponent2D;
+import de.omnikryptec.old.physics.AdvancedBody;
+import de.omnikryptec.old.util.ConverterUtil;
+import de.omnikryptec.old.util.EnumCollection.UpdateType;
+import de.omnikryptec.old.resource.loader.ResourceLoader;
 import de.pcfreak9000.se2d.game.core.GameRegistry;
 
 public class Entity extends Sprite {

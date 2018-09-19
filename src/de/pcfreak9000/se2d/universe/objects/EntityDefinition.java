@@ -1,6 +1,6 @@
 package de.pcfreak9000.se2d.universe.objects;
 
-import de.omnikryptec.physics.AdvancedBody;
+import de.omnikryptec.old.physics.AdvancedBody;
 import de.pcfreak9000.se2d.util.RegisterSensitive;
 
 @RegisterSensitive

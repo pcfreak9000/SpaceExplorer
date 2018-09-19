@@ -1,6 +1,6 @@
 package de.pcfreak9000.se2d.coregame;
 
-import de.omnikryptec.event.eventV2.EventSubscription;
+import de.omnikryptec.old.event.eventV2.EventSubscription;
 import de.pcfreak9000.se2d.coregame.start.PlanetDefinition;
 import de.pcfreak9000.se2d.coregame.start.StartPlanetDef;
 import de.pcfreak9000.se2d.game.core.GameRegistry;

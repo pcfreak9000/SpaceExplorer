@@ -2,7 +2,7 @@ package de.pcfreak9000.se2d.coregame.start;
 
 import java.util.List;
 
-import de.omnikryptec.util.Color;
+import de.omnikryptec.old.util.Color;
 import de.pcfreak9000.se2d.universe.Orbit;
 import de.pcfreak9000.se2d.universe.biome.Biome;
 import de.pcfreak9000.se2d.universe.biome.BiomeDefinition;

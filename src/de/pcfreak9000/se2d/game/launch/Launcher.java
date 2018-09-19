@@ -2,21 +2,19 @@ package de.pcfreak9000.se2d.game.launch;
 
 import java.io.File;
 
-import org.lwjgl.system.Configuration;
-
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.display.Display;
-import de.omnikryptec.display.DisplayManager;
-import de.omnikryptec.display.GLFWInfo;
-import de.omnikryptec.main.DefaultGameLoop;
-import de.omnikryptec.main.OmniKryptecEngine;
-import de.omnikryptec.postprocessing.stages.Light2DProcessor;
-import de.omnikryptec.settings.GameSettings;
-import de.omnikryptec.settings.KeySettings;
-import de.omnikryptec.util.NativesLoader;
-import de.omnikryptec.util.OSUtil;
-import de.omnikryptec.util.logger.LogLevel;
-import de.omnikryptec.util.logger.Logger;
+import de.omnikryptec.core.display.Display;
+import de.omnikryptec.core.display.DisplayManager;
+import de.omnikryptec.core.display.GLFWInfo;
+import de.omnikryptec.old.main.DefaultGameLoop;
+import de.omnikryptec.old.main.OmniKryptecEngine;
+import de.omnikryptec.old.postprocessing.stages.Light2DProcessor;
+import de.omnikryptec.old.settings.GameSettings;
+import de.omnikryptec.old.settings.KeySettings;
+import de.omnikryptec.old.util.NativesLoader;
+import de.omnikryptec.old.util.OSUtil;
+import de.omnikryptec.old.util.logger.LogLevel;
+import de.omnikryptec.old.util.logger.Logger;
 import de.pcfreak9000.se2d.universe.tiles.TileDefinition;
 import de.pcfreak9000.se2d.universe.worlds.Chunk;
 import de.pcfreak9000.se2d.universe.worlds.World;

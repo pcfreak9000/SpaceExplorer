@@ -1,8 +1,8 @@
 package de.pcfreak9000.se2d.universe.tiles;
 
-import de.omnikryptec.gameobject.Sprite;
-import de.omnikryptec.resource.loader.ResourceLoader;
-import de.omnikryptec.util.EnumCollection.FixedSizeMode;
+import de.omnikryptec.old.gameobject.Sprite;
+import de.omnikryptec.old.util.EnumCollection.FixedSizeMode;
+import de.omnikryptec.old.resource.loader.ResourceLoader;
 import de.pcfreak9000.se2d.game.core.GameRegistry;
 import de.pcfreak9000.se2d.universe.celestial.CelestialBody;
 import de.pcfreak9000.se2d.universe.worlds.World;
