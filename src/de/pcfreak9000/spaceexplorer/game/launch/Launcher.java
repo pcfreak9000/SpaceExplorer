@@ -3,9 +3,9 @@ package de.pcfreak9000.spaceexplorer.game.launch;
 import java.io.File;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.core.display.Display;
-import de.omnikryptec.core.display.DisplayManager;
-import de.omnikryptec.core.display.GLFWInfo;
+import de.omnikryptec.graphics.display.Display;
+import de.omnikryptec.graphics.display.DisplayManager;
+import de.omnikryptec.libapi.glfw.WindowInfo;
 import de.omnikryptec.old.main.DefaultGameLoop;
 import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.old.postprocessing.stages.Light2DProcessor;
@@ -73,7 +73,7 @@ public class Launcher {
 																							// true?
 						.setBoolean(GameSettings.DYN4J_PHYSICS_VAR_TS, false).setDouble(GameSettings.PIXELS_PER_METER,
 								PIXELS_PER_METER),
-				new GLFWInfo(3, 2, true, false, 1280, 720));
+				new WindowInfo(3, 2, true, false, 1280, 720));
 		Display.setAspectRatio(ASPECT_RATIO);
 		OmniKryptecEngine.instance().setFboModes(OmniKryptecEngine.FboModes.SCENE);
 		OmniKryptecEngine.instance().refreshFbos();
