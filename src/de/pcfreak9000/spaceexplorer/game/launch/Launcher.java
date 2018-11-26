@@ -5,7 +5,7 @@ import java.io.File;
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.graphics.display.Display;
 import de.omnikryptec.graphics.display.DisplayManager;
-import de.omnikryptec.libapi.glfw.WindowInfo;
+import de.omnikryptec.libapi.exposed.window.WindowInfo;
 import de.omnikryptec.old.main.DefaultGameLoop;
 import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.old.postprocessing.stages.Light2DProcessor;
