@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * Indicates that the annotated object should not be directly accessed by mods.
- * 
+ *
  * @author pcfreak9000
  *
  */

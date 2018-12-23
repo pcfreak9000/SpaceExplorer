@@ -10,16 +10,16 @@ import de.pcfreak9000.spaceexplorer.game.launch.Launcher;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Mod {
-
-	String id();
-
-	String name();
-
-	long[] version();
-
-	String resourceLocation();
-
-	String[] se2dversion() default { Launcher.VERSION };
-
-	boolean accessible() default true;
+    
+    String id();
+    
+    String name();
+    
+    long[] version();
+    
+    String resourceLocation();
+    
+    String[] se2dversion() default { Launcher.VERSION };
+    
+    boolean accessible() default true;
 }

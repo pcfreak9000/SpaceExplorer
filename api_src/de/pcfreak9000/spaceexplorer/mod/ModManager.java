@@ -8,37 +8,37 @@ import de.pcfreak9000.spaceexplorer.util.Private;
 
 /**
  * coordinates mod discovering, loading and event steps.
- * 
+ *
  * @author pcfreak9000
  *
  */
 @Private
 public class ModManager {
-
-	private ModLoader loader;
-	private List<ModContainer> mods;
-
-	public ModManager() {
-		loader = new ModLoader();
-	}
-
-	public void load(AdvancedFile modsfolder) {
-		mods = new ArrayList<>();
-		loader.classLoadMods(modsfolder.toFile());
-		loader.instantiate(mods);
-		loader.dispatchInstances(mods);
-		loader.registerEvents(mods);
-		loader.preInit();
-		loader.init();
-		loader.postInit();
-	}
-
-	public void stageRessourceLoading() {
-		loader.stageRes();
-	}
-
-	public List<ModContainer> getMods() {
-		return mods;
-	}
-
+    
+    private final ModLoader loader;
+    private List<ModContainer> mods;
+    
+    public ModManager() {
+        this.loader = new ModLoader();
+    }
+    
+    public void load(final AdvancedFile modsfolder) {
+        this.mods = new ArrayList<>();
+        this.loader.classLoadMods(modsfolder.toFile());
+        this.loader.instantiate(this.mods);
+        this.loader.dispatchInstances(this.mods);
+        this.loader.registerEvents(this.mods);
+        this.loader.preInit();
+        this.loader.init();
+        this.loader.postInit();
+    }
+    
+    public void stageRessourceLoading() {
+        this.loader.stageRes();
+    }
+    
+    public List<ModContainer> getMods() {
+        return this.mods;
+    }
+    
 }
