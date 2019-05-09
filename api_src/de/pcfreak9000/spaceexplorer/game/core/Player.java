@@ -11,9 +11,9 @@ import de.omnikryptec.old.physics.AdvancedBody;
 import de.omnikryptec.old.physics.AdvancedRectangle;
 import de.omnikryptec.old.util.EnumCollection.UpdateType;
 import de.omnikryptec.util.settings.KeySettings;
+import de.pcfreak9000.space.mod.Instance;
 import de.pcfreak9000.spaceexplorer.game.launch.KeyManager;
 import de.pcfreak9000.spaceexplorer.game.launch.SpaceExplorer2D;
-import de.pcfreak9000.spaceexplorer.mod.Instance;
 
 public class Player extends Sprite {
     
@@ -63,8 +63,8 @@ public class Player extends Sprite {
         // meh but makes it timeindependent
         this.body.applyVelocityImpulse(vel.multiply(Instance.getDeltaTimeSf() * 100));
         SpaceExplorer2D.getSpaceExplorer2D().getUniverse().getPlanetCamera().getTransform().setPosition(
-                getTransform().getPosition(true).x + getWidth() / 2,
-                getTransform().getPosition(true).y + getHeight() / 2, 0);
+                getTransform().getPosition(true).dx + getWidth() / 2,
+                getTransform().getPosition(true).dy + getHeight() / 2, 0);
     }
     
 }

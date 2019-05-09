@@ -39,8 +39,8 @@ public class Launcher {
     
     public Launcher() {
         // double all = 0;
-        // double min = Double.POSITIVE_INFINITY;
-        // double max = Double.NEGATIVE_INFINITY;
+        // double min = double.POSITIVE_INFINITY;
+        // double max = double.NEGATIVE_INFINITY;
         // int am=1000;
         // Random random = new Random();
         // for (int i = 0; i < am; i++) {

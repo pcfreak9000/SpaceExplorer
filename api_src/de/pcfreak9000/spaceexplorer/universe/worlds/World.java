@@ -33,8 +33,8 @@ public class World {
         
         @Override
         protected void update() {
-            final int camX = Chunk.toChunk(getCamera().getTransform().getPosition(true).x);
-            final int camY = Chunk.toChunk(getCamera().getTransform().getPosition(true).y);
+            final int camX = Chunk.toChunk(getCamera().getTransform().getPosition(true).dx);
+            final int camY = Chunk.toChunk(getCamera().getTransform().getPosition(true).dy);
             for (int i = -1; i <= 1; i++) {
                 for (int j = -1; j <= 1; j++) {
                     generateNeeded(camX + i, camY + j);

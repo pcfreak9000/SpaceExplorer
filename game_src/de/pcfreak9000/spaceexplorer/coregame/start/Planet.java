@@ -36,7 +36,7 @@ public class Planet extends CelestialBody {
         if (t.getTileX() * t.getTileX() + t.getTileY() * t.getTileY() >= getTileRadius() * getTileRadius()
                 - getTileRadius() * 2) {
             t.invalidate();
-            t.setColor(new Color(0.5f, 0.5f, 0.5f));
+            t.color(new Color(0.5f, 0.5f, 0.5f));
             new StaticRectCollider(TileDefinition.TILE_SIZE, TileDefinition.TILE_SIZE,
                     t.getTransform().getPosition(true)).add();
         }

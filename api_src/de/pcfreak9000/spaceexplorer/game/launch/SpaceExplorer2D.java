@@ -11,8 +11,8 @@ import de.omnikryptec.old.event.eventV2.engineevents.FrameEvent;
 import de.omnikryptec.old.event.eventV2.engineevents.FrameEvent.FrameType;
 import de.omnikryptec.old.gui.ProgressBar;
 import de.omnikryptec.old.main.OmniKryptecEngine;
-import de.pcfreak9000.spaceexplorer.mod.Instance;
-import de.pcfreak9000.spaceexplorer.mod.ModManager;
+import de.pcfreak9000.space.mod.Instance;
+import de.pcfreak9000.space.mod.ModManager;
 import de.pcfreak9000.spaceexplorer.universe.Universe;
 
 public class SpaceExplorer2D {
@@ -43,12 +43,12 @@ public class SpaceExplorer2D {
         this.se2d_events = new EventBus(EVENTBUSNAME, 2, 2);
         instance = this;
         this.resourcepacks = resourcepacksp;
-        if (!this.resourcepacks.toFile().exists()) {
+        if (!this.resourcepacks.toFile().existsInCompilation()) {
             this.resourcepacks.setShouldBeFile(false);
             this.resourcepacks.toFile().mkdirs();
         }
         this.modsfolder = modsfolderp;
-        if (!this.modsfolder.toFile().exists()) {
+        if (!this.modsfolder.toFile().existsInCompilation()) {
             this.modsfolder.setShouldBeFile(false);
             this.modsfolder.toFile().mkdirs();
         }

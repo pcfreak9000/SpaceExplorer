@@ -2,7 +2,7 @@ package de.pcfreak9000.spaceexplorer.game.launch;
 
 import org.lwjgl.glfw.GLFW;
 
-import de.pcfreak9000.spaceexplorer.mod.Instance;
+import de.pcfreak9000.space.mod.Instance;
 
 public class KeyManager {
     

@@ -113,7 +113,7 @@ public class Chunk extends Sprite {
     private int getSize(final KeyArrayHashMap<Texture, ArrayList<Tile>> tiles) {
         int fsize = 0;
         for (final Texture t : tiles.keysArray()) {
-            fsize += tiles.get(t).size();
+            fsize += tiles.get(t).targetCount();
         }
         return fsize;
     }

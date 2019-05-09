@@ -7,7 +7,7 @@ import org.joml.Vector2f;
 import de.omnikryptec.old.physics.AdvancedRectangle;
 import de.omnikryptec.old.physics.Dyn4JPhysicsWorld;
 import de.omnikryptec.old.util.ConverterUtil;
-import de.pcfreak9000.spaceexplorer.mod.Instance;
+import de.pcfreak9000.space.mod.Instance;
 
 /**
  * An easy to use static solid Body (e.g. can be used as wall)
