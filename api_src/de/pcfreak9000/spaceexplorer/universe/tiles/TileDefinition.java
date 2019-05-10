@@ -1,7 +1,7 @@
 package de.pcfreak9000.spaceexplorer.universe.tiles;
 
 import de.omnikryptec.old.util.EnumCollection.UpdateType;
-import de.pcfreak9000.spaceexplorer.util.RegisterSensitive;
+import de.pcfreak9000.space.util.RegisterSensitive;
 
 /**
  * Defines the general properties of a {@link Tile}.

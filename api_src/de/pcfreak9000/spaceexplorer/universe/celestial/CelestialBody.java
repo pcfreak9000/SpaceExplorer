@@ -3,7 +3,7 @@ package de.pcfreak9000.spaceexplorer.universe.celestial;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.pcfreak9000.spaceexplorer.game.core.GameRegistry;
+import de.pcfreak9000.space.core.GameRegistry;
 import de.pcfreak9000.spaceexplorer.universe.Orbit;
 import de.pcfreak9000.spaceexplorer.universe.biome.Biome;
 import de.pcfreak9000.spaceexplorer.universe.biome.BiomeDefinition;

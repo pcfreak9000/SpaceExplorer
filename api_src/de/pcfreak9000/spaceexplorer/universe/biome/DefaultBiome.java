@@ -1,6 +1,6 @@
 package de.pcfreak9000.spaceexplorer.universe.biome;
 
-import de.pcfreak9000.spaceexplorer.game.core.GameRegistry;
+import de.pcfreak9000.space.core.GameRegistry;
 import de.pcfreak9000.spaceexplorer.universe.tiles.Tile;
 import de.pcfreak9000.spaceexplorer.universe.tiles.TileDefinition;
 import de.pcfreak9000.spaceexplorer.universe.worlds.Chunk;

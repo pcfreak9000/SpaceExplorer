@@ -1,8 +1,8 @@
 package de.pcfreak9000.spaceexplorer.universe.biome;
 
+import de.pcfreak9000.space.util.RegisterSensitive;
 import de.pcfreak9000.spaceexplorer.universe.celestial.CelestialBody;
 import de.pcfreak9000.spaceexplorer.universe.worlds.Generatable;
-import de.pcfreak9000.spaceexplorer.util.RegisterSensitive;
 
 /**
  * Defines the general properties of a {@link Biome}. Usually generates a

@@ -1,7 +1,7 @@
 package de.pcfreak9000.spaceexplorer.universe.objects;
 
 import de.omnikryptec.old.physics.AdvancedBody;
-import de.pcfreak9000.spaceexplorer.util.RegisterSensitive;
+import de.pcfreak9000.space.util.RegisterSensitive;
 
 @RegisterSensitive
 public class EntityDefinition {
