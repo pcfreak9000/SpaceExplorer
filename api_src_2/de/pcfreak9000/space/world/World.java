@@ -15,7 +15,7 @@ public class World {
         this.chunksSize = ((int) Math.ceil((double) tileRadius / Chunk.CHUNK_TILE_SIZE)) << 1;
         if (this.chunksSize < 0) {
             // Should not happen
-            LOGGER.error("World size is negative!");
+            LOGGER.error("World size is negative");
         }
         this.chunks = new Chunk[this.chunksSize][this.chunksSize];
         this.generator = generator;
