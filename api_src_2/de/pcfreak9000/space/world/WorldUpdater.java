@@ -5,10 +5,10 @@ import java.util.Set;
 
 public class WorldUpdater {
     
-    private WorldUpdateFence fence;
+    private WorldUpdateFence fence;    
+    private World world;
     
     private Set<Chunk> localLoadedChunks;
-    private World world;
     
     public void setWorldUpdateFence(WorldUpdateFence fence) {
         unloadAll();

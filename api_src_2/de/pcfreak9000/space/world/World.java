@@ -35,7 +35,7 @@ public class World {
             c = loadChunk(cx, cy);
             if (c == null) {
                 c = new Chunk(cx, cy);
-                generator.generatChunk(c);
+                generator.generateChunk(c);
                 c.pack();
             }
             setChunk(c);

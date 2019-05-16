@@ -12,6 +12,8 @@ public class Chunk {
     private final int chunkX;
     private final int chunkY;
     
+    //Tiles (pre-Combine), Statics (pre-Combine?), Dynamics (moving objects; managed by WorldUpdater or an ECSSystem?)
+    
     Chunk(int cx, int cy) {
         this.chunkX = cx;
         this.chunkY = cy;
