@@ -3,7 +3,7 @@ package de.pcfreak9000.space.world;
 import de.omnikryptec.util.math.transform.Transform2Df;
 import de.pcfreak9000.space.world.tile.Tile;
 
-public class WorldUpdateFence {
+public class WorldLoadingFence {
     
     private Transform2Df following;
     
@@ -13,7 +13,7 @@ public class WorldUpdateFence {
     private int xChunkOffset;
     private int yChunkOffset;
     
-    public WorldUpdateFence(Transform2Df foll) {
+    public WorldLoadingFence(Transform2Df foll) {
         this.following = foll;
     }
     

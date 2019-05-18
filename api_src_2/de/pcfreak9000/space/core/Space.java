@@ -11,6 +11,7 @@ import de.omnikryptec.resource.loadervpc.LoadingProgressCallback;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 import de.pcfreak9000.space.mod.ModLoader;
+import de.pcfreak9000.space.world.GroundManager;
 
 public class Space extends EngineLoader {
     public static final boolean DEBUG = true;
@@ -23,14 +24,27 @@ public class Space extends EngineLoader {
     public static final String MODS = "mods";
     public static final double ASPECT_RATIO = 16 / 9.0;
     
+    private static Space space;
+    
     public static void main(String[] args) {
         new Space().start();
         System.exit(0);
     }
     
+    public static Space getSpace() {
+        return space;
+    }
+    
     private ModLoader loader = new ModLoader();
+    
+    private GroundManager groundManager;
+    
     private InputManager guiInput;
     private InputManager gameInput;
+    
+    private Space() {
+        space = this;
+    }
     
     @Override
     protected void configure(Settings<LoaderSetting> loaderSettings, Settings<LibSetting> libSettings,
@@ -44,6 +58,11 @@ public class Space extends EngineLoader {
         getResourceManager().addCallback(LoadingProgressCallback.DEBUG_CALLBACK);
         reloadResources();
         createInputmanagers();
+        groundManager = new GroundManager(getGameController());
+    }
+    
+    public GroundManager getGroundManager() {
+        return groundManager;
     }
     
     public void reloadResources() {

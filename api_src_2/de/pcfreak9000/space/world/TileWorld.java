@@ -2,16 +2,16 @@ package de.pcfreak9000.space.world;
 
 import de.omnikryptec.util.Logger;
 
-public class World {
+public class TileWorld {
     
-    private static final Logger LOGGER = Logger.getLogger(World.class);
+    private static final Logger LOGGER = Logger.getLogger(TileWorld.class);
     
     private final Chunk[][] chunks;
     private final int chunksSize;
     
     private final IGenerator generator;
     
-    public World(int tileRadius, IGenerator generator) {
+    public TileWorld(int tileRadius, IGenerator generator) {
         this.chunksSize = ((int) Math.ceil((double) tileRadius / Chunk.CHUNK_TILE_SIZE)) << 1;
         if (this.chunksSize < 0) {
             // Should not happen
@@ -73,7 +73,7 @@ public class World {
     }
     
     /**
-     * Is the chunk position contained in the boundaries of this {@link World}?
+     * Is the chunk position contained in the boundaries of this {@link TileWorld}?
      * 
      * @param cx global chunk x
      * @param cy global chunk y

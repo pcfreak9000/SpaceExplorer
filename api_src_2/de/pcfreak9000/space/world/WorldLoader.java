@@ -1,27 +1,40 @@
 package de.pcfreak9000.space.world;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class WorldUpdater {
+import de.omnikryptec.core.update.IUpdatable;
+import de.omnikryptec.util.updater.Time;
+
+public class WorldLoader implements IUpdatable {
     
-    private WorldUpdateFence fence;    
-    private World world;
+    private WorldLoadingFence fence;
+    private TileWorld world;
     
     private Set<Chunk> localLoadedChunks;
     
-    public void setWorldUpdateFence(WorldUpdateFence fence) {
+    public WorldLoader() {
+        this.localLoadedChunks = new HashSet<>();
+    }
+    
+    public void setWorldUpdateFence(WorldLoadingFence fence) {
         unloadAll();
         this.fence = fence;
         loadAll();
     }
     
-    public void setWorld(World world) {
+    public void setWorld(TileWorld world) {
         unloadAll();
         this.world = world;
         loadAll();
     }
     
+    @Override
+    public void update(Time time) {
+        unloadAll();
+        loadAll();
+    }
     //TODO unload all non-needed in update and load new needed
     
     private void loadAll() {
