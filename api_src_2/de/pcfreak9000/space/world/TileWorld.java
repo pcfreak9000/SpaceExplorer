@@ -1,6 +1,7 @@
 package de.pcfreak9000.space.world;
 
 import de.omnikryptec.util.Logger;
+import de.pcfreak9000.space.world.tile.Tile;
 
 public class TileWorld {
     
@@ -12,6 +13,9 @@ public class TileWorld {
     private final IGenerator generator;
     
     public TileWorld(int tileRadius, IGenerator generator) {
+        if (tileRadius >= 99999 / Tile.TILE_SIZE) {
+            LOGGER.error("World size exceeds precision");
+        }
         this.chunksSize = ((int) Math.ceil((double) tileRadius / Chunk.CHUNK_TILE_SIZE)) << 1;
         if (this.chunksSize < 0) {
             // Should not happen
@@ -32,24 +36,12 @@ public class TileWorld {
         }
         Chunk c = getChunk(cx, cy);
         if (c == null) {
-            c = loadChunk(cx, cy);
-            if (c == null) {
-                c = new Chunk(cx, cy);
-                generator.generateChunk(c);
-                c.pack();
-            }
+            c = new Chunk(cx, cy);
+            generator.generateChunk(c);
+            c.pack();
             setChunk(c);
         }
         return c;
-    }
-    
-    public void unRequire(Chunk c) {
-        //save chunk...
-    }
-    
-    private Chunk loadChunk(int cx, int cy) {
-        //load chunk...
-        return null;
     }
     
     /**

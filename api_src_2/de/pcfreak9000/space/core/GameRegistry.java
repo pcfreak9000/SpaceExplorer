@@ -14,9 +14,11 @@ import de.pcfreak9000.space.util.RegisterSensitive;
  */
 public class GameRegistry<T> {
     
-    private final Logger LOGGER = Logger.getLogger(getClass());
+    public static final TileRegistry TILE_REGISTRY = new TileRegistry();
     
-    private final HashMap<String, T> registered = new HashMap<>();
+    protected final Logger LOGGER = Logger.getLogger(getClass());
+    
+    protected final HashMap<String, T> registered = new HashMap<>();
     
     public GameRegistry<T> register(final String name, final T data) {
         final T before = this.registered.put(name, data);

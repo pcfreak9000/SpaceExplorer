@@ -19,7 +19,7 @@ public class Space extends EngineLoader {
     public static final String NAME = "Space Awaits";
     public static final String VERSION = "pre-Alpha-0";
     
-    public static final AdvancedFile FOLDER = new AdvancedFile(OSUtil.getAppDataSubDirectory(NAME));
+    public static final AdvancedFile FOLDER = new AdvancedFile(OSUtil.getAppDataSubDirectory("." + NAME));
     public static final String RESOURCEPACKS = "resourcepacks";
     public static final String MODS = "mods";
     public static final double ASPECT_RATIO = 16 / 9.0;
@@ -66,11 +66,14 @@ public class Space extends EngineLoader {
     }
     
     public void reloadResources() {
+        //Do this only if no scene is loaded
         getResourceManager().clearStaged();
+        getTextures().clearTextures();
         loader.stageModResources(getResourceManager(), 1);
         getResourceManager().stage(mkdirIfNonExisting(new AdvancedFile(FOLDER, RESOURCEPACKS)), 0);
         getResourceManager().processStaged(true, false);
         getResourceManager().clearStaged();
+        GameRegistry.TILE_REGISTRY.initAll(getTextures());
     }
     
     private void createInputmanagers() {

@@ -59,7 +59,6 @@ public class WorldLoader implements IUpdatable {
         while (it.hasNext()) {
             Chunk c = it.next();
             //TODO remove chunk from scene
-            world.unRequire(c);
             it.remove();
         }
     }
