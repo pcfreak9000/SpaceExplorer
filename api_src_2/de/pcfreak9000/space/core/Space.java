@@ -68,7 +68,8 @@ public class Space extends EngineLoader {
     public void reloadResources() {
         //Do this only if no scene is loaded
         getResourceManager().clearStaged();
-        getTextures().clearTextures();
+        getResourceProvider().clear();
+        getTextures().clearAndDeleteTextures();
         loader.stageModResources(getResourceManager(), 1);
         getResourceManager().stage(mkdirIfNonExisting(new AdvancedFile(FOLDER, RESOURCEPACKS)), 0);
         getResourceManager().processStaged(true, false);
