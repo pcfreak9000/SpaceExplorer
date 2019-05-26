@@ -13,16 +13,25 @@ public class TileWorld {
     private final IGenerator generator;
     
     public TileWorld(int tileRadius, IGenerator generator) {
+        this.chunks = initChunkArray(tileRadius);
+        this.chunksSize = calculateChunksSize(tileRadius);
+        this.generator = generator;
+    }
+    
+    private Chunk[][] initChunkArray(int tileRadius) {
         if (tileRadius >= 99999 / Tile.TILE_SIZE) {
             LOGGER.error("World size exceeds precision");
         }
-        this.chunksSize = ((int) Math.ceil((double) tileRadius / Chunk.CHUNK_TILE_SIZE)) << 1;
-        if (this.chunksSize < 0) {
+        int chunksSize = calculateChunksSize(tileRadius);
+        if (chunksSize < 0) {
             // Should not happen
             LOGGER.error("World size is negative");
         }
-        this.chunks = new Chunk[this.chunksSize][this.chunksSize];
-        this.generator = generator;
+        return new Chunk[chunksSize][chunksSize];
+    }
+    
+    private int calculateChunksSize(int tileRadius) {
+        return ((int) Math.ceil((double) tileRadius / Chunk.CHUNK_TILE_SIZE)) << 1;
     }
     
     public int getChunkRadius() {

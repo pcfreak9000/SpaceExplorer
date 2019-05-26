@@ -39,6 +39,7 @@ public class Space extends EngineLoader {
     
     private GroundManager groundManager;
     
+    //Confusing to use?
     private InputManager guiInput;
     private InputManager gameInput;
     
@@ -70,7 +71,7 @@ public class Space extends EngineLoader {
         getResourceManager().clearStaged();
         getResourceProvider().clear();
         getTextures().clearAndDeleteTextures();
-        loader.stageModResources(getResourceManager(), 1);
+        //loader.stageModResources(getResourceManager(), 1);
         getResourceManager().stage(mkdirIfNonExisting(new AdvancedFile(FOLDER, RESOURCEPACKS)), 0);
         getResourceManager().processStaged(true, false);
         getResourceManager().clearStaged();
