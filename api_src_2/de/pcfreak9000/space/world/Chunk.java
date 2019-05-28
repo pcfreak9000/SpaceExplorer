@@ -49,6 +49,22 @@ public class Chunk {
         return chunkY;
     }
     
+    public void addStatic(Entity e) {
+        this.statics.add(e);
+    }
+    
+    public void removeStatic(Entity e) {
+        this.statics.remove(e);
+    }
+    
+    public void addDynamic(Entity e) {
+        this.dynamics.add(e);
+    }
+    
+    public void removeDynamic(Entity e) {
+        this.dynamics.remove(e);
+    }
+    
     public void addThis(IECSManager ecs) {
         for (Entity e : statics) {
             ecs.addEntity(e);

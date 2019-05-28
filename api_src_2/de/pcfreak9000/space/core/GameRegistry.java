@@ -1,5 +1,6 @@
 package de.pcfreak9000.space.core;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import de.omnikryptec.util.Logger;
@@ -44,6 +45,10 @@ public class GameRegistry<T> {
         if (!isRegistered(data)) {
             throw new IllegalStateException(data.getClass().getSimpleName() + " " + data + " is not registered!");
         }
+    }
+    
+    public Collection<T> getAll() {
+        return registered.values();
     }
     
 }

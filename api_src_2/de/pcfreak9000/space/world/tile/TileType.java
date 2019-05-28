@@ -17,6 +17,14 @@ public class TileType {
         return reflectiveness;
     }
     
+    public void setTexture(String name) {
+        this.textureName = name;
+    }
+    
+    public void setReflectiveness(Color c) {
+        this.reflectiveness = c;
+    }
+    
     public Texture getTexture() {
         return texture;
     }

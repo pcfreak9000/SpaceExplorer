@@ -1,6 +1,13 @@
 package de.pcfreak9000.space.world;
 
+import org.joml.Vector2fc;
+
+import de.omnikryptec.ecs.Entity;
+import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.util.Logger;
+import de.omnikryptec.util.math.transform.Transform2Df;
+import de.pcfreak9000.space.world.ecs.RenderComponent;
+import de.pcfreak9000.space.world.ecs.TransformComponent;
 import de.pcfreak9000.space.world.tile.Tile;
 
 public class TileWorld {
@@ -38,7 +45,7 @@ public class TileWorld {
         return chunksSize >> 1;
     }
     
-    public Chunk requireGet(final int cx, final int cy) {
+    public Chunk requireGetc(final int cx, final int cy) {
         if (!inBounds(cx, cy)) {
             LOGGER.error("Requiring out of bounds chunk");
             return null;
@@ -51,6 +58,18 @@ public class TileWorld {
             setChunk(c);
         }
         return c;
+    }
+    
+    public Chunk requireGete(Transform2Df t) {
+        Vector2fc v = t.wPosition();
+        int cx = Chunk.toGlobalChunk(Tile.toGlobalTile(v.x()));
+        int cy = Chunk.toGlobalChunk(Tile.toGlobalTile(v.y()));
+        Chunk chunk = this.requireGetc(cx, cy);
+        return chunk;
+    }
+    
+    public Chunk requireGett(int tilex, int tiley) {
+        return requireGetc(Chunk.toGlobalChunk(tilex), Chunk.toGlobalChunk(tiley));
     }
     
     /**
@@ -83,5 +102,49 @@ public class TileWorld {
     public boolean inBounds(final int cx, final int cy) {
         return !(cx >= (this.chunksSize >> 1) || cy >= (this.chunksSize >> 1) || cx < -(this.chunksSize >> 1)
                 || cy < -(this.chunksSize >> 1));
+    }
+    
+    /******************** Entity stuff ********************/
+    
+    private static final ComponentType RENDER_TYPE = ComponentType.of(RenderComponent.class);
+    private static final ComponentType TRANSFORM_TYPE = ComponentType.of(TransformComponent.class);
+    
+    public void addDynamicEntity(Entity e) {
+        if (hasTransform(e)) {
+            requireGete(getTransform(e)).addDynamic(e);
+        }
+    }
+    
+    public void removeDynamicEntity(Entity e) {
+        if (hasTransform(e)) {
+            requireGete(getTransform(e)).removeDynamic(e);
+        }
+    }
+    
+    public void addStaticEntity(Entity e) {
+        if (hasTransform(e)) {
+            requireGete(getTransform(e)).addStatic(e);
+        }
+    }
+    
+    public void removeStaticEntity(Entity e) {
+        if (hasTransform(e)) {
+            requireGete(getTransform(e)).removeStatic(e);
+        }
+    }
+    
+    private Transform2Df getTransform(Entity e) {
+        if (e.hasComponent(RENDER_TYPE)) {
+            RenderComponent rc = e.getComponent(RENDER_TYPE);
+            return rc.sprite.getTransform();
+        } else if (e.hasComponent(TRANSFORM_TYPE)) {
+            TransformComponent tc = e.getComponent(TRANSFORM_TYPE);
+            return tc.transform;
+        }
+        return null;
+    }
+    
+    private boolean hasTransform(Entity e) {
+        return e.hasComponent(RENDER_TYPE) || e.hasComponent(TRANSFORM_TYPE);
     }
 }
