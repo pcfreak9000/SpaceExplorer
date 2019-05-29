@@ -35,5 +35,6 @@ public class WorldLoadingFence {
     
     public void setRange(int xR, int yR) {
         this.xChunkRange = xR;
+        this.yChunkRange = yR;
     }
 }

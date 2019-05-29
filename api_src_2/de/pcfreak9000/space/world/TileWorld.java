@@ -54,6 +54,7 @@ public class TileWorld {
         if (c == null) {
             c = new Chunk(cx, cy);
             generator.generateChunk(c);
+            LOGGER.info("Generated chunk at " + cx + " " + cy);
             c.pack();
             setChunk(c);
         }

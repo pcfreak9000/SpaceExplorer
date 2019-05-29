@@ -8,10 +8,17 @@ import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.resource.loadervpc.LoadingProgressCallback;
+import de.omnikryptec.util.Profiler;
+import de.omnikryptec.util.math.transform.Transform2Df;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 import de.pcfreak9000.space.mod.ModLoader;
+import de.pcfreak9000.space.world.Chunk;
 import de.pcfreak9000.space.world.GroundManager;
+import de.pcfreak9000.space.world.IGenerator;
+import de.pcfreak9000.space.world.TileWorld;
+import de.pcfreak9000.space.world.WorldLoadingFence;
+import de.pcfreak9000.space.world.tile.Tile;
 
 public class Space extends EngineLoader {
     public static final boolean DEBUG = true;
@@ -55,11 +62,35 @@ public class Space extends EngineLoader {
     
     @Override
     protected void onInitialized() {
+        groundManager = new GroundManager(getGameController());
         loader.load(mkdirIfNonExisting(new AdvancedFile(FOLDER, MODS)));
         getResourceManager().addCallback(LoadingProgressCallback.DEBUG_CALLBACK);
         reloadResources();
         createInputmanagers();
-        groundManager = new GroundManager(getGameController());
+        Transform2Df tr = new Transform2Df();
+        tr.localspaceWrite().setTranslation(-100, -100);
+        WorldLoadingFence f = new WorldLoadingFence(tr);
+        f.setRange(3, 3);
+        groundManager.setWorldUpdateFence(f);
+        groundManager.setWorld(new TileWorld(1000, new IGenerator() {
+            
+            @Override
+            public void generateChunk(Chunk chunk) {
+                for (int i = 0; i < Chunk.CHUNK_TILE_SIZE; i++) {
+                    for (int j = 0; j < Chunk.CHUNK_TILE_SIZE; j++) {
+                        chunk.setTile(new Tile(GameRegistry.TILE_REGISTRY.get("Kek vom Dienst"),
+                                i * chunk.getChunkX() * Chunk.CHUNK_TILE_SIZE,
+                                j * chunk.getChunkY() * Chunk.CHUNK_TILE_SIZE), i, j);
+                    }
+                }
+            }
+        }));
+    }
+    
+    @Override
+    protected void onShutdown() {
+        System.out.println(Profiler.currentInfo());
+     
     }
     
     public GroundManager getGroundManager() {

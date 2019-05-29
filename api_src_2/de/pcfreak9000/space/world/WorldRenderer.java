@@ -7,12 +7,13 @@ import de.omnikryptec.render.objects.ReflectiveSprite;
 import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.render.renderer.LocalRendererContext;
 import de.omnikryptec.render.renderer.ReflectedRenderer2D;
+import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.updater.Time;
 
 public class WorldRenderer extends ReflectedRenderer2D {
     
     public WorldRenderer() {
-        super(1000);
+        super(12*6*Chunk.CHUNK_TILE_SIZE*Chunk.CHUNK_TILE_SIZE);
         setSpriteComparator(COMP);
     }
     
@@ -32,8 +33,10 @@ public class WorldRenderer extends ReflectedRenderer2D {
     @Override
     public void render(Time time, IProjection projection, LocalRendererContext renderer) {
         //TODO performance
+        Profiler.begin("Render world");
         forceSort();
         super.render(time, projection, renderer);
+        Profiler.end();
     }
     
 }

@@ -85,6 +85,14 @@ public class Chunk {
         ecs.removeEntity(entity);
     }
     
+    public Tile getTile(int lx, int ly) {
+        return tiles[lx][ly];
+    }
+    
+    public void setTile(Tile t, int i, int j) {
+        this.tiles[i][j] = t;
+    }
+    
     public void pack() {
         if (entity != null) {
             throw new IllegalStateException("Already packed");
@@ -99,16 +107,15 @@ public class Chunk {
             for (int j = 0; j < CHUNK_TILE_SIZE; j++) {
                 Tile t = tiles[i][j];
                 PACKING_BATCH.reflectionStrength().set(t.getType().getReflectiveness());
-                tmpTransform.setTranslation(i * Tile.TILE_SIZE, j * Tile.TILE_SIZE);
+                tmpTransform.setTranslation(i * Tile.TILE_SIZE + Tile.TILE_SIZE * CHUNK_TILE_SIZE * chunkX,
+                        j * Tile.TILE_SIZE + Tile.TILE_SIZE * CHUNK_TILE_SIZE * chunkY);
                 PACKING_BATCH.draw(t.getType().getTexture(), tmpTransform, Tile.TILE_SIZE, Tile.TILE_SIZE, false,
                         false);
             }
         }
         PACKING_BATCH.end();
         Map<Texture, float[]> cache = VERTEX_MANAGER.getCache();
-        ChunkSprite sprite = new ChunkSprite(cache);
-        sprite.getTransform().localspaceWrite().setTranslation(CHUNK_TILE_SIZE * Tile.TILE_SIZE * chunkX,
-                CHUNK_TILE_SIZE * Tile.TILE_SIZE * chunkY);
+        ChunkSprite sprite = new ChunkSprite(cache, chunkX, chunkY);
         entity.addComponent(new RenderComponent(sprite));
     }
     

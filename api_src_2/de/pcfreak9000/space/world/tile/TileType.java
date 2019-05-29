@@ -8,10 +8,10 @@ import de.pcfreak9000.space.util.RegisterSensitive;
 @RegisterSensitive
 public class TileType {
     
-    private String textureName;
-    private Texture texture;
+    private String textureName = "";
+    private Texture texture = null;
     
-    private Color reflectiveness;
+    private Color reflectiveness = new Color(0, 0, 0);
     
     public Color getReflectiveness() {
         return reflectiveness;

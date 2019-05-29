@@ -17,6 +17,7 @@ import de.omnikryptec.render.AdaptiveCamera;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.renderer.LocalRendererContext;
 import de.omnikryptec.render.renderer.RendererContext;
+import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.world.ecs.RenderSystem;
@@ -171,8 +172,11 @@ public class GroundManager {
         @Override //make sure that the chunks are updated for dynamics after the movement but before this
         public void update(Time time) {
             //TODO improve world chunk loading update -> unload all non-needed in update and load new needed
+            Profiler.begin("Reload World");
             unloadAll();
             loadAll();
+            Profiler.end();
+            System.out.println(time.ops);
         }
     }
 }
