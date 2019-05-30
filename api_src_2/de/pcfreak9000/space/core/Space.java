@@ -3,7 +3,9 @@ package de.pcfreak9000.space.core;
 import de.codemakers.base.os.OSUtil;
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.EngineLoader;
+import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.core.update.UContainer;
+import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
@@ -12,12 +14,14 @@ import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.math.transform.Transform2Df;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
+import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.mod.ModLoader;
 import de.pcfreak9000.space.world.Chunk;
 import de.pcfreak9000.space.world.GroundManager;
 import de.pcfreak9000.space.world.IGenerator;
 import de.pcfreak9000.space.world.TileWorld;
 import de.pcfreak9000.space.world.WorldLoadingFence;
+import de.pcfreak9000.space.world.ecs.PlayerInputComponent;
 import de.pcfreak9000.space.world.tile.Tile;
 
 public class Space extends EngineLoader {
@@ -62,15 +66,22 @@ public class Space extends EngineLoader {
     
     @Override
     protected void onInitialized() {
+        createInputmanagers();
         groundManager = new GroundManager(getGameController());
         loader.load(mkdirIfNonExisting(new AdvancedFile(FOLDER, MODS)));
         getResourceManager().addCallback(LoadingProgressCallback.DEBUG_CALLBACK);
         reloadResources();
-        createInputmanagers();
         Transform2Df tr = new Transform2Df();
         tr.localspaceWrite().setTranslation(-100, -100);
         WorldLoadingFence f = new WorldLoadingFence(tr);
-        f.setRange(3, 3);
+        f.setRange(5, 5);
+        Entity player = new Entity();
+        PlayerInputComponent comp = new PlayerInputComponent();
+        comp.cam = groundManager.getPlanetCamera().getTransform();
+        comp.maxXv = 10;
+        comp.maxYv = 10;
+        player.addComponent(comp);
+        groundManager.getECSManager().addEntity(player);
         groundManager.setWorldUpdateFence(f);
         groundManager.setWorld(new TileWorld(1000, new IGenerator() {
             
@@ -89,8 +100,7 @@ public class Space extends EngineLoader {
     
     @Override
     protected void onShutdown() {
-        System.out.println(Profiler.currentInfo());
-     
+        System.out.println(Profiler.currentInfo());   
     }
     
     public GroundManager getGroundManager() {
@@ -127,5 +137,9 @@ public class Space extends EngineLoader {
             }
         }
         return file;
+    }
+    
+    public InputManager getGameInput() {
+        return gameInput;
     }
 }

@@ -20,6 +20,8 @@ import de.omnikryptec.render.renderer.RendererContext;
 import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.updater.Time;
+import de.pcfreak9000.space.world.ecs.PlayerInputComponent;
+import de.pcfreak9000.space.world.ecs.PlayerInputSystem;
 import de.pcfreak9000.space.world.ecs.RenderSystem;
 
 public class GroundManager {
@@ -58,16 +60,16 @@ public class GroundManager {
         this.localScene.setUpdateableSync(updateables);
         addDefaultRenderer();
         addDefaultECSSystems();
-//        //Test code
-//        Entity test = new Entity();
-//        ReflectiveSprite s = new ReflectiveSprite();
-//        s.setTexture(GameRegistry.TILE_REGISTRY.get("Kek vom Dienst").getTexture());
-//        s.setWidth(1000);
-//        s.setHeight(1000);
-//        s.setReflectionType(Reflection2DType.Disable);
-//        test.addComponent(new RenderComponent(s));
-//        ecsManager.addEntity(test);
-//        controller.setLocalScene(localScene);
+        //        //Test code
+        //        Entity test = new Entity();
+        //        ReflectiveSprite s = new ReflectiveSprite();
+        //        s.setTexture(GameRegistry.TILE_REGISTRY.get("Kek vom Dienst").getTexture());
+        //        s.setWidth(1000);
+        //        s.setHeight(1000);
+        //        s.setReflectionType(Reflection2DType.Disable);
+        //        test.addComponent(new RenderComponent(s));
+        //        ecsManager.addEntity(test);
+        //        controller.setLocalScene(localScene);
     }
     
     private Matrix4f createProjection(int width, int height) {
@@ -81,6 +83,7 @@ public class GroundManager {
     
     private void addDefaultECSSystems() {
         ecsManager.addSystem(new RenderSystem(this.localContext.getIRenderedObjectManager()));
+        ecsManager.addSystem(new PlayerInputSystem());
     }
     
     private void addDefaultRenderer() {
@@ -176,7 +179,7 @@ public class GroundManager {
             unloadAll();
             loadAll();
             Profiler.end();
-            System.out.println(time.ops);
+            //System.out.println(time.ops);
         }
     }
 }

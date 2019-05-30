@@ -26,11 +26,13 @@ public class ChunkSprite extends ReflectiveSprite {
     @Override
     public void draw(Batch2D batch) {
         RendererUtil.drawUnorderedCache(batch, cache);
+        //TODO debug chunk border draw
     }
     
     @Override
     public boolean isVisible(FrustumIntersection frustum) {
-        return frustum.testAab(cx, cy, 0, cx + Chunk.CHUNK_TILE_SIZE * Tile.TILE_SIZE,
-                cy + Chunk.CHUNK_TILE_SIZE * Tile.TILE_SIZE, 0);
+        return frustum.testAab(cx * Chunk.CHUNK_TILE_SIZE * Tile.TILE_SIZE, cy * Chunk.CHUNK_TILE_SIZE * Tile.TILE_SIZE,
+                0, cx * Chunk.CHUNK_TILE_SIZE * Tile.TILE_SIZE + Chunk.CHUNK_TILE_SIZE * Tile.TILE_SIZE,
+                cy * Chunk.CHUNK_TILE_SIZE * Tile.TILE_SIZE + Chunk.CHUNK_TILE_SIZE * Tile.TILE_SIZE, 0);
     }
 }
