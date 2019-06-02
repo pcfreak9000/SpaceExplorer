@@ -24,6 +24,7 @@ public class DMod {
     public void init(final Se2DModInitEvent init) {
         TileType testTile = new TileType();
         testTile.setTexture("is nix da dies");
+        testTile.getReflectiveness().set(0.7f, 0.7f, 0.7f);
         GameRegistry.TILE_REGISTRY.register("Kek vom Dienst", testTile);
     }
     

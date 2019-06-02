@@ -9,11 +9,16 @@ import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
+import de.omnikryptec.render.objects.ReflectiveSprite;
 import de.omnikryptec.resource.loadervpc.LoadingProgressCallback;
 import de.omnikryptec.util.Profiler;
+import de.omnikryptec.util.data.Color;
+import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.math.transform.Transform2Df;
 import de.omnikryptec.util.settings.IntegerKey;
+import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
+import de.omnikryptec.util.settings.keys.KeysAndButtons;
 import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.mod.ModLoader;
 import de.pcfreak9000.space.world.Chunk;
@@ -22,6 +27,7 @@ import de.pcfreak9000.space.world.IGenerator;
 import de.pcfreak9000.space.world.TileWorld;
 import de.pcfreak9000.space.world.WorldLoadingFence;
 import de.pcfreak9000.space.world.ecs.PlayerInputComponent;
+import de.pcfreak9000.space.world.ecs.RenderComponent;
 import de.pcfreak9000.space.world.tile.Tile;
 
 public class Space extends EngineLoader {
@@ -51,8 +57,8 @@ public class Space extends EngineLoader {
     private GroundManager groundManager;
     
     //Confusing to use?
-    private InputManager guiInput;
     private InputManager gameInput;
+    private KeySettings gameInputSettings;
     
     private Space() {
         space = this;
@@ -71,6 +77,8 @@ public class Space extends EngineLoader {
         loader.load(mkdirIfNonExisting(new AdvancedFile(FOLDER, MODS)));
         getResourceManager().addCallback(LoadingProgressCallback.DEBUG_CALLBACK);
         reloadResources();
+        
+        //TESTING:
         Transform2Df tr = new Transform2Df();
         tr.localspaceWrite().setTranslation(-100, -100);
         WorldLoadingFence f = new WorldLoadingFence(tr);
@@ -96,13 +104,15 @@ public class Space extends EngineLoader {
                 }
             }
         }));
+        //***************
     }
     
     @Override
     protected void onShutdown() {
-        System.out.println(Profiler.currentInfo());   
+        System.out.println(Profiler.currentInfo());
     }
     
+    @Deprecated
     public GroundManager getGroundManager() {
         return groundManager;
     }
@@ -121,10 +131,12 @@ public class Space extends EngineLoader {
     
     private void createInputmanagers() {
         UContainer updt = new UContainer();
-        guiInput = new InputManager(null);
-        gameInput = new InputManager(null);
-        updt.setUpdatable(0, guiInput);
-        updt.setUpdatable(1, gameInput);
+        //guiInput = new InputManager(null);
+        gameInputSettings = Keys.createDefaultKeySettings();
+        gameInput = new InputManager(gameInputSettings);
+        gameInput.setLongButtonPressEnabled(true);//FIXME fix keysettings update
+        //updt.setUpdatable(0, guiInput);
+        updt.setUpdatable(0, gameInput);
         getGameController().getGlobalScene().setUpdateableSync(updt);
     }
     
@@ -139,7 +151,8 @@ public class Space extends EngineLoader {
         return file;
     }
     
-    public InputManager getGameInput() {
-        return gameInput;
+    public KeySettings getGameKeySettings() {
+        return gameInputSettings;
     }
+    
 }
