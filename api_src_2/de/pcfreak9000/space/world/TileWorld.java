@@ -19,9 +19,9 @@ public class TileWorld {
     
     private final IGenerator generator;
     
-    public TileWorld(int tileRadius, IGenerator generator) {
-        this.chunks = initChunkArray(tileRadius);
-        this.chunksSize = calculateChunksSize(tileRadius);
+    public TileWorld(int maxTileRadius, IGenerator generator) {
+        this.chunks = initChunkArray(maxTileRadius);
+        this.chunksSize = calculateChunksSize(maxTileRadius);
         this.generator = generator;
     }
     

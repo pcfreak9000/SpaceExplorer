@@ -23,4 +23,7 @@ import de.pcfreak9000.spaceexplorer.util.Private;
 @Inherited
 @Private
 public @interface RegisterSensitive {
+    
+    public String registry();
+    
 }

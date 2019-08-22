@@ -17,6 +17,8 @@ public class GameRegistry<T> {
     
     public static final TileRegistry TILE_REGISTRY = new TileRegistry();
     
+    public static final GeneratorRegistry GENERATOR_REGISTRY = new GeneratorRegistry();
+    
     protected final Logger LOGGER = Logger.getLogger(getClass());
     
     protected final HashMap<String, T> registered = new HashMap<>();

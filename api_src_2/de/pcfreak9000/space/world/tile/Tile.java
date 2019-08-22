@@ -28,7 +28,7 @@ public class Tile {
         return globalTileX;
     }
     
-    public int getGlobalTilY() {
+    public int getGlobalTileY() {
         return globalTileY;
     }
     

@@ -83,27 +83,9 @@ public class Space extends EngineLoader {
         tr.localspaceWrite().setTranslation(-100, -100);
         WorldLoadingFence f = new WorldLoadingFence(tr);
         f.setRange(5, 5);
-        Entity player = new Entity();
-        PlayerInputComponent comp = new PlayerInputComponent();
-        comp.cam = groundManager.getPlanetCamera().getTransform();
-        comp.maxXv = 10;
-        comp.maxYv = 10;
-        player.addComponent(comp);
-        groundManager.getECSManager().addEntity(player);
         groundManager.setWorldUpdateFence(f);
-        groundManager.setWorld(new TileWorld(1000, new IGenerator() {
-            
-            @Override
-            public void generateChunk(Chunk chunk) {
-                for (int i = 0; i < Chunk.CHUNK_TILE_SIZE; i++) {
-                    for (int j = 0; j < Chunk.CHUNK_TILE_SIZE; j++) {
-                        chunk.setTile(new Tile(GameRegistry.TILE_REGISTRY.get("Kek vom Dienst"),
-                                i * chunk.getChunkX() * Chunk.CHUNK_TILE_SIZE,
-                                j * chunk.getChunkY() * Chunk.CHUNK_TILE_SIZE), i, j);
-                    }
-                }
-            }
-        }));
+        GameInstance ins = new GameInstance(groundManager);
+        ins.visit(new TileWorld(10, GameRegistry.GENERATOR_REGISTRY.get("STS").createGenerator(0)), 0, 0);
         //***************
     }
     
@@ -153,6 +135,10 @@ public class Space extends EngineLoader {
     
     public KeySettings getGameKeySettings() {
         return gameInputSettings;
+    }
+    
+    public InputManager getGameInputManager() {
+        return gameInput;
     }
     
 }

@@ -5,7 +5,7 @@ import de.omnikryptec.resource.loadervpc.TextureHelper;
 import de.omnikryptec.util.data.Color;
 import de.pcfreak9000.space.util.RegisterSensitive;
 
-@RegisterSensitive
+@RegisterSensitive(registry = "TILE_REGISTRY")
 public class TileType {
     
     private String textureName = "";
