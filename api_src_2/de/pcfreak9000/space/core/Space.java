@@ -84,8 +84,9 @@ public class Space extends EngineLoader {
         WorldLoadingFence f = new WorldLoadingFence(tr);
         f.setRange(5, 5);
         groundManager.setWorldUpdateFence(f);
+        
         GameInstance ins = new GameInstance(groundManager);
-        ins.visit(new TileWorld(10, GameRegistry.GENERATOR_REGISTRY.get("STS").createGenerator(0)), 0, 0);
+        ins.visit(new TileWorld(10, GameRegistry.GENERATOR_REGISTRY.getStarts().get(0).createGenerator(0)), 0, 0);
         //***************
     }
     
