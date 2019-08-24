@@ -33,14 +33,13 @@ public class DMod {
         GameRegistry.GENERATOR_REGISTRY.register("STS", new GeneratorTemplate() {
             
             @Override
-            public boolean satisfiesPlace() {
-                return true;
+            protected void initCaps() {
+                CAPS.add(GeneratorCapabilitiesBase.LVL_ENTRY);
             }
             
             @Override
             public IGenerator createGenerator(long seed) {
                 return new IGenerator() {
-                    
                     @Override
                     public void generateChunk(Chunk chunk) {
                         for (int i = 0; i < Chunk.CHUNK_TILE_SIZE; i++) {
@@ -52,10 +51,6 @@ public class DMod {
                         }
                     }
                 };
-            }
-            @Override
-            public boolean canStart() {
-                return true;
             }
         });
     }

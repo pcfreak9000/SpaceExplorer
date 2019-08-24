@@ -3,7 +3,13 @@ package de.pcfreak9000.space.core;
 import de.omnikryptec.ecs.Entity;
 import de.pcfreak9000.space.world.ecs.PlayerInputComponent;
 
-//Level, Stuff, Ships, Inventory, etc
+/**
+ * Information about the player: level, ships, inventory, etc. Also the player
+ * entity for surface worlds.
+ * 
+ * @author pcfreak9000
+ *
+ */
 public class PlayerStats {
     
     private Entity playerEntity;

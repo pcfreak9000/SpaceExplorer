@@ -23,7 +23,14 @@ import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.world.ecs.PlayerInputComponent;
 import de.pcfreak9000.space.world.ecs.PlayerInputSystem;
 import de.pcfreak9000.space.world.ecs.RenderSystem;
-//Responsible for successful surface world loading, unloading, saving, etc
+
+/**
+ * Responsible for successful surface world loading and unloading, management of
+ * loaded chunks, updating and rendering the current world.
+ * 
+ * @author pcfreak9000
+ *
+ */
 public class GroundManager {
     
     //add/remove entities

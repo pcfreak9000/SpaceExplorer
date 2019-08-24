@@ -3,6 +3,13 @@ package de.pcfreak9000.space.core;
 import de.pcfreak9000.space.world.GroundManager;
 import de.pcfreak9000.space.world.TileWorld;
 
+/**
+ * The currently loaded level. Information about the player, the world,
+ * and world generation.
+ * 
+ * @author pcfreak9000
+ *
+ */
 public class GameInstance {
     
     private PlayerStats playerStats;

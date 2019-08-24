@@ -22,6 +22,7 @@ import de.omnikryptec.util.settings.keys.KeysAndButtons;
 import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.mod.ModLoader;
 import de.pcfreak9000.space.world.Chunk;
+import de.pcfreak9000.space.world.GeneratorTemplate.GeneratorCapabilitiesBase;
 import de.pcfreak9000.space.world.GroundManager;
 import de.pcfreak9000.space.world.IGenerator;
 import de.pcfreak9000.space.world.TileWorld;
@@ -30,6 +31,12 @@ import de.pcfreak9000.space.world.ecs.PlayerInputComponent;
 import de.pcfreak9000.space.world.ecs.RenderComponent;
 import de.pcfreak9000.space.world.tile.Tile;
 
+/**
+ * The main class. General settings and ressource/mod loading.
+ * 
+ * @author pcfreak9000
+ *
+ */
 public class Space extends EngineLoader {
     public static final boolean DEBUG = true;
     
@@ -86,7 +93,7 @@ public class Space extends EngineLoader {
         groundManager.setWorldUpdateFence(f);
         
         GameInstance ins = new GameInstance(groundManager);
-        ins.visit(new TileWorld(10, GameRegistry.GENERATOR_REGISTRY.getStarts().get(0).createGenerator(0)), 0, 0);
+        ins.visit(new TileWorld(10, GameRegistry.GENERATOR_REGISTRY.filtered(GeneratorCapabilitiesBase.LVL_ENTRY).get(0).createGenerator(0)), 0, 0);
         //***************
     }
     
