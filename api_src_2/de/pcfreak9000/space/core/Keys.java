@@ -11,7 +11,7 @@ public enum Keys {
     public final String id = toString();
     
     public boolean isPressed() {
-        return Omnikryptec.getInput().getKeySettings().isPressed(id);
+        return Omnikryptec.getInput().isPressed(id);
     }
     
     public static void applyDefaultKeyConfig(KeySettings ks) {
