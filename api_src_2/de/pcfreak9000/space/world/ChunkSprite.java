@@ -1,23 +1,20 @@
 package de.pcfreak9000.space.world;
 
-import java.util.Map;
-
 import org.joml.FrustumIntersection;
 
-import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.batch.Batch2D;
-import de.omnikryptec.render.objects.ReflectiveSprite;
-import de.omnikryptec.render.renderer.RendererUtil;
+import de.omnikryptec.render.batch.vertexmanager.OrderedCachedVertexManager;
+import de.omnikryptec.render.objects.AdvancedSprite;
 import de.pcfreak9000.space.world.tile.Tile;
 
-public class ChunkSprite extends ReflectiveSprite {
+public class ChunkSprite extends AdvancedSprite {
     
-    private final Map<Texture, float[]> cache;
+    private final OrderedCachedVertexManager cache;
     
     private final int cx, cy;
     
-    public ChunkSprite(Map<Texture, float[]> cache, int cx, int cy) {
-        this.cache = cache;
+    public ChunkSprite(OrderedCachedVertexManager ocvm, int cx, int cy) {
+        this.cache = ocvm;
         this.cx = cx;
         this.cy = cy;
         setReflectionType(Reflection2DType.Receive);
@@ -25,7 +22,7 @@ public class ChunkSprite extends ReflectiveSprite {
     
     @Override
     public void draw(Batch2D batch) {
-        RendererUtil.drawUnorderedCache(batch, cache);
+        this.cache.draw(batch);
         //TODO debug chunk border draw
     }
     

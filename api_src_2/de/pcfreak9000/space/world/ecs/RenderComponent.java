@@ -1,13 +1,13 @@
 package de.pcfreak9000.space.world.ecs;
 
 import de.omnikryptec.ecs.component.Component;
-import de.omnikryptec.render.objects.ReflectiveSprite;
+import de.omnikryptec.render.objects.AdvancedSprite;
 
 public class RenderComponent implements Component{
 
-    public final ReflectiveSprite sprite;
+    public final AdvancedSprite sprite;
     
-    public RenderComponent(ReflectiveSprite sprite) {
+    public RenderComponent(AdvancedSprite sprite) {
         this.sprite = sprite;
     }
 }

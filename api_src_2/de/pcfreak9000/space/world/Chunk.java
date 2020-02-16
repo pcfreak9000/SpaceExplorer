@@ -2,15 +2,13 @@ package de.pcfreak9000.space.world;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.joml.Matrix3x2f;
 
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
-import de.omnikryptec.libapi.exposed.render.Texture;
-import de.omnikryptec.render.batch.ReflectedBatch2D;
-import de.omnikryptec.render.batch.vertexmanager.UnorderedCachedvertexManager;
+import de.omnikryptec.render.batch.AdvancedBatch2D;
+import de.omnikryptec.render.batch.vertexmanager.OrderedCachedVertexManager;
 import de.omnikryptec.util.math.Mathd;
 import de.pcfreak9000.space.world.ecs.RenderComponent;
 import de.pcfreak9000.space.world.tile.Tile;
@@ -98,9 +96,9 @@ public class Chunk {
             throw new IllegalStateException("Already packed");
         }
         entity = new Entity();
-        UnorderedCachedvertexManager VERTEX_MANAGER = new UnorderedCachedvertexManager(
+        OrderedCachedVertexManager VERTEX_MANAGER = new OrderedCachedVertexManager(
                 6 * CHUNK_TILE_SIZE * CHUNK_TILE_SIZE);
-        ReflectedBatch2D PACKING_BATCH = new ReflectedBatch2D(VERTEX_MANAGER);
+        AdvancedBatch2D PACKING_BATCH = new AdvancedBatch2D(VERTEX_MANAGER);
         PACKING_BATCH.begin();
         Matrix3x2f tmpTransform = new Matrix3x2f();
         for (int i = 0; i < CHUNK_TILE_SIZE; i++) {
@@ -114,8 +112,7 @@ public class Chunk {
             }
         }
         PACKING_BATCH.end();
-        Map<Texture, float[]> cache = VERTEX_MANAGER.getCache();
-        ChunkSprite sprite = new ChunkSprite(cache, chunkX, chunkY);
+        ChunkSprite sprite = new ChunkSprite(VERTEX_MANAGER, chunkX, chunkY);
         entity.addComponent(new RenderComponent(sprite));
     }
     

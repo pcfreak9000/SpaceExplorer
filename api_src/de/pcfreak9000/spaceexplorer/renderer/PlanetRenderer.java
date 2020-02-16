@@ -2,9 +2,9 @@ package de.pcfreak9000.spaceexplorer.renderer;
 
 import java.util.Comparator;
 
-import de.omnikryptec.old.gameobject.Sprite;
 import de.omnikryptec.old.graphics.SpriteBatch;
 import de.omnikryptec.old.renderer.d2.DefaultRenderer2D;
+import de.omnikryptec.render.objects.Sprite;
 import de.pcfreak9000.spaceexplorer.util.Private;
 
 @Private

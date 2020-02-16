@@ -4,12 +4,12 @@ import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Vector2;
 
 import de.omnikryptec.old.gameobject.Light2D;
-import de.omnikryptec.old.gameobject.Sprite;
 import de.omnikryptec.old.gameobject.component.PhysicsComponent2D;
 import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.old.physics.AdvancedBody;
 import de.omnikryptec.old.physics.AdvancedRectangle;
 import de.omnikryptec.old.util.EnumCollection.UpdateType;
+import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.util.settings.KeySettings;
 import de.pcfreak9000.space.mod.Instance;
 import de.pcfreak9000.spaceexplorer.game.launch.KeyManager;

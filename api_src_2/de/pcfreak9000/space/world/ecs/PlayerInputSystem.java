@@ -3,11 +3,11 @@ package de.pcfreak9000.space.world.ecs;
 import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
-import de.omnikryptec.ecs.system.ComponentSystem;
+import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.core.Keys;
 
-public class PlayerInputSystem extends ComponentSystem {
+public class PlayerInputSystem extends AbstractComponentSystem {
     
     public PlayerInputSystem() {
         super(Family.of(PlayerInputComponent.class));

@@ -18,11 +18,11 @@ public class WorldLoadingFence {
     }
     
     public int getChunkMidpointX() {
-        return xChunkOffset + Chunk.toGlobalChunk(Tile.toGlobalTile(following.wPosition().x()));
+        return xChunkOffset + Chunk.toGlobalChunk(Tile.toGlobalTile(following.worldspacePos().x()));
     }
     
     public int getChunkMidpointY() {
-        return yChunkOffset + Chunk.toGlobalChunk(Tile.toGlobalTile(following.wPosition().y()));
+        return yChunkOffset + Chunk.toGlobalChunk(Tile.toGlobalTile(following.worldspacePos().y()));
     }
     
     public int getChunkRadiusRangeX() {

@@ -1,7 +1,7 @@
 package de.pcfreak9000.space.world.tile;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
-import de.omnikryptec.resource.loadervpc.TextureHelper;
+import de.omnikryptec.resource.helper.TextureHelper;
 import de.omnikryptec.util.data.Color;
 import de.pcfreak9000.space.util.RegisterSensitive;
 

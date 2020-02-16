@@ -2,10 +2,10 @@ package de.pcfreak9000.spaceexplorer.universe.worlds;
 
 import java.util.logging.Logger;
 
+import de.codemakers.base.logger.LogLevel;
 import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.old.main.Scene2D;
 import de.omnikryptec.old.physics.Dyn4JPhysicsWorld;
-import de.omnikryptec.old.util.logger.LogLevel;
 import de.pcfreak9000.spaceexplorer.game.core.Player;
 import de.pcfreak9000.spaceexplorer.game.launch.SpaceExplorer2D;
 import de.pcfreak9000.spaceexplorer.renderer.PlanetRenderer;

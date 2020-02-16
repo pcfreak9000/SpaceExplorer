@@ -5,20 +5,20 @@ import de.omnikryptec.ecs.EntityListener;
 import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
-import de.omnikryptec.ecs.system.ComponentSystem;
-import de.omnikryptec.render.objects.IRenderedObjectManager;
+import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.util.updater.Time;
+import de.pcfreak9000.space.world.WorldRenderer;
 
-public class RenderSystem extends ComponentSystem implements EntityListener {
+public class RenderSystem extends AbstractComponentSystem implements EntityListener {
     
     private ComponentMapper<RenderComponent> renderMapper = new ComponentMapper<>(RenderComponent.class);
     private ComponentMapper<TransformComponent> transformMapper = new ComponentMapper<>(TransformComponent.class);
     
-    private IRenderedObjectManager renderedObjects;
+    private WorldRenderer renderer;
     
-    public RenderSystem(IRenderedObjectManager objs) {
+    public RenderSystem(WorldRenderer renderer) {
         super(Family.of(RenderComponent.class));
-        this.renderedObjects = objs;
+        this.renderer = renderer;
     }
     
     @Override
@@ -27,7 +27,7 @@ public class RenderSystem extends ComponentSystem implements EntityListener {
     }
     
     private void registerRenderedEntity(Entity entity) {
-        renderedObjects.add(renderMapper.get(entity).sprite);
+        renderer.add(renderMapper.get(entity).sprite);
         //sync the rendering transform to the actual transform
         if (entity.hasComponent(transformMapper.getType())) {
             renderMapper.get(entity).sprite.setTransform(transformMapper.get(entity).transform);
@@ -36,7 +36,7 @@ public class RenderSystem extends ComponentSystem implements EntityListener {
     
     @Override
     public void entityRemoved(Entity entity) {
-        renderedObjects.remove(renderMapper.get(entity).sprite);
+        renderer.remove(renderMapper.get(entity).sprite);
     }
     
     @Override

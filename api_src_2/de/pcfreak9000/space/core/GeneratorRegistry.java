@@ -1,7 +1,6 @@
 package de.pcfreak9000.space.core;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import de.pcfreak9000.space.world.GeneratorTemplate;

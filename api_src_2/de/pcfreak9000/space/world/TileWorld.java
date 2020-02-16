@@ -62,7 +62,7 @@ public class TileWorld {
     }
     
     public Chunk requireGete(Transform2Df t) {
-        Vector2fc v = t.wPosition();
+        Vector2fc v = t.worldspacePos();
         int cx = Chunk.toGlobalChunk(Tile.toGlobalTile(v.x()));
         int cy = Chunk.toGlobalChunk(Tile.toGlobalTile(v.y()));
         Chunk chunk = this.requireGetc(cx, cy);

@@ -6,8 +6,8 @@ import java.util.Set;
 
 import org.joml.Matrix4f;
 
-import de.omnikryptec.core.scene.GameController;
-import de.omnikryptec.core.scene.Scene;
+import de.omnikryptec.core.Omnikryptec;
+import de.omnikryptec.core.Scene;
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.core.update.UContainer;
 import de.omnikryptec.core.update.UpdateableFactory;
@@ -15,12 +15,10 @@ import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.render.AdaptiveCamera;
 import de.omnikryptec.render.Camera;
-import de.omnikryptec.render.renderer.LocalRendererContext;
-import de.omnikryptec.render.renderer.RendererContext;
-import de.omnikryptec.util.Profiler;
+import de.omnikryptec.render.renderer.ViewManager;
 import de.omnikryptec.util.math.MathUtil;
+import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.updater.Time;
-import de.pcfreak9000.space.world.ecs.PlayerInputComponent;
 import de.pcfreak9000.space.world.ecs.PlayerInputSystem;
 import de.pcfreak9000.space.world.ecs.RenderSystem;
 
@@ -36,11 +34,9 @@ public class GroundManager {
     //add/remove entities
     //GUI? where? -> shared GUI renderer
     
-    private GameController controller;
-    
     private IECSManager ecsManager;
-    private RendererContext rendererContext;
-    private LocalRendererContext localContext;
+    
+    private ViewManager viewManager;
     
     private Scene localScene;
     
@@ -51,21 +47,17 @@ public class GroundManager {
     
     private Set<Chunk> localLoadedChunks;
     
-    public GroundManager(GameController controller) {
-        this.controller = controller;
+    public GroundManager() {
         this.localLoadedChunks = new HashSet<>();
         this.ecsManager = UpdateableFactory.createDefaultIECSManager();
-        this.rendererContext = UpdateableFactory.createRendererContext();
-        this.localContext = this.rendererContext.createLocal();
-        this.localScene = new Scene();
+        this.localScene = Omnikryptec.getGameS().createAndAddScene();
+        this.viewManager = this.localScene.getViewManager();
         this.planetCamera = new AdaptiveCamera(this::createProjection);
-        this.localContext.setMainProjection(planetCamera);
+        this.viewManager.getMainView().setProjection(planetCamera);
         UContainer updateables = new UContainer();
         updateables.setUpdatable(0, new UpdaterClass());
         updateables.setUpdatable(1, ecsManager);
-        updateables.setUpdatable(2, rendererContext);
-        this.localScene.setUpdateableSync(updateables);
-        addDefaultRenderer();
+        this.localScene.setGameLogic(updateables);
         addDefaultECSSystems();
         //        //Test code
         //        Entity test = new Entity();
@@ -89,22 +81,20 @@ public class GroundManager {
     }
     
     private void addDefaultECSSystems() {
-        ecsManager.addSystem(new RenderSystem(this.localContext.getIRenderedObjectManager()));
+        WorldRenderer renderer = new WorldRenderer();
+        this.viewManager.addRenderer(renderer);
+        ecsManager.addSystem(new RenderSystem(renderer));
         ecsManager.addSystem(new PlayerInputSystem());
-    }
-    
-    private void addDefaultRenderer() {
-        localContext.addRenderer(new WorldRenderer());
     }
     
     public void setWorld(TileWorld w) {
         if (w == null) {
             unloadAll();
-            controller.setLocalScene(null);
+            Omnikryptec.getGameS().removeScene(localScene);
             //unload everything
         } else {
             if (currentWorld == null) {
-                controller.setLocalScene(localScene);
+                Omnikryptec.getGameS().addScene(localScene);
             } else {
                 unloadAll();
             }

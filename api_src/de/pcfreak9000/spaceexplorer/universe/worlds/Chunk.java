@@ -3,16 +3,16 @@ package de.pcfreak9000.spaceexplorer.universe.worlds;
 import java.util.ArrayList;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
-import de.omnikryptec.old.gameobject.Sprite;
 import de.omnikryptec.old.graphics.SpriteBatch;
 import de.omnikryptec.old.main.Scene2D;
 import de.omnikryptec.old.util.KeyArrayHashMap;
-import de.omnikryptec.old.util.Maths;
+import de.omnikryptec.render.objects.Sprite;
 import de.pcfreak9000.spaceexplorer.game.launch.Launcher;
 import de.pcfreak9000.spaceexplorer.universe.objects.Entity;
 import de.pcfreak9000.spaceexplorer.universe.tiles.Tile;
 import de.pcfreak9000.spaceexplorer.universe.tiles.TileDefinition;
 import de.pcfreak9000.spaceexplorer.util.Private;
+import util.Maths;
 
 /**
  * a Chunk represents a collection of {@link Tile}s and other Objects.
