@@ -20,10 +20,10 @@ public class PlayerInputSystem extends AbstractComponentSystem {
         PlayerInputComponent play = mapper.get(entities.get(0));
         float vy = 0;
         float vx = 0;
-        if (Keys.WALK_FORWARD.isPressed()) {
+        if (Keys.WALK_UP.isPressed()) {
             vy += play.maxYv;
         }
-        if (Keys.WALK_BACKWARD.isPressed()) {
+        if (Keys.WALK_DOWN.isPressed()) {
             vy -= play.maxYv;
         }
         if (Keys.WALK_LEFT.isPressed()) {
