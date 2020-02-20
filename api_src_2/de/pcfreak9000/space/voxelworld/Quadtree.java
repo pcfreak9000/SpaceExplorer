@@ -45,11 +45,11 @@ public class Quadtree<T> extends Sprite {
         return this.depth;
     }
     
-    public boolean isLeaf() {
+    private boolean isLeaf() {
         return depth == 0;
     }
     
-    public boolean hasData() {
+    private boolean hasData() {
         return data != null;
     }
     
@@ -58,28 +58,23 @@ public class Quadtree<T> extends Sprite {
             if (nodes == null) {
                 return true;
             }
-            int noe = 0;
             for (int i = 0; i < nodes.length; i++) {
-                if (nodes[i] == null || nodes[i].isEmpty()) {
-                    noe++;
+                if (nodes[i] != null && !nodes[i].isEmpty()) {
+                    return false;
                 }
             }
-            if (noe == nodes.length) {
-                return true;
-            }
-        }
-        if (isLeaf() && !hasData()) {
             return true;
+        } else {
+            return !hasData();
         }
-        return false;
     }
     
-    public T getData(int tileX, int tileY) {
+    public T get(int tileX, int tileY) {
         if (isLeaf()) {
             return this.data;
         }
         if (nodes != null) {
-            return nodes[positionToIndex(tileX, tileY)].getData(tileX, tileY);
+            return nodes[positionToIndex(tileX, tileY)].get(tileX, tileY);
         }
         return null;
     }

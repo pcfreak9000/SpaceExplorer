@@ -114,7 +114,7 @@ public class GroundManager {
                     v = v.mul(1f / (testq.getDepth() * 4));
                     int x = (int) Mathf.floor(v.x);
                     int y = (int) Mathf.floor(v.y);
-                    boolean b = testq.getData(x, y) == null;
+                    boolean b = testq.get(x, y) == null;
                     testq.set(b ? new Tile(null, 0, 0) : null, x, y);
                 }
                 
