@@ -1,10 +1,12 @@
 package de.pcfreak9000.space.world;
 
+import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
 
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.core.Scene;
@@ -13,14 +15,20 @@ import de.omnikryptec.core.update.UContainer;
 import de.omnikryptec.core.update.UpdateableFactory;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
+import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.render.AdaptiveCamera;
 import de.omnikryptec.render.Camera;
+import de.omnikryptec.render.renderer.Renderer2D;
 import de.omnikryptec.render.renderer.ViewManager;
 import de.omnikryptec.util.math.MathUtil;
+import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.profiling.Profiler;
+import de.omnikryptec.util.settings.keys.KeysAndButtons;
 import de.omnikryptec.util.updater.Time;
+import de.pcfreak9000.space.voxelworld.Quadtree;
 import de.pcfreak9000.space.world.ecs.PlayerInputSystem;
 import de.pcfreak9000.space.world.ecs.RenderSystem;
+import de.pcfreak9000.space.world.tile.Tile;
 
 /**
  * Responsible for successful surface world loading and unloading, management of
@@ -82,9 +90,36 @@ public class GroundManager {
     
     private void addDefaultECSSystems() {
         WorldRenderer renderer = new WorldRenderer();
-        this.viewManager.addRenderer(renderer);
+        //this.viewManager.addRenderer(renderer);
+        Renderer2D rend = new Renderer2D();
+        this.viewManager.addRenderer(rend);
+        Quadtree<Tile> testq = new Quadtree<>(7, 0, 0);
+        rend.add(testq);
+        testq.set(new Tile(null, 0, 0), 5, 4);
+        testq.set(new Tile(null, 0, 0), 2, 1);
+        testq.set(new Tile(null, 0, 0), 2, 2);
+        testq.set(new Tile(null, 0, 0), 10, 12);
         ecsManager.addSystem(new RenderSystem(renderer));
         ecsManager.addSystem(new PlayerInputSystem());
+        ecsManager.addSystem(new AbstractComponentSystem(new BitSet()) {
+            private float again = 0;
+            
+            @Override
+            public void update(IECSManager iecsManager, Time time) {
+                again += time.deltaf;
+                if (Omnikryptec.getInput().isMouseButtonPressed(KeysAndButtons.OKE_MOUSE_BUTTON_1)
+                        && Omnikryptec.getInput().isMouseInsideViewport() && again > 0.2f) {
+                    again = 0;
+                    Vector2f v = Omnikryptec.getInput().getMousePositionInWorld2D(planetCamera, null);
+                    v = v.mul(1f / (testq.getDepth() * 4));
+                    int x = (int) Mathf.floor(v.x);
+                    int y = (int) Mathf.floor(v.y);
+                    boolean b = testq.getData(x, y) == null;
+                    testq.set(b ? new Tile(null, 0, 0) : null, x, y);
+                }
+                
+            }
+        });
     }
     
     public void setWorld(TileWorld w) {
