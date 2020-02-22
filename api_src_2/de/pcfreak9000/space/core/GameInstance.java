@@ -1,7 +1,7 @@
 package de.pcfreak9000.space.core;
 
-import de.pcfreak9000.space.world.GroundManager;
-import de.pcfreak9000.space.world.TileWorld;
+import de.pcfreak9000.space.voxelworld.GroundManager;
+import de.pcfreak9000.space.voxelworld.TileWorld;
 
 /**
  * The currently loaded level. Information about the player, the world,

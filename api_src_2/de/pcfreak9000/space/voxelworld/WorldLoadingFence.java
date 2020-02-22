@@ -1,7 +1,7 @@
-package de.pcfreak9000.space.world;
+package de.pcfreak9000.space.voxelworld;
 
 import de.omnikryptec.util.math.transform.Transform2Df;
-import de.pcfreak9000.space.world.tile.Tile;
+import de.pcfreak9000.space.voxelworld.tile.Tile;
 
 public class WorldLoadingFence {
     
@@ -18,11 +18,11 @@ public class WorldLoadingFence {
     }
     
     public int getChunkMidpointX() {
-        return xChunkOffset + Chunk.toGlobalChunk(Tile.toGlobalTile(following.worldspacePos().x()));
+        return xChunkOffset + Region.toGlobalRegion(Tile.toGlobalTile(following.worldspacePos().x()));
     }
     
     public int getChunkMidpointY() {
-        return yChunkOffset + Chunk.toGlobalChunk(Tile.toGlobalTile(following.worldspacePos().y()));
+        return yChunkOffset + Region.toGlobalRegion(Tile.toGlobalTile(following.worldspacePos().y()));
     }
     
     public int getChunkRadiusRangeX() {

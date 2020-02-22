@@ -1,36 +1,46 @@
-package de.pcfreak9000.space.world;
+package de.pcfreak9000.space.voxelworld;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.errorprone.annotations.ForOverride;
+
+import de.omnikryptec.util.math.Weighted;
 import de.pcfreak9000.space.util.RegisterSensitive;
 
 /**
- * TileWorld generator prefab. Capabilities of that generator.
+ * TileWorld generator. Capabilities of that generator.
  * 
  * @author pcfreak9000
  *
  */
 @RegisterSensitive(registry = "GENERATOR_REGISTRY")
-public abstract class GeneratorTemplate {
+public abstract class TileWorldGenerator implements Weighted {
     
     public static enum GeneratorCapabilitiesBase {
         LVL_ENTRY, ADRESSABLE_PORTAL;
     }
     
     protected final Set<Object> CAPS = new HashSet<>();
-        
-    public abstract IGenerator createGenerator(long seed);
     
-    public GeneratorTemplate() {
+    public abstract TileWorld generateWorld(long seed);
+    
+    public TileWorldGenerator() {
         initCaps();
     }
     
     //for anonymous inner classes that can not use a constructor
+    @ForOverride
     protected void initCaps() {
     }
     
-    public boolean hasCapabilities(Object... names) {
+    @ForOverride
+    @Override
+    public int getWeight() {
+        return 100;
+    }
+    
+    public final boolean hasCapabilities(Object... names) {
         for (Object o : names) {
             if (!CAPS.contains(o)) {
                 return false;

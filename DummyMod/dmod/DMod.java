@@ -7,11 +7,12 @@ import de.pcfreak9000.space.mod.Mod;
 import de.pcfreak9000.space.mod.Se2DModInitEvent;
 import de.pcfreak9000.space.mod.Se2DModPostInitEvent;
 import de.pcfreak9000.space.mod.Se2DModPreInitEvent;
-import de.pcfreak9000.space.world.Chunk;
-import de.pcfreak9000.space.world.GeneratorTemplate;
-import de.pcfreak9000.space.world.IGenerator;
-import de.pcfreak9000.space.world.tile.Tile;
-import de.pcfreak9000.space.world.tile.TileType;
+import de.pcfreak9000.space.voxelworld.Region;
+import de.pcfreak9000.space.voxelworld.RegionGenerator;
+import de.pcfreak9000.space.voxelworld.TileWorld;
+import de.pcfreak9000.space.voxelworld.TileWorldGenerator;
+import de.pcfreak9000.space.voxelworld.tile.Tile;
+import de.pcfreak9000.space.voxelworld.tile.TileType;
 
 @Mod(id = "SpaceExplorer2D-Dummy-Mod", name = "Kek", resourceLocation = "", version = { 0, 0, 1 })
 public class DMod {
@@ -28,9 +29,8 @@ public class DMod {
     public void init(final Se2DModInitEvent init) {
         TileType testTile = new TileType();
         testTile.setTexture("is nix da dies");
-        testTile.getReflectiveness().set(0.7f, 0.7f, 0.7f);
         GameRegistry.TILE_REGISTRY.register("Kek vom Dienst", testTile);
-        GameRegistry.GENERATOR_REGISTRY.register("STS", new GeneratorTemplate() {
+        GameRegistry.GENERATOR_REGISTRY.register("STS", new TileWorldGenerator() {
             
             @Override
             protected void initCaps() {
@@ -38,19 +38,20 @@ public class DMod {
             }
             
             @Override
-            public IGenerator createGenerator(long seed) {
-                return new IGenerator() {
+            public TileWorld generateWorld(long seed) {
+                return new TileWorld(10, 10, new RegionGenerator() {
                     @Override
-                    public void generateChunk(Chunk chunk) {
-                        for (int i = 0; i < Chunk.CHUNK_TILE_SIZE; i++) {
-                            for (int j = 0; j < Chunk.CHUNK_TILE_SIZE; j++) {
+                    public void generateChunk(Region chunk) {
+                        for (int i = 0; i < Region.REGION_TILE_SIZE; i++) {
+                            for (int j = 0; j < Region.REGION_TILE_SIZE; j++) {
                                 chunk.setTile(new Tile(GameRegistry.TILE_REGISTRY.get("Kek vom Dienst"),
-                                        i * chunk.getChunkX() * Chunk.CHUNK_TILE_SIZE,
-                                        j * chunk.getChunkY() * Chunk.CHUNK_TILE_SIZE), i, j);
+                                        i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY()));
                             }
                         }
+                        chunk.recache();
                     }
-                };
+                    
+                });
             }
         });
     }

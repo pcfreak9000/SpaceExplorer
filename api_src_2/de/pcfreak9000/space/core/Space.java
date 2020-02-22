@@ -1,21 +1,27 @@
 package de.pcfreak9000.space.core;
 
+import java.util.List;
+import java.util.Random;
+
 import de.codemakers.base.os.OSUtil;
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.resource.loadervpc.LoadingProgressCallback;
+import de.omnikryptec.util.Logger;
+import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.math.transform.Transform2Df;
 import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 import de.pcfreak9000.space.mod.ModLoader;
-import de.pcfreak9000.space.world.GeneratorTemplate.GeneratorCapabilitiesBase;
-import de.pcfreak9000.space.world.GroundManager;
-import de.pcfreak9000.space.world.TileWorld;
-import de.pcfreak9000.space.world.WorldLoadingFence;
+import de.pcfreak9000.space.voxelworld.GroundManager;
+import de.pcfreak9000.space.voxelworld.TileWorld;
+import de.pcfreak9000.space.voxelworld.TileWorldGenerator;
+import de.pcfreak9000.space.voxelworld.TileWorldGenerator.GeneratorCapabilitiesBase;
+import de.pcfreak9000.space.voxelworld.WorldLoadingFence;
 
 /**
  * The main class. General settings and ressource/mod loading.
@@ -45,7 +51,7 @@ public class Space extends Omnikryptec {
         return space;
     }
     
-    private ModLoader loader = new ModLoader();
+    private ModLoader modloader = new ModLoader();
     
     private GroundManager groundManager;
     
@@ -57,13 +63,14 @@ public class Space extends Omnikryptec {
     protected void configure(Settings<LoaderSetting> loaderSettings, Settings<LibSetting> libSettings,
             Settings<WindowSetting> windowSettings, Settings<IntegerKey> apiSettings, KeySettings keys) {
         windowSettings.set(WindowSetting.Name, NAME + " " + VERSION);
+        libSettings.set(LibSetting.LOGGING_MIN, Logger.LogType.Debug);
         Keys.applyDefaultKeyConfig(keys);
     }
     
     @Override
     protected void onInitialized() {
         groundManager = new GroundManager();
-        loader.load(mkdirIfNonExisting(new AdvancedFile(FOLDER, MODS)));
+        modloader.load(mkdirIfNonExisting(new AdvancedFile(FOLDER, MODS)));
         getResourceManager().addCallback(LoadingProgressCallback.DEBUG_CALLBACK);
         reloadResources();
         
@@ -75,9 +82,15 @@ public class Space extends Omnikryptec {
         groundManager.setWorldUpdateFence(f);
         
         GameInstance ins = new GameInstance(groundManager);
-        ins.visit(new TileWorld(10, GameRegistry.GENERATOR_REGISTRY.filtered(GeneratorCapabilitiesBase.LVL_ENTRY).get(0)
-                .createGenerator(0)), 0, 0);
+        TileWorld testWorld = pickGenerator(
+                GameRegistry.GENERATOR_REGISTRY.filtered(GeneratorCapabilitiesBase.LVL_ENTRY)).generateWorld(0);
+        ins.visit(testWorld, 0, 0);
         //***************
+    }
+    
+    //TMP
+    private TileWorldGenerator pickGenerator(List<TileWorldGenerator> list) {
+        return MathUtil.getWeightedRandom(new Random(), list);
     }
     
     @Override

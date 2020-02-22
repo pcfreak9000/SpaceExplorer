@@ -1,7 +1,7 @@
 package de.pcfreak9000.space.core;
 
 import de.omnikryptec.resource.helper.TextureHelper;
-import de.pcfreak9000.space.world.tile.TileType;
+import de.pcfreak9000.space.voxelworld.tile.TileType;
 
 public class TileRegistry extends GameRegistry<TileType> {
     

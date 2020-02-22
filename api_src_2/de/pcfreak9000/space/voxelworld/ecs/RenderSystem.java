@@ -1,4 +1,4 @@
-package de.pcfreak9000.space.world.ecs;
+package de.pcfreak9000.space.voxelworld.ecs;
 
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityListener;
@@ -6,17 +6,17 @@ import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.system.AbstractComponentSystem;
+import de.omnikryptec.render.renderer.AdvancedRenderer2D;
 import de.omnikryptec.util.updater.Time;
-import de.pcfreak9000.space.world.WorldRenderer;
 
 public class RenderSystem extends AbstractComponentSystem implements EntityListener {
     
     private ComponentMapper<RenderComponent> renderMapper = new ComponentMapper<>(RenderComponent.class);
     private ComponentMapper<TransformComponent> transformMapper = new ComponentMapper<>(TransformComponent.class);
     
-    private WorldRenderer renderer;
+    private AdvancedRenderer2D renderer;
     
-    public RenderSystem(WorldRenderer renderer) {
+    public RenderSystem(AdvancedRenderer2D renderer) {
         super(Family.of(RenderComponent.class));
         this.renderer = renderer;
     }

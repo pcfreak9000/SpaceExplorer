@@ -1,9 +1,9 @@
-package de.pcfreak9000.space.world.tile;
+package de.pcfreak9000.space.voxelworld.tile;
 
 import de.omnikryptec.util.math.Mathd;
 
 public class Tile {
-    public static final float TILE_SIZE = 32;
+    public static final float TILE_SIZE = 64;
     
     public static int toGlobalTile(float x) {
         return (int) Mathd.floor(x / (double) TILE_SIZE);

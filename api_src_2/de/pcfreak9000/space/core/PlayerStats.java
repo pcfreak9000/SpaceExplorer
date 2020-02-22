@@ -1,7 +1,7 @@
 package de.pcfreak9000.space.core;
 
 import de.omnikryptec.ecs.Entity;
-import de.pcfreak9000.space.world.ecs.PlayerInputComponent;
+import de.pcfreak9000.space.voxelworld.ecs.PlayerInputComponent;
 
 /**
  * Information about the player: level, ships, inventory, etc. Also the player

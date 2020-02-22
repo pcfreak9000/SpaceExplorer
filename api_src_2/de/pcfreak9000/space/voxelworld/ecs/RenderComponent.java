@@ -1,4 +1,4 @@
-package de.pcfreak9000.space.world.ecs;
+package de.pcfreak9000.space.voxelworld.ecs;
 
 import de.omnikryptec.ecs.component.Component;
 import de.omnikryptec.render.objects.AdvancedSprite;

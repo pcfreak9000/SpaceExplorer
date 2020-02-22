@@ -1,10 +1,13 @@
 package de.pcfreak9000.space.voxelworld;
 
+import java.util.List;
+
 import org.joml.Matrix3x2f;
 
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.util.math.Interpolator;
+import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.math.Mathf;
 
 public class Quadtree<T> extends Sprite {
@@ -29,24 +32,27 @@ public class Quadtree<T> extends Sprite {
     }
     
     private Quadtree<T>[] nodes;
-    private final int depth;
+    //private final int depth;
     private final int x, y;
     private final int size;
     private T data;
     
-    public Quadtree(int depth, int x, int y) {
-        this.depth = depth;
-        this.size = (int) Mathf.pow(2, depth);
+    public Quadtree(int size, int x, int y) {
+        this.size = MathUtil.toPowerOfTwo(size);
         this.x = x;
         this.y = y;
     }
     
-    public int getDepth() {
-        return this.depth;
+    //    public int getDepth() {
+    //        return this.depth;
+    //    }
+    public double getSize() {
+        return this.size;
     }
     
     private boolean isLeaf() {
-        return depth == 0;
+        //return depth == 0;
+        return size == 1;
     }
     
     private boolean hasData() {
@@ -101,6 +107,20 @@ public class Quadtree<T> extends Sprite {
             }
         }
     }
+    //TMP
+    public void getAll(List<T> list) {
+        if (isLeaf()) {
+            if (this.data != null) {
+                list.add(data);
+            }
+            return;
+        }
+        if (nodes != null) {
+            for (Quadtree<T> q : nodes) {
+                q.getAll(list);
+            }
+        }
+    }
     
     private void initializeNodes() {
         nodes = new Quadtree[4];
@@ -115,7 +135,7 @@ public class Quadtree<T> extends Sprite {
                 nx += size / 2;
             } else {
             }
-            nodes[i] = new Quadtree<>(this.depth - 1, nx, ny);
+            nodes[i] = new Quadtree<>(size / 2, nx, ny);
         }
     }
     
@@ -126,17 +146,19 @@ public class Quadtree<T> extends Sprite {
         return index;
     }
     
-    private void visualize(Batch2D batch, int maxDepth, float scale) {
+    private void visualize(Batch2D batch, int maxSize, float scale) {
         
         if (!isLeaf()) {
             if (nodes != null) {
                 for (Quadtree<T> q : nodes) {
-                    q.visualize(batch, maxDepth, scale);
+                    q.visualize(batch, maxSize, scale);
                 }
             }
         }
-        batch.color().setAllOpaque(0);
-        batch.color().setB(Mathf.interpolate(0.2f, 1, Mathf.min(depth / (float) maxDepth, 1), Interpolator.Linear));
+        batch.color().setAllRGB(0);
+        batch.color().setA(0.9f);
+        batch.color().setB(Mathf.interpolate(0.2f, 1, Mathf.min((float) ((Math.log(size) / Math.log(maxSize))), 1),
+                Interpolator.Linear));
         float thickness = 1.5f;
         if (hasData()) {
             batch.color().setR(0.6f);
@@ -155,7 +177,7 @@ public class Quadtree<T> extends Sprite {
     
     @Override
     public void draw(Batch2D batch) {
-        visualize(batch, depth, depth * 4);
+        visualize(batch, size, (float) ((Math.log(size) / Math.log(2)) * 4));
     }
     
 }
