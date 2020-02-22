@@ -12,27 +12,9 @@ import de.omnikryptec.util.math.Mathf;
 
 public class Quadtree<T> extends Sprite {
     
-    private static enum Node {
-        TopLeft(0)/* 00 */, TopRight(1)/* 01 */, BotLeft(2)/* 10 */, BotRight(3)/* 11 */;
-        
-        public final int index;
-        
-        private Node(int index) {
-            this.index = index;
-        }
-        
-        public static Node forIndex(int index) {
-            for (Node n : Node.values()) {
-                if (n.index == index) {
-                    return n;
-                }
-            }
-            throw new IllegalArgumentException();
-        }
-    }
+  //TopLeft(0)/* 00 */, TopRight(1)/* 01 */, BotLeft(2)/* 10 */, BotRight(3)/* 11 */;
     
     private Quadtree<T>[] nodes;
-    //private final int depth;
     private final int x, y;
     private final int size;
     private T data;
@@ -43,15 +25,11 @@ public class Quadtree<T> extends Sprite {
         this.y = y;
     }
     
-    //    public int getDepth() {
-    //        return this.depth;
-    //    }
     public double getSize() {
         return this.size;
     }
     
     private boolean isLeaf() {
-        //return depth == 0;
         return size == 1;
     }
     
@@ -147,7 +125,6 @@ public class Quadtree<T> extends Sprite {
     }
     
     private void visualize(Batch2D batch, int maxSize, float scale) {
-        
         if (!isLeaf()) {
             if (nodes != null) {
                 for (Quadtree<T> q : nodes) {
@@ -172,7 +149,6 @@ public class Quadtree<T> extends Sprite {
                 thickness);
         batch.drawLine(x * scale + size * scale, y * scale + size * scale, x * scale, y * scale + size * scale,
                 thickness);
-        
     }
     
     @Override

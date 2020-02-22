@@ -6,7 +6,7 @@ import de.omnikryptec.util.settings.keys.KeysAndButtons;
 
 public enum Keys {
     
-    WALK_UP, WALK_DOWN, WALK_LEFT, WALK_RIGHT;
+    WALK_UP, WALK_DOWN, WALK_LEFT, WALK_RIGHT, DESTROY;
     
     public final String id = toString();
     
@@ -19,5 +19,6 @@ public enum Keys {
         ks.addKey(WALK_DOWN.id, KeysAndButtons.OKE_KEY_S);
         ks.addKey(WALK_LEFT.id, KeysAndButtons.OKE_KEY_A);
         ks.addKey(WALK_RIGHT.id, KeysAndButtons.OKE_KEY_D);
+        ks.addKey(DESTROY.id, KeysAndButtons.OKE_MOUSE_BUTTON_1);
     }
 }
