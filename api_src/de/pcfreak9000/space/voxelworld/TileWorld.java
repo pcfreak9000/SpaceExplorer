@@ -53,6 +53,7 @@ public class TileWorld {
         boolean xy = inBounds(x, y);
         boolean xwyh = inBounds(x + w, y + h);
         if (!xy && !xwyh) {
+            Profiler.end();
             return;
         }
         Set<Region> regions = new HashSet<>();
