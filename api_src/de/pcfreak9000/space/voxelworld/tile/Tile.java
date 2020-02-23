@@ -1,5 +1,6 @@
 package de.pcfreak9000.space.voxelworld.tile;
 
+import de.omnikryptec.util.Util;
 import de.omnikryptec.util.math.Mathd;
 
 public class Tile {
@@ -15,7 +16,7 @@ public class Tile {
     private final TileType type;
     
     public Tile(TileType type, int gtx, int gty) {
-        this.type = type;
+        this.type = Util.ensureNonNull(type);
         this.globalTileX = gtx;
         this.globalTileY = gty;
     }

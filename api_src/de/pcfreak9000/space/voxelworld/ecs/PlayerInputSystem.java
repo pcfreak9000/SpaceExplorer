@@ -12,8 +12,9 @@ public class PlayerInputSystem extends AbstractComponentSystem {
     public PlayerInputSystem() {
         super(Family.of(PlayerInputComponent.class));
     }
-        
+    
     private ComponentMapper<PlayerInputComponent> mapper = new ComponentMapper<>(PlayerInputComponent.class);
+    private ComponentMapper<PhysicsComponent> physicsMapper = new ComponentMapper<>(PhysicsComponent.class);
     
     @Override
     public void update(IECSManager iecsManager, Time time) {
@@ -32,7 +33,7 @@ public class PlayerInputSystem extends AbstractComponentSystem {
         if (Keys.WALK_RIGHT.isPressed()) {
             vx += play.maxXv;
         }
-        play.cam.localspaceWrite().translate(-vx, -vy, 0);
+        physicsMapper.get(entities.get(0)).tmpv.set(vx, vy);
     }
     
 }

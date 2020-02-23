@@ -8,7 +8,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import de.pcfreak9000.space.core.GameRegistry;
-import de.pcfreak9000.spaceexplorer.util.Private;
 
 /**
  * Indicates that the annoted object must be registered, usually in the
@@ -21,7 +20,6 @@ import de.pcfreak9000.spaceexplorer.util.Private;
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.TYPE)
 @Inherited
-@Private
 public @interface RegisterSensitive {
     
     public String registry();

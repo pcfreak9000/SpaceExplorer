@@ -19,6 +19,8 @@ import de.omnikryptec.render.renderer.ViewManager;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.updater.Time;
+import de.pcfreak9000.space.voxelworld.ecs.PhysicsComponent;
+import de.pcfreak9000.space.voxelworld.ecs.PhysicsSystem;
 import de.pcfreak9000.space.voxelworld.ecs.PlayerInputSystem;
 import de.pcfreak9000.space.voxelworld.ecs.RenderSystem;
 
@@ -81,10 +83,11 @@ public class GroundManager {
     }
     
     private void addDefaultECSSystems() {
-        AdvancedRenderer2D renderer = new AdvancedRenderer2D(12*6*Region.REGION_TILE_SIZE);
+        AdvancedRenderer2D renderer = new AdvancedRenderer2D(12 * 6 * Region.REGION_TILE_SIZE);
         this.viewManager.addRenderer(renderer);
         ecsManager.addSystem(new RenderSystem(renderer));
         ecsManager.addSystem(new PlayerInputSystem());
+        ecsManager.addSystem(new PhysicsSystem());
     }
     
     public void setWorld(TileWorld w) {

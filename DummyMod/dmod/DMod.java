@@ -1,6 +1,7 @@
 package dmod;
 
 import de.omnikryptec.event.EventSubscription;
+import de.omnikryptec.util.math.Mathf;
 import de.pcfreak9000.space.core.GameRegistry;
 import de.pcfreak9000.space.mod.Instance;
 import de.pcfreak9000.space.mod.Mod;
@@ -28,8 +29,14 @@ public class DMod {
     @EventSubscription
     public void init(final Se2DModInitEvent init) {
         TileType testTile = new TileType();
-        testTile.setTexture("is nix da dies");
-        GameRegistry.TILE_REGISTRY.register("Kek vom Dienst", testTile);
+        testTile.setTexture("stone.png");
+        GameRegistry.TILE_REGISTRY.register("stone", testTile);
+        TileType grasstile = new TileType();
+        grasstile.setTexture("grass.png");
+        GameRegistry.TILE_REGISTRY.register("grass", grasstile);
+        TileType dirttile = new TileType();
+        dirttile.setTexture("dirt.png");
+        GameRegistry.TILE_REGISTRY.register("dirt", dirttile);
         GameRegistry.GENERATOR_REGISTRY.register("STS", new TileWorldGenerator() {
             
             @Override
@@ -39,13 +46,27 @@ public class DMod {
             
             @Override
             public TileWorld generateWorld(long seed) {
-                return new TileWorld(10, 10, new RegionGenerator() {
+                return new TileWorld(200, 200, new RegionGenerator() {
                     @Override
-                    public void generateChunk(Region chunk) {
+                    public void generateChunk(Region chunk, TileWorld tileWorld) {
                         for (int i = 0; i < Region.REGION_TILE_SIZE; i++) {
                             for (int j = 0; j < Region.REGION_TILE_SIZE; j++) {
-                                chunk.setTile(new Tile(GameRegistry.TILE_REGISTRY.get("Kek vom Dienst"),
-                                        i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY()));
+                                if (!tileWorld.inBounds(i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY())) {
+                                    continue;
+                                }
+                                int value = Mathf.round(20 * Mathf.abs(Mathf.sin(0.1f * (i + chunk.getGlobalTileX()))));
+                                if (j + chunk.getGlobalTileY() > value) {
+                                    continue;
+                                }
+                                TileType t;
+                                if (j + chunk.getGlobalTileY() == value) {
+                                    t = GameRegistry.TILE_REGISTRY.get("grass");
+                                } else if (j + chunk.getGlobalTileY() >= value - 3) {
+                                    t = GameRegistry.TILE_REGISTRY.get("dirt");
+                                } else {
+                                    t = GameRegistry.TILE_REGISTRY.get("stone");
+                                }
+                                chunk.setTile(new Tile(t, i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY()));
                             }
                         }
                         chunk.recache();

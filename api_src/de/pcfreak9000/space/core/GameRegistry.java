@@ -32,6 +32,10 @@ public class GameRegistry<T> {
     }
     
     public T get(final String name) {
+        T t = this.registered.get(name);
+        if (t == null) {
+            throw new NullPointerException(String.format("no registry entry with name %s", name));
+        }
         return this.registered.get(name);
     }
     

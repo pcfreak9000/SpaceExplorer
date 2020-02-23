@@ -20,8 +20,7 @@ import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.resource.loadervpc.ResourceManager;
 import de.omnikryptec.util.Logger;
-import de.pcfreak9000.spaceexplorer.game.launch.Launcher;
-import de.pcfreak9000.spaceexplorer.util.Private;
+import de.pcfreak9000.space.core.Space;
 
 /**
  * loads mods.
@@ -29,7 +28,6 @@ import de.pcfreak9000.spaceexplorer.util.Private;
  * @author pcfreak9000
  *
  */
-@Private
 public class ModLoader {
     
     public static final String THIS_INSTANCE_ID = "this";
@@ -142,7 +140,7 @@ public class ModLoader {
                 LOGGER.info("Instantiated mod: " + container);
                 modList.add(container);
             }
-            if (!contains(Launcher.VERSION, container.getMod().se2dversion())) {
+            if (!contains(Space.VERSION, container.getMod().se2dversion())) {
                 LOGGER.warn("The mod " + container + " may not be compatible with this Se2D-Version!");
             }
         }

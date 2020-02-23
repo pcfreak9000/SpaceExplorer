@@ -40,6 +40,8 @@ public class Space extends Omnikryptec {
     public static final String MODS = "mods";
     public static final double ASPECT_RATIO = 16 / 9.0;
     
+    private static final AdvancedFile DEFAULT_RES_LOC = new AdvancedFile("intern:/de/pcfreak9000/space/resources/");
+    
     private static Space space;
     
     public static void main(String[] args) {
@@ -109,6 +111,7 @@ public class Space extends Omnikryptec {
         getResourceProvider().clear();
         getTextures().clearAndDeleteTextures();
         //loader.stageModResources(getResourceManager(), 1);
+        getResourceManager().stage(DEFAULT_RES_LOC);
         getResourceManager().stage(mkdirIfNonExisting(new AdvancedFile(FOLDER, RESOURCEPACKS)), 0);
         getResourceManager().processStaged(true, false);
         getResourceManager().clearStaged();

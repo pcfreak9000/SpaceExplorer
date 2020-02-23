@@ -8,6 +8,6 @@ package de.pcfreak9000.space.voxelworld;
  */
 public interface RegionGenerator {
     
-    void generateChunk(Region region);
+    void generateChunk(Region region, TileWorld tileWorld);
     
 }

@@ -25,7 +25,7 @@ public class TileWorld {
             Region r = regions[rx][ry];
             if (r == null) {
                 r = new Region(rx, ry);
-                generator.generateChunk(r);
+                generator.generateChunk(r, this);
                 regions[rx][ry] = r;
             }
             return r;

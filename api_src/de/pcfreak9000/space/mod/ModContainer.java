@@ -2,15 +2,12 @@ package de.pcfreak9000.space.mod;
 
 import java.util.Arrays;
 
-import de.pcfreak9000.spaceexplorer.util.Private;
-
 /**
  * contains a mod
  *
  * @author pcfreak9000
  *
  */
-@Private
 public class ModContainer {
     
     private final Mod mod;
