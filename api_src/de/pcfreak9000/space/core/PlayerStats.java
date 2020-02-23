@@ -42,6 +42,8 @@ public class PlayerStats {
         e.addComponent(new TransformComponent());
         PhysicsComponent pc = new PhysicsComponent();
         e.addComponent(pc);
+        pc.w = 100;
+        pc.h = 200;
         return e;
     }
     

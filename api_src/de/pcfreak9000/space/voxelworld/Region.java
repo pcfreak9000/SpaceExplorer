@@ -1,6 +1,7 @@
 package de.pcfreak9000.space.voxelworld;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.joml.Matrix3x2f;
@@ -103,6 +104,10 @@ public class Region {
             
         }
         PACKING_BATCH.end();
+    }
+    
+    public void tileIntersections(Collection<Tile> output, int x, int y, int w, int h) {
+        this.tiles.getAABB(output, x, y, w, h);
     }
     
 }

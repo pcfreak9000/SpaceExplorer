@@ -4,7 +4,7 @@ import de.omnikryptec.util.Util;
 import de.omnikryptec.util.math.Mathd;
 
 public class Tile {
-    public static final float TILE_SIZE = 64;
+    public static final float TILE_SIZE = 32;
     
     public static int toGlobalTile(float x) {
         return (int) Mathd.floor(x / (double) TILE_SIZE);
@@ -33,4 +33,8 @@ public class Tile {
         return globalTileY;
     }
     
+    @Override
+    public String toString() {
+        return String.format("Tile[%s, x=%d, y=%d]", this.type, this.globalTileX, this.globalTileY);
+    }
 }

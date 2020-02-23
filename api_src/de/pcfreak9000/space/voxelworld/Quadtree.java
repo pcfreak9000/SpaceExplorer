@@ -1,7 +1,9 @@
 package de.pcfreak9000.space.voxelworld;
 
+import java.util.Collection;
 import java.util.List;
 
+import org.joml.Intersectionf;
 import org.joml.Matrix3x2f;
 
 import de.omnikryptec.render.batch.Batch2D;
@@ -12,7 +14,7 @@ import de.omnikryptec.util.math.Mathf;
 
 public class Quadtree<T> extends Sprite {
     
-  //TopLeft(0)/* 00 */, TopRight(1)/* 01 */, BotLeft(2)/* 10 */, BotRight(3)/* 11 */;
+    //TopLeft(0)/* 00 */, TopRight(1)/* 01 */, BotLeft(2)/* 10 */, BotRight(3)/* 11 */;
     
     private Quadtree<T>[] nodes;
     private final int x, y;
@@ -53,6 +55,23 @@ public class Quadtree<T> extends Sprite {
         }
     }
     
+    public void getAABB(Collection<T> output, int x, int y, int w, int h) {
+        if (!Intersectionf.testAabAab(x, y, 0, x + w, y + h, 0, this.x, this.y, 0, this.x + size, this.y + size, 0)) {
+            return;
+        }
+        if (isLeaf()) {
+            if (hasData()) {
+                output.add(data);
+            }
+        } else {
+            if (nodes != null) {
+                for (Quadtree<T> q : nodes) {
+                    q.getAABB(output, x, y, w, h);
+                }
+            }
+        }
+    }
+    
     public T get(int tileX, int tileY) {
         if (isLeaf()) {
             return this.data;
@@ -85,10 +104,11 @@ public class Quadtree<T> extends Sprite {
             }
         }
     }
+    
     //TMP
-    public void getAll(List<T> list) {
+    public void getAll(Collection<T> list) {
         if (isLeaf()) {
-            if (this.data != null) {
+            if (hasData()) {
                 list.add(data);
             }
             return;

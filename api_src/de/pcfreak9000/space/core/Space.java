@@ -67,6 +67,7 @@ public class Space extends Omnikryptec {
         windowSettings.set(WindowSetting.Name, NAME + " " + VERSION);
         libSettings.set(LibSetting.LOGGING_MIN, Logger.LogType.Debug);
         Keys.applyDefaultKeyConfig(keys);
+        Profiler.setEnabled(true);
     }
     
     @Override
@@ -86,7 +87,7 @@ public class Space extends Omnikryptec {
         GameInstance ins = new GameInstance(groundManager);
         TileWorld testWorld = pickGenerator(
                 GameRegistry.GENERATOR_REGISTRY.filtered(GeneratorCapabilitiesBase.LVL_ENTRY)).generateWorld(0);
-        ins.visit(testWorld, 0, 0);
+        ins.visit(testWorld, 1000, 1000);
         //***************
     }
     

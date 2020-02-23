@@ -22,4 +22,8 @@ public class TileType {
         this.texture = tileTextures.get(textureName);
     }
     
+    @Override
+    public String toString() {
+        return String.format("TileType[texture=%s]", this.textureName);
+    }
 }

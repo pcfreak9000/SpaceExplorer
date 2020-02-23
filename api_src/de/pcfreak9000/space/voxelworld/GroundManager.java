@@ -1,7 +1,9 @@
 package de.pcfreak9000.space.voxelworld;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.joml.Matrix4f;
@@ -23,6 +25,7 @@ import de.pcfreak9000.space.voxelworld.ecs.PhysicsComponent;
 import de.pcfreak9000.space.voxelworld.ecs.PhysicsSystem;
 import de.pcfreak9000.space.voxelworld.ecs.PlayerInputSystem;
 import de.pcfreak9000.space.voxelworld.ecs.RenderSystem;
+import de.pcfreak9000.space.voxelworld.tile.Tile;
 
 /**
  * Responsible for successful surface world loading and unloading, management of
@@ -48,6 +51,8 @@ public class GroundManager {
     private Camera planetCamera;
     
     private Set<Region> localLoadedChunks;
+    
+    private PhysicsSystem physicsSystem;
     
     public GroundManager() {
         this.localLoadedChunks = new HashSet<>();
@@ -82,17 +87,22 @@ public class GroundManager {
         return planetCamera;
     }
     
+    private PhysicsSystem ps;
+    
     private void addDefaultECSSystems() {
         AdvancedRenderer2D renderer = new AdvancedRenderer2D(12 * 6 * Region.REGION_TILE_SIZE);
+        renderer.setEnableReflections(false);
         this.viewManager.addRenderer(renderer);
         ecsManager.addSystem(new RenderSystem(renderer));
         ecsManager.addSystem(new PlayerInputSystem());
-        ecsManager.addSystem(new PhysicsSystem());
+        this.physicsSystem = new PhysicsSystem();
+        ecsManager.addSystem(this.physicsSystem);
     }
     
     public void setWorld(TileWorld w) {
         if (w == null) {
             unloadAll();
+            this.physicsSystem.setWorld(null);
             Omnikryptec.getGameS().removeScene(localScene);
             //unload everything
         } else {
@@ -102,6 +112,7 @@ public class GroundManager {
                 unloadAll();
             }
             this.currentWorld = w;
+            this.physicsSystem.setWorld(w);
             loadAll();
         }
     }
