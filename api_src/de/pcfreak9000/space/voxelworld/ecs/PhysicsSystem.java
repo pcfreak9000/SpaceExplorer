@@ -67,8 +67,8 @@ public class PhysicsSystem extends IterativeComponentSystem {
                     }
                 }
                 if (counter != 0) {
-                    res=res.normalize();
-                    System.out.println(res);
+                    res = res.normalize();
+                    //System.out.println(res);
                     //res.normalize(Tile.TILE_SIZE);
                     tc.transform.localspaceWrite().translate(res);
                     pos = tc.transform.worldspacePos();
@@ -79,6 +79,9 @@ public class PhysicsSystem extends IterativeComponentSystem {
                     break;
                 }
             } while (true);
+        }
+        if(tc.transform.worldspacePos().y()<-1000) {
+            tc.transform.localspaceWrite().translate(0, 2000);
         }
         if (entity.hasComponent(mapper.getType())) {
             mapper.get(entity).cam.localspaceWrite().translation(-pos.x(), -pos.y(), 0);

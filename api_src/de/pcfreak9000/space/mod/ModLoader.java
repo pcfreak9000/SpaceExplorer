@@ -42,7 +42,7 @@ public class ModLoader {
         }
     }
     
-    private static Comparator<TmpHolder> comp = (o1, o2) -> {
+    private static final Comparator<TmpHolder> COMP = (o1, o2) -> {
         final Mod m1 = o1.modclass.getAnnotation(Mod.class);
         final Mod m2 = o2.modclass.getAnnotation(Mod.class);
         final int vt = m1.id().compareToIgnoreCase(m2.id());
@@ -266,7 +266,7 @@ public class ModLoader {
         } catch (final IOException e) {
             e.printStackTrace();
         }
-        this.modClasses.sort(comp);
+        this.modClasses.sort(COMP);
         LOGGER.info("Found " + modClasses.size() + " mod candidates!");
     }
     

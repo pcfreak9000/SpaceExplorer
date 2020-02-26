@@ -21,16 +21,16 @@ public class PlayerInputSystem extends AbstractComponentSystem {
         PlayerInputComponent play = mapper.get(entities.get(0));
         float vy = 0;
         float vx = 0;
-        if (Keys.WALK_UP.isPressed()) {
+        if (Keys.FORWARD.isPressed() || Keys.UP.isPressed()) {
             vy += play.maxYv;
         }
-        if (Keys.WALK_DOWN.isPressed()) {
+        if (Keys.BACKWARD.isPressed() || Keys.DOWN.isPressed()) {
             vy -= play.maxYv;
         }
-        if (Keys.WALK_LEFT.isPressed()) {
+        if (Keys.LEFT.isPressed()) {
             vx -= play.maxXv;
         }
-        if (Keys.WALK_RIGHT.isPressed()) {
+        if (Keys.RIGHT.isPressed()) {
             vx += play.maxXv;
         }
         physicsMapper.get(entities.get(0)).tmpv.set(vx, vy);

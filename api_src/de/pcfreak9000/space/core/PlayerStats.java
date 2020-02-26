@@ -9,6 +9,7 @@ import de.pcfreak9000.space.voxelworld.ecs.PhysicsComponent;
 import de.pcfreak9000.space.voxelworld.ecs.PlayerInputComponent;
 import de.pcfreak9000.space.voxelworld.ecs.RenderComponent;
 import de.pcfreak9000.space.voxelworld.ecs.TransformComponent;
+import de.pcfreak9000.space.voxelworld.tile.Tile;
 
 /**
  * Information about the player: level, ships, inventory, etc. Also the player
@@ -33,8 +34,8 @@ public class PlayerStats {
         pic.maxYv = 100;
         e.addComponent(pic);
         AdvancedSprite sprite = new AdvancedSprite();
-        sprite.setWidth(100);
-        sprite.setHeight(200);
+        sprite.setWidth(Tile.TILE_SIZE*2);
+        sprite.setHeight(Tile.TILE_SIZE*4);
         //FIXME resource reloading
         sprite.setTexture(Omnikryptec.getTexturesS().get("mensch.png"));
         sprite.setLayer(100);
@@ -42,8 +43,8 @@ public class PlayerStats {
         e.addComponent(new TransformComponent());
         PhysicsComponent pc = new PhysicsComponent();
         e.addComponent(pc);
-        pc.w = 100;
-        pc.h = 200;
+        pc.w = sprite.getWidth();
+        pc.h = sprite.getHeight();
         return e;
     }
     

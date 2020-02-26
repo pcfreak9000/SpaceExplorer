@@ -6,7 +6,7 @@ import de.omnikryptec.util.settings.keys.KeysAndButtons;
 
 public enum Keys {
     
-    WALK_UP, WALK_DOWN, WALK_LEFT, WALK_RIGHT, DESTROY;
+    FORWARD, BACKWARD, LEFT, RIGHT, UP, DOWN, DESTROY;
     
     public final String id = toString();
     
@@ -15,10 +15,12 @@ public enum Keys {
     }
     
     public static void applyDefaultKeyConfig(KeySettings ks) {
-        ks.addKey(WALK_UP.id, KeysAndButtons.OKE_KEY_W);
-        ks.addKey(WALK_DOWN.id, KeysAndButtons.OKE_KEY_S);
-        ks.addKey(WALK_LEFT.id, KeysAndButtons.OKE_KEY_A);
-        ks.addKey(WALK_RIGHT.id, KeysAndButtons.OKE_KEY_D);
+        ks.addKey(FORWARD.id, KeysAndButtons.OKE_KEY_W);
+        ks.addKey(BACKWARD.id, KeysAndButtons.OKE_KEY_S);
+        ks.addKey(LEFT.id, KeysAndButtons.OKE_KEY_A);
+        ks.addKey(RIGHT.id, KeysAndButtons.OKE_KEY_D);
+        ks.addKey(UP.id, KeysAndButtons.OKE_KEY_SPACE);
+        ks.addKey(DOWN.id, KeysAndButtons.OKE_KEY_LEFT_SHIFT);
         ks.addKey(DESTROY.id, KeysAndButtons.OKE_MOUSE_BUTTON_1);
     }
 }
