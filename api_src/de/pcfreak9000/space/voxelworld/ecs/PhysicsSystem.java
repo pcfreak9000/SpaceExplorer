@@ -12,9 +12,13 @@ import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.system.IterativeComponentSystem;
+import de.omnikryptec.event.EventSubscription;
+import de.omnikryptec.render.Camera;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.updater.Time;
+import de.pcfreak9000.space.core.Space;
 import de.pcfreak9000.space.voxelworld.TileWorld;
+import de.pcfreak9000.space.voxelworld.VoxelworldEvents;
 import de.pcfreak9000.space.voxelworld.tile.Tile;
 
 public class PhysicsSystem extends IterativeComponentSystem {
@@ -25,14 +29,17 @@ public class PhysicsSystem extends IterativeComponentSystem {
     private ComponentMapper<PlayerInputComponent> mapper = new ComponentMapper<>(PlayerInputComponent.class);
     
     private TileWorld tileWorld;
+    private Camera playerCam;
     
-    //TODO
-    public void setWorld(TileWorld world) {
-        this.tileWorld = world;
+    @EventSubscription
+    public void tileworldLoadingEvent(VoxelworldEvents.SetVoxelWorldEvent svwe) {
+        this.tileWorld = svwe.tileWorldNew;
+        this.playerCam = svwe.groundMgr.getPlanetCamera();
     }
     
     public PhysicsSystem() {
         super(Family.of(PhysicsComponent.class, TransformComponent.class));
+        Space.BUS.register(this);
     }
     
     @Override
@@ -80,11 +87,11 @@ public class PhysicsSystem extends IterativeComponentSystem {
                 }
             } while (true);
         }
-        if(tc.transform.worldspacePos().y()<-1000) {
+        if (tc.transform.worldspacePos().y() < -1000) {
             tc.transform.localspaceWrite().translate(0, 2000);
         }
         if (entity.hasComponent(mapper.getType())) {
-            mapper.get(entity).cam.localspaceWrite().translation(-pos.x(), -pos.y(), 0);
+            playerCam.getTransform().localspaceWrite().translation(-pos.x(), -pos.y(), 0);//TODO not the best place for the cam...
         }
     }
 }

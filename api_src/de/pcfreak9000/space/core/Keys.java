@@ -21,6 +21,6 @@ public enum Keys {
         ks.addKey(RIGHT.id, KeysAndButtons.OKE_KEY_D);
         ks.addKey(UP.id, KeysAndButtons.OKE_KEY_SPACE);
         ks.addKey(DOWN.id, KeysAndButtons.OKE_KEY_LEFT_SHIFT);
-        ks.addKey(DESTROY.id, KeysAndButtons.OKE_MOUSE_BUTTON_1);
+        ks.addMouseKey(DESTROY.id, KeysAndButtons.OKE_MOUSE_BUTTON_LEFT);
     }
 }

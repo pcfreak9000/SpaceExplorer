@@ -6,6 +6,7 @@ import java.util.Random;
 import de.codemakers.base.os.OSUtil;
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.Omnikryptec;
+import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.resource.loadervpc.LoadingProgressCallback;
@@ -41,6 +42,8 @@ public class Space extends Omnikryptec {
     public static final double ASPECT_RATIO = 16 / 9.0;
     
     private static final AdvancedFile DEFAULT_RES_LOC = new AdvancedFile("intern:/de/pcfreak9000/space/resources/");
+    
+    public static final EventBus BUS = new EventBus();
     
     private static Space space;
     

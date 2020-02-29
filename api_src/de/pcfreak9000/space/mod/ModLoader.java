@@ -17,7 +17,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.event.EventBus;
 import de.omnikryptec.resource.loadervpc.ResourceManager;
 import de.omnikryptec.util.Logger;
 import de.pcfreak9000.space.core.Space;
@@ -66,9 +65,7 @@ public class ModLoader {
     private final List<TmpHolder> modClasses = new ArrayList<>();
     private final List<ModContainer> modList = new ArrayList<>();
     private final List<ModContainer> readOnlyModList = Collections.unmodifiableList(modList);
-    
-    private final EventBus MOD_LOADING_BUS = new EventBus();
-    
+        
     public void load(AdvancedFile modsfolder) {
         this.classLoadMods(modsfolder.toFile());
         this.instantiate();
@@ -92,17 +89,17 @@ public class ModLoader {
     
     private void preInit() {
         LOGGER.info("mod pre-initialization stage");
-        MOD_LOADING_BUS.post(new Se2DModPreInitEvent());
+        Space.BUS.post(new Se2DModPreInitEvent());
     }
     
     private void init() {
         LOGGER.info("mod initialization stage");
-        MOD_LOADING_BUS.post(new Se2DModInitEvent());
+        Space.BUS.post(new Se2DModInitEvent());
     }
     
     private void postInit() {
         LOGGER.info("mod post-initialization stage");
-        MOD_LOADING_BUS.post(new Se2DModPostInitEvent());
+        Space.BUS.post(new Se2DModPostInitEvent());
     }
     
     private void instantiate() {
@@ -149,7 +146,7 @@ public class ModLoader {
     private void registerEvents() {
         LOGGER.info("Registering container event handlers...");
         for (final ModContainer container : modList) {
-            MOD_LOADING_BUS.register(container.getInstance());
+            Space.BUS.register(container.getInstance());
         }
     }
     

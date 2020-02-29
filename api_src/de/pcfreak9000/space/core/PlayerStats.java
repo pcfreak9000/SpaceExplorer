@@ -29,7 +29,6 @@ public class PlayerStats {
     private Entity createRawPlayerEntity() {
         Entity e = new Entity();
         PlayerInputComponent pic = new PlayerInputComponent();
-        pic.cam = Space.getSpace().getGroundManager().getPlanetCamera().getTransform();//TODO move/change
         pic.maxXv = 100;
         pic.maxYv = 100;
         e.addComponent(pic);

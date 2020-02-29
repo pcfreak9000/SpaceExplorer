@@ -1,9 +1,7 @@
 package de.pcfreak9000.space.voxelworld;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import org.joml.Matrix4f;
@@ -21,11 +19,10 @@ import de.omnikryptec.render.renderer.ViewManager;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.updater.Time;
-import de.pcfreak9000.space.voxelworld.ecs.PhysicsComponent;
+import de.pcfreak9000.space.core.Space;
 import de.pcfreak9000.space.voxelworld.ecs.PhysicsSystem;
 import de.pcfreak9000.space.voxelworld.ecs.PlayerInputSystem;
 import de.pcfreak9000.space.voxelworld.ecs.RenderSystem;
-import de.pcfreak9000.space.voxelworld.tile.Tile;
 
 /**
  * Responsible for successful surface world loading and unloading, management of
@@ -66,16 +63,7 @@ public class GroundManager {
         updateables.setUpdatable(1, ecsManager);
         this.localScene.setGameLogic(updateables);
         addDefaultECSSystems();
-        //        //Test code
-        //        Entity test = new Entity();
-        //        ReflectiveSprite s = new ReflectiveSprite();
-        //        s.setTexture(GameRegistry.TILE_REGISTRY.get("Kek vom Dienst").getTexture());
-        //        s.setWidth(1000);
-        //        s.setHeight(1000);
-        //        s.setReflectionType(Reflection2DType.Disable);
-        //        test.addComponent(new RenderComponent(s));
-        //        ecsManager.addEntity(test);
-        //        controller.setLocalScene(localScene);
+        Space.BUS.post(new VoxelworldEvents.InitGroundManagerEvent(this.ecsManager, this.viewManager));
     }
     
     private Matrix4f createProjection(int width, int height) {
@@ -86,8 +74,6 @@ public class GroundManager {
     public Camera getPlanetCamera() {
         return planetCamera;
     }
-    
-    private PhysicsSystem ps;
     
     private void addDefaultECSSystems() {
         AdvancedRenderer2D renderer = new AdvancedRenderer2D(12 * 6 * Region.REGION_TILE_SIZE);
@@ -100,9 +86,9 @@ public class GroundManager {
     }
     
     public void setWorld(TileWorld w) {
+        Space.BUS.post(new VoxelworldEvents.SetVoxelWorldEvent(this, this.currentWorld, w));
         if (w == null) {
             unloadAll();
-            this.physicsSystem.setWorld(null);
             Omnikryptec.getGameS().removeScene(localScene);
             //unload everything
         } else {
@@ -112,7 +98,6 @@ public class GroundManager {
                 unloadAll();
             }
             this.currentWorld = w;
-            this.physicsSystem.setWorld(w);
             loadAll();
         }
     }
