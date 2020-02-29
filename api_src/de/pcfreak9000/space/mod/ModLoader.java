@@ -65,7 +65,7 @@ public class ModLoader {
     private final List<TmpHolder> modClasses = new ArrayList<>();
     private final List<ModContainer> modList = new ArrayList<>();
     private final List<ModContainer> readOnlyModList = Collections.unmodifiableList(modList);
-        
+    
     public void load(AdvancedFile modsfolder) {
         this.classLoadMods(modsfolder.toFile());
         this.instantiate();
@@ -89,17 +89,17 @@ public class ModLoader {
     
     private void preInit() {
         LOGGER.info("mod pre-initialization stage");
-        Space.BUS.post(new Se2DModPreInitEvent());
+        Space.BUS.post(new ModLoaderEvents.ModPreInitEvent());
     }
     
     private void init() {
         LOGGER.info("mod initialization stage");
-        Space.BUS.post(new Se2DModInitEvent());
+        Space.BUS.post(new ModLoaderEvents.ModInitEvent());
     }
     
     private void postInit() {
         LOGGER.info("mod post-initialization stage");
-        Space.BUS.post(new Se2DModPostInitEvent());
+        Space.BUS.post(new ModLoaderEvents.ModPostInitEvent());
     }
     
     private void instantiate() {

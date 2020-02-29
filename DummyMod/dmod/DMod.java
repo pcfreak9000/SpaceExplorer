@@ -5,9 +5,7 @@ import de.omnikryptec.util.math.Mathf;
 import de.pcfreak9000.space.core.GameRegistry;
 import de.pcfreak9000.space.mod.Instance;
 import de.pcfreak9000.space.mod.Mod;
-import de.pcfreak9000.space.mod.Se2DModInitEvent;
-import de.pcfreak9000.space.mod.Se2DModPostInitEvent;
-import de.pcfreak9000.space.mod.Se2DModPreInitEvent;
+import de.pcfreak9000.space.mod.ModLoaderEvents;
 import de.pcfreak9000.space.voxelworld.Region;
 import de.pcfreak9000.space.voxelworld.RegionGenerator;
 import de.pcfreak9000.space.voxelworld.TileWorld;
@@ -22,12 +20,12 @@ public class DMod {
     private static DMod instance;
     
     @EventSubscription
-    public void preInit(final Se2DModPreInitEvent pre) {
+    public void preInit(final ModLoaderEvents.ModPreInitEvent pre) {
         System.out.println(pre.getClass());
     }
     
     @EventSubscription
-    public void init(final Se2DModInitEvent init) {
+    public void init(final ModLoaderEvents.ModInitEvent init) {
         TileType testTile = new TileType();
         testTile.setTexture("stone.png");
         GameRegistry.TILE_REGISTRY.register("stone", testTile);
@@ -78,7 +76,7 @@ public class DMod {
     }
     
     @EventSubscription
-    public void postInit(final Se2DModPostInitEvent post) {
+    public void postInit(final ModLoaderEvents.ModPostInitEvent post) {
         
     }
 }

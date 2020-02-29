@@ -104,11 +104,6 @@ public class Space extends Omnikryptec {
         System.out.println(Profiler.currentInfo());
     }
     
-    @Deprecated
-    public GroundManager getGroundManager() {
-        return groundManager;
-    }
-    
     public void reloadResources() {
         //Do this only if no scene is loaded
         getResourceManager().clearStaged();
@@ -119,7 +114,7 @@ public class Space extends Omnikryptec {
         getResourceManager().stage(mkdirIfNonExisting(new AdvancedFile(FOLDER, RESOURCEPACKS)), 0);
         getResourceManager().processStaged(true, false);
         getResourceManager().clearStaged();
-        GameRegistry.TILE_REGISTRY.initAll(getTextures());
+        BUS.post(new CoreEvents.AssignResourcesEvent(getTextures(), getSounds()));
     }
     
     private AdvancedFile mkdirIfNonExisting(AdvancedFile file) {
