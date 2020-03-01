@@ -53,7 +53,7 @@ public class PlayerInputSystem extends AbstractComponentSystem {
         if (Keys.RIGHT.isPressed()) {
             vx += play.maxXv;
         }
-        physicsMapper.get(entities.get(0)).forces.set(vx, vy);
+        physicsMapper.get(entities.get(0)).acceleration.set(vx*3, vy*3-98.1f);
         if (Keys.DESTROY.isPressed()) {
             Vector2f mouse = Omnikryptec.getInput().getMousePositionInWorld2D(cam, new Vector2f());
             int tx = Tile.toGlobalTile(mouse.x());
