@@ -49,6 +49,8 @@ public class PhysicsSystem extends IterativeComponentSystem {
         TransformComponent tc = transformMapper.get(entity);
         PhysicsComponent pc = physicsMapper.get(entity);
         pc.velocity.add(0, -98.1f * time.deltaf);
+        pc.velocity.add(pc.forces.x * time.deltaf, pc.forces.y * time.deltaf);
+        pc.forces.set(0);
         float dx = time.deltaf * (pc.velocity.x());
         float dy = time.deltaf * (pc.velocity.y());
         tc.transform.localspaceWrite().translate(dx, dy);
@@ -94,8 +96,8 @@ public class PhysicsSystem extends IterativeComponentSystem {
                     if (Physics.AABBvsAABB(m)) {
                         Physics.ResolveCollision(m);
                         Physics.PositionalCorrection(m);
+                        tc.transform.localspaceWrite().setTranslation(m.bpos);
                     }
-                    tc.transform.localspaceWrite().setTranslation(m.bpos);
                 }
             }
         }
