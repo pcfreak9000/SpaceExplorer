@@ -51,44 +51,63 @@ public class PhysicsSystem extends IterativeComponentSystem {
         TransformComponent tc = transformMapper.get(entity);
         PhysicsComponent pc = physicsMapper.get(entity);
         Vector2fc positionState = tc.transform.worldspacePos();
+        
         //Friction TODO manage elsewhere
         pc.acceleration.sub(pc.velocity.x() * 1.5f, pc.velocity.y() * 1.5f, pc.acceleration);
+        
         //Integrate motion
         float posDeltaX = 0.5f * pc.acceleration.x() * Mathf.square(time.deltaf) + pc.velocity.x() * time.deltaf;
         float posDeltaY = 0.5f * pc.acceleration.y() * Mathf.square(time.deltaf) + pc.velocity.y() * time.deltaf;
         pc.velocity.add(pc.acceleration.x() * time.deltaf, pc.acceleration.y() * time.deltaf, pc.velocity);
+        
         //Check and resolve collisions
-        float value = 1;
-        Tile tile = null;
         if (!(pc.w == 0 && pc.h == 0)) {
-            pc.x = positionState.x();//TODO implement offset?
-            pc.y = positionState.y();
-            List<Tile> collisions = new ArrayList<>();
-            tileWorld.collectTileIntersections(collisions, (int) Mathf.floor(pc.x / Tile.TILE_SIZE),
-                    (int) Mathf.floor(pc.y / Tile.TILE_SIZE), (int) Mathf.ceil((pc.w + posDeltaX) / Tile.TILE_SIZE),
-                    (int) Mathf.ceil((pc.h + posDeltaY) / Tile.TILE_SIZE));
-            for (Tile t : collisions) {
-                Vector2f result = new Vector2f();
-                if (Intersectionf.intersectRayAab(pc.x + pc.w / 2, pc.y + pc.h / 2, 0, posDeltaX, posDeltaY, 0,
-                        t.getGlobalTileX() * Tile.TILE_SIZE - pc.w / 2, t.getGlobalTileY() * Tile.TILE_SIZE - pc.h / 2,
-                        0, (1 + t.getGlobalTileX()) * Tile.TILE_SIZE + pc.w / 2,
-                        (1 + t.getGlobalTileY()) * Tile.TILE_SIZE + pc.h / 2, 0, result)) {
-                    if (result.x() >= 0) {
-                        if (result.x() < value) {
-                            value = result.x();
-                            tile = t;
+            float tRemaining = 1.0f;
+            Tile tile = null;
+            for (int i = 0; i < 4 && tRemaining > 0.0f; i++) {
+                float tMin = 1.0f;
+                positionState = tc.transform.worldspacePos();
+                pc.x = positionState.x();//TODO implement offset?
+                pc.y = positionState.y();
+                List<Tile> collisions = new ArrayList<>();
+                tileWorld.collectTileIntersections(collisions, (int) Mathf.floor(pc.x / Tile.TILE_SIZE),
+                        (int) Mathf.floor(pc.y / Tile.TILE_SIZE), (int) Mathf.ceil((pc.w + posDeltaX) / Tile.TILE_SIZE),
+                        (int) Mathf.ceil((pc.h + posDeltaY) / Tile.TILE_SIZE));
+                for (Tile t : collisions) {
+                    Vector2f result = new Vector2f();
+                    if (Intersectionf.intersectRayAab(pc.x + pc.w / 2, pc.y + pc.h / 2, 0, posDeltaX, posDeltaY, 0,
+                            t.getGlobalTileX() * Tile.TILE_SIZE - pc.w / 2,
+                            t.getGlobalTileY() * Tile.TILE_SIZE - pc.h / 2, 0,
+                            (1 + t.getGlobalTileX()) * Tile.TILE_SIZE + pc.w / 2,
+                            (1 + t.getGlobalTileY()) * Tile.TILE_SIZE + pc.h / 2, 0, result)) {
+                        if (result.x() >= 0) {
+                            if (result.x() < tMin) {
+                                tMin = result.x();
+                                tile = t;
+                            }
                         }
                     }
                 }
+                if (tMin < 1) {
+                    tMin -= 0.1f;//epsilon, big oof
+                }
+                tc.transform.localspaceWrite().setTranslation(positionState.x() + posDeltaX * tMin,
+                        positionState.y() + posDeltaY * tMin);
+                if (tMin < 1) {
+                    float bouncynessFactor = 1 + tile.getType().getBouncyness();
+                    pc.velocity.sub(getNormal(tile,pc)
+                            .mul(bouncynessFactor * pc.velocity.dot(getNormal(tile,pc))), pc.velocity);
+                    Vector2f hehe = new Vector2f(posDeltaX, posDeltaY);
+                    hehe.sub(getNormal(tile,pc)
+                            .mul(bouncynessFactor * hehe.dot(getNormal(tile,pc))), hehe);
+                    posDeltaX = hehe.x;
+                    posDeltaY = hehe.y;
+                }
+                tRemaining -= tMin * tRemaining;
             }
+        } else {
+            tc.transform.localspaceWrite().setTranslation(positionState.x() + posDeltaX, positionState.y() + posDeltaY);
         }
-        if (value < 1) {
-            value = Math.max(0, value - 0.001f);//epsilon
-            pc.velocity.sub(getNormal(posDeltaX, posDeltaY).mul(2 * pc.velocity.dot(getNormal(posDeltaX, posDeltaY))),
-                    pc.velocity);
-        }
-        tc.transform.localspaceWrite().setTranslation(positionState.x() + posDeltaX * value,
-                positionState.y() + posDeltaY * value);
         
         if (tc.transform.worldspacePos().y() < -1000) {
             tc.transform.localspaceWrite().translate(0, 2000);
@@ -99,19 +118,18 @@ public class PhysicsSystem extends IterativeComponentSystem {
         }
     }
     
-    private Vector2f getNormal(float xdir, float ydir) {
-        return new Vector2f(0, 1);
-        //        double d = Math.atan2(xdir, ydir);
-        //        if (d > -Mathd.PI / 4 && d <= Mathd.PI / 4) {
-        //            return new Vector2f(-1, 0);
-        //        } else if (d > Mathd.PI / 4 && d <= Mathd.PI * 3.0 / 4) {
-        //            return new Vector2f(0, -1);
-        //        } else if (d > Mathd.PI * 3.0 / 4 || d <= -Mathd.PI * 3.0 / 4) {
-        //            return new Vector2f(1, 0);
-        //        } else if (d < -Mathd.PI / 4 && d >= -Mathd.PI * 3.0 / 4) {
-        //            return new Vector2f(0, 1);
-        //        }
-        //        throw new IllegalArgumentException();
+    private Vector2f getNormal(Tile t, PhysicsComponent pc) {
+        if ((1 + t.getGlobalTileY()) * Tile.TILE_SIZE < pc.y + pc.h * 0.01f) {
+            return new Vector2f(0, 1);
+        } else if ((t.getGlobalTileY()) * Tile.TILE_SIZE > pc.y + pc.h * 0.99f) {
+            return new Vector2f(0, -1);
+        }
+        if ((1 + t.getGlobalTileX()) * Tile.TILE_SIZE < pc.x + pc.w * 0.01f) {
+            return new Vector2f(-1, 0);
+        } else if ((t.getGlobalTileX()) * Tile.TILE_SIZE > pc.x + pc.w * 0.99f) {
+            return new Vector2f(1, 0);
+        }
+        throw new IllegalArgumentException();
     }
     
 }

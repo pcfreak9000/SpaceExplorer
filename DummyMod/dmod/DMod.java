@@ -34,6 +34,7 @@ public class DMod {
         GameRegistry.TILE_REGISTRY.register("grass", grasstile);
         TileType dirttile = new TileType();
         dirttile.setTexture("dirt.png");
+        dirttile.setBouncyness(1);
         GameRegistry.TILE_REGISTRY.register("dirt", dirttile);
         GameRegistry.GENERATOR_REGISTRY.register("STS", new TileWorldGenerator() {
             

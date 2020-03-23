@@ -10,12 +10,22 @@ public class TileType {
     private String textureName = "";
     private Texture texture = null;
     
+    private float bouncyness = 0;
+    
     public void setTexture(String name) {
         this.textureName = name;
     }
     
     public Texture getTexture() {
         return texture;
+    }
+    
+    public void setBouncyness(float b) {
+        this.bouncyness = b;
+    }
+    
+    public float getBouncyness() {
+        return this.bouncyness;
     }
     
     public void init(TextureHelper tileTextures) {
