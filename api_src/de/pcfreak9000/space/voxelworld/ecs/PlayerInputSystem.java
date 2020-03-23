@@ -1,5 +1,9 @@
 package de.pcfreak9000.space.voxelworld.ecs;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.joml.Vector2f;
 
 import de.omnikryptec.core.Omnikryptec;
@@ -16,6 +20,7 @@ import de.pcfreak9000.space.voxelworld.Region;
 import de.pcfreak9000.space.voxelworld.TileWorld;
 import de.pcfreak9000.space.voxelworld.VoxelworldEvents;
 import de.pcfreak9000.space.voxelworld.tile.Tile;
+import de.pcfreak9000.space.voxelworld.tile.TileType;
 
 public class PlayerInputSystem extends AbstractComponentSystem {
     
@@ -36,6 +41,8 @@ public class PlayerInputSystem extends AbstractComponentSystem {
         this.cam = ev.groundMgr.getPlanetCamera();//TODO meh...?
     }
     
+    private TileType ugly = null;
+    
     @Override
     public void update(IECSManager iecsManager, Time time) {
         PlayerInputComponent play = mapper.get(entities.get(0));
@@ -53,14 +60,29 @@ public class PlayerInputSystem extends AbstractComponentSystem {
         if (Keys.RIGHT.isPressed()) {
             vx += play.maxXv;
         }
-        physicsMapper.get(entities.get(0)).acceleration.set(vx*3, vy*3-98.1f);
+        physicsMapper.get(entities.get(0)).acceleration.set(vx * 3, vy * 3 - 98.1f);
         if (Keys.DESTROY.isPressed()) {
             Vector2f mouse = Omnikryptec.getInput().getMousePositionInWorld2D(cam, new Vector2f());
             int tx = Tile.toGlobalTile(mouse.x());
             int ty = Tile.toGlobalTile(mouse.y());
             Region r = world.requestRegion(Region.toGlobalRegion(tx), Region.toGlobalRegion(ty));
             if (r != null) {
+                List<Tile> t = new ArrayList<>();
+                r.tileIntersections(t, tx, ty, 1, 1);
+                if (!t.isEmpty()) {
+                    ugly = t.get(0).getType();
+                }
                 r.removeTile(tx, ty);
+                r.recache();
+            }
+        }
+        if (Keys.BUILD.isPressed()) {
+            Vector2f mouse = Omnikryptec.getInput().getMousePositionInWorld2D(cam, new Vector2f());
+            int tx = Tile.toGlobalTile(mouse.x());
+            int ty = Tile.toGlobalTile(mouse.y());
+            Region r = world.requestRegion(Region.toGlobalRegion(tx), Region.toGlobalRegion(ty));
+            if (r != null && ugly != null) {
+                r.setTile(new Tile(ugly, tx, ty));
                 r.recache();
             }
         }

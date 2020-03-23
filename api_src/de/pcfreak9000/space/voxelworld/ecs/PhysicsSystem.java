@@ -59,8 +59,9 @@ public class PhysicsSystem extends IterativeComponentSystem {
         pc.velocity.add(pc.acceleration.x() * time.deltaf, pc.acceleration.y() * time.deltaf, pc.velocity);
         //Check and resolve collisions
         float value = 1;
+        Tile tile = null;
         if (!(pc.w == 0 && pc.h == 0)) {
-            pc.x = positionState.x();
+            pc.x = positionState.x();//TODO implement offset?
             pc.y = positionState.y();
             List<Tile> collisions = new ArrayList<>();
             tileWorld.collectTileIntersections(collisions, (int) Mathf.floor(pc.x / Tile.TILE_SIZE),
@@ -73,7 +74,10 @@ public class PhysicsSystem extends IterativeComponentSystem {
                         0, (1 + t.getGlobalTileX()) * Tile.TILE_SIZE + pc.w / 2,
                         (1 + t.getGlobalTileY()) * Tile.TILE_SIZE + pc.h / 2, 0, result)) {
                     if (result.x() >= 0) {
-                        value = Math.min(value, result.x());
+                        if (result.x() < value) {
+                            value = result.x();
+                            tile = t;
+                        }
                     }
                 }
             }
