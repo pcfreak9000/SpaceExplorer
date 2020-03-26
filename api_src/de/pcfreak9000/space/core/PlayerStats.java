@@ -43,7 +43,7 @@ public class PlayerStats {
         PhysicsComponent pc = new PhysicsComponent();
         e.addComponent(pc);
         pc.w = sprite.getWidth();
-        pc.h = sprite.getHeight();
+        pc.h = sprite.getHeight()*0.95f;
         return e;
     }
     
