@@ -56,7 +56,6 @@ public class PlayerInputSystem extends AbstractComponentSystem {
             if (Keys.BACKWARD.isPressed() || Keys.DOWN.isPressed()) {
                 vy -= play.maxYv;
             }
-            System.out.println(vy);
         }
         if (Keys.LEFT.isPressed()) {
             vx -= play.maxXv;
