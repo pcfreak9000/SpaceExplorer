@@ -29,13 +29,20 @@ public class DMod {
         TileType testTile = new TileType();
         testTile.setTexture("stone.png");
         GameRegistry.TILE_REGISTRY.register("stone", testTile);
+        
+        TileType bottom = new TileType();
+        bottom.setCanBreak(false);
+        bottom.setTexture("hehehe");
+        GameRegistry.TILE_REGISTRY.register("bottom", bottom);
         TileType grasstile = new TileType();
         grasstile.setTexture("grass.png");
         GameRegistry.TILE_REGISTRY.register("grass", grasstile);
+        
         TileType dirttile = new TileType();
         dirttile.setTexture("dirt.png");
         dirttile.setBouncyness(1);
         GameRegistry.TILE_REGISTRY.register("dirt", dirttile);
+        
         GameRegistry.GENERATOR_REGISTRY.register("STS", new TileWorldGenerator() {
             
             @Override
@@ -58,15 +65,20 @@ public class DMod {
                                     continue;
                                 }
                                 TileType t;
-                                if (j + chunk.getGlobalTileY() == value) {
-                                    t = GameRegistry.TILE_REGISTRY.get("grass");
-                                } else if (j + chunk.getGlobalTileY() >= value - 3) {
-                                    t = GameRegistry.TILE_REGISTRY.get("dirt");
+                                if (j + chunk.getGlobalTileY() == 0) {
+                                    t = GameRegistry.TILE_REGISTRY.get("bottom");
                                 } else {
-                                    t = GameRegistry.TILE_REGISTRY.get("stone");
+                                    if (j + chunk.getGlobalTileY() == value) {
+                                        t = GameRegistry.TILE_REGISTRY.get("grass");
+                                    } else if (j + chunk.getGlobalTileY() >= value - 3) {
+                                        t = GameRegistry.TILE_REGISTRY.get("dirt");
+                                    } else {
+                                        t = GameRegistry.TILE_REGISTRY.get("stone");
+                                    }
                                 }
                                 chunk.setTile(new Tile(t, i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY()));
-                                chunk.setTileBackground(new Tile(t, i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY()));
+                                chunk.setTileBackground(
+                                        new Tile(t, i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY()));
                             }
                         }
                         chunk.recache();

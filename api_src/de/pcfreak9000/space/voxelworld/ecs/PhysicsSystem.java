@@ -83,7 +83,7 @@ public class PhysicsSystem extends IterativeComponentSystem {
                             (1 + t.getGlobalTileY()) * Tile.TILE_SIZE + pc.h / 2, 0, result)) {
                         if (result.x() >= 0) {
                             if (result.x() < 1.0f) {
-                                pc.onGround = getNormal(t, pc).equals(new Vector2f(0,1));
+                                pc.onGround = getNormal(t, pc).equals(new Vector2f(0, 1));
                             }
                             if (result.x() < tMin) {
                                 tMin = result.x();
@@ -111,10 +111,13 @@ public class PhysicsSystem extends IterativeComponentSystem {
         } else {
             tc.transform.localspaceWrite().setTranslation(positionState.x() + posDeltaX, positionState.y() + posDeltaY);
         }
-        
-        if (tc.transform.worldspacePos().y() < -1000) {
-            tc.transform.localspaceWrite().translate(0, 2000);
+        //temporary wrap around
+        if (tc.transform.worldspacePos().x() < 0) {
+            tc.transform.localspaceWrite().translate(this.tileWorld.getWorldWidth() * Tile.TILE_SIZE, 0);
+        } else if (tc.transform.worldspacePos().x() > this.tileWorld.getWorldWidth() * Tile.TILE_SIZE) {
+            tc.transform.localspaceWrite().translate(-this.tileWorld.getWorldWidth() * Tile.TILE_SIZE, 0);
         }
+        //temporary camera adjustment
         positionState = tc.transform.worldspacePos();
         if (entity.hasComponent(mapper.getType())) {
             playerCam.getTransform().localspaceWrite().translation(-positionState.x(), -positionState.y(), 0);//TODO not the best place for the cam...

@@ -70,13 +70,12 @@ public class PlayerInputSystem extends AbstractComponentSystem {
             int ty = Tile.toGlobalTile(mouse.y());
             Region r = world.requestRegion(Region.toGlobalRegion(tx), Region.toGlobalRegion(ty));
             if (r != null) {
-                List<Tile> t = new ArrayList<>();
-                r.tileIntersections(t, tx, ty, 1, 1);
-                if (!t.isEmpty()) {
-                    ugly = t.get(0).getType();
+                Tile t = r.get(tx, ty);
+                if (t != null && t.getType().canBreak()) {
+                    ugly = t.getType();
+                    r.removeTile(tx, ty);
+                    r.recache();
                 }
-                r.removeTile(tx, ty);
-                r.recache();
             }
         }
         if (Keys.BUILD.isPressed()) {
@@ -85,8 +84,10 @@ public class PlayerInputSystem extends AbstractComponentSystem {
             int ty = Tile.toGlobalTile(mouse.y());
             Region r = world.requestRegion(Region.toGlobalRegion(tx), Region.toGlobalRegion(ty));
             if (r != null && ugly != null) {
-                r.setTile(new Tile(ugly, tx, ty));
-                r.recache();
+                if (r.get(tx, ty) == null) {
+                    r.setTile(new Tile(ugly, tx, ty));
+                    r.recache();
+                }
             }
         }
     }

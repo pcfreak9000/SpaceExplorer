@@ -124,4 +124,7 @@ public class Region {
         this.tiles.getAABB(output, x, y, w, h);
     }
     
+    public Tile get(int x, int y) {
+        return this.tiles.get(x, y);
+    }
 }

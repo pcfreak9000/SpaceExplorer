@@ -2,6 +2,7 @@ package de.pcfreak9000.space.voxelworld.tile;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.resource.helper.TextureHelper;
+import de.omnikryptec.util.data.Color;
 import de.pcfreak9000.space.util.RegisterSensitive;
 
 @RegisterSensitive(registry = "TILE_REGISTRY")
@@ -9,6 +10,8 @@ public class TileType {
     
     private String textureName = "";
     private Texture texture = null;
+    
+    private boolean canBreak = true;
     
     private float bouncyness = 0;
     
@@ -26,6 +29,14 @@ public class TileType {
     
     public float getBouncyness() {
         return this.bouncyness;
+    }
+
+    public void setCanBreak(boolean b) {
+        this.canBreak = b;
+    }
+    
+    public boolean canBreak() {
+        return canBreak;
     }
     
     public void init(TextureHelper tileTextures) {
