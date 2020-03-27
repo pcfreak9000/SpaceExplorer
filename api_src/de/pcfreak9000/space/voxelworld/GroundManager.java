@@ -20,6 +20,7 @@ import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.core.Space;
+import de.pcfreak9000.space.voxelworld.ecs.CameraSystem;
 import de.pcfreak9000.space.voxelworld.ecs.PhysicsSystem;
 import de.pcfreak9000.space.voxelworld.ecs.PlayerInputSystem;
 import de.pcfreak9000.space.voxelworld.ecs.RenderSystem;
@@ -83,6 +84,7 @@ public class GroundManager {
         ecsManager.addSystem(new PlayerInputSystem());
         this.physicsSystem = new PhysicsSystem();
         ecsManager.addSystem(this.physicsSystem);
+        ecsManager.addSystem(new CameraSystem());
     }
     
     public void setWorld(TileWorld w) {
