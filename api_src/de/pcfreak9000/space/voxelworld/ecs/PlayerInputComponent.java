@@ -5,4 +5,5 @@ import de.omnikryptec.util.math.transform.Transform3Df;
 
 public class PlayerInputComponent implements Component {
     public float maxXv, maxYv;
+
 }

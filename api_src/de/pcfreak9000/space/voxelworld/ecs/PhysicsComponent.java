@@ -9,6 +9,8 @@ public class PhysicsComponent implements Component {
     public final Vector2f velocity = new Vector2f();
     public final Vector2f acceleration = new Vector2f();
     
+    public boolean onGround = false;
+    
     public float x, y, w, h; 
     
 }

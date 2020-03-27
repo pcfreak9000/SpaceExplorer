@@ -62,6 +62,7 @@ public class PhysicsSystem extends IterativeComponentSystem {
         
         //Check and resolve collisions
         if (!(pc.w == 0 && pc.h == 0)) {
+            pc.onGround = false;
             float tRemaining = 1.0f;
             Tile tile = null;
             for (int i = 0; i < 4 && tRemaining > 0.0f; i++) {
@@ -81,6 +82,9 @@ public class PhysicsSystem extends IterativeComponentSystem {
                             (1 + t.getGlobalTileX()) * Tile.TILE_SIZE + pc.w / 2,
                             (1 + t.getGlobalTileY()) * Tile.TILE_SIZE + pc.h / 2, 0, result)) {
                         if (result.x() >= 0) {
+                            if (result.x() < 1.0f) {
+                                pc.onGround = getNormal(t, pc).equals(new Vector2f(0,1));
+                            }
                             if (result.x() < tMin) {
                                 tMin = result.x();
                                 tile = t;
@@ -95,11 +99,10 @@ public class PhysicsSystem extends IterativeComponentSystem {
                         positionState.y() + posDeltaY * tMin);
                 if (tMin < 1) {
                     float bouncynessFactor = 1 + tile.getType().getBouncyness();
-                    pc.velocity.sub(getNormal(tile,pc)
-                            .mul(bouncynessFactor * pc.velocity.dot(getNormal(tile,pc))), pc.velocity);
+                    pc.velocity.sub(getNormal(tile, pc).mul(bouncynessFactor * pc.velocity.dot(getNormal(tile, pc))),
+                            pc.velocity);
                     Vector2f hehe = new Vector2f(posDeltaX, posDeltaY);
-                    hehe.sub(getNormal(tile,pc)
-                            .mul(bouncynessFactor * hehe.dot(getNormal(tile,pc))), hehe);
+                    hehe.sub(getNormal(tile, pc).mul(bouncynessFactor * hehe.dot(getNormal(tile, pc))), hehe);
                     posDeltaX = hehe.x;
                     posDeltaY = hehe.y;
                 }
