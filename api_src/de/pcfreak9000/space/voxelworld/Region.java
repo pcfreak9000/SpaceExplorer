@@ -31,6 +31,7 @@ public class Region {
     private int ty;
     
     private Quadtree<Tile> tiles;
+    private Quadtree<Tile> tilesBackground;
     private List<Entity> entitiesStatic;
     private List<Entity> entitiesDynamic;
     
@@ -41,6 +42,7 @@ public class Region {
         this.tx = rx * REGION_TILE_SIZE;
         this.ty = ry * REGION_TILE_SIZE;
         this.tiles = new Quadtree<>(REGION_TILE_SIZE, tx, ty);
+        this.tilesBackground = new Quadtree<>(REGION_TILE_SIZE, tx, ty);
         this.entitiesStatic = new ArrayList<>();
         this.entitiesDynamic = new ArrayList<>();
         this.ocvm = new OrderedCachedVertexManager(6 * REGION_TILE_SIZE);
@@ -70,6 +72,10 @@ public class Region {
         this.tiles.set(null, x, y);
     }
     
+    public void setTileBackground(Tile t) {
+        this.tilesBackground.set(t, t.getGlobalTileX(), t.getGlobalTileY());
+    }
+    
     public void addThis(IECSManager ecsManager) {
         for (Entity e : entitiesStatic) {
             ecsManager.addEntity(e);
@@ -90,18 +96,26 @@ public class Region {
         ecsManager.removeEntity(regionEntity);
     }
     
-    public void recache() {//TODO improve
+    public void recache() {//TODO improve recaching
         LOGGER.debug("Recaching");
         ocvm.clear();
         AdvancedBatch2D PACKING_BATCH = new AdvancedBatch2D(ocvm);
         PACKING_BATCH.begin();
         Matrix3x2f tmpTransform = new Matrix3x2f();
         List<Tile> tiles = new ArrayList<>();
+        //background does not need to be recached all the time because it can not change (rn)
+        this.tilesBackground.getAll(tiles);
+        PACKING_BATCH.color().set(0.5f, 0.5f, 0.5f);
+        for (Tile t : tiles) {
+            tmpTransform.setTranslation(t.getGlobalTileX() * Tile.TILE_SIZE, t.getGlobalTileY() * Tile.TILE_SIZE);
+            PACKING_BATCH.draw(t.getType().getTexture(), tmpTransform, Tile.TILE_SIZE, Tile.TILE_SIZE, false, false);
+        }
+        tiles.clear();
+        PACKING_BATCH.color().setAll(1);
         this.tiles.getAll(tiles);
         for (Tile t : tiles) {
             tmpTransform.setTranslation(t.getGlobalTileX() * Tile.TILE_SIZE, t.getGlobalTileY() * Tile.TILE_SIZE);
             PACKING_BATCH.draw(t.getType().getTexture(), tmpTransform, Tile.TILE_SIZE, Tile.TILE_SIZE, false, false);
-            
         }
         PACKING_BATCH.end();
     }

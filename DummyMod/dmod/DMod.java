@@ -66,6 +66,7 @@ public class DMod {
                                     t = GameRegistry.TILE_REGISTRY.get("stone");
                                 }
                                 chunk.setTile(new Tile(t, i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY()));
+                                chunk.setTileBackground(new Tile(t, i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY()));
                             }
                         }
                         chunk.recache();
