@@ -48,15 +48,15 @@ public class PlayerInputSystem extends AbstractComponentSystem {
         PlayerInputComponent play = mapper.get(entities.get(0));
         float vy = 0;
         float vx = 0;
-        if (physicsMapper.get(entities.get(0)).onGround) {
+        //if (physicsMapper.get(entities.get(0)).onGround) {
             if (Keys.FORWARD.isPressed() || Keys.UP.isPressed()) {
-                vy += play.maxYv * 50;
+                vy += play.maxYv * 1;
             }
             //kinda useless, use for sneaking/ladders instead?
             if (Keys.BACKWARD.isPressed() || Keys.DOWN.isPressed()) {
                 vy -= play.maxYv;
             }
-        }
+        //}
         if (Keys.LEFT.isPressed()) {
             vx -= play.maxXv;
         }

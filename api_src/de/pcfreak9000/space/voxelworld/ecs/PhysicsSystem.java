@@ -102,12 +102,6 @@ public class PhysicsSystem extends IterativeComponentSystem {
         } else {
             tc.transform.localspaceWrite().setTranslation(positionState.x() + posDeltaX, positionState.y() + posDeltaY);
         }
-        //temporary wrap around
-        if (tc.transform.worldspacePos().x() < 0) {
-            tc.transform.localspaceWrite().translate(this.tileWorld.getWorldWidth() * Tile.TILE_SIZE, 0);
-        } else if (tc.transform.worldspacePos().x() > this.tileWorld.getWorldWidth() * Tile.TILE_SIZE) {
-            tc.transform.localspaceWrite().translate(-this.tileWorld.getWorldWidth() * Tile.TILE_SIZE, 0);
-        }
     }
     
     private Vector2f getNormal(Tile t, PhysicsComponent pc) {
