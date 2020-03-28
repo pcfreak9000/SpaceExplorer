@@ -3,8 +3,6 @@ package de.pcfreak9000.space.core;
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.render.objects.AdvancedSprite;
-import de.omnikryptec.resource.TextureConfig;
-import de.omnikryptec.resource.TextureConfig.MagMinFilter;
 import de.pcfreak9000.space.voxelworld.ecs.PhysicsComponent;
 import de.pcfreak9000.space.voxelworld.ecs.PlayerInputComponent;
 import de.pcfreak9000.space.voxelworld.ecs.RenderComponent;

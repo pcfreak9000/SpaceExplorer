@@ -6,7 +6,7 @@ import de.omnikryptec.util.settings.keys.KeysAndButtons;
 
 public enum Keys {
     
-    FORWARD, BACKWARD, LEFT, RIGHT, UP, DOWN, DESTROY, BUILD;
+    FORWARD, BACKWARD, LEFT, RIGHT, UP, DOWN, DESTROY, BUILD, EXPLODE_DEBUG;
     
     public final String id = toString();
     
@@ -23,5 +23,6 @@ public enum Keys {
         ks.addKey(DOWN.id, KeysAndButtons.OKE_KEY_LEFT_SHIFT);
         ks.addMouseKey(DESTROY.id, KeysAndButtons.OKE_MOUSE_BUTTON_LEFT);
         ks.addMouseKey(BUILD.id, KeysAndButtons.OKE_MOUSE_BUTTON_RIGHT);
+        ks.addMouseKey(EXPLODE_DEBUG.id, KeysAndButtons.OKE_MOUSE_BUTTON_MIDDLE);
     }
 }

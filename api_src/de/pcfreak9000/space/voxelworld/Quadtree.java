@@ -1,7 +1,6 @@
 package de.pcfreak9000.space.voxelworld;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.joml.Intersectionf;
 import org.joml.Matrix3x2f;

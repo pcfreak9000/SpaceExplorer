@@ -18,6 +18,7 @@ import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 import de.pcfreak9000.space.mod.ModLoader;
+import de.pcfreak9000.space.voxelworld.Background;
 import de.pcfreak9000.space.voxelworld.GroundManager;
 import de.pcfreak9000.space.voxelworld.TileWorld;
 import de.pcfreak9000.space.voxelworld.TileWorldGenerator;
@@ -46,7 +47,8 @@ public class Space extends Omnikryptec {
     public static final EventBus BUS = new EventBus();
     
     private static Space space;
-    
+    public static Background back = new Background("Space.png", 16 / 9f, 3, 1000, 1000);
+
     public static void main(String[] args) {
         new Space().start();
         System.exit(0);

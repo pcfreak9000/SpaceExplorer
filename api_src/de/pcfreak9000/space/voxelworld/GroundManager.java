@@ -21,6 +21,7 @@ import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.core.Space;
 import de.pcfreak9000.space.voxelworld.ecs.CameraSystem;
+import de.pcfreak9000.space.voxelworld.ecs.ParallaxSystem;
 import de.pcfreak9000.space.voxelworld.ecs.PhysicsSystem;
 import de.pcfreak9000.space.voxelworld.ecs.PlayerInputSystem;
 import de.pcfreak9000.space.voxelworld.ecs.RenderSystem;
@@ -50,8 +51,6 @@ public class GroundManager {
     
     private Set<Region> localLoadedChunks;
     
-    private PhysicsSystem physicsSystem;
-    
     public GroundManager() {
         this.localLoadedChunks = new HashSet<>();
         this.ecsManager = UpdateableFactory.createDefaultIECSManager();
@@ -69,7 +68,7 @@ public class GroundManager {
     
     private Matrix4f createProjection(int width, int height) {
         int[] vp = MathUtil.calculateViewport(width / (double) height, 1920, 1920);
-        return new Matrix4f().ortho2D(-vp[2] / 2, vp[2] / 2, -vp[3] / 2, vp[3] / 2);
+        return new Matrix4f().ortho2D(-vp[2] / 2f, vp[2] / 2f, -vp[3] / 2f, vp[3] / 2f);
     }
     
     public Camera getPlanetCamera() {
@@ -82,10 +81,11 @@ public class GroundManager {
         this.viewManager.addRenderer(renderer);
         ecsManager.addSystem(new RenderSystem(renderer));
         ecsManager.addSystem(new PlayerInputSystem());
-        this.physicsSystem = new PhysicsSystem();
-        ecsManager.addSystem(this.physicsSystem);
+        ecsManager.addSystem(new PhysicsSystem());
         ecsManager.addSystem(new CameraSystem());
+        ecsManager.addSystem(new ParallaxSystem());
     }
+    
     
     public void setWorld(TileWorld w) {
         Space.BUS.post(new VoxelworldEvents.SetVoxelWorldEvent(this, this.currentWorld, w));
@@ -99,6 +99,7 @@ public class GroundManager {
             } else {
                 unloadAll();
             }
+            this.ecsManager.addEntity(Space.back.getEntity());
             this.currentWorld = w;
             loadAll();
         }

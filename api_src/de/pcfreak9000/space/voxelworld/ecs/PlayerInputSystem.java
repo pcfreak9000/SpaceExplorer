@@ -1,8 +1,7 @@
 package de.pcfreak9000.space.voxelworld.ecs;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.joml.Vector2f;
 
@@ -13,6 +12,7 @@ import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.render.Camera;
+import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.core.Keys;
 import de.pcfreak9000.space.core.Space;
@@ -49,13 +49,13 @@ public class PlayerInputSystem extends AbstractComponentSystem {
         float vy = 0;
         float vx = 0;
         //if (physicsMapper.get(entities.get(0)).onGround) {
-            if (Keys.FORWARD.isPressed() || Keys.UP.isPressed()) {
-                vy += play.maxYv * 1;
-            }
-            //kinda useless, use for sneaking/ladders instead?
-            if (Keys.BACKWARD.isPressed() || Keys.DOWN.isPressed()) {
-                vy -= play.maxYv;
-            }
+        if (Keys.FORWARD.isPressed() || Keys.UP.isPressed()) {
+            vy += play.maxYv * 1;
+        }
+        //kinda useless, use for sneaking/ladders instead?
+        if (Keys.BACKWARD.isPressed() || Keys.DOWN.isPressed()) {
+            vy -= play.maxYv;
+        }
         //}
         if (Keys.LEFT.isPressed()) {
             vx -= play.maxXv;
@@ -64,6 +64,33 @@ public class PlayerInputSystem extends AbstractComponentSystem {
             vx += play.maxXv;
         }
         physicsMapper.get(entities.get(0)).acceleration.set(vx * 3, vy * 3 - 98.1f);
+        if (Keys.EXPLODE_DEBUG.isPressed()) {
+            Vector2f mouse = Omnikryptec.getInput().getMousePositionInWorld2D(cam, new Vector2f());
+            int txm = Tile.toGlobalTile(mouse.x());
+            int tym = Tile.toGlobalTile(mouse.y());
+            Set<Region> rs = new HashSet<>();
+            final int rad = 3;
+            for (int i = -rad; i <= rad; i++) {
+                for (int j = -rad; j <= rad; j++) {
+                    if (Mathf.square(i) + Mathf.square(j) <= Mathf.square(rad)) {
+                        int tx = txm + i;
+                        int ty = tym + j;
+                        Region r = world.requestRegion(Region.toGlobalRegion(tx), Region.toGlobalRegion(ty));
+                        if (r != null) {
+                            Tile t = r.get(tx, ty);
+                            if (t != null && t.getType().canBreak()) {
+                                ugly = t.getType();
+                                r.removeTile(tx, ty);
+                                rs.add(r);
+                            }
+                        }
+                    }
+                }
+            }
+            for (Region r : rs) {
+                r.recache();
+            }
+        }
         if (Keys.DESTROY.isPressed()) {
             Vector2f mouse = Omnikryptec.getInput().getMousePositionInWorld2D(cam, new Vector2f());
             int tx = Tile.toGlobalTile(mouse.x());

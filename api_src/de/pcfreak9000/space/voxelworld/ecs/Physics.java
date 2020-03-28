@@ -4,7 +4,7 @@ import org.joml.Vector2f;
 import org.joml.Vector2fc;
 
 import de.omnikryptec.util.math.Mathf;
-
+@Deprecated
 public class Physics {
     public static class Manifold {
         float awidth, aheight, bwidth, bheight;

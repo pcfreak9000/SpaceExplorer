@@ -60,7 +60,7 @@ public class DMod {
                                 if (!tileWorld.inBounds(i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY())) {
                                     continue;
                                 }
-                                int value = Mathf.round(20 * Mathf.abs(Mathf.sin(0.1f * (i + chunk.getGlobalTileX()))));
+                                int value = Mathf.round(6 * Mathf.abs(Mathf.sin(0.2f * (i + chunk.getGlobalTileX())))+ 20 * Mathf.abs(Mathf.sin(0.05f * (i + chunk.getGlobalTileX()))));
                                 if (j + chunk.getGlobalTileY() > value) {
                                     continue;
                                 }
