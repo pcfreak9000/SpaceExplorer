@@ -45,7 +45,7 @@ public class GroundManager {
     
     private Scene localScene;
     
-    private TileWorld currentWorld;
+    private WorldInformationBundle currentWorld;
     private WorldLoadingFence worldLoadingFence;
     
     private Camera planetCamera;
@@ -87,21 +87,30 @@ public class GroundManager {
         ecsManager.addSystem(new ParallaxSystem());
     }
     
-    
-    public void setWorld(TileWorld w) {
-        Space.BUS.post(new VoxelworldEvents.SetVoxelWorldEvent(this, this.currentWorld, w));
+    public void setWorld(WorldInformationBundle w) {
+        Space.BUS.post(new VoxelworldEvents.SetVoxelWorldEvent(this,
+                this.getCurrentWorld() == null ? null : this.getCurrentWorld().getTileWorld(),
+                w == null ? null : w.getTileWorld()));//TODO meh... use the WorldInformationBundle instead?
         if (w == null) {
             unloadAll();
+            if (currentWorld != null && currentWorld.getBackground() != null) {
+                getECSManager().removeEntity(currentWorld.getBackground().getEntity());
+            }
             Omnikryptec.getGameS().removeScene(localScene);
             //unload everything
         } else {
             if (currentWorld == null) {
                 Omnikryptec.getGameS().addScene(localScene);
             } else {
+                if (currentWorld.getBackground() != null) {
+                    getECSManager().removeEntity(currentWorld.getBackground().getEntity());
+                }
                 unloadAll();
             }
-            this.ecsManager.addEntity(GameRegistry.BACKGROUND_REGISTRY.get("stars").getEntity());
             this.currentWorld = w;
+            if (this.currentWorld.getBackground() != null) {
+                getECSManager().addEntity(this.currentWorld.getBackground().getEntity());
+            }
             loadAll();
         }
     }
@@ -110,7 +119,7 @@ public class GroundManager {
         return ecsManager;
     }
     
-    public TileWorld getCurrentWorld() {
+    public WorldInformationBundle getCurrentWorld() {
         return currentWorld;
     }
     
@@ -133,8 +142,8 @@ public class GroundManager {
             for (int j = 0; j <= 2 * yR; j++) {
                 int rx = i - xR + xM;
                 int ry = j - yR + yM;
-                if (currentWorld.inBounds(rx, ry)) {
-                    Region c = currentWorld.requestRegion(rx, ry);
+                if (currentWorld.getTileWorld().inBounds(rx, ry)) {
+                    Region c = currentWorld.getTileWorld().requestRegion(rx, ry);
                     if (c != null) {
                         localLoadedChunks.add(c);
                         c.addThis(ecsManager);

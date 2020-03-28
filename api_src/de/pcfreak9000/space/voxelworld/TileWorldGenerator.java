@@ -23,7 +23,7 @@ public abstract class TileWorldGenerator implements Weighted {
     
     protected final Set<Object> CAPS = new HashSet<>();
     
-    public abstract TileWorld generateWorld(long seed);
+    public abstract WorldInformationBundle generateWorld(long seed);
     
     public TileWorldGenerator() {
         initCaps();

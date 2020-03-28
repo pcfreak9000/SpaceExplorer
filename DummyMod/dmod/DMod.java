@@ -11,6 +11,7 @@ import de.pcfreak9000.space.voxelworld.Region;
 import de.pcfreak9000.space.voxelworld.RegionGenerator;
 import de.pcfreak9000.space.voxelworld.TileWorld;
 import de.pcfreak9000.space.voxelworld.TileWorldGenerator;
+import de.pcfreak9000.space.voxelworld.WorldInformationBundle;
 import de.pcfreak9000.space.voxelworld.tile.Tile;
 import de.pcfreak9000.space.voxelworld.tile.TileType;
 
@@ -55,8 +56,8 @@ public class DMod {
             }
             
             @Override
-            public TileWorld generateWorld(long seed) {
-                return new TileWorld(200, 200, new RegionGenerator() {
+            public WorldInformationBundle generateWorld(long seed) {
+                return new WorldInformationBundle(new TileWorld(200, 200, new RegionGenerator() {
                     @Override
                     public void generateChunk(Region chunk, TileWorld tileWorld) {
                         for (int i = 0; i < Region.REGION_TILE_SIZE; i++) {
@@ -64,7 +65,7 @@ public class DMod {
                                 if (!tileWorld.inBounds(i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY())) {
                                     continue;
                                 }
-                                int value = Mathf.round(6 * Mathf.abs(Mathf.sin(0.2f * (i + chunk.getGlobalTileX())))
+                                int value = 75 + Mathf.round(6 * Mathf.abs(Mathf.sin(0.2f * (i + chunk.getGlobalTileX())))
                                         + 20 * Mathf.abs(Mathf.sin(0.05f * (i + chunk.getGlobalTileX()))));
                                 if (j + chunk.getGlobalTileY() > value) {
                                     continue;
@@ -89,7 +90,7 @@ public class DMod {
                         chunk.recache();
                     }
                     
-                });
+                }), GameRegistry.BACKGROUND_REGISTRY.get("stars"));
             }
         });
     }

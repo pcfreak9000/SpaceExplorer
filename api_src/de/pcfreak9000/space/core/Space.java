@@ -22,6 +22,7 @@ import de.pcfreak9000.space.voxelworld.Background;
 import de.pcfreak9000.space.voxelworld.GroundManager;
 import de.pcfreak9000.space.voxelworld.TileWorld;
 import de.pcfreak9000.space.voxelworld.TileWorldGenerator;
+import de.pcfreak9000.space.voxelworld.WorldInformationBundle;
 import de.pcfreak9000.space.voxelworld.TileWorldGenerator.GeneratorCapabilitiesBase;
 import de.pcfreak9000.space.voxelworld.WorldLoadingFence;
 
@@ -47,7 +48,7 @@ public class Space extends Omnikryptec {
     public static final EventBus BUS = new EventBus();
     
     private static Space space;
-
+    
     public static void main(String[] args) {
         new Space().start();
         System.exit(0);
@@ -89,7 +90,7 @@ public class Space extends Omnikryptec {
         groundManager.setWorldUpdateFence(f);
         
         GameInstance ins = new GameInstance(groundManager);
-        TileWorld testWorld = pickGenerator(
+        WorldInformationBundle testWorld = pickGenerator(
                 GameRegistry.GENERATOR_REGISTRY.filtered(GeneratorCapabilitiesBase.LVL_ENTRY)).generateWorld(0);
         ins.visit(testWorld, 1000, 1000);
         //***************

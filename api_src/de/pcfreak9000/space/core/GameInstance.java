@@ -3,6 +3,7 @@ package de.pcfreak9000.space.core;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.pcfreak9000.space.voxelworld.GroundManager;
 import de.pcfreak9000.space.voxelworld.TileWorld;
+import de.pcfreak9000.space.voxelworld.WorldInformationBundle;
 import de.pcfreak9000.space.voxelworld.ecs.TransformComponent;
 
 /**
@@ -23,7 +24,7 @@ public class GameInstance {
         this.playerStats = new PlayerStats(); //TODO playerstats creation
     }
     
-    public void visit(TileWorld world, float x, float y) {
+    public void visit(WorldInformationBundle world, float x, float y) {
         //TODO set player coords
         TransformComponent tc = playerStats.getPlayerEntity().getComponent(ComponentType.of(TransformComponent.class));
         tc.transform.localspaceWrite().setTranslation(x, y);
