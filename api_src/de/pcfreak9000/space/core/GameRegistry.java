@@ -19,6 +19,8 @@ public class GameRegistry<T> {
     
     public static final GeneratorRegistry GENERATOR_REGISTRY = new GeneratorRegistry();
     
+    public static final BackgroundRegistry BACKGROUND_REGISTRY = new BackgroundRegistry();
+    
     protected final Logger LOGGER = Logger.getLogger(getClass());
     
     protected final HashMap<String, T> registered = new HashMap<>();

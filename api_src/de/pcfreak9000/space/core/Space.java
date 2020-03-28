@@ -47,7 +47,6 @@ public class Space extends Omnikryptec {
     public static final EventBus BUS = new EventBus();
     
     private static Space space;
-    public static Background back = new Background("Space.png", 16 / 9f, 3, 1000, 1000);
 
     public static void main(String[] args) {
         new Space().start();

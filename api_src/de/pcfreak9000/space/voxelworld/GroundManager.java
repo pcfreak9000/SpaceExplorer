@@ -19,6 +19,7 @@ import de.omnikryptec.render.renderer.ViewManager;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.updater.Time;
+import de.pcfreak9000.space.core.GameRegistry;
 import de.pcfreak9000.space.core.Space;
 import de.pcfreak9000.space.voxelworld.ecs.CameraSystem;
 import de.pcfreak9000.space.voxelworld.ecs.ParallaxSystem;
@@ -99,7 +100,7 @@ public class GroundManager {
             } else {
                 unloadAll();
             }
-            this.ecsManager.addEntity(Space.back.getEntity());
+            this.ecsManager.addEntity(GameRegistry.BACKGROUND_REGISTRY.get("stars").getEntity());
             this.currentWorld = w;
             loadAll();
         }

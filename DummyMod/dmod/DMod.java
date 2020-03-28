@@ -6,6 +6,7 @@ import de.pcfreak9000.space.core.GameRegistry;
 import de.pcfreak9000.space.mod.Instance;
 import de.pcfreak9000.space.mod.Mod;
 import de.pcfreak9000.space.mod.ModLoaderEvents;
+import de.pcfreak9000.space.voxelworld.Background;
 import de.pcfreak9000.space.voxelworld.Region;
 import de.pcfreak9000.space.voxelworld.RegionGenerator;
 import de.pcfreak9000.space.voxelworld.TileWorld;
@@ -43,6 +44,9 @@ public class DMod {
         dirttile.setBouncyness(1);
         GameRegistry.TILE_REGISTRY.register("dirt", dirttile);
         
+        Background back = new Background("Space.png", 16 / 9f, 3, 1000, 1000);
+        GameRegistry.BACKGROUND_REGISTRY.register("stars", back);
+        
         GameRegistry.GENERATOR_REGISTRY.register("STS", new TileWorldGenerator() {
             
             @Override
@@ -60,7 +64,8 @@ public class DMod {
                                 if (!tileWorld.inBounds(i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY())) {
                                     continue;
                                 }
-                                int value = Mathf.round(6 * Mathf.abs(Mathf.sin(0.2f * (i + chunk.getGlobalTileX())))+ 20 * Mathf.abs(Mathf.sin(0.05f * (i + chunk.getGlobalTileX()))));
+                                int value = Mathf.round(6 * Mathf.abs(Mathf.sin(0.2f * (i + chunk.getGlobalTileX())))
+                                        + 20 * Mathf.abs(Mathf.sin(0.05f * (i + chunk.getGlobalTileX()))));
                                 if (j + chunk.getGlobalTileY() > value) {
                                     continue;
                                 }
