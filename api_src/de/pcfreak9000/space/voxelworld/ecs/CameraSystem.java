@@ -8,15 +8,17 @@ import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.render.Camera;
+import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.core.Space;
+import de.pcfreak9000.space.voxelworld.PlanetCamera;
 import de.pcfreak9000.space.voxelworld.TileWorld;
 import de.pcfreak9000.space.voxelworld.VoxelworldEvents;
 import de.pcfreak9000.space.voxelworld.tile.Tile;
 
 public class CameraSystem extends AbstractComponentSystem {
     
-    private Camera playerCam;
+    private PlanetCamera playerCam;
     private TileWorld tileWorld;
     
     private ComponentMapper<TransformComponent> transformMapper = new ComponentMapper<>(TransformComponent.class);
@@ -35,7 +37,13 @@ public class CameraSystem extends AbstractComponentSystem {
     @Override
     public void update(IECSManager iecsManager, Time time) {
         Vector2fc positionState = transformMapper.get(entities.get(0)).transform.worldspacePos();
-        playerCam.getTransform().localspaceWrite().translation(-positionState.x(), -positionState.y(), 0);
+        float x = positionState.x() - playerCam.getWidth() / 2f;
+        float y = positionState.y() - playerCam.getHeight() / 2f;
+        x = Mathf.max(0, x);
+        y = Mathf.max(0, y);
+        x = Mathf.min(tileWorld.getWorldWidth() * Tile.TILE_SIZE - playerCam.getWidth(), x);
+        y = Mathf.min(tileWorld.getWorldHeight() * Tile.TILE_SIZE - playerCam.getHeight(), y);
+        playerCam.getCameraActual().getTransform().localspaceWrite().translation(-x, -y, 0);
         
         //temporary wrap around
         TransformComponent tc = transformMapper.get(entities.get(0));

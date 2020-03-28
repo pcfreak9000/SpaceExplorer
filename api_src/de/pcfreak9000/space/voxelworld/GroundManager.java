@@ -48,7 +48,7 @@ public class GroundManager {
     private WorldInformationBundle currentWorld;
     private WorldLoadingFence worldLoadingFence;
     
-    private Camera planetCamera;
+    private PlanetCamera planetCamera;
     
     private Set<Region> localLoadedChunks;
     
@@ -57,8 +57,8 @@ public class GroundManager {
         this.ecsManager = UpdateableFactory.createDefaultIECSManager();
         this.localScene = Omnikryptec.getGameS().createAndAddScene();
         this.viewManager = this.localScene.getViewManager();
-        this.planetCamera = new AdaptiveCamera(this::createProjection);
-        this.viewManager.getMainView().setProjection(planetCamera);
+        this.planetCamera = new PlanetCamera();
+        this.viewManager.getMainView().setProjection(planetCamera.getCameraActual());
         UContainer updateables = new UContainer();
         updateables.setUpdatable(0, new UpdaterClass());
         updateables.setUpdatable(1, ecsManager);
@@ -67,12 +67,7 @@ public class GroundManager {
         Space.BUS.post(new VoxelworldEvents.InitGroundManagerEvent(this.ecsManager, this.viewManager));
     }
     
-    private Matrix4f createProjection(int width, int height) {
-        int[] vp = MathUtil.calculateViewport(width / (double) height, 1920, 1920);
-        return new Matrix4f().ortho2D(-vp[2] / 2f, vp[2] / 2f, -vp[3] / 2f, vp[3] / 2f);
-    }
-    
-    public Camera getPlanetCamera() {
+    public PlanetCamera getPlanetCamera() {
         return planetCamera;
     }
     

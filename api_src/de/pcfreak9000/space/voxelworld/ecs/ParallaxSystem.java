@@ -31,7 +31,7 @@ public class ParallaxSystem extends IterativeComponentSystem {
     @EventSubscription
     public void tileworldLoadingEvent(VoxelworldEvents.SetVoxelWorldEvent svwe) {
         this.tileWorld = svwe.tileWorldNew;
-        this.cam = svwe.groundMgr.getPlanetCamera();
+        this.cam = svwe.groundMgr.getPlanetCamera().getCameraActual();
     }
     
     @Override

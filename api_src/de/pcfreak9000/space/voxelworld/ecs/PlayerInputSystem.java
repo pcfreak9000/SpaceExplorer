@@ -38,7 +38,7 @@ public class PlayerInputSystem extends AbstractComponentSystem {
     @EventSubscription
     public void settwevent(VoxelworldEvents.SetVoxelWorldEvent ev) {
         this.world = ev.tileWorldNew;
-        this.cam = ev.groundMgr.getPlanetCamera();//TODO meh...?
+        this.cam = ev.groundMgr.getPlanetCamera().getCameraActual();//TODO meh...?
     }
     
     private TileType ugly = null;
