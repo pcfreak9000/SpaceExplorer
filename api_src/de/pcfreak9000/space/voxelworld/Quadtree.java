@@ -81,26 +81,30 @@ public class Quadtree<T> extends Sprite {
         return null;
     }
     
-    public void set(T t, int tileX, int tileY) {
+    public T set(T t, int tileX, int tileY) {
         if (isLeaf()) {
+            T old = this.data;
             this.data = t;
-            return;
+            return old;
         }
         if (t != null) {
             if (nodes == null) {
                 initializeNodes();
             }
-            nodes[positionToIndex(tileX, tileY)].set(t, tileX, tileY);
+            return nodes[positionToIndex(tileX, tileY)].set(t, tileX, tileY);
         } else {
             if (nodes != null) {
                 Quadtree<T> node = nodes[positionToIndex(tileX, tileY)];
+                T old = null;
                 if (node != null) {
-                    node.set(null, tileX, tileY);
+                    old = node.set(null, tileX, tileY);
+                    if (this.isEmpty()) {
+                        nodes = null;
+                    }
                 }
-                if (this.isEmpty()) {
-                    nodes = null;
-                }
+                return old;
             }
+            return null;
         }
     }
     

@@ -1,13 +1,19 @@
 package de.pcfreak9000.space.voxelworld.ecs;
 
+import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityListener;
 import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.system.AbstractComponentSystem;
+import de.omnikryptec.event.EventSubscription;
+import de.omnikryptec.render.objects.SimpleSprite;
 import de.omnikryptec.render.renderer.AdvancedRenderer2D;
+import de.omnikryptec.render.renderer.Renderer2D;
 import de.omnikryptec.util.updater.Time;
+import de.pcfreak9000.space.core.CoreEvents;
+import de.pcfreak9000.space.core.Space;
 
 public class RenderSystem extends AbstractComponentSystem implements EntityListener {
     
@@ -15,10 +21,22 @@ public class RenderSystem extends AbstractComponentSystem implements EntityListe
     private ComponentMapper<TransformComponent> transformMapper = new ComponentMapper<>(TransformComponent.class);
     
     private AdvancedRenderer2D renderer;
+    private Renderer2D backgroundRenderer;
     
-    public RenderSystem(AdvancedRenderer2D renderer) {
+    public RenderSystem(AdvancedRenderer2D renderer, Renderer2D background) {
         super(Family.of(RenderComponent.class));
         this.renderer = renderer;
+        this.backgroundRenderer = background;
+        Space.BUS.register(this);
+    }
+    
+    @EventSubscription
+    public void ev(CoreEvents.AssignResourcesEvent ev) {
+        SimpleSprite light = new SimpleSprite();
+        light.setWidth(2500);
+        light.setHeight(2500);
+        light.setTexture(ev.textures.get("light_2.png"));
+        this.renderer.addLight(light);
     }
     
     @Override
@@ -27,7 +45,13 @@ public class RenderSystem extends AbstractComponentSystem implements EntityListe
     }
     
     private void registerRenderedEntity(Entity entity) {
-        renderer.add(renderMapper.get(entity).sprite);
+        RenderComponent rc = renderMapper.get(entity);
+        if (rc.asBackground) {
+            backgroundRenderer.add(rc.sprite);
+        } else {
+            renderer.add(rc.sprite);
+        }
+        ///renderer.addLight(renderMapper.get(entity).light);
         //sync the rendering transform to the actual transform
         if (entity.hasComponent(transformMapper.getType())) {
             renderMapper.get(entity).sprite.setTransform(transformMapper.get(entity).transform);
@@ -36,7 +60,12 @@ public class RenderSystem extends AbstractComponentSystem implements EntityListe
     
     @Override
     public void entityRemoved(Entity entity) {
-        renderer.remove(renderMapper.get(entity).sprite);
+        RenderComponent rc = renderMapper.get(entity);
+        if (rc.asBackground) {
+            backgroundRenderer.remove(rc.sprite);
+        } else {
+            renderer.remove(rc.sprite);
+        }
     }
     
     @Override

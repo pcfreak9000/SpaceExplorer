@@ -5,6 +5,7 @@ import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureConfig.WrappingMode;
 import de.omnikryptec.resource.helper.TextureHelper;
+import de.omnikryptec.util.data.Color;
 import de.pcfreak9000.space.voxelworld.ecs.ParallaxComponent;
 import de.pcfreak9000.space.voxelworld.ecs.RenderComponent;
 
@@ -21,7 +22,7 @@ public class Background {
         this.texture = texture;
         this.entity = new Entity();
         this.sprite = new AdvancedSprite();
-        this.entity.addComponent(new RenderComponent(sprite));
+        this.entity.addComponent(new RenderComponent(sprite, true));
         this.entity.addComponent(new ParallaxComponent(xMov, yMov, aspect));
         this.sprite.setHeight(1920 * 2);
         this.sprite.setWidth(1920 * 2 * aspect);

@@ -53,6 +53,16 @@ public class Region {
                 Region.this.ocvm.draw(batch);
                 //Region.this.tiles.draw(batch);
             }
+            
+            @Override
+            public float getWidth() {
+                return REGION_TILE_SIZE * Tile.TILE_SIZE;
+            }
+            
+            @Override
+            public float getHeight() {
+                return REGION_TILE_SIZE * Tile.TILE_SIZE;
+            }
         }));
     }
     
@@ -66,14 +76,31 @@ public class Region {
     
     public void setTile(Tile t) {
         this.tiles.set(t, t.getGlobalTileX(), t.getGlobalTileY());
+        if (t.getType().hasLight()) {
+            addLight(t);
+        }
     }
     
     public void removeTile(int x, int y) {
-        this.tiles.set(null, x, y);
+        Tile old = this.tiles.set(null, x, y);
+        if (old != null && old.getType().hasLight()) {
+            removeLight(old);
+        }
+    }
+    
+    private void addLight(Tile t) {
+        
+    }
+    
+    private void removeLight(Tile t) {
+        
     }
     
     public void setTileBackground(Tile t) {
         this.tilesBackground.set(t, t.getGlobalTileX(), t.getGlobalTileY());
+        if (t.getType().hasLight()) {
+            addLight(t);
+        }
     }
     
     public void addThis(IECSManager ecsManager) {

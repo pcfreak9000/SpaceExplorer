@@ -15,7 +15,10 @@ import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.render.AdaptiveCamera;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.renderer.AdvancedRenderer2D;
+import de.omnikryptec.render.renderer.Renderer2D;
+import de.omnikryptec.render.renderer.Renderer2D.EnvironmentKeys2D;
 import de.omnikryptec.render.renderer.ViewManager;
+import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.updater.Time;
@@ -74,8 +77,13 @@ public class GroundManager {
     private void addDefaultECSSystems() {
         AdvancedRenderer2D renderer = new AdvancedRenderer2D(12 * 6 * Region.REGION_TILE_SIZE);
         renderer.setEnableReflections(false);
+        renderer.ambientLight().set(0.15f, 0.1f, 0.1f);
+        Renderer2D backgroundRenderer = new Renderer2D(18);
+        backgroundRenderer.setEnableTiling(true);
+        backgroundRenderer.ambientLight().set(1, 1, 1);
+        this.viewManager.addRenderer(backgroundRenderer);
         this.viewManager.addRenderer(renderer);
-        ecsManager.addSystem(new RenderSystem(renderer));
+        ecsManager.addSystem(new RenderSystem(renderer, backgroundRenderer));
         ecsManager.addSystem(new PlayerInputSystem());
         ecsManager.addSystem(new PhysicsSystem());
         ecsManager.addSystem(new CameraSystem());
