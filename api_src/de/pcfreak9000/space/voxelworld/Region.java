@@ -31,7 +31,7 @@ public class Region {
     
     private static final Logger LOGGER = Logger.getLogger(Region.class);
     
-    public static final int REGION_TILE_SIZE = 256;
+    public static final int REGION_TILE_SIZE = 64;
     
     private static final float BACKGROUND_FACTOR = 0.5f;
     
@@ -184,6 +184,8 @@ public class Region {
         Tile t;
         int v;
     }
+    
+    //TODO notify border regions to update light too
     
     private void resolveLights() {
         while (!lightRemovalBfsQueue.isEmpty()) {
