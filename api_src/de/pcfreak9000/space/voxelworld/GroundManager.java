@@ -77,7 +77,7 @@ public class GroundManager {
     private void addDefaultECSSystems() {
         AdvancedRenderer2D renderer = new AdvancedRenderer2D(12 * 6 * Region.REGION_TILE_SIZE);
         renderer.setEnableReflections(false);
-        renderer.ambientLight().set(0.1f, 0.1f, 0.1f);
+        renderer.ambientLight().set(0,0,0);
         Renderer2D backgroundRenderer = new Renderer2D(18);
         backgroundRenderer.setEnableTiling(true);
         backgroundRenderer.ambientLight().set(1, 1, 1);

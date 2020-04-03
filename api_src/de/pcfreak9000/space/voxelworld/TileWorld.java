@@ -48,6 +48,13 @@ public class TileWorld {
         return tx >= 0 && tx < this.width && ty >= 0 && ty < this.height;
     }
     
+    public Tile get(int tx, int ty) {
+        int rx = Region.toGlobalRegion(tx);
+        int ry = Region.toGlobalRegion(ty);
+        Region r = requestRegion(rx, ry);
+        return r.get(tx, ty);
+    }
+    
     public void collectTileIntersections(Collection<Tile> output, int x, int y, int w, int h) {
         Profiler.begin("collectTileIntersects");
         boolean xy = inBounds(x, y);

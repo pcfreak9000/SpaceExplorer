@@ -1,6 +1,7 @@
 package dmod;
 
 import de.omnikryptec.event.EventSubscription;
+import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathf;
 import de.pcfreak9000.space.core.GameRegistry;
 import de.pcfreak9000.space.mod.Instance;
@@ -32,10 +33,16 @@ public class DMod {
         testTile.setTexture("stone.png");
         GameRegistry.TILE_REGISTRY.register("stone", testTile);
         
+        TileType ironTile = new TileType();
+        ironTile.setTexture("ore_iron.png");
+        ironTile.setLightColor(new Color(1, 1, 1, 1));
+        GameRegistry.TILE_REGISTRY.register("ore_iron", ironTile);
+        
         TileType bottom = new TileType();
         bottom.setCanBreak(false);
         bottom.setTexture("hehehe");
         GameRegistry.TILE_REGISTRY.register("bottom", bottom);
+        
         TileType grasstile = new TileType();
         grasstile.setTexture("grass.png");
         GameRegistry.TILE_REGISTRY.register("grass", grasstile);
@@ -57,7 +64,7 @@ public class DMod {
             
             @Override
             public WorldInformationBundle generateWorld(long seed) {
-                return new WorldInformationBundle(new TileWorld(200, 200, new RegionGenerator() {
+                return new WorldInformationBundle(new TileWorld(400, 400, new RegionGenerator() {
                     @Override
                     public void generateChunk(Region chunk, TileWorld tileWorld) {
                         for (int i = 0; i < Region.REGION_TILE_SIZE; i++) {
@@ -84,13 +91,17 @@ public class DMod {
                                     }
                                 }
                                 Tile tile = new Tile(t, i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY());
-                                tile.getLight().randomizeRGB();
-                                chunk.setTile(tile);
+                                if (tile.getType() == testTile) {
+                                    if (Math.random() < 0.001) {
+                                        t = ironTile;
+                                    }
+                                }
+                                chunk.setTile(new Tile(t, i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY()));
                                 chunk.setTileBackground(tile);
                             }
                         }
-                        chunk.recacheTiles();
-                        chunk.recacheLights();
+                        //chunk.recacheTiles();
+                        //chunk.recacheLights();
                     }
                     
                 }), GameRegistry.BACKGROUND_REGISTRY.get("stars"));

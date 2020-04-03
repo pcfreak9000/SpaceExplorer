@@ -2,19 +2,36 @@ package de.pcfreak9000.space.voxelworld.tile;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.resource.helper.TextureHelper;
+import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.Color;
+import de.pcfreak9000.space.core.GameRegistry;
 import de.pcfreak9000.space.util.RegisterSensitive;
 
 @RegisterSensitive(registry = "TILE_REGISTRY")
 public class TileType {
     
-    private String textureName = "";
+    public static final TileType AIR = new TileType();
+    static {
+        AIR.setBouncyness(0);
+        AIR.setCanBreak(false);
+        AIR.setFilterColor(null);
+        AIR.setLightColor(null);
+        AIR.setOpaque(false);
+        AIR.setTexture(null);
+        GameRegistry.TILE_REGISTRY.register("air", AIR);
+    }
+    
+    private String textureName = null;
     private Texture texture = null;
     
     private boolean canBreak = true;
-    private boolean opaque = true;
+    private boolean opaque = false;
     
+    public static final int MAX_LIGHT_VALUE = 16;
     private Color lightColor;
+    private int lightValue = 10;
+    private float attenuationFactor = 1;
+    
     private Color filterColor;
     
     private float bouncyness = 0;
@@ -33,6 +50,10 @@ public class TileType {
     
     public float getBouncyness() {
         return this.bouncyness;
+    }
+    
+    public int getLightRange() {
+        return lightValue;
     }
     
     public void setCanBreak(boolean b) {
@@ -76,7 +97,9 @@ public class TileType {
     }
     
     public void init(TextureHelper tileTextures) {
-        this.texture = tileTextures.get(textureName);
+        if (this.textureName != null) {
+            this.texture = tileTextures.get(textureName);
+        }
     }
     
     @Override
