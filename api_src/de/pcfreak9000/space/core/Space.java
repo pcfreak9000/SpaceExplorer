@@ -24,6 +24,7 @@ import de.pcfreak9000.space.voxelworld.TileWorld;
 import de.pcfreak9000.space.voxelworld.TileWorldGenerator;
 import de.pcfreak9000.space.voxelworld.WorldInformationBundle;
 import de.pcfreak9000.space.voxelworld.TileWorldGenerator.GeneratorCapabilitiesBase;
+import de.pcfreak9000.space.voxelworld.tile.Tile;
 import de.pcfreak9000.space.voxelworld.WorldLoadingFence;
 
 /**
@@ -82,17 +83,12 @@ public class Space extends Omnikryptec {
         getResourceManager().addCallback(LoadingProgressCallback.DEBUG_CALLBACK);
         reloadResources();
         
+
         //TESTING:
-        Transform2Df tr = new Transform2Df();
-        tr.localspaceWrite().setTranslation(-100, -100);
-        WorldLoadingFence f = new WorldLoadingFence(tr);
-        f.setRange(5, 5);
-        groundManager.setWorldUpdateFence(f);
-        
         GameInstance ins = new GameInstance(groundManager);
         WorldInformationBundle testWorld = pickGenerator(
                 GameRegistry.GENERATOR_REGISTRY.filtered(GeneratorCapabilitiesBase.LVL_ENTRY)).generateWorld(0);
-        ins.visit(testWorld, 1000, 1000);
+        ins.visit(testWorld, 400*Tile.TILE_SIZE, 3500);
         //***************
     }
     

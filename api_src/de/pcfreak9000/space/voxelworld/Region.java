@@ -13,6 +13,7 @@ import org.joml.Matrix3x2f;
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
+import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.batch.AdvancedBatch2D;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.batch.SimpleBatch2D;
@@ -29,7 +30,14 @@ import de.pcfreak9000.space.voxelworld.tile.TileType;
 
 public class Region {
     
+    private static class RemovalNode {
+        Tile t;
+        int v;
+    }
+    
     private static final Logger LOGGER = Logger.getLogger(Region.class);
+    
+    private static final boolean DEBUG_SHOW_BORDERS = false;
     
     public static final int REGION_TILE_SIZE = 64;
     
@@ -49,13 +57,13 @@ public class Region {
     private List<Entity> entitiesStatic;
     private List<Entity> entitiesDynamic;
     
+    private boolean recacheTiles;
+    private boolean recacheLights;
+    private Queue<Tile> lightBfsQueue;
+    private Queue<RemovalNode> lightRemovalBfsQueue;
     private OrderedCachedVertexManager ocvm;
-    private boolean recacheTiles = true;
     private OrderedCachedVertexManager lightOcvm;
-    private boolean recacheLights = true;
     private Entity regionEntity;
-    private Queue<Tile> lightBfsQueue = new ArrayDeque<>();
-    private Queue<RemovalNode> lightRemovalBfsQueue = new ArrayDeque<>();
     
     public Region(int rx, int ry, TileWorld tw) {
         this.tileWorld = tw;
@@ -68,6 +76,10 @@ public class Region {
         this.ocvm = new OrderedCachedVertexManager(6 * REGION_TILE_SIZE);
         this.lightOcvm = new OrderedCachedVertexManager(6 * REGION_TILE_SIZE);
         this.regionEntity = new Entity();
+        this.lightBfsQueue = new ArrayDeque<>();
+        this.lightRemovalBfsQueue = new ArrayDeque<>();
+        this.recacheLights = true;
+        this.recacheTiles = true;
         RenderComponent rc = new RenderComponent(new AdvancedSprite() {
             @Override
             public void draw(Batch2D batch) {
@@ -76,16 +88,18 @@ public class Region {
                     recacheTiles();
                 }
                 Region.this.ocvm.draw(batch);
-                batch.color().set(1, 0, 0, 1);
-                float left = tx * Tile.TILE_SIZE;
-                float right = (tx + REGION_TILE_SIZE) * Tile.TILE_SIZE;
-                float top = ty * Tile.TILE_SIZE;
-                float bot = (ty + REGION_TILE_SIZE) * Tile.TILE_SIZE;
-                batch.drawLine(left, bot, left, top, 2);
-                batch.drawLine(left, bot, right, bot, 2);
-                batch.drawLine(right, top, left, top, 2);
-                batch.drawLine(right, top, right, bot, 2);
-                batch.color().setAll(1);
+                if (DEBUG_SHOW_BORDERS) {
+                    batch.color().set(1, 0, 0, 1);
+                    float left = tx * Tile.TILE_SIZE;
+                    float right = (tx + REGION_TILE_SIZE) * Tile.TILE_SIZE;
+                    float top = ty * Tile.TILE_SIZE;
+                    float bot = (ty + REGION_TILE_SIZE) * Tile.TILE_SIZE;
+                    batch.drawLine(left, bot, left, top, 2);
+                    batch.drawLine(left, bot, right, bot, 2);
+                    batch.drawLine(right, top, left, top, 2);
+                    batch.drawLine(right, top, right, bot, 2);
+                    batch.color().setAll(1);
+                }
             }
             
             @Override
@@ -104,16 +118,18 @@ public class Region {
                     recacheLights();
                 }
                 Region.this.lightOcvm.draw(batch);
-                batch.color().set(1, 0, 0, 1);
-                float left = tx * Tile.TILE_SIZE;
-                float right = (tx + REGION_TILE_SIZE) * Tile.TILE_SIZE;
-                float top = ty * Tile.TILE_SIZE;
-                float bot = (ty + REGION_TILE_SIZE) * Tile.TILE_SIZE;
-                batch.drawLine(left, bot, left, top, 2);
-                batch.drawLine(left, bot, right, bot, 2);
-                batch.drawLine(right, top, left, top, 2);
-                batch.drawLine(right, top, right, bot, 2);
-                batch.color().setAll(1);
+                if (DEBUG_SHOW_BORDERS) {
+                    batch.color().set(1, 0, 0, 1);
+                    float left = tx * Tile.TILE_SIZE;
+                    float right = (tx + REGION_TILE_SIZE) * Tile.TILE_SIZE;
+                    float top = ty * Tile.TILE_SIZE;
+                    float bot = (ty + REGION_TILE_SIZE) * Tile.TILE_SIZE;
+                    batch.drawLine(left, bot, left, top, 2);
+                    batch.drawLine(left, bot, right, bot, 2);
+                    batch.drawLine(right, top, left, top, 2);
+                    batch.drawLine(right, top, right, bot, 2);
+                    batch.color().setAll(1);
+                }
             }
             
             @Override
@@ -124,6 +140,22 @@ public class Region {
             }
         };
         this.regionEntity.addComponent(rc);
+    }
+    
+    public void tileIntersections(Collection<Tile> output, int x, int y, int w, int h) {
+        this.tiles.getAABB(output, x, y, w, h);
+    }
+    
+    public Tile get(int x, int y) {
+        return this.tiles.get(x, y);
+    }
+    
+    public void queueRecacheLights() {
+        this.recacheLights = true;
+    }
+    
+    public void queueRecacheTiles() {
+        this.recacheTiles = true;
     }
     
     public int getGlobalTileX() {
@@ -150,7 +182,7 @@ public class Region {
     
     private void addLight(Tile light) {
         lightBfsQueue.add(light);
-        light.lightV = TileType.MAX_LIGHT_VALUE;
+        light.lightV = light.getType().getLightRange();
         queueRecacheLights();
     }
     
@@ -170,7 +202,7 @@ public class Region {
         }
     }
     
-    public void addThis(IECSManager ecsManager) {
+    public void addThisTo(IECSManager ecsManager) {
         for (Entity e : entitiesStatic) {
             ecsManager.addEntity(e);
         }
@@ -180,9 +212,14 @@ public class Region {
         ecsManager.addEntity(regionEntity);
     }
     
-    private static class RemovalNode {
-        Tile t;
-        int v;
+    public void removeThisFrom(IECSManager ecsManager) {
+        for (Entity e : entitiesStatic) {
+            ecsManager.removeEntity(e);
+        }
+        for (Entity e : entitiesDynamic) {
+            ecsManager.removeEntity(e);
+        }
+        ecsManager.removeEntity(regionEntity);
     }
     
     //TODO notify border regions to update light too
@@ -194,63 +231,19 @@ public class Region {
             int ty = front.t.getGlobalTileY();
             if (tileWorld.inBounds(tx + 1, ty)) {
                 Tile t = tileWorld.get(tx + 1, ty);
-                if (t != null) {
-                    int tLvl = t.lightV;
-                    if (tLvl != 0 && tLvl < front.v) {
-                        RemovalNode node = new RemovalNode();
-                        node.t = t;
-                        node.v = tLvl;
-                        t.lightV = 0;
-                        lightRemovalBfsQueue.add(node);
-                    } else if (tLvl >= front.v) {
-                        lightBfsQueue.add(t);
-                    }
-                }
+                checkRemoveLightHelper(front, t);
             }
             if (tileWorld.inBounds(tx - 1, ty)) {
                 Tile t = tileWorld.get(tx - 1, ty);
-                if (t != null) {
-                    int tLvl = t.lightV;
-                    if (tLvl != 0 && tLvl < front.v) {
-                        RemovalNode node = new RemovalNode();
-                        node.t = t;
-                        node.v = tLvl;
-                        t.lightV = 0;
-                        lightRemovalBfsQueue.add(node);
-                    } else if (tLvl >= front.v) {
-                        lightBfsQueue.add(t);
-                    }
-                }
+                checkRemoveLightHelper(front, t);
             }
             if (tileWorld.inBounds(tx, ty + 1)) {
                 Tile t = tileWorld.get(tx, ty + 1);
-                if (t != null) {
-                    int tLvl = t.lightV;
-                    if (tLvl != 0 && tLvl < front.v) {
-                        RemovalNode node = new RemovalNode();
-                        node.t = t;
-                        node.v = tLvl;
-                        t.lightV = 0;
-                        lightRemovalBfsQueue.add(node);
-                    } else if (tLvl >= front.v) {
-                        lightBfsQueue.add(t);
-                    }
-                }
+                checkRemoveLightHelper(front, t);
             }
             if (tileWorld.inBounds(tx, ty - 1)) {
                 Tile t = tileWorld.get(tx, ty - 1);
-                if (t != null) {
-                    int tLvl = t.lightV;
-                    if (tLvl != 0 && tLvl < front.v) {
-                        RemovalNode node = new RemovalNode();
-                        node.t = t;
-                        node.v = tLvl;
-                        t.lightV = 0;
-                        lightRemovalBfsQueue.add(node);
-                    } else if (tLvl >= front.v) {
-                        lightBfsQueue.add(t);
-                    }
-                }
+                checkRemoveLightHelper(front, t);
             }
         }
         while (!lightBfsQueue.isEmpty()) {
@@ -259,56 +252,45 @@ public class Region {
             int ty = front.getGlobalTileY();
             if (tileWorld.inBounds(tx + 1, ty)) {
                 Tile t = tileWorld.get(tx + 1, ty);
-                if (t != null && t.lightV + 2 <= front.lightV) {
-                    t.lightV = front.lightV - 1;
-                    lightBfsQueue.add(t);
-                }
+                checkAddLightHelper(front, t);
             }
             if (tileWorld.inBounds(tx - 1, ty)) {
                 Tile t = tileWorld.get(tx - 1, ty);
-                if (t != null && t.lightV + 2 <= front.lightV) {
-                    t.lightV = front.lightV - 1;
-                    lightBfsQueue.add(t);
-                }
+                checkAddLightHelper(front, t);
             }
             if (tileWorld.inBounds(tx, ty + 1)) {
                 Tile t = tileWorld.get(tx, ty + 1);
-                if (t != null && t.lightV + 2 <= front.lightV) {
-                    t.lightV = front.lightV - 1;
-                    lightBfsQueue.add(t);
-                }
+                checkAddLightHelper(front, t);
             }
             if (tileWorld.inBounds(tx, ty - 1)) {
                 Tile t = tileWorld.get(tx, ty - 1);
-                if (t != null && t.lightV + 2 <= front.lightV) {
-                    t.lightV = front.lightV - 1;
-                    lightBfsQueue.add(t);
-                }
+                checkAddLightHelper(front, t);
             }
         }
         
     }
     
-    public void removeThis(IECSManager ecsManager) {
-        for (Entity e : entitiesStatic) {
-            ecsManager.removeEntity(e);
+    private void checkRemoveLightHelper(RemovalNode front, Tile t) {
+        if (t != null) {
+            int tLvl = t.lightV;
+            if (tLvl != 0 && tLvl < front.v) {
+                RemovalNode node = new RemovalNode();
+                node.t = t;
+                //t.getLight().set(0, 0, 0);
+                node.v = tLvl;
+                t.lightV = 0;
+                lightRemovalBfsQueue.add(node);
+            } else if (tLvl >= front.v) {
+                lightBfsQueue.add(t);
+            }
         }
-        for (Entity e : entitiesDynamic) {
-            ecsManager.removeEntity(e);
+    }
+    
+    private void checkAddLightHelper(Tile front, Tile t) {
+        if (t != null && t.lightV + 2 <= front.lightV) {
+            t.lightV = front.lightV - 1;
+            lightBfsQueue.add(t);
         }
-        ecsManager.removeEntity(regionEntity);
-    }
-    
-    public void tileIntersections(Collection<Tile> output, int x, int y, int w, int h) {
-        this.tiles.getAABB(output, x, y, w, h);
-    }
-    
-    public Tile get(int x, int y) {
-        return this.tiles.get(x, y);
-    }
-    
-    public void queueRecacheLights() {
-        this.recacheLights = true;
     }
     
     private void recacheLights() {
@@ -319,23 +301,19 @@ public class Region {
         PACKING_BATCH.begin();
         Matrix3x2f tmpTransform = new Matrix3x2f();
         List<Tile> tiles = new ArrayList<>();
-        Predicate<Tile> predicate = (t) -> {
-            Color c = t.getLight();
-            return c.getR() != 0 || c.getG() == 0 || c.getB() == 0;
-        };
+        Predicate<Tile> predicate = (t) -> t.lightV > 0;
         //background does not need to be recached all the time because it can not change (rn)
         this.tilesBackground.getAll(tiles, predicate);
+        Texture tex = Omnikryptec.getTexturesS().get("light_2.png");
+        float mult = 3.3f;
         for (Tile t : tiles) {
-            //            Tile fore = this.tiles.get(t.getGlobalTileX(), t.getGlobalTileY());
-            //            if (fore != null && fore.getType().isOpaque()) {
-            //                //hmmmm
-            //                continue;
-            //            }
             Color c = t.getLight();
             float factor = t.lightV / (float) TileType.MAX_LIGHT_VALUE;
             PACKING_BATCH.color().set(c.getR() * factor, c.getG() * factor, c.getB() * factor, 1);
-            tmpTransform.setTranslation(t.getGlobalTileX() * Tile.TILE_SIZE, t.getGlobalTileY() * Tile.TILE_SIZE);
-            PACKING_BATCH.draw(null, tmpTransform, Tile.TILE_SIZE * 1, Tile.TILE_SIZE * 1, false, false);
+            tmpTransform.setTranslation(
+                    t.getGlobalTileX() * Tile.TILE_SIZE - mult / 2 * Tile.TILE_SIZE + 0.5f * Tile.TILE_SIZE,
+                    t.getGlobalTileY() * Tile.TILE_SIZE - mult / 2 * Tile.TILE_SIZE + 0.5f * Tile.TILE_SIZE);
+            PACKING_BATCH.draw(tex, tmpTransform, Tile.TILE_SIZE * mult, Tile.TILE_SIZE * mult, false, false);
         }
         tiles.clear();
         this.tiles.getAll(tiles, predicate);
@@ -343,14 +321,13 @@ public class Region {
             Color c = t.getLight();
             float factor = t.lightV / (float) TileType.MAX_LIGHT_VALUE;
             PACKING_BATCH.color().set(c.getR() * factor, c.getG() * factor, c.getB() * factor, 1);
-            tmpTransform.setTranslation(t.getGlobalTileX() * Tile.TILE_SIZE, t.getGlobalTileY() * Tile.TILE_SIZE);
-            PACKING_BATCH.draw(null, tmpTransform, Tile.TILE_SIZE * 1, Tile.TILE_SIZE * 1, false, false);
+            //tmpTransform.setTranslation(t.getGlobalTileX() * Tile.TILE_SIZE, t.getGlobalTileY() * Tile.TILE_SIZE);
+            tmpTransform.setTranslation(
+                    t.getGlobalTileX() * Tile.TILE_SIZE - mult / 2 * Tile.TILE_SIZE + 0.5f * Tile.TILE_SIZE,
+                    t.getGlobalTileY() * Tile.TILE_SIZE - mult / 2 * Tile.TILE_SIZE + 0.5f * Tile.TILE_SIZE);
+            PACKING_BATCH.draw(tex, tmpTransform, Tile.TILE_SIZE * mult, Tile.TILE_SIZE * mult, false, false);
         }
         PACKING_BATCH.end();
-    }
-    
-    public void queueRecacheTiles() {
-        this.recacheTiles = true;
     }
     
     private void recacheTiles() {//TODO improve recaching

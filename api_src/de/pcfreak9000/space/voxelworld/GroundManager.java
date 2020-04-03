@@ -77,7 +77,7 @@ public class GroundManager {
     private void addDefaultECSSystems() {
         AdvancedRenderer2D renderer = new AdvancedRenderer2D(12 * 6 * Region.REGION_TILE_SIZE);
         renderer.setEnableReflections(false);
-        renderer.ambientLight().set(0,0,0);
+        renderer.ambientLight().setAllRGB(0);
         Renderer2D backgroundRenderer = new Renderer2D(18);
         backgroundRenderer.setEnableTiling(true);
         backgroundRenderer.ambientLight().set(1, 1, 1);
@@ -145,11 +145,11 @@ public class GroundManager {
             for (int j = 0; j <= 2 * yR; j++) {
                 int rx = i - xR + xM;
                 int ry = j - yR + yM;
-                if (currentWorld.getTileWorld().inBounds(rx, ry)) {
+                if (currentWorld.getTileWorld().inRegionBounds(rx, ry)) {
                     Region c = currentWorld.getTileWorld().requestRegion(rx, ry);
                     if (c != null) {
                         localLoadedChunks.add(c);
-                        c.addThis(ecsManager);
+                        c.addThisTo(ecsManager);
                     }
                 }
             }
@@ -160,7 +160,7 @@ public class GroundManager {
         Iterator<Region> it = localLoadedChunks.iterator();
         while (it.hasNext()) {
             Region c = it.next();
-            c.removeThis(ecsManager);
+            c.removeThisFrom(ecsManager);
             it.remove();
         }
     }

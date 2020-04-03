@@ -29,9 +29,9 @@ public class DMod {
     
     @EventSubscription
     public void init(final ModLoaderEvents.ModInitEvent init) {
-        TileType testTile = new TileType();
-        testTile.setTexture("stone.png");
-        GameRegistry.TILE_REGISTRY.register("stone", testTile);
+        TileType tstoneTile = new TileType();
+        tstoneTile.setTexture("stone.png");
+        GameRegistry.TILE_REGISTRY.register("stone", tstoneTile);
         
         TileType ironTile = new TileType();
         ironTile.setTexture("ore_iron.png");
@@ -40,7 +40,7 @@ public class DMod {
         
         TileType bottom = new TileType();
         bottom.setCanBreak(false);
-        bottom.setTexture("hehehe");
+        bottom.setTexture("stone_dark.png");
         GameRegistry.TILE_REGISTRY.register("bottom", bottom);
         
         TileType grasstile = new TileType();
@@ -91,7 +91,7 @@ public class DMod {
                                     }
                                 }
                                 Tile tile = new Tile(t, i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY());
-                                if (tile.getType() == testTile) {
+                                if (tile.getType() == tstoneTile) {
                                     if (Math.random() < 0.001) {
                                         t = ironTile;
                                     }
@@ -100,8 +100,6 @@ public class DMod {
                                 chunk.setTileBackground(tile);
                             }
                         }
-                        //chunk.recacheTiles();
-                        //chunk.recacheLights();
                     }
                     
                 }), GameRegistry.BACKGROUND_REGISTRY.get("stars"));

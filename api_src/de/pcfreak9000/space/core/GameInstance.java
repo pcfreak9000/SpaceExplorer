@@ -4,6 +4,7 @@ import de.omnikryptec.ecs.component.ComponentType;
 import de.pcfreak9000.space.voxelworld.GroundManager;
 import de.pcfreak9000.space.voxelworld.TileWorld;
 import de.pcfreak9000.space.voxelworld.WorldInformationBundle;
+import de.pcfreak9000.space.voxelworld.WorldLoadingFence;
 import de.pcfreak9000.space.voxelworld.ecs.TransformComponent;
 
 /**
@@ -28,6 +29,7 @@ public class GameInstance {
         //TODO set player coords
         TransformComponent tc = playerStats.getPlayerEntity().getComponent(ComponentType.of(TransformComponent.class));
         tc.transform.localspaceWrite().setTranslation(x, y);
+        groundManager.setWorldUpdateFence(new WorldLoadingFence(tc.transform));
         groundManager.getECSManager().addEntity(playerStats.getPlayerEntity());
         groundManager.setWorld(world);
     }

@@ -1,19 +1,15 @@
 package de.pcfreak9000.space.voxelworld.ecs;
 
-import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityListener;
 import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.system.AbstractComponentSystem;
-import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.render.objects.SimpleSprite;
 import de.omnikryptec.render.renderer.AdvancedRenderer2D;
 import de.omnikryptec.render.renderer.Renderer2D;
 import de.omnikryptec.util.updater.Time;
-import de.pcfreak9000.space.core.CoreEvents;
-import de.pcfreak9000.space.core.Space;
 
 public class RenderSystem extends AbstractComponentSystem implements EntityListener {
     
@@ -27,18 +23,8 @@ public class RenderSystem extends AbstractComponentSystem implements EntityListe
         super(Family.of(RenderComponent.class));
         this.renderer = renderer;
         this.backgroundRenderer = background;
-        Space.BUS.register(this);
     }
-    
-    @EventSubscription
-    public void ev(CoreEvents.AssignResourcesEvent ev) {
-        SimpleSprite light = new SimpleSprite();
-        light.setWidth(2500);
-        light.setHeight(2500);
-        light.setTexture(ev.textures.get("light_2.png"));
-        this.renderer.addLight(light);
-    }
-    
+
     @Override
     public void entityAdded(Entity entity) {
         registerRenderedEntity(entity);

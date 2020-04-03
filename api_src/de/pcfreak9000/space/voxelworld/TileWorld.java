@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.omnikryptec.util.math.Mathd;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.profiling.Profiler;
 import de.pcfreak9000.space.voxelworld.tile.Tile;
@@ -14,6 +15,9 @@ public class TileWorld {
     private int width;
     private int height;
     
+    private final int arrayWidth;
+    private final int arrayHeight;
+    
     private RegionGenerator generator;
     
     private Region[][] regions;
@@ -21,9 +25,10 @@ public class TileWorld {
     public TileWorld(int width, int height, RegionGenerator generator) {
         this.width = width;
         this.height = height;
+        this.arrayWidth = (int) Mathd.ceil(width / (double) Region.REGION_TILE_SIZE);
+        this.arrayHeight = (int) Mathd.ceil(height / (double) Region.REGION_TILE_SIZE);
         this.generator = generator;
-        this.regions = new Region[(int) Mathf.ceil(width / (float) Region.REGION_TILE_SIZE)][(int) Mathf
-                .ceil(height / (float) Region.REGION_TILE_SIZE)];
+        this.regions = new Region[arrayWidth][arrayHeight];
     }
     
     public Region requestRegion(int rx, int ry) {
@@ -39,9 +44,8 @@ public class TileWorld {
         return null;
     }
     
-    private boolean inRegionBounds(int rx, int ry) {
-        return rx >= 0 && rx < (int) Mathf.ceil(width / (float) Region.REGION_TILE_SIZE) && ry >= 0
-                && ry < (int) Mathf.ceil(height / (float) Region.REGION_TILE_SIZE);
+    public boolean inRegionBounds(int rx, int ry) {
+        return rx >= 0 && rx < this.arrayWidth && ry >= 0 && ry < this.arrayHeight;
     }
     
     public boolean inBounds(int tx, int ty) {
