@@ -1,6 +1,7 @@
 package de.pcfreak9000.space.voxelworld;
 
 import java.util.Collection;
+import java.util.function.Predicate;
 
 import org.joml.Intersectionf;
 import org.joml.Matrix3x2f;
@@ -110,15 +111,20 @@ public class Quadtree<T> extends Sprite {
     
     //TMP
     public void getAll(Collection<T> list) {
+        getAll(list, null);
+    }
+    
+    //TMP
+    public void getAll(Collection<T> list, Predicate<T> predicate) {
         if (isLeaf()) {
-            if (hasData()) {
+            if (hasData() && (predicate == null || predicate.test(data))) {
                 list.add(data);
             }
             return;
         }
         if (nodes != null) {
             for (Quadtree<T> q : nodes) {
-                q.getAll(list);
+                q.getAll(list, predicate);
             }
         }
     }

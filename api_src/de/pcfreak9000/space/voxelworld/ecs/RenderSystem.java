@@ -51,10 +51,15 @@ public class RenderSystem extends AbstractComponentSystem implements EntityListe
         } else {
             renderer.add(rc.sprite);
         }
-        ///renderer.addLight(renderMapper.get(entity).light);
+        if (rc.light != null) {
+            renderer.addLight(rc.light);
+        }
         //sync the rendering transform to the actual transform
         if (entity.hasComponent(transformMapper.getType())) {
-            renderMapper.get(entity).sprite.setTransform(transformMapper.get(entity).transform);
+            rc.sprite.setTransform(transformMapper.get(entity).transform);
+            if (rc.light != null && rc.light instanceof SimpleSprite) {
+                ((SimpleSprite) rc.light).getTransform().setParent(transformMapper.get(entity).transform);
+            }
         }
     }
     
@@ -65,6 +70,9 @@ public class RenderSystem extends AbstractComponentSystem implements EntityListe
             backgroundRenderer.remove(rc.sprite);
         } else {
             renderer.remove(rc.sprite);
+        }
+        if (rc.light != null) {
+            renderer.removeLight(rc.light);
         }
     }
     

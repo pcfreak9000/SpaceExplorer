@@ -30,7 +30,7 @@ public class TileWorld {
         if (inRegionBounds(rx, ry)) {
             Region r = regions[rx][ry];
             if (r == null) {
-                r = new Region(rx, ry);
+                r = new Region(rx, ry, this);
                 generator.generateChunk(r, this);
                 regions[rx][ry] = r;
             }

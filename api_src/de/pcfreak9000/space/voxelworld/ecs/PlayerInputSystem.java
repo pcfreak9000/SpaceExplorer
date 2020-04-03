@@ -88,7 +88,7 @@ public class PlayerInputSystem extends AbstractComponentSystem {
                 }
             }
             for (Region r : rs) {
-                r.recache();
+                r.recacheTiles();
             }
         }
         if (Keys.DESTROY.isPressed()) {
@@ -101,7 +101,7 @@ public class PlayerInputSystem extends AbstractComponentSystem {
                 if (t != null && t.getType().canBreak()) {
                     ugly = t.getType();
                     r.removeTile(tx, ty);
-                    r.recache();
+                    r.recacheTiles();
                 }
             }
         }
@@ -113,7 +113,7 @@ public class PlayerInputSystem extends AbstractComponentSystem {
             if (r != null && ugly != null) {
                 if (r.get(tx, ty) == null) {
                     r.setTile(new Tile(ugly, tx, ty));
-                    r.recache();
+                    r.recacheTiles();
                 }
             }
         }

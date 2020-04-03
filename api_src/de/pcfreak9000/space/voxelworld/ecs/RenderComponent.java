@@ -2,6 +2,7 @@ package de.pcfreak9000.space.voxelworld.ecs;
 
 import de.omnikryptec.ecs.component.Component;
 import de.omnikryptec.render.objects.AdvancedSprite;
+import de.omnikryptec.render.objects.SimpleSprite;
 import de.omnikryptec.render.objects.Sprite;
 
 public class RenderComponent implements Component{

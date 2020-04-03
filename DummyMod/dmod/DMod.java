@@ -65,8 +65,9 @@ public class DMod {
                                 if (!tileWorld.inBounds(i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY())) {
                                     continue;
                                 }
-                                int value = 75 + Mathf.round(6 * Mathf.abs(Mathf.sin(0.2f * (i + chunk.getGlobalTileX())))
-                                        + 20 * Mathf.abs(Mathf.sin(0.05f * (i + chunk.getGlobalTileX()))));
+                                int value = 75
+                                        + Mathf.round(6 * Mathf.abs(Mathf.sin(0.2f * (i + chunk.getGlobalTileX())))
+                                                + 20 * Mathf.abs(Mathf.sin(0.05f * (i + chunk.getGlobalTileX()))));
                                 if (j + chunk.getGlobalTileY() > value) {
                                     continue;
                                 }
@@ -82,12 +83,14 @@ public class DMod {
                                         t = GameRegistry.TILE_REGISTRY.get("stone");
                                     }
                                 }
-                                chunk.setTile(new Tile(t, i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY()));
-                                chunk.setTileBackground(
-                                        new Tile(t, i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY()));
+                                Tile tile = new Tile(t, i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY());
+                                tile.getLight().randomizeRGB();
+                                chunk.setTile(tile);
+                                chunk.setTileBackground(tile);
                             }
                         }
-                        chunk.recache();
+                        chunk.recacheTiles();
+                        chunk.recacheLights();
                     }
                     
                 }), GameRegistry.BACKGROUND_REGISTRY.get("stars"));

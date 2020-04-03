@@ -1,6 +1,7 @@
 package de.pcfreak9000.space.voxelworld.tile;
 
 import de.omnikryptec.util.Util;
+import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathd;
 
 public class Tile {
@@ -13,12 +14,19 @@ public class Tile {
     private final int globalTileX;
     private final int globalTileY;
     
+    private final Color light;
+    
     private final TileType type;
     
     public Tile(TileType type, int gtx, int gty) {
         this.type = Util.ensureNonNull(type);
+        this.light = new Color(0, 0, 0, 1);
         this.globalTileX = gtx;
         this.globalTileY = gty;
+    }
+    
+    public Color getLight() {
+        return light;
     }
     
     public TileType getType() {
