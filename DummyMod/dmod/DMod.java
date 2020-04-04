@@ -35,7 +35,7 @@ public class DMod {
         
         TileType ironTile = new TileType();
         ironTile.setTexture("ore_iron.png");
-        ironTile.setLightColor(new Color(TileType.MAX_LIGHT_VALUE, TileType.MAX_LIGHT_VALUE, 0));
+        ironTile.setLightColor(new Color(TileType.MAX_LIGHT_VALUE, TileType.MAX_LIGHT_VALUE, TileType.MAX_LIGHT_VALUE));
         GameRegistry.TILE_REGISTRY.register("ore_iron", ironTile);
         
         TileType bottom = new TileType();
@@ -45,13 +45,13 @@ public class DMod {
         
         TileType grasstile = new TileType();
         grasstile.setTexture("grass.png");
-        grasstile.setFilterColor(new Color(0.3f, 0.3f, 0.3f));
+        //grasstile.setFilterColor(new Color(0.3f, 0.3f, 0.3f));
         GameRegistry.TILE_REGISTRY.register("grass", grasstile);
         
         TileType dirttile = new TileType();
         dirttile.setTexture("dirt.png");
         dirttile.setBouncyness(1);
-        dirttile.setFilterColor(new Color(1, 0, 0, 1));
+        //dirttile.setFilterColor(new Color(1, 0, 0, 1));
         GameRegistry.TILE_REGISTRY.register("dirt", dirttile);
         
         Background back = new Background("Space.png", 16 / 9f, 3, 1000, 1000);

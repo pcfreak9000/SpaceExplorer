@@ -22,7 +22,7 @@ public class TileType {
         EMPTY.setTexture(null);
         EMPTY.setSolid(false);
         EMPTY.color().set(0, 0, 0, 0);
-        EMPTY.setLightLoss(0.01f);
+        //EMPTY.setLightLoss(0.0f);
         GameRegistry.TILE_REGISTRY.register("empty", EMPTY);
     }
     

@@ -5,7 +5,7 @@ import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathd;
 
 public class Tile {
-    public static final float TILE_SIZE = 32;
+    public static final float TILE_SIZE = 16*1.5f;
     
     public static int toGlobalTile(float x) {
         return (int) Mathd.floor(x / (double) TILE_SIZE);
