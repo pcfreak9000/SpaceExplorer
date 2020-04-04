@@ -111,7 +111,7 @@ public class PlayerInputSystem extends AbstractComponentSystem {
             int ty = Tile.toGlobalTile(mouse.y());
             Region r = world.requestRegion(Region.toGlobalRegion(tx), Region.toGlobalRegion(ty));
             if (r != null && ugly != null) {
-                if (r.get(tx, ty) == null) {
+                if (r.get(tx, ty) == null || r.get(tx, ty).getType() == TileType.EMPTY) {
                     r.setTile(new Tile(ugly, tx, ty));
                     r.queueRecacheTiles();
                 }

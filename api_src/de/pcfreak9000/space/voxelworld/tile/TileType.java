@@ -10,15 +10,19 @@ import de.pcfreak9000.space.util.RegisterSensitive;
 @RegisterSensitive(registry = "TILE_REGISTRY")
 public class TileType {
     
-    public static final TileType AIR = new TileType();
+    public static final int MAX_LIGHT_VALUE = 16;
+    
+    public static final TileType EMPTY = new TileType();
     static {
-        AIR.setBouncyness(0);
-        AIR.setCanBreak(false);
-        AIR.setFilterColor(null);
-        AIR.setLightColor(null);
-        AIR.setOpaque(false);
-        AIR.setTexture(null);
-        GameRegistry.TILE_REGISTRY.register("air", AIR);
+        EMPTY.setBouncyness(0);
+        EMPTY.setCanBreak(false);
+        EMPTY.setFilterColor(null);
+        EMPTY.setLightColor(null);
+        EMPTY.setOpaque(false);
+        EMPTY.setTexture(null);
+        EMPTY.setSolid(false);
+        EMPTY.color().set(0, 0, 0, 0);
+        GameRegistry.TILE_REGISTRY.register("empty", EMPTY);
     }
     
     private String textureName = null;
@@ -26,11 +30,12 @@ public class TileType {
     
     private boolean canBreak = true;
     private boolean opaque = false;
+    private boolean solid = true;
     
-    public static final int MAX_LIGHT_VALUE = 16;
+    private Color color = new Color();
+    
     private Color lightColor;
-    private int lightValue = 10;
-    private float attenuationFactor = 1;
+    private int lightValue = 0;
     
     private Color filterColor;
     
@@ -52,10 +57,6 @@ public class TileType {
         return this.bouncyness;
     }
     
-    public int getLightRange() {
-        return lightValue;
-    }
-    
     public void setCanBreak(boolean b) {
         this.canBreak = b;
     }
@@ -70,6 +71,14 @@ public class TileType {
     
     public boolean isOpaque() {
         return this.opaque;
+    }
+    
+    public void setSolid(boolean b) {
+        this.solid = b;
+    }
+    
+    public boolean isSolid() {
+        return this.solid;
     }
     
     public void setLightColor(Color color) {
@@ -96,6 +105,18 @@ public class TileType {
         return this.filterColor != null;
     }
     
+    public void setLightLevel(int lightValue) {
+        this.lightValue = lightValue;
+    }
+    
+    public int getLightLevel() {
+        return lightValue;
+    }
+    
+    public Color color() {
+        return this.color;
+    }
+    
     public void init(TextureHelper tileTextures) {
         if (this.textureName != null) {
             this.texture = tileTextures.get(textureName);
@@ -106,4 +127,5 @@ public class TileType {
     public String toString() {
         return String.format("TileType[texture=%s]", this.textureName);
     }
+    
 }

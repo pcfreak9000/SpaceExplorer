@@ -35,7 +35,8 @@ public class DMod {
         
         TileType ironTile = new TileType();
         ironTile.setTexture("ore_iron.png");
-        ironTile.setLightColor(new Color(1, 1, 1, 1));
+        ironTile.setLightColor(new Color(1, 1, 0, 1));
+        ironTile.setLightLevel(TileType.MAX_LIGHT_VALUE);
         GameRegistry.TILE_REGISTRY.register("ore_iron", ironTile);
         
         TileType bottom = new TileType();
@@ -45,11 +46,13 @@ public class DMod {
         
         TileType grasstile = new TileType();
         grasstile.setTexture("grass.png");
+        grasstile.setFilterColor(new Color(0.3f, 0.3f, 0.3f));
         GameRegistry.TILE_REGISTRY.register("grass", grasstile);
         
         TileType dirttile = new TileType();
         dirttile.setTexture("dirt.png");
         dirttile.setBouncyness(1);
+        dirttile.setFilterColor(new Color(1, 0, 0, 1));
         GameRegistry.TILE_REGISTRY.register("dirt", dirttile);
         
         Background back = new Background("Space.png", 16 / 9f, 3, 1000, 1000);
@@ -75,19 +78,21 @@ public class DMod {
                                 int value = 75
                                         + Mathf.round(6 * Mathf.abs(Mathf.sin(0.2f * (i + chunk.getGlobalTileX())))
                                                 + 20 * Mathf.abs(Mathf.sin(0.05f * (i + chunk.getGlobalTileX()))));
-                                if (j + chunk.getGlobalTileY() > value) {
-                                    continue;
-                                }
+                                
                                 TileType t;
-                                if (j + chunk.getGlobalTileY() == 0) {
-                                    t = GameRegistry.TILE_REGISTRY.get("bottom");
+                                if (j + chunk.getGlobalTileY() > value) {
+                                    t = TileType.EMPTY;
                                 } else {
-                                    if (j + chunk.getGlobalTileY() == value) {
-                                        t = GameRegistry.TILE_REGISTRY.get("grass");
-                                    } else if (j + chunk.getGlobalTileY() >= value - 3) {
-                                        t = GameRegistry.TILE_REGISTRY.get("dirt");
+                                    if (j + chunk.getGlobalTileY() == 0) {
+                                        t = GameRegistry.TILE_REGISTRY.get("bottom");
                                     } else {
-                                        t = GameRegistry.TILE_REGISTRY.get("stone");
+                                        if (j + chunk.getGlobalTileY() == value) {
+                                            t = GameRegistry.TILE_REGISTRY.get("grass");
+                                        } else if (j + chunk.getGlobalTileY() >= value - 3) {
+                                            t = GameRegistry.TILE_REGISTRY.get("dirt");
+                                        } else {
+                                            t = GameRegistry.TILE_REGISTRY.get("stone");
+                                        }
                                     }
                                 }
                                 Tile tile = new Tile(t, i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY());

@@ -15,7 +15,7 @@ public class Tile {
     private final int globalTileY;
     
     private final Color light;
-    public int lightV;
+    private int lightV;
     
     private final TileType type;
     
@@ -26,8 +26,16 @@ public class Tile {
         this.globalTileY = gty;
     }
     
-    public Color getLight() {
+    public Color light() {
         return light;
+    }
+    
+    public int getLightValue() {
+        return lightV;
+    }
+    
+    public void setLightValue(int b) {
+        this.lightV = b;
     }
     
     public TileType getType() {

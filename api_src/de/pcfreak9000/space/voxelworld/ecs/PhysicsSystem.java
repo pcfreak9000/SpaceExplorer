@@ -66,6 +66,9 @@ public class PhysicsSystem extends IterativeComponentSystem {
                         (int) Mathf.floor(pc.y / Tile.TILE_SIZE), (int) Mathf.ceil((pc.w + posDeltaX) / Tile.TILE_SIZE),
                         (int) Mathf.ceil((pc.h + posDeltaY) / Tile.TILE_SIZE));
                 for (Tile t : collisions) {
+                    if (!t.getType().isSolid()) {
+                        continue;
+                    }
                     Vector2f result = new Vector2f();
                     if (Intersectionf.intersectRayAab(pc.x + pc.w / 2, pc.y + pc.h / 2, 0, posDeltaX, posDeltaY, 0,
                             t.getGlobalTileX() * Tile.TILE_SIZE - pc.w / 2,
