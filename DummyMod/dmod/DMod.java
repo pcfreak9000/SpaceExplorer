@@ -35,8 +35,7 @@ public class DMod {
         
         TileType ironTile = new TileType();
         ironTile.setTexture("ore_iron.png");
-        ironTile.setLightColor(new Color(1, 1, 0, 1));
-        ironTile.setLightLevel(TileType.MAX_LIGHT_VALUE);
+        ironTile.setLightColor(new Color(TileType.MAX_LIGHT_VALUE, TileType.MAX_LIGHT_VALUE, 0));
         GameRegistry.TILE_REGISTRY.register("ore_iron", ironTile);
         
         TileType bottom = new TileType();

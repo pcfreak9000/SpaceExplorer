@@ -80,7 +80,7 @@ public class PlayerInputSystem extends AbstractComponentSystem {
                             Tile t = r.get(tx, ty);
                             if (t != null && t.getType().canBreak()) {
                                 ugly = t.getType();
-                                r.removeTile(tx, ty);
+                                r.setTile(new Tile(TileType.EMPTY, tx, ty));
                                 rs.add(r);
                             }
                         }
@@ -100,7 +100,7 @@ public class PlayerInputSystem extends AbstractComponentSystem {
                 Tile t = r.get(tx, ty);
                 if (t != null && t.getType().canBreak()) {
                     ugly = t.getType();
-                    r.removeTile(tx, ty);
+                    r.setTile(new Tile(TileType.EMPTY, tx, ty));
                     r.queueRecacheTiles();
                 }
             }

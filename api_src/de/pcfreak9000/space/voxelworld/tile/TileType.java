@@ -10,7 +10,7 @@ import de.pcfreak9000.space.util.RegisterSensitive;
 @RegisterSensitive(registry = "TILE_REGISTRY")
 public class TileType {
     
-    public static final int MAX_LIGHT_VALUE = 16;
+    public static final float MAX_LIGHT_VALUE = 16;
     
     public static final TileType EMPTY = new TileType();
     static {
@@ -22,6 +22,7 @@ public class TileType {
         EMPTY.setTexture(null);
         EMPTY.setSolid(false);
         EMPTY.color().set(0, 0, 0, 0);
+        EMPTY.setLightLoss(0.01f);
         GameRegistry.TILE_REGISTRY.register("empty", EMPTY);
     }
     
@@ -35,7 +36,7 @@ public class TileType {
     private Color color = new Color();
     
     private Color lightColor;
-    private int lightValue = 0;
+    private float lightloss = 1;
     
     private Color filterColor;
     
@@ -90,7 +91,7 @@ public class TileType {
     }
     
     public boolean hasLight() {
-        return this.lightColor != null;
+        return this.lightColor != null && this.lightColor.max() >= 1;
     }
     
     public void setFilterColor(Color color) {
@@ -105,16 +106,16 @@ public class TileType {
         return this.filterColor != null;
     }
     
-    public void setLightLevel(int lightValue) {
-        this.lightValue = lightValue;
-    }
-    
-    public int getLightLevel() {
-        return lightValue;
-    }
-    
     public Color color() {
         return this.color;
+    }
+    
+    public float getLightLoss() {
+        return lightloss;
+    }
+    
+    public void setLightLoss(float f) {
+        this.lightloss = f;
     }
     
     public void init(TextureHelper tileTextures) {

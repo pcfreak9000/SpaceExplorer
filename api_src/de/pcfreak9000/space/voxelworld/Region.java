@@ -10,6 +10,8 @@ import java.util.function.Predicate;
 import org.joml.FrustumIntersection;
 import org.joml.Matrix3x2f;
 
+import com.google.common.base.Objects;
+
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
@@ -21,6 +23,7 @@ import de.omnikryptec.render.batch.vertexmanager.OrderedCachedVertexManager;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.util.Logger;
+import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathd;
 import de.omnikryptec.util.math.Mathf;
@@ -32,7 +35,7 @@ public class Region {
     
     private static class RemovalNode {
         Tile t;
-        int v;
+        float v;
     }
     
     private static final Logger LOGGER = Logger.getLogger(Region.class);
@@ -63,7 +66,7 @@ public class Region {
     private boolean recacheTiles;
     private boolean recacheLights;
     private final Queue<Tile> lightBfsQueue;
-    private final Queue<RemovalNode> lightRemovalBfsQueue;
+    private final Queue<RemovalNode>[] lightRemovalBfsQueue;
     private final OrderedCachedVertexManager ocvm;
     private final OrderedCachedVertexManager lightOcvm;
     private final Entity regionEntity;
@@ -82,7 +85,10 @@ public class Region {
         this.lightOcvm = new OrderedCachedVertexManager(6 * REGION_TILE_SIZE);
         this.regionEntity = new Entity();
         this.lightBfsQueue = new ArrayDeque<>();
-        this.lightRemovalBfsQueue = new ArrayDeque<>();
+        this.lightRemovalBfsQueue = new Queue[3];
+        for (int i = 0; i < this.lightRemovalBfsQueue.length; i++) {
+            lightRemovalBfsQueue[i] = new ArrayDeque<>();
+        }
         this.recacheLights = true;
         this.recacheTiles = true;
         RenderComponent rc = new RenderComponent(new AdvancedSprite() {
@@ -179,21 +185,18 @@ public class Region {
         return this.tiles.get(x, y);
     }
     
-    public void setTile(Tile t) {
+    public Tile setTile(Tile t) {
+        Util.ensureNonNull(t);
         Tile old = this.tiles.set(t, t.getGlobalTileX(), t.getGlobalTileY());
-        if (old != null && old.getLightValue() > 0) {
-            queueRecacheLights();
+        if (old != null && (old.light().maxRGB() > 0
+                || !Objects.equal(old.getType().getFilterColor(), t.getType().getFilterColor())
+                || old.getType().getLightLoss() != t.getType().getLightLoss())) {
+            removeLight(old);
         }
         if (t.getType().hasLight()) {
             addLight(t);
         }
-    }
-    
-    public void removeTile(int x, int y) {
-        Tile old = this.tiles.set(new Tile(TileType.EMPTY, x, y), x, y);
-        if (old != null && old.getLightValue() != 0) {
-            removeLight(old);
-        }
+        return old;
     }
     
     public Tile getBackground(int tx, int ty) {
@@ -210,16 +213,19 @@ public class Region {
     
     private void addLight(Tile light) {
         lightBfsQueue.add(light);
-        light.setLightValue(light.getType().getLightLevel());
         light.light().set(light.getType().getLightColor());
         queueRecacheLights();
     }
     
     private void removeLight(Tile light) {
-        RemovalNode node = new RemovalNode();
-        node.t = light;
-        node.v = light.getLightValue();
-        lightRemovalBfsQueue.add(node);
+        for (int i = 0; i < 3; i++) {
+            RemovalNode node = new RemovalNode();
+            node.t = light;
+            node.v = light.light().get(i);
+            if (node.v > 0) {
+                lightRemovalBfsQueue[i].add(node);
+            }
+        }
         queueRecacheLights();
     }
     
@@ -243,28 +249,28 @@ public class Region {
         ecsManager.removeEntity(regionEntity);
     }
     
-    //TODO notify border regions to update light too
-    
     private void resolveLights() {
-        while (!lightRemovalBfsQueue.isEmpty()) {
-            RemovalNode front = lightRemovalBfsQueue.poll();
-            int tx = front.t.getGlobalTileX();
-            int ty = front.t.getGlobalTileY();
-            if (tileWorld.inBounds(tx + 1, ty)) {
-                Tile t = tileWorld.get(tx + 1, ty);
-                checkRemoveLightHelper(front, t);
-            }
-            if (tileWorld.inBounds(tx - 1, ty)) {
-                Tile t = tileWorld.get(tx - 1, ty);
-                checkRemoveLightHelper(front, t);
-            }
-            if (tileWorld.inBounds(tx, ty + 1)) {
-                Tile t = tileWorld.get(tx, ty + 1);
-                checkRemoveLightHelper(front, t);
-            }
-            if (tileWorld.inBounds(tx, ty - 1)) {
-                Tile t = tileWorld.get(tx, ty - 1);
-                checkRemoveLightHelper(front, t);
+        for (int i = 0; i < lightRemovalBfsQueue.length; i++) {
+            while (!lightRemovalBfsQueue[i].isEmpty()) {
+                RemovalNode front = lightRemovalBfsQueue[i].poll();
+                int tx = front.t.getGlobalTileX();
+                int ty = front.t.getGlobalTileY();
+                if (tileWorld.inBounds(tx + 1, ty)) {
+                    Tile t = tileWorld.get(tx + 1, ty);
+                    checkRemoveLightHelper(front, t, i);
+                }
+                if (tileWorld.inBounds(tx - 1, ty)) {
+                    Tile t = tileWorld.get(tx - 1, ty);
+                    checkRemoveLightHelper(front, t, i);
+                }
+                if (tileWorld.inBounds(tx, ty + 1)) {
+                    Tile t = tileWorld.get(tx, ty + 1);
+                    checkRemoveLightHelper(front, t, i);
+                }
+                if (tileWorld.inBounds(tx, ty - 1)) {
+                    Tile t = tileWorld.get(tx, ty - 1);
+                    checkRemoveLightHelper(front, t, i);
+                }
             }
         }
         while (!lightBfsQueue.isEmpty()) {
@@ -272,9 +278,8 @@ public class Region {
             int tx = front.getGlobalTileX();
             int ty = front.getGlobalTileY();
             if (front.getType().hasLightFilter()) {
-                Color c = front.light();
                 Color filter = front.getType().getFilterColor();
-                front.light().set(c.getR() * filter.getR(), c.getG() * filter.getG(), c.getB() * filter.getB());
+                front.light().mulRGB(filter);
             }
             if (tileWorld.inBounds(tx + 1, ty)) {
                 Tile t = tileWorld.get(tx + 1, ty);
@@ -296,18 +301,17 @@ public class Region {
         
     }
     
-    private void checkRemoveLightHelper(RemovalNode front, Tile t) {
+    private void checkRemoveLightHelper(RemovalNode front, Tile t, int index) {
         if (t != null) {
-            int tLvl = t.getLightValue();
-            if (tLvl != 0 && tLvl < front.v) {
+            Color col = t.light();
+            if (col.get(index) > 0 && col.get(index) < front.v) {
                 RemovalNode node = new RemovalNode();
                 node.t = t;
-                t.light().set(0, 0, 0);
-                node.v = tLvl;
-                t.setLightValue(0);
-                lightRemovalBfsQueue.add(node);
+                node.v = col.get(index);
+                t.light().set(index, 0);
+                lightRemovalBfsQueue[index].add(node);
                 queueNeighbouringLightRecaching(t);
-            } else if (tLvl >= front.v) {
+            } else if (col.get(index) >= front.v) {
                 lightBfsQueue.add(t);
                 queueNeighbouringLightRecaching(t);
             }
@@ -315,11 +319,18 @@ public class Region {
     }
     
     private void checkAddLightHelper(Tile front, Tile t) {
-        if (t != null && t.getLightValue() + 2 <= front.getLightValue()) {
-            t.setLightValue(front.getLightValue() - 1);
-            t.light().set(front.light());//FIXME doesnt work with multiple lights?
-            lightBfsQueue.add(t);
-            queueNeighbouringLightRecaching(t);
+        if (t != null) {
+            boolean found = false;
+            for (int i = 0; i < 3; i++) {
+                if (t.light().get(i) + 1 < front.light().get(i)) {
+                    t.light().set(i, front.light().get(i) - front.getType().getLightLoss());
+                    found = true;
+                }
+            }
+            if (found) {
+                lightBfsQueue.add(t);
+                queueNeighbouringLightRecaching(t);
+            }
         }
     }
     
@@ -342,14 +353,14 @@ public class Region {
         PACKING_BATCH.begin();
         Matrix3x2f tmpTransform = new Matrix3x2f();
         List<Tile> tiles = new ArrayList<>();
-        Predicate<Tile> predicate = (t) -> t.getLightValue() > 0;
+        Predicate<Tile> predicate = (t) -> t.light().maxRGB() >= 1;
         //background does not need to be recached all the time because it can not change (rn)
         this.tilesBackground.getAll(tiles, predicate);
         Texture tex = Omnikryptec.getTexturesS().get("light_2.png");
         float mult = 3.3f;
         for (Tile t : tiles) {
             Color c = t.light();
-            float factor = t.getLightValue() / (float) TileType.MAX_LIGHT_VALUE;
+            float factor = 1 / TileType.MAX_LIGHT_VALUE;
             PACKING_BATCH.color().set(c);
             PACKING_BATCH.color().mulRGB(factor);
             tmpTransform.setTranslation(
@@ -361,7 +372,7 @@ public class Region {
         this.tiles.getAll(tiles, predicate);
         for (Tile t : tiles) {
             Color c = t.light();
-            float factor = t.getLightValue() / (float) TileType.MAX_LIGHT_VALUE;
+            float factor = 1 / TileType.MAX_LIGHT_VALUE;
             PACKING_BATCH.color().set(c);
             PACKING_BATCH.color().mulRGB(factor);
             //tmpTransform.setTranslation(t.getGlobalTileX() * Tile.TILE_SIZE, t.getGlobalTileY() * Tile.TILE_SIZE);

@@ -15,27 +15,18 @@ public class Tile {
     private final int globalTileY;
     
     private final Color light;
-    private int lightV;
     
     private final TileType type;
     
     public Tile(TileType type, int gtx, int gty) {
         this.type = Util.ensureNonNull(type);
-        this.light = new Color(1, 1, 1, 1);
+        this.light = new Color(0,0,0,1);
         this.globalTileX = gtx;
         this.globalTileY = gty;
     }
     
     public Color light() {
         return light;
-    }
-    
-    public int getLightValue() {
-        return lightV;
-    }
-    
-    public void setLightValue(int b) {
-        this.lightV = b;
     }
     
     public TileType getType() {
