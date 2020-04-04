@@ -37,7 +37,7 @@ public class Region {
     
     private static final Logger LOGGER = Logger.getLogger(Region.class);
     
-    private static final boolean DEBUG_SHOW_BORDERS = false;
+    private static final boolean DEBUG_SHOW_BORDERS = true;
     
     public static final int REGION_TILE_SIZE = 64;
     
@@ -47,26 +47,31 @@ public class Region {
         return (int) Mathd.floor(globalTile / (double) REGION_TILE_SIZE);
     }
     
-    private int tx;
-    private int ty;
+    private final int rx;
+    private final int ry;
+    
+    private final int tx;
+    private final int ty;
     
     private final TileWorld tileWorld;
     
-    private Quadtree<Tile> tiles;
-    private Quadtree<Tile> tilesBackground;
-    private List<Entity> entitiesStatic;
-    private List<Entity> entitiesDynamic;
+    private final Quadtree<Tile> tiles;
+    private final Quadtree<Tile> tilesBackground;
+    private final List<Entity> entitiesStatic;
+    private final List<Entity> entitiesDynamic;
     
     private boolean recacheTiles;
     private boolean recacheLights;
-    private Queue<Tile> lightBfsQueue;
-    private Queue<RemovalNode> lightRemovalBfsQueue;
-    private OrderedCachedVertexManager ocvm;
-    private OrderedCachedVertexManager lightOcvm;
-    private Entity regionEntity;
+    private final Queue<Tile> lightBfsQueue;
+    private final Queue<RemovalNode> lightRemovalBfsQueue;
+    private final OrderedCachedVertexManager ocvm;
+    private final OrderedCachedVertexManager lightOcvm;
+    private final Entity regionEntity;
     
     public Region(int rx, int ry, TileWorld tw) {
         this.tileWorld = tw;
+        this.rx = rx;
+        this.ry = ry;
         this.tx = rx * REGION_TILE_SIZE;
         this.ty = ry * REGION_TILE_SIZE;
         this.tiles = new Quadtree<>(REGION_TILE_SIZE, tx, ty);
@@ -156,6 +161,14 @@ public class Region {
     
     public void queueRecacheTiles() {
         this.recacheTiles = true;
+    }
+    
+    public int getGlobalRegionX() {
+        return rx;
+    }
+    
+    public int getGlobalRegionY() {
+        return ry;
     }
     
     public int getGlobalTileX() {
@@ -280,8 +293,10 @@ public class Region {
                 node.v = tLvl;
                 t.lightV = 0;
                 lightRemovalBfsQueue.add(node);
+                queueNeighbouringLightRecaching(t);
             } else if (tLvl >= front.v) {
                 lightBfsQueue.add(t);
+                queueNeighbouringLightRecaching(t);
             }
         }
     }
@@ -290,6 +305,18 @@ public class Region {
         if (t != null && t.lightV + 2 <= front.lightV) {
             t.lightV = front.lightV - 1;
             lightBfsQueue.add(t);
+            queueNeighbouringLightRecaching(t);
+        }
+    }
+    
+    private void queueNeighbouringLightRecaching(Tile t) {
+        int c = Region.toGlobalRegion(t.getGlobalTileX());
+        int d = Region.toGlobalRegion(t.getGlobalTileY());
+        if (rx != c || ry != d) {
+            Region r = tileWorld.getRegion(c, d);
+            if (r != null) {
+                r.queueRecacheLights();
+            }
         }
     }
     

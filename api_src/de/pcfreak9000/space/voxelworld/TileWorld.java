@@ -44,6 +44,13 @@ public class TileWorld {
         return null;
     }
     
+    public Region getRegion(int rx, int ry) {
+        if (inRegionBounds(rx, ry)) {
+            return regions[rx][ry];
+        }
+        return null;
+    }
+    
     public boolean inRegionBounds(int rx, int ry) {
         return rx >= 0 && rx < this.arrayWidth && ry >= 0 && ry < this.arrayHeight;
     }
