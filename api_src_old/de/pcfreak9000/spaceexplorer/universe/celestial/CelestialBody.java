@@ -20,17 +20,17 @@ import de.pcfreak9000.spaceexplorer.universe.worlds.World;
  *
  */
 public class CelestialBody extends Generatable {
-    
+
     private final CelestialBodyDefinition generator;
     private final Orbit orbit;
     private World world;
-    
+
     private final String name;
     private final long seed;
     private final int tileRadius;
-    
+
     /**
-     * 
+     *
      * @param generator   the CBs generating {@link CelestialBodyDefinition}
      * @param orbit       instance of {@link Orbit} containing information about
      *                    this CBs orbit
@@ -51,35 +51,35 @@ public class CelestialBody extends Generatable {
             this.world = new World(name, this, worldRadius);
         }
     }
-    
+
     public Orbit getOrbit() {
         return this.orbit;
     }
-    
+
     public World getWorld() {
         return this.world;
     }
-    
+
     public String getName() {
         return this.name;
     }
-    
+
     public long getSeed() {
         return this.seed;
     }
-    
+
     public int getTileRadius() {
         return this.tileRadius;
     }
-    
+
     public CelestialBodyDefinition getDefinition() {
         return this.generator;
     }
-    
+
     public boolean isVisitable() {
         return this.world != null;
     }
-    
+
     @Override
     public void generateChunk(final Chunk c) {
         if (!isVisitable()) {
@@ -107,11 +107,11 @@ public class CelestialBody extends Generatable {
             }
         }
     }
-    
+
     /**
      * For the same position the same {@link BiomeDefinition} must be returned for
      * this CelestialBody.
-     * 
+     *
      * @param possibilities possible BiomeDefinitions
      * @param globalTileX   global tile x
      * @param globalTileY   global tile y
@@ -121,10 +121,10 @@ public class CelestialBody extends Generatable {
             final int globalTileY) {
         return possibilities.get(0);
     }
-    
+
     /**
      * Is the position in the boundaries of the {@link CelestialBody}?
-     * 
+     *
      * @param globalTileX global tile x
      * @param globalTileY global tile y
      * @return boolean
@@ -132,17 +132,17 @@ public class CelestialBody extends Generatable {
     public boolean inBounds(final int globalTileX, final int globalTileY) {
         return true;
     }
-    
+
     /**
      * e.g. invalidate the {@link Tile}
-     * 
+     *
      * @param c the tile's {@link Chunk}
      * @param b the tile's {@link Biome}
      * @param t the tile itself
      */
     public void adjustTile(final Chunk c, final Biome b, final Tile t) {
     }
-    
+
     @Override
     public String toString() {
         return "CB " + this.getClass().getSimpleName() + ", name=\"" + this.name + "\", r=" + this.tileRadius + "ts; "

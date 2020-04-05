@@ -19,9 +19,9 @@ import de.pcfreak9000.spaceexplorer.util.Private;
  *
  */
 public class World {
-    
+
     private class WorldScene extends Scene2D {
-        
+
         WorldScene(final String name) {
             super(name, SpaceExplorer2D.getSpaceExplorer2D().getUniverse().getPlanetCamera());
             setRenderer(RENDERER);
@@ -30,7 +30,7 @@ public class World {
             setPhysicsWorld(phw);
             phw.getWorld().getSettings().setStepFrequency(1 / 400.0);
         }
-        
+
         @Override
         protected void update() {
             final int camX = Chunk.toChunk(getCamera().getTransform().getPosition(true).dx);
@@ -41,20 +41,20 @@ public class World {
                 }
             }
         }
-        
+
     }
-    
+
     @Private
     public static final PlanetRenderer RENDERER = new PlanetRenderer();
-    
+
     private final Generatable generator;
     private final WorldScene scene;
     private final Chunk[][] chunks;
-    
+
     private int chunksSize;
-    
+
     /**
-     * 
+     *
      * @param name       the name of this Worlds Scene
      * @param generator  the {@link Generatable} of this {@link World}
      * @param tileRadius the positive radius of this {@link World} in {@link Tile}s
@@ -70,29 +70,29 @@ public class World {
         this.chunks = new Chunk[this.chunksSize][this.chunksSize];
         this.scene = new WorldScene(name);
     }
-    
+
     /**
      * sets this {@link World} as displayed {@link World}
-     * 
+     *
      * @param p
      */
     public void load(final Player p) {
         OmniKryptecEngine.instance().addAndSetScene(this.scene);
         this.scene.addGameObject(p);
     }
-    
+
     /**
      * removes this {@link World} from the Display
-     * 
+     *
      * @param p
      */
     public void unload(final Player p) {
         OmniKryptecEngine.instance().setScene2D(null);
         this.scene.removeGameObject(p);
     }
-    
+
     /**
-     * 
+     *
      * @param cx global chunk x
      * @param cy global chunk y
      * @return a Chunk
@@ -103,10 +103,10 @@ public class World {
         }
         return this.chunks[cx + (this.chunksSize >> 1)][cy + (this.chunksSize >> 1)];
     }
-    
+
     /**
      * Is the chunk position contained in the boundaries of this {@link World}?
-     * 
+     *
      * @param cx global chunk x
      * @param cy global chunk y
      * @return boolean
@@ -115,9 +115,9 @@ public class World {
         return !(cx >= (this.chunksSize >> 1) || cy >= (this.chunksSize >> 1) || cx < -(this.chunksSize >> 1)
                 || cy < -(this.chunksSize >> 1));
     }
-    
+
     /**
-     * 
+     *
      * @param cx global chunk x
      * @param cy global chunk y
      */
@@ -130,9 +130,9 @@ public class World {
             newChunk.addTo(this.scene);
         }
     }
-    
+
     public int getChunkRadius() {
         return this.chunksSize >> 1;
     }
-    
+
 }

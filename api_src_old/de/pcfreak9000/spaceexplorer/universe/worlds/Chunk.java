@@ -23,21 +23,21 @@ import util.Maths;
  */
 @Private
 public class Chunk extends Sprite {
-    
+
     public static final int CHUNKSIZE_T = 53;
     public static final float CHUNKSIZE = CHUNKSIZE_T * TileDefinition.TILE_SIZE;
-    
+
     private final Tile[][] array = new Tile[CHUNKSIZE_T][CHUNKSIZE_T];
     private final KeyArrayHashMap<Texture, float[]> data = new KeyArrayHashMap<>(Texture.class);
-    
+
     private final KeyArrayHashMap<Texture, ArrayList<Tile>> tiles = new KeyArrayHashMap<>(Texture.class);
     private final ArrayList<Sprite> others = new ArrayList<>();
-    
+
     private final int cx, cy;
     private boolean compiled = false;
-    
+
     /**
-     * 
+     *
      * @param x global chunk x
      * @param y global chunk y
      */
@@ -46,9 +46,9 @@ public class Chunk extends Sprite {
         this.cx = x;
         this.cy = y;
     }
-    
+
     /**
-     * 
+     *
      * @param crtx chunk tile x
      * @param crty chunk tile y
      * @return the {@link Tile} at the specified position
@@ -56,10 +56,10 @@ public class Chunk extends Sprite {
     public Tile getTile(final int crtx, final int crty) {
         return this.array[crtx][crty];
     }
-    
+
     /**
      * adds a {@link Tile} to this {@link Chunk} at the specified position.
-     * 
+     *
      * @param tile the {@link Tile}
      * @param crtx chunk tile x
      * @param crty chunk tile y
@@ -80,16 +80,16 @@ public class Chunk extends Sprite {
             this.others.add(tile);
         }
     }
-    
+
     /**
      * adds a {@link Entity} to this {@link Chunk}
-     * 
+     *
      * @param obj the {@link Entity}
      */
     public void addNonTile(final Entity obj) {
         this.others.add(obj);
     }
-    
+
     public void compile() {
         if (!this.compiled) {
             this.compiled = true;
@@ -105,11 +105,11 @@ public class Chunk extends Sprite {
             this.tiles.clear();
         }
     }
-    
+
     public boolean isCompiled() {
         return this.compiled;
     }
-    
+
     private int getSize(final KeyArrayHashMap<Texture, ArrayList<Tile>> tiles) {
         int fsize = 0;
         for (final Texture t : tiles.keysArray()) {
@@ -117,10 +117,10 @@ public class Chunk extends Sprite {
         }
         return fsize;
     }
-    
+
     /**
      * adds this {@link Chunk} and its contents to a Scene.
-     * 
+     *
      * @param s the Scene
      * @return this {@link Chunk}
      * @throws ChunkCompilationStatusException if this {@link Chunk} is not compiled
@@ -136,10 +136,10 @@ public class Chunk extends Sprite {
         }
         return this;
     }
-    
+
     /**
      * removes this {@link Chunk} and its contents from a Scene
-     * 
+     *
      * @param s the Scene
      * @return this {@link Chunk}
      */
@@ -153,10 +153,10 @@ public class Chunk extends Sprite {
         }
         return this;
     }
-    
+
     /**
      * Draws this {@link Chunk} and its contents on a SpriteBatch
-     * 
+     *
      * @throws ChunkCompilationStatusException if this {@link Chunk} is has not been
      *                                         compiled yet
      */
@@ -174,33 +174,33 @@ public class Chunk extends Sprite {
             batch.drawRect(this.cx * CHUNKSIZE, this.cy * CHUNKSIZE, CHUNKSIZE, CHUNKSIZE);
         }
     }
-    
+
     @Override
     public float getWidth() {
         return CHUNKSIZE;
     }
-    
+
     @Override
     public float getHeight() {
         return CHUNKSIZE;
     }
-    
+
     public int getChunkX() {
         return this.cx;
     }
-    
+
     public int getChunkY() {
         return this.cy;
     }
-    
+
     public static final int toChunk(final float f) {
         return (int) Maths.fastFloor(f / CHUNKSIZE);
     }
-    
+
     public static final int tileToChunk(final int t) {
         return (int) Maths.fastFloor(t / (float) CHUNKSIZE_T);
     }
-    
+
     // public Chunk generate(Random random, Planet planet) {
     // float maxr = planet.getPlanetData().getMaxRadius() *
     // TileDefinition.TILE_SIZE;
@@ -330,5 +330,5 @@ public class Chunk extends Sprite {
     // }
     // return (float) java.lang.Math.pow(Maths.E, -(x * x)) * 1.5f;
     // }
-    
+
 }

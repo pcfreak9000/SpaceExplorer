@@ -8,7 +8,7 @@ public class CoreEvents {
     public static class AssignResourcesEvent extends Event {
         public final TextureHelper textures;
         public final SoundHelper sounds;
-        
+
         public AssignResourcesEvent(TextureHelper textures, SoundHelper sounds) {
             this.textures = textures;
             this.sounds = sounds;

@@ -13,39 +13,39 @@ import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.math.Mathf;
 
 public class Quadtree<T> extends Sprite {
-    
+
     //TopLeft(0)/* 00 */, TopRight(1)/* 01 */, BotLeft(2)/* 10 */, BotRight(3)/* 11 */;
-    
+
     private Quadtree<T>[] nodes;
     private final int x, y;
     private final int size;
     private T data;
-    
+
     public Quadtree(int size, int x, int y) {
         this.size = MathUtil.toPowerOfTwo(size);
         this.x = x;
         this.y = y;
     }
-    
+
     public double getSize() {
         return this.size;
     }
-    
+
     private boolean isLeaf() {
-        return size == 1;
+        return this.size == 1;
     }
-    
+
     private boolean hasData() {
-        return data != null;
+        return this.data != null;
     }
-    
+
     private boolean isEmpty() {
         if (!isLeaf()) {
-            if (nodes == null) {
+            if (this.nodes == null) {
                 return true;
             }
-            for (int i = 0; i < nodes.length; i++) {
-                if (nodes[i] != null && !nodes[i].isEmpty()) {
+            for (int i = 0; i < this.nodes.length; i++) {
+                if (this.nodes[i] != null && !this.nodes[i].isEmpty()) {
                     return false;
                 }
             }
@@ -54,34 +54,35 @@ public class Quadtree<T> extends Sprite {
             return !hasData();
         }
     }
-    
+
     public void getAABB(Collection<T> output, int x, int y, int w, int h) {
-        if (!Intersectionf.testAabAab(x, y, 0, x + w, y + h, 0, this.x, this.y, 0, this.x + size, this.y + size, 0)) {
+        if (!Intersectionf.testAabAab(x, y, 0, x + w, y + h, 0, this.x, this.y, 0, this.x + this.size,
+                this.y + this.size, 0)) {
             return;
         }
         if (isLeaf()) {
             if (hasData()) {
-                output.add(data);
+                output.add(this.data);
             }
         } else {
-            if (nodes != null) {
-                for (Quadtree<T> q : nodes) {
+            if (this.nodes != null) {
+                for (Quadtree<T> q : this.nodes) {
                     q.getAABB(output, x, y, w, h);
                 }
             }
         }
     }
-    
+
     public T get(int tileX, int tileY) {
         if (isLeaf()) {
             return this.data;
         }
-        if (nodes != null) {
-            return nodes[positionToIndex(tileX, tileY)].get(tileX, tileY);
+        if (this.nodes != null) {
+            return this.nodes[positionToIndex(tileX, tileY)].get(tileX, tileY);
         }
         return null;
     }
-    
+
     public T set(T t, int tileX, int tileY) {
         if (isLeaf()) {
             T old = this.data;
@@ -89,18 +90,18 @@ public class Quadtree<T> extends Sprite {
             return old;
         }
         if (t != null) {
-            if (nodes == null) {
+            if (this.nodes == null) {
                 initializeNodes();
             }
-            return nodes[positionToIndex(tileX, tileY)].set(t, tileX, tileY);
+            return this.nodes[positionToIndex(tileX, tileY)].set(t, tileX, tileY);
         } else {
-            if (nodes != null) {
-                Quadtree<T> node = nodes[positionToIndex(tileX, tileY)];
+            if (this.nodes != null) {
+                Quadtree<T> node = this.nodes[positionToIndex(tileX, tileY)];
                 T old = null;
                 if (node != null) {
                     old = node.set(null, tileX, tileY);
                     if (this.isEmpty()) {
-                        nodes = null;
+                        this.nodes = null;
                     }
                 }
                 return old;
@@ -108,81 +109,81 @@ public class Quadtree<T> extends Sprite {
             return null;
         }
     }
-    
+
     //TMP
     public void getAll(Collection<T> list) {
         getAll(list, null);
     }
-    
+
     //TMP
     public void getAll(Collection<T> list, Predicate<T> predicate) {
         if (isLeaf()) {
-            if (hasData() && (predicate == null || predicate.test(data))) {
-                list.add(data);
+            if (hasData() && (predicate == null || predicate.test(this.data))) {
+                list.add(this.data);
             }
             return;
         }
-        if (nodes != null) {
-            for (Quadtree<T> q : nodes) {
+        if (this.nodes != null) {
+            for (Quadtree<T> q : this.nodes) {
                 q.getAll(list, predicate);
             }
         }
     }
-    
+
     private void initializeNodes() {
-        nodes = new Quadtree[4];
-        for (int i = 0; i < nodes.length; i++) {
-            int nx = x;
-            int ny = y;
+        this.nodes = new Quadtree[4];
+        for (int i = 0; i < this.nodes.length; i++) {
+            int nx = this.x;
+            int ny = this.y;
             if ((i & 2) == 2) {
             } else {
-                ny += size / 2;
+                ny += this.size / 2;
             }
             if ((i & 1) == 1) {
-                nx += size / 2;
+                nx += this.size / 2;
             } else {
             }
-            nodes[i] = new Quadtree<>(size / 2, nx, ny);
+            this.nodes[i] = new Quadtree<>(this.size / 2, nx, ny);
         }
     }
-    
+
     private int positionToIndex(int x, int y) {
         int index = 0;
-        index |= y < this.y + size / 2 ? 2 : 0;
-        index |= x >= this.x + size / 2 ? 1 : 0;
+        index |= y < this.y + this.size / 2 ? 2 : 0;
+        index |= x >= this.x + this.size / 2 ? 1 : 0;
         return index;
     }
-    
+
     private void visualize(Batch2D batch, int maxSize, float scale) {
         if (!isLeaf()) {
-            if (nodes != null) {
-                for (Quadtree<T> q : nodes) {
+            if (this.nodes != null) {
+                for (Quadtree<T> q : this.nodes) {
                     q.visualize(batch, maxSize, scale);
                 }
             }
         }
         batch.color().setAllRGB(0);
         batch.color().setA(0.9f);
-        batch.color().setB(Mathf.interpolate(0.2f, 1, Mathf.min((float) ((Math.log(size) / Math.log(maxSize))), 1),
+        batch.color().setB(Mathf.interpolate(0.2f, 1, Mathf.min((float) ((Math.log(this.size) / Math.log(maxSize))), 1),
                 Interpolator.Linear));
         float thickness = 1.5f;
         if (hasData()) {
             batch.color().setR(0.6f);
-            batch.drawRect(new Matrix3x2f().setTranslation(x * scale + thickness, y * scale), size * scale,
-                    size * scale);
+            batch.drawRect(new Matrix3x2f().setTranslation(this.x * scale + thickness, this.y * scale),
+                    this.size * scale, this.size * scale);
             batch.color().setR(0);
         }
-        batch.drawLine(x * scale, y * scale, x * scale + size * scale, y * scale, thickness);
-        batch.drawLine(x * scale, y * scale, x * scale, y * scale + size * scale, thickness);
-        batch.drawLine(x * scale + size * scale, y * scale + size * scale, x * scale + size * scale, y * scale,
-                thickness);
-        batch.drawLine(x * scale + size * scale, y * scale + size * scale, x * scale, y * scale + size * scale,
-                thickness);
+        batch.drawLine(this.x * scale, this.y * scale, this.x * scale + this.size * scale, this.y * scale, thickness);
+        batch.drawLine(this.x * scale, this.y * scale, this.x * scale, this.y * scale + this.size * scale, thickness);
+        batch.drawLine(this.x * scale + this.size * scale, this.y * scale + this.size * scale,
+                this.x * scale + this.size * scale, this.y * scale, thickness);
+        batch.drawLine(this.x * scale + this.size * scale, this.y * scale + this.size * scale, this.x * scale,
+                this.y * scale + this.size * scale, thickness);
     }
-    
+
     @Override
     public void draw(Batch2D batch) {
-        visualize(batch, size, (float) ((Math.log(size) / Math.log(2)) * 4));
+        visualize(batch, this.size, (float) ((Math.log(this.size) / Math.log(2)) * 4));
     }
-    
+
 }

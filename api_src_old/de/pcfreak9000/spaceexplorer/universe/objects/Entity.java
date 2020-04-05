@@ -8,10 +8,10 @@ import de.omnikryptec.render.objects.Sprite;
 import de.pcfreak9000.space.core.GameRegistry;
 
 public class Entity extends Sprite {
-    
+
     private final EntityDefinition mydef;
     private Sprite sprite;
-    
+
     public Entity(final EntityDefinition def) {
         super(ResourceLoader.currentInstance().getTexture(def.getTexture()));
         GameRegistry.getWorldObjectRegistry().checkRegistered(def);
@@ -19,18 +19,18 @@ public class Entity extends Sprite {
         this.sprite.setUpdateType(UpdateType.STATIC);
         addBody();
     }
-    
+
     private void addBody() {
         final AdvancedBody body = new AdvancedBody();
         this.mydef.configureBody(body);
         body.getTransform()
                 .setTranslation(ConverterUtil.convertToPhysics2D(this.sprite.getTransform().getPosition(true)));
         this.sprite.addComponent(new PhysicsComponent2D(body));
-        
+
     }
-    
+
     public EntityDefinition getDefinition() {
         return this.mydef;
     }
-    
+
 }

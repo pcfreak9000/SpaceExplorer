@@ -1,9 +1,5 @@
 package de.pcfreak9000.space.mod;
 
-import java.util.Arrays;
-
-import org.checkerframework.checker.units.qual.A;
-
 /**
  * contains a mod
  *
@@ -11,29 +7,29 @@ import org.checkerframework.checker.units.qual.A;
  *
  */
 public class ModContainer {
-    
+
     private final Mod mod;
     private final Class<?> mainclass;
     private final Object instance;
-    
+
     public ModContainer(final Class<?> mc, final Mod mod, final Object instance) {
         this.mainclass = mc;
         this.mod = mod;
         this.instance = instance;
     }
-    
+
     public Mod getMod() {
         return this.mod;
     }
-    
+
     public Object getInstance() {
         return this.instance;
     }
-    
+
     public Class<?> getModClass() {
         return this.mainclass;
     }
-    
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -48,7 +44,7 @@ public class ModContainer {
         }
         return false;
     }
-    
+
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();

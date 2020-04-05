@@ -16,36 +16,36 @@ import de.pcfreak9000.space.voxelworld.VoxelworldEvents;
 import de.pcfreak9000.space.voxelworld.tile.Tile;
 
 public class CameraSystem extends AbstractComponentSystem {
-    
+
     private PlanetCamera playerCam;
     private TileWorld tileWorld;
-    
-    private ComponentMapper<TransformComponent> transformMapper = new ComponentMapper<>(TransformComponent.class);
-    
+
+    private final ComponentMapper<TransformComponent> transformMapper = new ComponentMapper<>(TransformComponent.class);
+
     public CameraSystem() {
         super(Family.of(PlayerInputComponent.class, TransformComponent.class));
         Space.BUS.register(this);
     }
-    
+
     @EventSubscription
     public void tileworldLoadingEvent(VoxelworldEvents.SetVoxelWorldEvent svwe) {
         this.playerCam = svwe.groundMgr.getPlanetCamera();
         this.tileWorld = svwe.tileWorldNew;
     }
-    
+
     @Override
     public void update(IECSManager iecsManager, Time time) {
-        Vector2fc positionState = transformMapper.get(entities.get(0)).transform.worldspacePos();
-        float x = positionState.x() - playerCam.getWidth() / 2f;
-        float y = positionState.y() - playerCam.getHeight() / 2f;
+        Vector2fc positionState = this.transformMapper.get(this.entities.get(0)).transform.worldspacePos();
+        float x = positionState.x() - this.playerCam.getWidth() / 2f;
+        float y = positionState.y() - this.playerCam.getHeight() / 2f;
         x = Mathf.max(0, x);
         y = Mathf.max(0, y);
-        x = Mathf.min(tileWorld.getWorldWidth() * Tile.TILE_SIZE - playerCam.getWidth(), x);
-        y = Mathf.min(tileWorld.getWorldHeight() * Tile.TILE_SIZE - playerCam.getHeight(), y);
-        playerCam.getCameraActual().getTransform().localspaceWrite().translation(-x, -y, 0);
-        
+        x = Mathf.min(this.tileWorld.getWorldWidth() * Tile.TILE_SIZE - this.playerCam.getWidth(), x);
+        y = Mathf.min(this.tileWorld.getWorldHeight() * Tile.TILE_SIZE - this.playerCam.getHeight(), y);
+        this.playerCam.getCameraActual().getTransform().localspaceWrite().translation(-x, -y, 0);
+
         //temporary wrap around
-        TransformComponent tc = transformMapper.get(entities.get(0));
+        TransformComponent tc = this.transformMapper.get(this.entities.get(0));
         if (tc.transform.worldspacePos().x() < 0) {
             tc.transform.localspaceWrite().translate(this.tileWorld.getWorldWidth() * Tile.TILE_SIZE, 0);
         } else if (tc.transform.worldspacePos().x() > this.tileWorld.getWorldWidth() * Tile.TILE_SIZE) {

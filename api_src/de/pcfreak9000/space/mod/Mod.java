@@ -10,16 +10,16 @@ import de.pcfreak9000.space.core.Space;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Mod {
-    
+
     String id();
-    
+
     String name();
-    
+
     long[] version();
-    
+
     String resourceLocation();
-    
+
     String[] se2dversion() default { Space.VERSION };
-    
+
     boolean accessible() default true;
 }

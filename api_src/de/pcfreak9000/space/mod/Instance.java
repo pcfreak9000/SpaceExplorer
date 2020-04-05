@@ -8,8 +8,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface Instance {
-    
+
     String id() default ModLoader.THIS_INSTANCE_ID;
-    
+
     long[] requiredVersion() default {};
 }

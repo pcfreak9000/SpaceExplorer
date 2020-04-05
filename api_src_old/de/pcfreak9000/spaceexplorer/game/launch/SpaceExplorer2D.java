@@ -16,26 +16,26 @@ import de.pcfreak9000.space.mod.ModManager;
 import de.pcfreak9000.spaceexplorer.universe.Universe;
 
 public class SpaceExplorer2D {
-    
+
     private static final AdvancedFile RESOURCELOCATION = new AdvancedFile(true, "", "de", "pcfreak9000", "se2d", "res");
     private static final float[] PLANETPROJ = { -1920 / 2, -1080 / 2, 1920, 1080 };
     // private static final float[] PLANETPROJ = { -19200 / 2, -10800 / 2, 19200,
     // 10800 };
-    
+
     public static final String EVENTBUSNAME = "SpaceExplorer2D_EVENT_BUS-2718";
-    
+
     private static SpaceExplorer2D instance;
-    
+
     public static SpaceExplorer2D getSpaceExplorer2D() {
         return instance;
     }
-    
+
     private final AdvancedFile resourcepacks, modsfolder;
-    
+
     private final ModManager manager;
     private final EventBus se2d_events;
     private Universe currentWorld = null;
-    
+
     public SpaceExplorer2D(final AdvancedFile resourcepacksp, final AdvancedFile modsfolderp) {
         if (instance != null) {
             throw new IllegalStateException("SpaceExplorer2D is already created!");
@@ -64,16 +64,16 @@ public class SpaceExplorer2D {
         b.getColor().set(0, 0.5f, 0.5f);
         b.getBarColor().set(0, 0, 1);
         b.setW(0.5f).setH(0.05f);
-        
+
         final ProgressBar b2 = new ProgressBar(null, null, 0.25f, 0.5f);
         b2.getColor().set(0, 0.5f, 0.5f);
         b2.getBarColor().set(1, 0, 0);
         b2.setW(0.5f).setH(0.025f);
-        
+
         b.add(b2);
         final Timer ttt = new Timer();
         ttt.schedule(new TimerTask() {
-            
+
             @Override
             public void run() {
                 if (b.getValue() < 1) {
@@ -84,7 +84,7 @@ public class SpaceExplorer2D {
                         b2.setValue(0);
                     }
                     b2.setValue(b2.getValue() + 0.1f);
-                    
+
                 }
             }
         }, 0, 10);
@@ -94,11 +94,11 @@ public class SpaceExplorer2D {
         // TEST
         OmniKryptecEngine.instance().startLoop();
     }
-    
+
     public EventBus getEventBus() {
         return this.se2d_events;
     }
-    
+
     private void loadRes() {
         ResourceLoader.currentInstance().stageAdvancedFiles(0, ResourceLoader.LOAD_XML_INFO, this.resourcepacks);
         ResourceLoader.currentInstance().loadStagedAdvancedFiles(true);
@@ -110,15 +110,15 @@ public class SpaceExplorer2D {
         ResourceLoader.currentInstance().loadStagedAdvancedFiles(false);
         ResourceLoader.currentInstance().clearStagedAdvancedFiles();
     }
-    
+
     public float[] getProjectionData() {
         return PLANETPROJ;
     }
-    
+
     public Universe getUniverse() {
         return this.currentWorld;
     }
-    
+
     @EventSubscription
     public void someFrameUpdateEventHandlerMethod(final FrameEvent ev) {
         if (ev.getType() == FrameType.PRE && this.currentWorld != null) {
@@ -126,5 +126,5 @@ public class SpaceExplorer2D {
             this.currentWorld.update();
         }
     }
-    
+
 }

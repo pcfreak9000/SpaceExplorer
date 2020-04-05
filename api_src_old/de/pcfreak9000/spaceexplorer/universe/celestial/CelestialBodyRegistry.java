@@ -15,9 +15,9 @@ import de.pcfreak9000.spaceexplorer.util.Private;
  */
 @Private
 public class CelestialBodyRegistry extends GameRegistry<CelestialBodyDefinition> {
-    
+
     private static List<CelestialBodyDefinition> startCapable = new ArrayList<>();
-    
+
     @Override
     public CelestialBodyRegistry register(final String name, final CelestialBodyDefinition data) {
         super.register(name, data);
@@ -26,9 +26,9 @@ public class CelestialBodyRegistry extends GameRegistry<CelestialBodyDefinition>
         }
         return this;
     }
-    
+
     public List<CelestialBodyDefinition> getStartCapables() {
         return startCapable;
     }
-    
+
 }

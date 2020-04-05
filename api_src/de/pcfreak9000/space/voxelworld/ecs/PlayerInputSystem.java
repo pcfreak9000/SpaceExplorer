@@ -23,29 +23,29 @@ import de.pcfreak9000.space.voxelworld.tile.Tile;
 import de.pcfreak9000.space.voxelworld.tile.TileType;
 
 public class PlayerInputSystem extends AbstractComponentSystem {
-    
+
     public PlayerInputSystem() {
         super(Family.of(PlayerInputComponent.class));
         Space.BUS.register(this);
     }
-    
-    private ComponentMapper<PlayerInputComponent> mapper = new ComponentMapper<>(PlayerInputComponent.class);
-    private ComponentMapper<PhysicsComponent> physicsMapper = new ComponentMapper<>(PhysicsComponent.class);
-    
+
+    private final ComponentMapper<PlayerInputComponent> mapper = new ComponentMapper<>(PlayerInputComponent.class);
+    private final ComponentMapper<PhysicsComponent> physicsMapper = new ComponentMapper<>(PhysicsComponent.class);
+
     private TileWorld world;
     private Camera cam;
-    
+
     @EventSubscription
     public void settwevent(VoxelworldEvents.SetVoxelWorldEvent ev) {
         this.world = ev.tileWorldNew;
         this.cam = ev.groundMgr.getPlanetCamera().getCameraActual();//TODO meh...?
     }
-    
+
     private TileType ugly = null;
-    
+
     @Override
     public void update(IECSManager iecsManager, Time time) {
-        PlayerInputComponent play = mapper.get(entities.get(0));
+        PlayerInputComponent play = this.mapper.get(this.entities.get(0));
         float vy = 0;
         float vx = 0;
         //if (physicsMapper.get(entities.get(0)).onGround) {
@@ -63,9 +63,9 @@ public class PlayerInputSystem extends AbstractComponentSystem {
         if (Keys.RIGHT.isPressed()) {
             vx += play.maxXv;
         }
-        physicsMapper.get(entities.get(0)).acceleration.set(vx * 3, vy * 3 - 98.1f);
+        this.physicsMapper.get(this.entities.get(0)).acceleration.set(vx * 3, vy * 3 - 98.1f);
         if (Keys.EXPLODE_DEBUG.isPressed()) {
-            Vector2f mouse = Omnikryptec.getInput().getMousePositionInWorld2D(cam, new Vector2f());
+            Vector2f mouse = Omnikryptec.getInput().getMousePositionInWorld2D(this.cam, new Vector2f());
             int txm = Tile.toGlobalTile(mouse.x());
             int tym = Tile.toGlobalTile(mouse.y());
             Set<Region> rs = new HashSet<>();
@@ -75,11 +75,11 @@ public class PlayerInputSystem extends AbstractComponentSystem {
                     if (Mathf.square(i) + Mathf.square(j) <= Mathf.square(rad)) {
                         int tx = txm + i;
                         int ty = tym + j;
-                        Region r = world.requestRegion(Region.toGlobalRegion(tx), Region.toGlobalRegion(ty));
+                        Region r = this.world.requestRegion(Region.toGlobalRegion(tx), Region.toGlobalRegion(ty));
                         if (r != null) {
                             Tile t = r.get(tx, ty);
                             if (t != null && t.getType().canBreak()) {
-                                ugly = t.getType();
+                                this.ugly = t.getType();
                                 r.setTile(new Tile(TileType.EMPTY, tx, ty));
                                 rs.add(r);
                             }
@@ -92,31 +92,31 @@ public class PlayerInputSystem extends AbstractComponentSystem {
             }
         }
         if (Keys.DESTROY.isPressed()) {
-            Vector2f mouse = Omnikryptec.getInput().getMousePositionInWorld2D(cam, new Vector2f());
+            Vector2f mouse = Omnikryptec.getInput().getMousePositionInWorld2D(this.cam, new Vector2f());
             int tx = Tile.toGlobalTile(mouse.x());
             int ty = Tile.toGlobalTile(mouse.y());
-            Region r = world.requestRegion(Region.toGlobalRegion(tx), Region.toGlobalRegion(ty));
+            Region r = this.world.requestRegion(Region.toGlobalRegion(tx), Region.toGlobalRegion(ty));
             if (r != null) {
                 Tile t = r.get(tx, ty);
                 if (t != null && t.getType().canBreak()) {
-                    ugly = t.getType();
+                    this.ugly = t.getType();
                     r.setTile(new Tile(TileType.EMPTY, tx, ty));
                     r.queueRecacheTiles();
                 }
             }
         }
         if (Keys.BUILD.isPressed()) {
-            Vector2f mouse = Omnikryptec.getInput().getMousePositionInWorld2D(cam, new Vector2f());
+            Vector2f mouse = Omnikryptec.getInput().getMousePositionInWorld2D(this.cam, new Vector2f());
             int tx = Tile.toGlobalTile(mouse.x());
             int ty = Tile.toGlobalTile(mouse.y());
-            Region r = world.requestRegion(Region.toGlobalRegion(tx), Region.toGlobalRegion(ty));
-            if (r != null && ugly != null) {
+            Region r = this.world.requestRegion(Region.toGlobalRegion(tx), Region.toGlobalRegion(ty));
+            if (r != null && this.ugly != null) {
                 if (r.get(tx, ty) == null || r.get(tx, ty).getType() == TileType.EMPTY) {
-                    r.setTile(new Tile(ugly, tx, ty));
+                    r.setTile(new Tile(this.ugly, tx, ty));
                     r.queueRecacheTiles();
                 }
             }
         }
     }
-    
+
 }

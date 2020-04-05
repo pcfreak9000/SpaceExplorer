@@ -9,7 +9,7 @@ import de.pcfreak9000.spaceexplorer.util.Private;
 
 @Private
 public class PlanetRenderer extends DefaultRenderer2D {
-    
+
     private static final Comparator<Sprite> COMP = (o1, o2) -> {
         if (o1.getLayer() != o2.getLayer()) {
             return (int) Math.signum(o1.getLayer() - o2.getLayer());
@@ -17,15 +17,15 @@ public class PlanetRenderer extends DefaultRenderer2D {
             return (int) Math.signum(o2.getTransform().getPosition(true).dy - o1.getTransform().getPosition(true).dy);
         }
     };
-    
+
     public PlanetRenderer() {
         super(new SpriteBatch(100_00));
         clearColor().set(0.1f, 0.1f, 0.1f, 1);
     }
-    
+
     @Override
     public Comparator<Sprite> getLayerComparator() {
         return COMP;
     }
-    
+
 }

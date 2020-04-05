@@ -16,11 +16,11 @@ import de.pcfreak9000.space.mod.Instance;
  *
  */
 public class StaticRectCollider {
-    
+
     private final Body body;
-    
+
     /**
-     * 
+     *
      * @param w   width
      * @param h   height
      * @param pos global position
@@ -34,19 +34,19 @@ public class StaticRectCollider {
         // ConverterUtil.convertToPhysics2D(0));
         this.body.setMass(MassType.INFINITE);
     }
-    
+
     /**
      * adds this Body to the physics world
-     * 
+     *
      * @return
      */
     public StaticRectCollider add() {
         ((Dyn4JPhysicsWorld) Instance.getCurrent2DScene().getPhysicsWorld()).getWorld().addBody(this.body);
         return this;
     }
-    
+
     public Body getBody() {
         return this.body;
     }
-    
+
 }

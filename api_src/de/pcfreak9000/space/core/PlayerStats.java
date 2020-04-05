@@ -4,9 +4,6 @@ import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.SimpleSprite;
-import de.omnikryptec.resource.TextureConfig;
-import de.omnikryptec.resource.TextureConfig.MagMinFilter;
-import de.omnikryptec.resource.TextureConfig.WrappingMode;
 import de.pcfreak9000.space.voxelworld.ecs.PhysicsComponent;
 import de.pcfreak9000.space.voxelworld.ecs.PlayerInputComponent;
 import de.pcfreak9000.space.voxelworld.ecs.RenderComponent;
@@ -16,18 +13,18 @@ import de.pcfreak9000.space.voxelworld.tile.Tile;
 /**
  * Information about the player: level, ships, inventory, etc. Also the player
  * entity for surface worlds.
- * 
+ *
  * @author pcfreak9000
  *
  */
 public class PlayerStats {
-    
-    private Entity playerEntity;
-    
+
+    private final Entity playerEntity;
+
     public PlayerStats() {
         this.playerEntity = createRawPlayerEntity();
     }
-    
+
     private Entity createRawPlayerEntity() {
         Entity e = new Entity();
         PlayerInputComponent pic = new PlayerInputComponent();
@@ -56,8 +53,8 @@ public class PlayerStats {
         pc.h = sprite.getHeight() * 0.95f;
         return e;
     }
-    
+
     public Entity getPlayerEntity() {
-        return playerEntity;
+        return this.playerEntity;
     }
 }

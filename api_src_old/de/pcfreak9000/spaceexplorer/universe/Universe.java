@@ -10,21 +10,21 @@ import de.pcfreak9000.spaceexplorer.game.launch.SpaceExplorer2D;
 import de.pcfreak9000.spaceexplorer.universe.celestial.CelestialBody;
 
 public class Universe {
-    
+
     private Player currentPlayer = null;
     private Camera planetCamera;
-    
+
     private double gametime = 0;
-    
+
     public void update() {
         // System.out.println(Instance.getFPSCounted());
         this.gametime += OmniKryptecEngine.instance().getDeltaTimef();
     }
-    
+
     public double getUniverseTimeSec() {
         return this.gametime;
     }
-    
+
     public void loadWorld(final long seed) {
         this.planetCamera = new Camera()
                 .setOrthographicProjection2D(SpaceExplorer2D.getSpaceExplorer2D().getProjectionData());
@@ -37,11 +37,11 @@ public class Universe {
         p.getWorld().load(this.currentPlayer);
         System.out.println(p);
     }
-    
+
     public Camera getPlanetCamera() {
         return this.planetCamera;
     }
-    
+
     public void setPlanetAndPlayer(final Player player) {
         // System.out.println(planet.toString());
         // player.getComponent(PhysicsComponent2D.class).getBody().getTransform()
@@ -50,7 +50,7 @@ public class Universe {
         // TileDefinition.TILE_SIZE)));
         // planet.setAsScene(player);
     }
-    
+
     public String getGalaxyName(final double x, final double y) {
         return "P";
     }

@@ -10,7 +10,7 @@ import de.pcfreak9000.spaceexplorer.universe.celestial.CelestialBodyDefinition;
 import de.pcfreak9000.spaceexplorer.universe.worlds.Fields;
 
 public class StartPlanetDef extends CelestialBodyDefinition {
-    
+
     @Override
     public CelestialBody generate(final long seed, final SpaceCoordinates sc, final CelestialBody parent) {
         final Random random = new Random(seed);
@@ -20,10 +20,10 @@ public class StartPlanetDef extends CelestialBodyDefinition {
         planet.getAttributeCK(Fields.class).addField(Fields.TEMPERATURE, new Field(-100));
         return planet;
     }
-    
+
     @Override
     public boolean isStartCapable() {
         return true;
     }
-    
+
 }

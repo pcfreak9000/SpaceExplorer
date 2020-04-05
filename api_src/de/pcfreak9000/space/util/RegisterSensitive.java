@@ -21,7 +21,7 @@ import de.pcfreak9000.space.core.GameRegistry;
 @Target(ElementType.TYPE)
 @Inherited
 public @interface RegisterSensitive {
-    
+
     public String registry();
-    
+
 }

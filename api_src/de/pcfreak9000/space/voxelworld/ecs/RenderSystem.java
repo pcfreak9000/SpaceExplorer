@@ -12,71 +12,71 @@ import de.omnikryptec.render.renderer.Renderer2D;
 import de.omnikryptec.util.updater.Time;
 
 public class RenderSystem extends AbstractComponentSystem implements EntityListener {
-    
-    private ComponentMapper<RenderComponent> renderMapper = new ComponentMapper<>(RenderComponent.class);
-    private ComponentMapper<TransformComponent> transformMapper = new ComponentMapper<>(TransformComponent.class);
-    
-    private AdvancedRenderer2D renderer;
-    private Renderer2D backgroundRenderer;
-    
+
+    private final ComponentMapper<RenderComponent> renderMapper = new ComponentMapper<>(RenderComponent.class);
+    private final ComponentMapper<TransformComponent> transformMapper = new ComponentMapper<>(TransformComponent.class);
+
+    private final AdvancedRenderer2D renderer;
+    private final Renderer2D backgroundRenderer;
+
     public RenderSystem(AdvancedRenderer2D renderer, Renderer2D background) {
         super(Family.of(RenderComponent.class));
         this.renderer = renderer;
         this.backgroundRenderer = background;
     }
-
+    
     @Override
     public void entityAdded(Entity entity) {
         registerRenderedEntity(entity);
     }
-    
+
     private void registerRenderedEntity(Entity entity) {
-        RenderComponent rc = renderMapper.get(entity);
+        RenderComponent rc = this.renderMapper.get(entity);
         if (rc.asBackground) {
-            backgroundRenderer.add(rc.sprite);
+            this.backgroundRenderer.add(rc.sprite);
         } else {
-            renderer.add(rc.sprite);
+            this.renderer.add(rc.sprite);
         }
         if (rc.light != null) {
-            renderer.addLight(rc.light);
+            this.renderer.addLight(rc.light);
         }
         //sync the rendering transform to the actual transform
-        if (entity.hasComponent(transformMapper.getType())) {
-            rc.sprite.setTransform(transformMapper.get(entity).transform);
+        if (entity.hasComponent(this.transformMapper.getType())) {
+            rc.sprite.setTransform(this.transformMapper.get(entity).transform);
             if (rc.light != null && rc.light instanceof SimpleSprite) {
-                ((SimpleSprite) rc.light).getTransform().setParent(transformMapper.get(entity).transform);
+                ((SimpleSprite) rc.light).getTransform().setParent(this.transformMapper.get(entity).transform);
             }
         }
     }
-    
+
     @Override
     public void entityRemoved(Entity entity) {
-        RenderComponent rc = renderMapper.get(entity);
+        RenderComponent rc = this.renderMapper.get(entity);
         if (rc.asBackground) {
-            backgroundRenderer.remove(rc.sprite);
+            this.backgroundRenderer.remove(rc.sprite);
         } else {
-            renderer.remove(rc.sprite);
+            this.renderer.remove(rc.sprite);
         }
         if (rc.light != null) {
-            renderer.removeLight(rc.light);
+            this.renderer.removeLight(rc.light);
         }
     }
-    
+
     @Override
     public void update(IECSManager iecsManager, Time time) {
         //RendererContext is updated elsewhere
     }
-    
+
     @Override
     public void addedToIECSManager(IECSManager iecsManager) {
         super.addedToIECSManager(iecsManager);
         //add already registered entities that are not noticed by the EntityListener
-        for (Entity e : entities) {
+        for (Entity e : this.entities) {
             registerRenderedEntity(e);
         }
         iecsManager.addEntityListener(getFamily(), this);
     }
-    
+
     @Override
     public void removedFromIECSManager(IECSManager iecsManager) {
         super.removedFromIECSManager(iecsManager);

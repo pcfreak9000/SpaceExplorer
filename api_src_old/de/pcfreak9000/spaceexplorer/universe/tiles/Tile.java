@@ -13,16 +13,16 @@ import de.pcfreak9000.spaceexplorer.universe.worlds.World;
  *
  */
 public class Tile extends Sprite {
-    
+
     private final TileDefinition myDefinition;
-    
+
     private boolean validPosition = true;
     private final int gtx, gty;
-    
+
     /**
      * Constructs a new Tile.That is usually done in
      * {@link TileDefinition#newTile(int, int)}
-     * 
+     *
      * @param def the Tile's {@link TileDefinition}
      * @param gtx global tile x
      * @param gty global tile y
@@ -38,11 +38,11 @@ public class Tile extends Sprite {
         setFixedSize(TileDefinition.TILE_SIZE, TileDefinition.TILE_SIZE);
         setLayer(TileDefinition.TILE_LAYER);
     }
-    
+
     public TileDefinition getDefinition() {
         return this.myDefinition;
     }
-    
+
     /**
      * Only during the generation of a {@link World}. Usually, an invalid Tile does
      * not support decoration (e.g. this can be used for the edge of a
@@ -51,22 +51,22 @@ public class Tile extends Sprite {
     public void invalidate() {
         this.validPosition = false;
     }
-    
+
     public boolean isValid() {
         return this.validPosition;
     }
-    
+
     public int getTileX() {
         return this.gtx;
     }
-    
+
     public int getTileY() {
         return this.gty;
     }
-    
+
     @Override
     public String toString() {
         return super.toString() + ": " + this.myDefinition.toString();
     }
-    
+
 }

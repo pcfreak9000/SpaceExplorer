@@ -16,14 +16,14 @@ import de.pcfreak9000.spaceexplorer.game.launch.KeyManager;
 import de.pcfreak9000.spaceexplorer.game.launch.SpaceExplorer2D;
 
 public class Player extends Sprite {
-    
+
     private static final float DY_SPEED = 2f;
     private static final float DX_SPEED = 2f;
-    
+
     private final KeySettings keysettings;
     private final Light2D light1;
     private final AdvancedBody body;
-    
+
     public Player() {
         this.setUpdateType(UpdateType.DYNAMIC);
         this.keysettings = OmniKryptecEngine.instance().getGameSettings().getKeySettings();
@@ -41,7 +41,7 @@ public class Player extends Sprite {
         this.body.setMass(MassType.FIXED_ANGULAR_VELOCITY);
         addComponent(new PhysicsComponent2D(this.body));
     }
-    
+
     @Override
     protected void update() {
         final Vector2 vel = new Vector2();
@@ -66,5 +66,5 @@ public class Player extends Sprite {
                 getTransform().getPosition(true).dx + getWidth() / 2,
                 getTransform().getPosition(true).dy + getHeight() / 2, 0);
     }
-    
+
 }

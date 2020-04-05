@@ -21,36 +21,36 @@ import de.pcfreak9000.space.voxelworld.VoxelworldEvents;
 import de.pcfreak9000.space.voxelworld.tile.Tile;
 
 public class PhysicsSystem extends IterativeComponentSystem {
-    
-    private ComponentMapper<TransformComponent> transformMapper = new ComponentMapper<>(TransformComponent.class);
-    private ComponentMapper<PhysicsComponent> physicsMapper = new ComponentMapper<>(PhysicsComponent.class);
-    
+
+    private final ComponentMapper<TransformComponent> transformMapper = new ComponentMapper<>(TransformComponent.class);
+    private final ComponentMapper<PhysicsComponent> physicsMapper = new ComponentMapper<>(PhysicsComponent.class);
+
     private TileWorld tileWorld;
-    
+
     @EventSubscription
     public void tileworldLoadingEvent(VoxelworldEvents.SetVoxelWorldEvent svwe) {
         this.tileWorld = svwe.tileWorldNew;
     }
-    
+
     public PhysicsSystem() {
         super(Family.of(PhysicsComponent.class, TransformComponent.class));
         Space.BUS.register(this);
     }
-    
+
     @Override
     public void updateIndividual(IECSManager manager, Entity entity, Time time) {
-        TransformComponent tc = transformMapper.get(entity);
-        PhysicsComponent pc = physicsMapper.get(entity);
+        TransformComponent tc = this.transformMapper.get(entity);
+        PhysicsComponent pc = this.physicsMapper.get(entity);
         Vector2fc positionState = tc.transform.worldspacePos();
-        
+
         //Friction TODO manage elsewhere
         pc.acceleration.sub(pc.velocity.x() * 1.5f, pc.velocity.y() * 1.5f, pc.acceleration);
-        
+
         //Integrate motion
         float posDeltaX = 0.5f * pc.acceleration.x() * Mathf.square(time.deltaf) + pc.velocity.x() * time.deltaf;
         float posDeltaY = 0.5f * pc.acceleration.y() * Mathf.square(time.deltaf) + pc.velocity.y() * time.deltaf;
         pc.velocity.add(pc.acceleration.x() * time.deltaf, pc.acceleration.y() * time.deltaf, pc.velocity);
-        
+
         //Check and resolve collisions
         if (!(pc.w == 0 && pc.h == 0)) {
             pc.onGround = false;
@@ -62,7 +62,7 @@ public class PhysicsSystem extends IterativeComponentSystem {
                 pc.x = positionState.x();//TODO implement offset?
                 pc.y = positionState.y();
                 List<Tile> collisions = new ArrayList<>();
-                tileWorld.collectTileIntersections(collisions, (int) Mathf.floor(pc.x / Tile.TILE_SIZE),
+                this.tileWorld.collectTileIntersections(collisions, (int) Mathf.floor(pc.x / Tile.TILE_SIZE),
                         (int) Mathf.floor(pc.y / Tile.TILE_SIZE), (int) Mathf.ceil((pc.w + posDeltaX) / Tile.TILE_SIZE),
                         (int) Mathf.ceil((pc.h + posDeltaY) / Tile.TILE_SIZE));
                 for (Tile t : collisions) {
@@ -106,7 +106,7 @@ public class PhysicsSystem extends IterativeComponentSystem {
             tc.transform.localspaceWrite().setTranslation(positionState.x() + posDeltaX, positionState.y() + posDeltaY);
         }
     }
-    
+
     private Vector2f getNormal(Tile t, PhysicsComponent pc) {
         if ((1 + t.getGlobalTileY()) * Tile.TILE_SIZE < pc.y + pc.h * 0.01f) {
             return new Vector2f(0, 1);
@@ -120,5 +120,5 @@ public class PhysicsSystem extends IterativeComponentSystem {
         }
         throw new IllegalArgumentException();
     }
-    
+
 }

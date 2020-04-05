@@ -20,23 +20,23 @@ import de.pcfreak9000.spaceexplorer.universe.worlds.Chunk;
 import de.pcfreak9000.spaceexplorer.universe.worlds.World;
 
 public class Launcher {
-    
+
     public static final boolean DEBUG = true;
-    
+
     public static final String NAME = "SpaceExplorer2D";
     public static final AdvancedFile FOLDER = OSUtil.getAppDataFolder(NAME);
     public static final String NATIVES_DIR_NAME = "natives";
     public static final String RESOURCEPACKS = "resourcepacks";
     public static final String MODS = "mods";
     public static final double ASPECT_RATIO = 16 / 9.0;
-    
+
     private static final double PIXELS_PER_METER = TileDefinition.TILE_SIZE;
     public static final String VERSION = "0.0.1";
-    
+
     public static void main(final String[] args) {
         new Launcher();
     }
-    
+
     public Launcher() {
         // double all = 0;
         // double min = double.POSITIVE_INFINITY;
@@ -83,16 +83,16 @@ public class Launcher {
         OmniKryptecEngine.instance().getGameSettings().setKeySettings(new KeySettings());
         // OmniKryptecEngine.instance().getPostprocessor().addStage(new
         // ContrastchangeStage(-100));
-        
+
         OmniKryptecEngine.instance().getPostprocessor().addStage(new Light2DProcessor(World.RENDERER));
         // OmniKryptecEngine.instance().getPostprocessor().addStage(new BloomStage(new
         // CompleteGaussianBlurStage(true, 100, 100), new Vector2f(1)));
         // OmniKryptecEngine.instance().getPostprocessor().addStage(new
         // PostProcessingDebugStage());
-        
+
         KeyManager.init();
         new SpaceExplorer2D(new AdvancedFile(false, FOLDER, RESOURCEPACKS),
                 new AdvancedFile(false, FOLDER.toString() + File.separator + MODS));
     }
-    
+
 }
