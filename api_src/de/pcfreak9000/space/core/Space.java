@@ -45,8 +45,10 @@ public class Space extends Omnikryptec {
     public static final double ASPECT_RATIO = 16 / 9.0;
     
     private static final AdvancedFile DEFAULT_RES_LOC = new AdvancedFile("intern:/de/pcfreak9000/space/resources/");
+    private static final AdvancedFile LOADING_RES_LOC = new AdvancedFile("intern:/de/pcfreak9000/space/loading/");
     
     public static final EventBus BUS = new EventBus();
+    private static final Logger LOGGER = Logger.getLogger(Space.class);
     
     private static Space space;
     
@@ -78,17 +80,20 @@ public class Space extends Omnikryptec {
     
     @Override
     protected void onInitialized() {
-        groundManager = new GroundManager();
+        //getResourceManager().addCallback(LoadingProgressCallback.DEBUG_CALLBACK);
+        preloadResources();
+        LoadingScreen s = new LoadingScreen(9);
+        getResourceManager().addCallback(new LoadingScreenCallback());
+        s.begin();
         modloader.load(mkdirIfNonExisting(new AdvancedFile(FOLDER, MODS)));
-        getResourceManager().addCallback(LoadingProgressCallback.DEBUG_CALLBACK);
-        reloadResources();
-        
-
+        loadResources();
+        s.end();
+        groundManager = new GroundManager();//Hmmm...
         //TESTING:
         GameInstance ins = new GameInstance(groundManager);
         WorldInformationBundle testWorld = pickGenerator(
                 GameRegistry.GENERATOR_REGISTRY.filtered(GeneratorCapabilitiesBase.LVL_ENTRY)).generateWorld(0);
-        ins.visit(testWorld, 400*Tile.TILE_SIZE, 3500);
+        ins.visit(testWorld, 400 * Tile.TILE_SIZE, 3500);
         //***************
     }
     
@@ -103,15 +108,33 @@ public class Space extends Omnikryptec {
     }
     
     public void reloadResources() {
+        //TODO loading screen
         //Do this only if no scene is loaded
         getResourceManager().clearStaged();
         getResourceProvider().clear();
         getTextures().clearAndDeleteTextures();
         //loader.stageModResources(getResourceManager(), 1);
+        preloadResources();
+        loadResources();
+        
+    }
+    
+    private void preloadResources() {
+        LOGGER.debug("Preloading resources");
+        getResourceManager().stage(LOADING_RES_LOC);
+        getResourceManager().processStaged(false, false);
+        getResourceManager().clearStaged();
+        LOGGER.debug("Finished preloading resources!");
+    }
+    
+    private void loadResources() {
+        LOGGER.info("Loading resources...");
         getResourceManager().stage(DEFAULT_RES_LOC);
         getResourceManager().stage(mkdirIfNonExisting(new AdvancedFile(FOLDER, RESOURCEPACKS)), 0);
         getResourceManager().processStaged(true, false);
         getResourceManager().clearStaged();
+        LOGGER.info("Finished resource loading!");
+        LoadingScreen.LOADING_STAGE_BUS.post(new LoadingScreen.LoadingEvent("Assigning resources"));
         BUS.post(new CoreEvents.AssignResourcesEvent(getTextures(), getSounds()));
     }
     

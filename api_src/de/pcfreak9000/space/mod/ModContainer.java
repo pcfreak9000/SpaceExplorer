@@ -2,6 +2,8 @@ package de.pcfreak9000.space.mod;
 
 import java.util.Arrays;
 
+import org.checkerframework.checker.units.qual.A;
+
 /**
  * contains a mod
  *
@@ -49,6 +51,17 @@ public class ModContainer {
     
     @Override
     public String toString() {
-        return this.mod.id() + " " + Arrays.toString(this.mod.version());
+        StringBuilder b = new StringBuilder();
+        b.append(this.mod.id());
+        b.append(' ');
+        b.append('v');
+        long[] v = this.mod.version();
+        for (int i = 0; i < v.length; i++) {
+            b.append(v[i]);
+            if (i < v.length - 1) {
+                b.append('.');
+            }
+        }
+        return b.toString();
     }
 }

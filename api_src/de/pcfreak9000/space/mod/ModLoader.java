@@ -19,6 +19,9 @@ import java.util.regex.Pattern;
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.resource.loadervpc.ResourceManager;
 import de.omnikryptec.util.Logger;
+import de.pcfreak9000.space.core.LoadingScreen;
+import de.pcfreak9000.space.core.LoadingScreen.LoadingEvent;
+import de.pcfreak9000.space.core.LoadingScreen.LoadingSubEvent;
 import de.pcfreak9000.space.core.Space;
 
 /**
@@ -66,7 +69,10 @@ public class ModLoader {
     private final List<ModContainer> modList = new ArrayList<>();
     private final List<ModContainer> readOnlyModList = Collections.unmodifiableList(modList);
     
+    private int stage = 1;
+    
     public void load(AdvancedFile modsfolder) {
+        stage = 1;
         this.classLoadMods(modsfolder.toFile());
         this.instantiate();
         this.dispatchInstances();
@@ -89,23 +95,31 @@ public class ModLoader {
     
     private void preInit() {
         LOGGER.info("mod pre-initialization stage");
+        LoadingScreen.LOADING_STAGE_BUS.post(new LoadingScreen.LoadingEvent("Pre-initializing mods"));
         Space.BUS.post(new ModLoaderEvents.ModPreInitEvent());
     }
     
     private void init() {
         LOGGER.info("mod initialization stage");
+        LoadingScreen.LOADING_STAGE_BUS.post(new LoadingScreen.LoadingEvent("Initializing mods"));
         Space.BUS.post(new ModLoaderEvents.ModInitEvent());
     }
     
     private void postInit() {
         LOGGER.info("mod post-initialization stage");
+        LoadingScreen.LOADING_STAGE_BUS.post(new LoadingScreen.LoadingEvent("Post-initializing mods"));
         Space.BUS.post(new ModLoaderEvents.ModPostInitEvent());
     }
     
     private void instantiate() {
         LOGGER.info("Instantiating mods...");
+        LoadingScreen.LOADING_STAGE_BUS.post(new LoadingScreen.LoadingEvent("Constructing mods", true));
+        int i = 0;
         for (final TmpHolder th : this.modClasses) {
+            i++;
             final Class<?> modClass = th.modclass;
+            LoadingScreen.LOADING_STAGE_BUS.post(new LoadingScreen.LoadingSubEvent(
+                    modClass.getAnnotation(Mod.class).name(), i, this.modClasses.size()));
             Object instance = null;
             try {
                 modClass.getConstructor().setAccessible(true);
@@ -134,7 +148,7 @@ public class ModLoader {
                         + Arrays.toString(container.getMod().version()) + ")");
                 continue;
             } else {
-                LOGGER.info("Instantiated mod: " + container);
+                LOGGER.infof("Instantiated mod: %s (%s)", container.getMod().name(), container.toString());
                 modList.add(container);
             }
             if (!contains(Space.VERSION, container.getMod().se2dversion())) {
@@ -145,6 +159,7 @@ public class ModLoader {
     
     private void registerEvents() {
         LOGGER.info("Registering container event handlers...");
+        LoadingScreen.LOADING_STAGE_BUS.post(new LoadingScreen.LoadingEvent("Registering initializer"));
         for (final ModContainer container : modList) {
             Space.BUS.register(container.getInstance());
         }
@@ -152,6 +167,7 @@ public class ModLoader {
     
     private void dispatchInstances() {
         LOGGER.info("Dispatching instances...");
+        LoadingScreen.LOADING_STAGE_BUS.post(new LoadingScreen.LoadingEvent("Dispatching instances"));
         for (final ModContainer container : modList) {
             final Field[] fields = container.getModClass().getDeclaredFields();
             for (final Field f : fields) {
@@ -206,6 +222,7 @@ public class ModLoader {
     }
     
     private void classLoadMods(final File moddir) {
+        LoadingScreen.LOADING_STAGE_BUS.post(new LoadingScreen.LoadingEvent("Finding mods", true));
         final List<File> candidates = new ArrayList<>();
         discover(candidates, moddir);
         load(candidates);
@@ -226,7 +243,8 @@ public class ModLoader {
             JarFile jarfile = null;
             try {
                 jarfile = new JarFile(candidates.get(i));
-                
+                LoadingScreen.LOADING_STAGE_BUS
+                        .post(new LoadingScreen.LoadingSubEvent(candidates.get(i).getName(), i + 1, candidates.size()));
                 for (final JarEntry entry : Collections.list(jarfile.entries())) {
                     if (entry.getName().toLowerCase().endsWith(".class")) {
                         Class<?> clazz = null;
@@ -264,7 +282,7 @@ public class ModLoader {
             e.printStackTrace();
         }
         this.modClasses.sort(COMP);
-        LOGGER.info("Found " + modClasses.size() + " mod candidates!");
+        LOGGER.infof("Found %d mod candidate(s)!", modClasses.size());
     }
     
     private void discover(final List<File> files, final File f) {
