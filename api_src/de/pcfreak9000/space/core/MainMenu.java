@@ -83,10 +83,10 @@ public class MainMenu {
     }
     
     private void textureButton(GuiButton b, TextureHelper h) {
-        b.setTexture(State.Idle, h.get("button_1.png"));
-        b.setTexture(State.Hovering, h.get("button_2.png"));
-        b.setTexture(State.Clicked, h.get("button_2.png"));
-        b.setTexture(State.Disabled, h.get("button_3.png"));
+        b.setTexture(State.Idle, h.get("gui:button_1.png"));
+        b.setTexture(State.Hovering, h.get("gui:button_2.png"));
+        b.setTexture(State.Clicked, h.get("gui:button_2.png"));
+        b.setTexture(State.Disabled, h.get("gui:button_3.png"));
     }
     
     public void makeCurrent() {
