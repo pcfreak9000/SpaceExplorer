@@ -4,6 +4,7 @@ import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.SimpleSprite;
+import de.omnikryptec.util.data.Color;
 import de.pcfreak9000.space.voxelworld.ecs.PhysicsComponent;
 import de.pcfreak9000.space.voxelworld.ecs.PlayerInputComponent;
 import de.pcfreak9000.space.voxelworld.ecs.RenderComponent;
@@ -41,6 +42,8 @@ public class PlayerStats {
         light.setTexture(Omnikryptec.getTexturesS().get("light_2.png"));
         light.setWidth(Tile.TILE_SIZE * 8);
         light.setHeight(Tile.TILE_SIZE * 8);
+        //light.setColor(new Color());
+        //light.getColor().set(-100, 1, 1);
         light.getTransform().localspaceWrite().setTranslation(-light.getWidth() / 2 + sprite.getWidth() / 2,
                 -light.getHeight() / 2 + sprite.getHeight() / 2);
         RenderComponent rc = new RenderComponent(sprite);

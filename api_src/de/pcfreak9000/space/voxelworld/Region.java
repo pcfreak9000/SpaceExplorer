@@ -148,7 +148,6 @@ public class Region {
                 return frustum.testAab((Region.this.tx - 3) * Tile.TILE_SIZE, (Region.this.ty - 3) * Tile.TILE_SIZE, 0,
                         (Region.this.tx + REGION_TILE_SIZE + 3) * Tile.TILE_SIZE,
                         (Region.this.ty + REGION_TILE_SIZE + 3) * Tile.TILE_SIZE, 0);
-
             }
         };
         this.regionEntity.addComponent(rc);

@@ -50,7 +50,7 @@ public class GroundManager {
     public GroundManager() {
         this.localLoadedChunks = new HashSet<>();
         this.ecsManager = UpdateableFactory.createDefaultIECSManager();
-        this.localScene = Omnikryptec.getGameS().createAndAddScene();
+        this.localScene = new Scene();
         this.viewManager = this.localScene.getViewManager();
         this.planetCamera = new PlanetCamera();
         this.viewManager.getMainView().setProjection(this.planetCamera.getCameraActual());
@@ -69,6 +69,7 @@ public class GroundManager {
     private void addDefaultECSSystems() {
         AdvancedRenderer2D renderer = new AdvancedRenderer2D(12 * 6 * Region.REGION_TILE_SIZE);
         renderer.setEnableReflections(false);
+        renderer.setUseExtendedLightRange(true);
         renderer.ambientLight().setAllRGB(0);
         Renderer2D backgroundRenderer = new Renderer2D(18);
         backgroundRenderer.setEnableTiling(true);

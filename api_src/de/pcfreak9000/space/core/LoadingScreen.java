@@ -12,7 +12,7 @@ import de.omnikryptec.util.Logger;
 
 public class LoadingScreen {
     
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     
     public static class LoadingEvent extends Event {
         private final String name;
