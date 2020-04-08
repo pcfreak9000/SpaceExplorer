@@ -84,16 +84,16 @@ public class Space extends Omnikryptec {
         LoadingScreen s = new LoadingScreen(9);
         mainMenu = new MainMenu();
         getResourceManager().addCallback(new LoadingScreenCallback());
-        s.begin();
+        s.makeCurrentGui();
         this.modloader.load(mkdirIfNonExisting(new AdvancedFile(FOLDER, MODS)));
         loadResources();
-        s.end();
-        mainMenu.makeCurrent();
+        s.removeCurrentGui();
+        mainMenu.makeCurrentGui();
     }
     
     @EventSubscription //TMP
     public void onPlayEvent(CoreEvents.PlayEvent ev) {
-        mainMenu.remove();
+        mainMenu.removeCurrentGui();
         //TESTING:
         this.groundManager = new GroundManager();//Hmmm... is there a better place to do this
         GameInstance ins = new GameInstance(this.groundManager);

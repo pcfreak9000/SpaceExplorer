@@ -10,7 +10,7 @@ import de.omnikryptec.gui.GuiProgressBar;
 import de.omnikryptec.resource.Font;
 import de.omnikryptec.util.Logger;
 
-public class LoadingScreen {
+public class LoadingScreen extends AbstractGui {
     
     private static final boolean DEBUG = false;
     
@@ -45,8 +45,6 @@ public class LoadingScreen {
     
     public static final EventBus LOADING_STAGE_BUS = new EventBus();
     
-    private final GuiComponent component;
-    
     private final GuiImage background;
     
     private final GuiProgressBar bar0;
@@ -76,21 +74,22 @@ public class LoadingScreen {
         this.bar1.colorEmpty().set(1, 0, 0);
         this.bar1.colorFull().set(0, 1, 0);
         this.bar1.setVisibility(false);
-        this.component = new GuiComponent();
         this.component.addComponent(this.background);
         this.component.addComponent(this.bar0);
         this.component.addComponent(this.bar1);
     }
     
-    public void begin() {
+    @Override
+    public void makeCurrentGui() {
         LOGGER.debug("Starting LoadingScreen");
         this.active = true;
-        Omnikryptec.getGameS().getGuiManager().setGui(this.component);
+        super.makeCurrentGui();
     }
     
-    public void end() {
+    @Override
+    public void removeCurrentGui() {
         LOADING_STAGE_BUS.unregister(this);
-        Omnikryptec.getGameS().getGuiManager().setGui(null);
+        super.removeCurrentGui();
         this.active = false;
         LOGGER.debug("Ended LoadingScreen");
     }

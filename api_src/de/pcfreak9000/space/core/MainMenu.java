@@ -9,9 +9,7 @@ import de.omnikryptec.gui.GuiComponent;
 import de.omnikryptec.gui.GuiImage;
 import de.omnikryptec.gui.GuiLabel;
 
-public class MainMenu {
-    
-    private GuiComponent component;
+public class MainMenu extends AbstractGui {
     
     private GuiImage background;
     private GuiButton buttonPlay;
@@ -19,7 +17,6 @@ public class MainMenu {
     private GuiButton buttonExit;
     
     public MainMenu() {
-        this.component = new GuiComponent();
         this.background = new GuiImage();
         this.buttonPlay = new GuiButton();
         this.buttonPlay.setDimensions(0.3f, 0.4f, 0.4f, 0.1f);
@@ -87,14 +84,6 @@ public class MainMenu {
         b.setTexture(State.Hovering, h.get("gui:button_2.png"));
         b.setTexture(State.Clicked, h.get("gui:button_2.png"));
         b.setTexture(State.Disabled, h.get("gui:button_3.png"));
-    }
-    
-    public void makeCurrent() {
-        Omnikryptec.getGameS().getGuiManager().setGui(component);
-    }
-    
-    public void remove() {
-        Omnikryptec.getGameS().getGuiManager().setGui(null);
     }
     
 }
