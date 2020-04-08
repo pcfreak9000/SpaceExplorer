@@ -129,6 +129,7 @@ public class Region {
             
             @Override
             public void draw(Batch2D batch) {
+                queueRecacheLights();//TODO WIP solution
                 if (Region.this.recacheLights) {
                     Region.this.recacheLights = false;
                     recacheLights();
@@ -204,74 +205,9 @@ public class Region {
         return old;
     }
     
-    public void requestSunlightComputation() {
-        int maxRy = toGlobalRegion(tileWorld.getWorldHeight());
-        LOGGER.debugf("Requested Sunlight comp: %s", this);
-        if (this.ry == maxRy) {
-            //Add LICHTWURZELKNOTEN to the queue
-            for (int i = 0; i < REGION_TILE_SIZE && tx + i < tileWorld.getWorldWidth(); i++) {
-                Tile t = get(tx + i, tileWorld.getWorldHeight() - 1);
-                t.sunlight().set(TileType.MAX_LIGHT_VALUE, TileType.MAX_LIGHT_VALUE, TileType.MAX_LIGHT_VALUE);
-                sunlightBfsQueue.add(t);
-            }
-        } else {
-            Region r = tileWorld.requestRegion(rx, this.ry + 1);
-            //if r.sunlightPasses Check if sunlight can even pass that chunk, otherwise:
-            r.requestSunlightComputation();
-            for (int i = 0; i < REGION_TILE_SIZE && tx + i < tileWorld.getWorldWidth(); i++) {
-                Tile t = get(tx + i, (this.ry+1) * REGION_TILE_SIZE - 1);
-                //t.sunlight().set(1,1,1);
-                sunlightBfsQueue.add(t);
-            }
-        }
-        queueRecacheLights();
-    }
-    
-    private void propagateSunlight() {
-        while (!sunlightBfsQueue.isEmpty()) {
-            Tile front = this.sunlightBfsQueue.poll();
-            int tx = front.getGlobalTileX();
-            int ty = front.getGlobalTileY();
-            if (front.getType().hasLightFilter()) {
-                //Color filter = front.getType().getFilterColor();
-                //front.light().mulRGB(filter);
-            }
-            if (this.tileWorld.inBounds(tx + 1, ty)) {
-                Tile t = this.tileWorld.get(tx + 1, ty);
-                checkAddSunLightHelper(front, t);
-            }
-            if (this.tileWorld.inBounds(tx - 1, ty)) {
-                Tile t = this.tileWorld.get(tx - 1, ty);
-                checkAddSunLightHelper(front, t);
-            }
-            if (this.tileWorld.inBounds(tx, ty + 1)) {
-                Tile t = this.tileWorld.get(tx, ty + 1);
-                checkAddSunLightHelper(front, t);
-            }
-            if (this.tileWorld.inBounds(tx, ty - 1)) {
-                Tile t = this.tileWorld.get(tx, ty - 1);
-                checkAddSunLightHelper(front, t);
-            }
-        }
-    }
-    
-    private void checkAddSunLightHelper(Tile front, Tile t) {
-        if (t != null) {
-            boolean found = false;
-            boolean noLoss = front.getGlobalTileX() == t.getGlobalTileX() && front.getType().getSunLightLoss() == 0
-                    && front.sunlight().equals(TileType.MAX_LIGHT_VALUE, TileType.MAX_LIGHT_VALUE,
-                            TileType.MAX_LIGHT_VALUE);//What about filters?
-            for (int i = 0; i < 3; i++) {
-                if (t.sunlight().get(i) + 1 < front.sunlight().get(i)) {
-                    t.sunlight().set(i, front.sunlight().get(i) - front.getType().getSunLightLoss());//Sunlight light loss?
-                    found = true;
-                }
-            }
-            if (found) {
-                this.sunlightBfsQueue.add(t);
-                queueNeighbouringLightRecaching(t);
-            }
-        }
+    public boolean inBounds(int gtx, int gty) {
+        return gtx >= this.tx && gtx < this.tx + REGION_TILE_SIZE && gty >= this.ty && gty < this.ty + REGION_TILE_SIZE
+                && gtx < tileWorld.getWorldWidth() && gty < tileWorld.getWorldHeight();
     }
     
     public Tile getBackground(int tx, int ty) {
@@ -322,6 +258,96 @@ public class Region {
             ecsManager.removeEntity(e);
         }
         ecsManager.removeEntity(this.regionEntity);
+    }
+    
+    public void requestSunlightComputation() {
+        int maxRy = toGlobalRegion(tileWorld.getWorldHeight());
+        if (this.ry == maxRy) {
+            //Add LICHTWURZELKNOTEN to the queue
+            for (int i = 0; i < REGION_TILE_SIZE && tx + i < tileWorld.getWorldWidth(); i++) {
+                Tile t = get(tx + i, tileWorld.getWorldHeight() - 1);
+                t.sunlight().set(TileType.MAX_LIGHT_VALUE, TileType.MAX_LIGHT_VALUE, TileType.MAX_LIGHT_VALUE);
+                t.setDirectSun(true);
+                sunlightBfsQueue.add(t);
+            }
+            propagateSunlight(false);
+        } else {
+            Region r = tileWorld.requestRegion(this.rx, this.ry + 1);
+            //if r.sunlightPasses Check if sunlight can even pass that chunk, otherwise:
+            r.requestSunlightComputation();
+        }
+        queueRecacheLights();
+    }
+    
+    private void propagateSunlight(boolean test) {
+        if (test) {
+            for (int i = 0; i < REGION_TILE_SIZE && tx + i < tileWorld.getWorldWidth(); i++) {
+                Tile t = tileWorld.get(tx + i, ty + REGION_TILE_SIZE);
+                if (t != null && t.sunlight().maxRGB() >= 1) {
+                    sunlightBfsQueue.add(t);
+                }
+            }
+        }
+        while (!sunlightBfsQueue.isEmpty()) {
+            Tile front = this.sunlightBfsQueue.poll();
+            int tx = front.getGlobalTileX();
+            int ty = front.getGlobalTileY();
+            if (front.getType().hasLightFilter()) {
+                Color filter = front.getType().getFilterColor();
+                front.light().mulRGB(filter);
+            }
+            if (this.tileWorld.inBounds(tx + 1, ty)) {
+                Tile t = this.tileWorld.get(tx + 1, ty);
+                checkAddSunLightHelper(front, t, test);
+            }
+            if (this.tileWorld.inBounds(tx - 1, ty)) {
+                Tile t = this.tileWorld.get(tx - 1, ty);
+                checkAddSunLightHelper(front, t, test);
+            }
+            if (this.tileWorld.inBounds(tx, ty + 1)) {
+                Tile t = this.tileWorld.get(tx, ty + 1);
+                checkAddSunLightHelper(front, t, test);
+            }
+            if (this.tileWorld.inBounds(tx, ty - 1)) {
+                Tile t = this.tileWorld.get(tx, ty - 1);
+                checkAddSunLightHelper(front, t, test);
+            }
+        }
+    }
+    
+    private void checkAddSunLightHelper(Tile front, Tile t, boolean TEST) {
+        if (t != null) {
+            boolean found = false;
+            boolean direct = front.getGlobalTileX() == t.getGlobalTileX() && front.isDirectSun();
+            for (int i = 0; i < 3; i++) {
+                if (t.sunlight().get(i) + 1 < front.sunlight().get(i)) {
+                    t.sunlight().set(i, front.sunlight().get(i)
+                            - (direct ? front.getType().getSunLightLoss() : front.getType().getLightLoss()));
+                    t.setDirectSun(direct);
+                    found = true;
+                }
+            }
+            if (found) {
+                this.sunlightBfsQueue.add(t);
+                queueNeighbouringLightRecaching(t);
+            }
+        }
+    }
+    
+    private void queueNeighbouringSunLightRecaching(Tile t) {
+        int c = Region.toGlobalRegion(t.getGlobalTileX());
+        int d = Region.toGlobalRegion(t.getGlobalTileY());
+        if (this.rx != c || this.ry != d) {
+            Region r = this.tileWorld.getRegion(c, d);
+            if (r != null) {
+                if (r.ry < ry) {
+                    r.sunlightBfsQueue.add(t);
+                } else {
+                    this.sunlightBfsQueue.add(t);
+                }
+                r.queueRecacheLights();
+            }
+        }
     }
     
     private void resolveLights() {
@@ -422,7 +448,7 @@ public class Region {
     
     private void recacheLights() {
         resolveLights();
-        propagateSunlight();
+        propagateSunlight(true);
         LOGGER.debug("Recaching lights: " + toString());
         this.lightOcvm.clear();
         SimpleBatch2D PACKING_BATCH = new SimpleBatch2D(this.lightOcvm);
@@ -433,11 +459,8 @@ public class Region {
         //background does not need to be recached all the time because it can not change (rn)
         this.tilesBackground.getAll(tiles, predicate);
         Texture tex = Omnikryptec.getTexturesS().get("light_2.png");
-        float mult = 3.3f;
+        float mult = 3.11f;
         for (Tile t : tiles) {
-            if (this.tiles.get(t.getGlobalTileX(), t.getGlobalTileY()).getType().isOpaque()) {
-                continue;
-            }
             Color c = t.light();
             float factor = 1 / TileType.MAX_LIGHT_VALUE;
             PACKING_BATCH.color().set(c).add(t.sunlight());
@@ -452,7 +475,6 @@ public class Region {
         for (Tile t : tiles) {
             float factor = 1 / TileType.MAX_LIGHT_VALUE;
             PACKING_BATCH.color().set(t.light()).add(t.sunlight());
-            System.out.println(t.sunlight());
             PACKING_BATCH.color().mulRGB(factor);
             //tmpTransform.setTranslation(t.getGlobalTileX() * Tile.TILE_SIZE, t.getGlobalTileY() * Tile.TILE_SIZE);
             tmpTransform.setTranslation(

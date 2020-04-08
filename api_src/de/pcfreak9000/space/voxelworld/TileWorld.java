@@ -35,8 +35,8 @@ public class TileWorld {
             Region r = this.regions[rx][ry];
             if (r == null) {
                 r = new Region(rx, ry, this);
-                this.generator.generateChunk(r, this);
                 this.regions[rx][ry] = r;
+                this.generator.generateChunk(r, this);
             }
             return r;
         }

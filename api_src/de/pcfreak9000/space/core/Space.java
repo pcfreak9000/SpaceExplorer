@@ -99,7 +99,7 @@ public class Space extends Omnikryptec {
         GameInstance ins = new GameInstance(this.groundManager);
         WorldInformationBundle testWorld = pickGenerator(
                 GameRegistry.GENERATOR_REGISTRY.filtered(GeneratorCapabilitiesBase.LVL_ENTRY)).generateWorld(0);
-        ins.visit(testWorld, 400 * Tile.TILE_SIZE, 3500);
+        ins.visit(testWorld, 200, 2500);
         //***************
     }
     

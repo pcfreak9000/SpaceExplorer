@@ -54,14 +54,14 @@ public class PlayerInputSystem extends AbstractComponentSystem {
         }
         //kinda useless, use for sneaking/ladders instead?
         if (Keys.BACKWARD.isPressed() || Keys.DOWN.isPressed()) {
-            vy -= play.maxYv;
+            vy -= play.maxYv*5;
         }
         //}
         if (Keys.LEFT.isPressed()) {
-            vx -= play.maxXv;
+            vx -= play.maxXv*5;
         }
         if (Keys.RIGHT.isPressed()) {
-            vx += play.maxXv;
+            vx += play.maxXv*5;
         }
         this.physicsMapper.get(this.entities.get(0)).acceleration.set(vx * 3, vy * 3 - 98.1f);
         if (Keys.EXPLODE_DEBUG.isPressed()) {

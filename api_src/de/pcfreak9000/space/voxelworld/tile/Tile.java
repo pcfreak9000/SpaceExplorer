@@ -16,6 +16,7 @@ public class Tile {
     
     private final Color light;
     private final Color sunlight;
+    private boolean directSun;
     
     private final TileType type;
     
@@ -45,6 +46,14 @@ public class Tile {
     
     public int getGlobalTileY() {
         return this.globalTileY;
+    }
+    
+    public void setDirectSun(boolean b) {
+        this.directSun = b;
+    }
+    
+    public boolean isDirectSun() {
+        return directSun;
     }
     
     @Override
