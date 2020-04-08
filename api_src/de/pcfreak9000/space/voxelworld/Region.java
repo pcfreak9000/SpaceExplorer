@@ -2,6 +2,7 @@ package de.pcfreak9000.space.voxelworld;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Queue;
@@ -26,50 +27,53 @@ import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathd;
+import de.omnikryptec.util.math.Mathf;
 import de.pcfreak9000.space.voxelworld.ecs.RenderComponent;
 import de.pcfreak9000.space.voxelworld.tile.Tile;
 import de.pcfreak9000.space.voxelworld.tile.TileType;
 
 public class Region {
-
+    
     private static class RemovalNode {
         Tile t;
         float v;
     }
-
+    
     private static final Logger LOGGER = Logger.getLogger(Region.class);
-
+    
     private static final boolean DEBUG_SHOW_BORDERS = true;
-
+    
     public static final int REGION_TILE_SIZE = 64;
-
+    
     private static final float BACKGROUND_FACTOR = 0.5f;
-
+    
     public static int toGlobalRegion(int globalTile) {
         return (int) Mathd.floor(globalTile / (double) REGION_TILE_SIZE);
     }
-
+    
     private final int rx;
     private final int ry;
-
+    
     private final int tx;
     private final int ty;
-
+    
     private final TileWorld tileWorld;
-
+    
     private final Quadtree<Tile> tiles;
     private final Quadtree<Tile> tilesBackground;
     private final List<Entity> entitiesStatic;
     private final List<Entity> entitiesDynamic;
-
+    
     private boolean recacheTiles;
     private boolean recacheLights;
     private final Queue<Tile> lightBfsQueue;
     private final Queue<RemovalNode>[] lightRemovalBfsQueue;
+    private final Queue<Tile> sunlightBfsQueue;
+    private final Queue<RemovalNode>[] sunlightRemovalBfsQueue;
     private final OrderedCachedVertexManager ocvm;
     private final OrderedCachedVertexManager lightOcvm;
     private final Entity regionEntity;
-
+    
     public Region(int rx, int ry, TileWorld tw) {
         this.tileWorld = tw;
         this.rx = rx;
@@ -85,9 +89,10 @@ public class Region {
         this.regionEntity = new Entity();
         this.lightBfsQueue = new ArrayDeque<>();
         this.lightRemovalBfsQueue = new Queue[3];
-        for (int i = 0; i < this.lightRemovalBfsQueue.length; i++) {
-            this.lightRemovalBfsQueue[i] = new ArrayDeque<>();
-        }
+        Arrays.setAll(this.lightRemovalBfsQueue, (i) -> new ArrayDeque<>());
+        this.sunlightBfsQueue = new ArrayDeque<>();
+        this.sunlightRemovalBfsQueue = new Queue[3];
+        Arrays.setAll(this.sunlightRemovalBfsQueue, (i) -> new ArrayDeque<>());
         this.recacheLights = true;
         this.recacheTiles = true;
         RenderComponent rc = new RenderComponent(new AdvancedSprite() {
@@ -111,17 +116,17 @@ public class Region {
                     batch.color().setAll(1);
                 }
             }
-
+            
             @Override
             public boolean isVisible(FrustumIntersection frustum) {
                 return frustum.testAab(Region.this.tx * Tile.TILE_SIZE, Region.this.ty * Tile.TILE_SIZE, 0,
                         (Region.this.tx + REGION_TILE_SIZE) * Tile.TILE_SIZE,
                         (Region.this.ty + REGION_TILE_SIZE) * Tile.TILE_SIZE, 0);
-
+                
             }
         });
         rc.light = new Sprite() {
-
+            
             @Override
             public void draw(Batch2D batch) {
                 if (Region.this.recacheLights) {
@@ -142,7 +147,7 @@ public class Region {
                     batch.color().setAll(1);
                 }
             }
-
+            
             @Override
             public boolean isVisible(FrustumIntersection frustum) {
                 return frustum.testAab((Region.this.tx - 3) * Tile.TILE_SIZE, (Region.this.ty - 3) * Tile.TILE_SIZE, 0,
@@ -152,39 +157,39 @@ public class Region {
         };
         this.regionEntity.addComponent(rc);
     }
-
+    
     public void queueRecacheLights() {
         this.recacheLights = true;
     }
-
+    
     public void queueRecacheTiles() {
         this.recacheTiles = true;
     }
-
+    
     public int getGlobalRegionX() {
         return this.rx;
     }
-
+    
     public int getGlobalRegionY() {
         return this.ry;
     }
-
+    
     public int getGlobalTileX() {
         return this.tx;
     }
-
+    
     public int getGlobalTileY() {
         return this.ty;
     }
-
+    
     public void tileIntersections(Collection<Tile> output, int x, int y, int w, int h) {
         this.tiles.getAABB(output, x, y, w, h);
     }
-
+    
     public Tile get(int x, int y) {
         return this.tiles.get(x, y);
     }
-
+    
     public Tile setTile(Tile t) {
         Util.ensureNonNull(t);
         Tile old = this.tiles.set(t, t.getGlobalTileX(), t.getGlobalTileY());
@@ -198,11 +203,81 @@ public class Region {
         }
         return old;
     }
-
+    
+    public void requestSunlightComputation() {
+        int maxRy = toGlobalRegion(tileWorld.getWorldHeight());
+        LOGGER.debugf("Requested Sunlight comp: %s", this);
+        if (this.ry == maxRy) {
+            //Add LICHTWURZELKNOTEN to the queue
+            for (int i = 0; i < REGION_TILE_SIZE && tx + i < tileWorld.getWorldWidth(); i++) {
+                Tile t = get(tx + i, tileWorld.getWorldHeight() - 1);
+                t.sunlight().set(TileType.MAX_LIGHT_VALUE, TileType.MAX_LIGHT_VALUE, TileType.MAX_LIGHT_VALUE);
+                sunlightBfsQueue.add(t);
+            }
+        } else {
+            Region r = tileWorld.requestRegion(rx, this.ry + 1);
+            //if r.sunlightPasses Check if sunlight can even pass that chunk, otherwise:
+            r.requestSunlightComputation();
+            for (int i = 0; i < REGION_TILE_SIZE && tx + i < tileWorld.getWorldWidth(); i++) {
+                Tile t = get(tx + i, (this.ry+1) * REGION_TILE_SIZE - 1);
+                //t.sunlight().set(1,1,1);
+                sunlightBfsQueue.add(t);
+            }
+        }
+        queueRecacheLights();
+    }
+    
+    private void propagateSunlight() {
+        while (!sunlightBfsQueue.isEmpty()) {
+            Tile front = this.sunlightBfsQueue.poll();
+            int tx = front.getGlobalTileX();
+            int ty = front.getGlobalTileY();
+            if (front.getType().hasLightFilter()) {
+                //Color filter = front.getType().getFilterColor();
+                //front.light().mulRGB(filter);
+            }
+            if (this.tileWorld.inBounds(tx + 1, ty)) {
+                Tile t = this.tileWorld.get(tx + 1, ty);
+                checkAddSunLightHelper(front, t);
+            }
+            if (this.tileWorld.inBounds(tx - 1, ty)) {
+                Tile t = this.tileWorld.get(tx - 1, ty);
+                checkAddSunLightHelper(front, t);
+            }
+            if (this.tileWorld.inBounds(tx, ty + 1)) {
+                Tile t = this.tileWorld.get(tx, ty + 1);
+                checkAddSunLightHelper(front, t);
+            }
+            if (this.tileWorld.inBounds(tx, ty - 1)) {
+                Tile t = this.tileWorld.get(tx, ty - 1);
+                checkAddSunLightHelper(front, t);
+            }
+        }
+    }
+    
+    private void checkAddSunLightHelper(Tile front, Tile t) {
+        if (t != null) {
+            boolean found = false;
+            boolean noLoss = front.getGlobalTileX() == t.getGlobalTileX() && front.getType().getSunLightLoss() == 0
+                    && front.sunlight().equals(TileType.MAX_LIGHT_VALUE, TileType.MAX_LIGHT_VALUE,
+                            TileType.MAX_LIGHT_VALUE);//What about filters?
+            for (int i = 0; i < 3; i++) {
+                if (t.sunlight().get(i) + 1 < front.sunlight().get(i)) {
+                    t.sunlight().set(i, front.sunlight().get(i) - front.getType().getSunLightLoss());//Sunlight light loss?
+                    found = true;
+                }
+            }
+            if (found) {
+                this.sunlightBfsQueue.add(t);
+                queueNeighbouringLightRecaching(t);
+            }
+        }
+    }
+    
     public Tile getBackground(int tx, int ty) {
         return this.tilesBackground.get(tx, ty);
     }
-
+    
     public void setTileBackground(Tile t) {
         this.tilesBackground.set(t, t.getGlobalTileX(), t.getGlobalTileY());
         if (t.getType().hasLight()) {
@@ -210,13 +285,13 @@ public class Region {
             //queueRecacheLights();
         }
     }
-
+    
     private void addLight(Tile light) {
         this.lightBfsQueue.add(light);
         light.light().set(light.getType().getLightColor());
         queueRecacheLights();
     }
-
+    
     private void removeLight(Tile light) {
         for (int i = 0; i < 3; i++) {
             RemovalNode node = new RemovalNode();
@@ -228,7 +303,7 @@ public class Region {
         }
         queueRecacheLights();
     }
-
+    
     public void addThisTo(IECSManager ecsManager) {
         for (Entity e : this.entitiesStatic) {
             ecsManager.addEntity(e);
@@ -238,7 +313,7 @@ public class Region {
         }
         ecsManager.addEntity(this.regionEntity);
     }
-
+    
     public void removeThisFrom(IECSManager ecsManager) {
         for (Entity e : this.entitiesStatic) {
             ecsManager.removeEntity(e);
@@ -248,7 +323,7 @@ public class Region {
         }
         ecsManager.removeEntity(this.regionEntity);
     }
-
+    
     private void resolveLights() {
         for (int i = 0; i < this.lightRemovalBfsQueue.length; i++) {
             while (!this.lightRemovalBfsQueue[i].isEmpty()) {
@@ -298,9 +373,9 @@ public class Region {
                 checkAddLightHelper(front, t);
             }
         }
-
+        
     }
-
+    
     private void checkRemoveLightHelper(RemovalNode front, Tile t, int index) {
         if (t != null) {
             Color col = t.light();
@@ -317,7 +392,7 @@ public class Region {
             }
         }
     }
-
+    
     private void checkAddLightHelper(Tile front, Tile t) {
         if (t != null) {
             boolean found = false;
@@ -333,7 +408,7 @@ public class Region {
             }
         }
     }
-
+    
     private void queueNeighbouringLightRecaching(Tile t) {
         int c = Region.toGlobalRegion(t.getGlobalTileX());
         int d = Region.toGlobalRegion(t.getGlobalTileY());
@@ -344,24 +419,28 @@ public class Region {
             }
         }
     }
-
+    
     private void recacheLights() {
         resolveLights();
+        propagateSunlight();
         LOGGER.debug("Recaching lights: " + toString());
         this.lightOcvm.clear();
         SimpleBatch2D PACKING_BATCH = new SimpleBatch2D(this.lightOcvm);
         PACKING_BATCH.begin();
         Matrix3x2f tmpTransform = new Matrix3x2f();
         List<Tile> tiles = new ArrayList<>();
-        Predicate<Tile> predicate = (t) -> t.light().maxRGB() >= 1;
+        Predicate<Tile> predicate = (t) -> t.light().maxRGB() >= 1 || t.sunlight().maxRGB() >= 1;
         //background does not need to be recached all the time because it can not change (rn)
         this.tilesBackground.getAll(tiles, predicate);
         Texture tex = Omnikryptec.getTexturesS().get("light_2.png");
         float mult = 3.3f;
         for (Tile t : tiles) {
+            if (this.tiles.get(t.getGlobalTileX(), t.getGlobalTileY()).getType().isOpaque()) {
+                continue;
+            }
             Color c = t.light();
             float factor = 1 / TileType.MAX_LIGHT_VALUE;
-            PACKING_BATCH.color().set(c);
+            PACKING_BATCH.color().set(c).add(t.sunlight());
             PACKING_BATCH.color().mulRGB(factor);
             tmpTransform.setTranslation(
                     t.getGlobalTileX() * Tile.TILE_SIZE - mult / 2 * Tile.TILE_SIZE + 0.5f * Tile.TILE_SIZE,
@@ -371,9 +450,9 @@ public class Region {
         tiles.clear();
         this.tiles.getAll(tiles, predicate);
         for (Tile t : tiles) {
-            Color c = t.light();
             float factor = 1 / TileType.MAX_LIGHT_VALUE;
-            PACKING_BATCH.color().set(c);
+            PACKING_BATCH.color().set(t.light()).add(t.sunlight());
+            System.out.println(t.sunlight());
             PACKING_BATCH.color().mulRGB(factor);
             //tmpTransform.setTranslation(t.getGlobalTileX() * Tile.TILE_SIZE, t.getGlobalTileY() * Tile.TILE_SIZE);
             tmpTransform.setTranslation(
@@ -383,8 +462,8 @@ public class Region {
         }
         PACKING_BATCH.end();
     }
-
-    private void recacheTiles() {//TODO improve recaching
+    
+    private void recacheTiles() {
         LOGGER.debug("Recaching: " + toString());
         this.ocvm.clear();
         AdvancedBatch2D PACKING_BATCH = new AdvancedBatch2D(this.ocvm);
@@ -409,7 +488,7 @@ public class Region {
         }
         PACKING_BATCH.end();
     }
-
+    
     @Override
     public String toString() {
         return String.format("Region[x=%d, y=%d]", this.tx, this.ty);

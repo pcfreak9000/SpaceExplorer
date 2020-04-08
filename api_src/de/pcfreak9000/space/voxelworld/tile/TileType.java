@@ -21,6 +21,7 @@ public class TileType {
         EMPTY.setTexture(null);
         EMPTY.setSolid(false);
         EMPTY.color().set(0, 0, 0, 0);
+        EMPTY.setSunLightLoss(0);
         //EMPTY.setLightLoss(0.0f);
         GameRegistry.TILE_REGISTRY.register("empty", EMPTY);
     }
@@ -36,7 +37,8 @@ public class TileType {
 
     private Color lightColor;
     private float lightloss = 1;
-
+    private float sunlightloss = 1;
+    
     private Color filterColor;
 
     private float bouncyness = 0;
@@ -116,7 +118,13 @@ public class TileType {
     public void setLightLoss(float f) {
         this.lightloss = f;
     }
+    public float getSunLightLoss() {
+        return this.lightloss;
+    }
 
+    public void setSunLightLoss(float f) {
+        this.sunlightloss = f;
+    }
     public void init(TextureHelper tileTextures) {
         if (this.textureName != null) {
             this.texture = tileTextures.get(this.textureName);

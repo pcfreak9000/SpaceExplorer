@@ -100,6 +100,7 @@ public class DMod {
                             chunk.setTileBackground(tile);
                         }
                     }
+                    chunk.requestSunlightComputation();
                 }), GameRegistry.BACKGROUND_REGISTRY.get("stars"));
             }
         });
