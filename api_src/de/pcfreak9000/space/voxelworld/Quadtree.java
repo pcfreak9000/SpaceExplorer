@@ -1,6 +1,7 @@
 package de.pcfreak9000.space.voxelworld;
 
 import java.util.Collection;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.joml.Intersectionf;
@@ -13,32 +14,32 @@ import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.math.Mathf;
 
 public class Quadtree<T> extends Sprite {
-
+    
     //TopLeft(0)/* 00 */, TopRight(1)/* 01 */, BotLeft(2)/* 10 */, BotRight(3)/* 11 */;
-
+    
     private Quadtree<T>[] nodes;
     private final int x, y;
     private final int size;
     private T data;
-
+    
     public Quadtree(int size, int x, int y) {
         this.size = MathUtil.toPowerOfTwo(size);
         this.x = x;
         this.y = y;
     }
-
+    
     public double getSize() {
         return this.size;
     }
-
+    
     private boolean isLeaf() {
         return this.size == 1;
     }
-
+    
     private boolean hasData() {
         return this.data != null;
     }
-
+    
     private boolean isEmpty() {
         if (!isLeaf()) {
             if (this.nodes == null) {
@@ -54,7 +55,7 @@ public class Quadtree<T> extends Sprite {
             return !hasData();
         }
     }
-
+    
     public void getAABB(Collection<T> output, int x, int y, int w, int h) {
         if (!Intersectionf.testAabAab(x, y, 0, x + w, y + h, 0, this.x, this.y, 0, this.x + this.size,
                 this.y + this.size, 0)) {
@@ -72,7 +73,7 @@ public class Quadtree<T> extends Sprite {
             }
         }
     }
-
+    
     public T get(int tileX, int tileY) {
         if (isLeaf()) {
             return this.data;
@@ -82,7 +83,7 @@ public class Quadtree<T> extends Sprite {
         }
         return null;
     }
-
+    
     public T set(T t, int tileX, int tileY) {
         if (isLeaf()) {
             T old = this.data;
@@ -109,12 +110,12 @@ public class Quadtree<T> extends Sprite {
             return null;
         }
     }
-
+    
     //TMP
     public void getAll(Collection<T> list) {
         getAll(list, null);
     }
-
+    
     //TMP
     public void getAll(Collection<T> list, Predicate<T> predicate) {
         if (isLeaf()) {
@@ -129,7 +130,22 @@ public class Quadtree<T> extends Sprite {
             }
         }
     }
-
+    
+    //TMP
+    public void execute(Consumer<T> function) {
+        if (isLeaf()) {
+            if (hasData()) {
+                function.accept(data);
+            }
+            return;
+        }
+        if (this.nodes != null) {
+            for (Quadtree<T> q : this.nodes) {
+                q.execute(function);
+            }
+        }
+    }
+    
     private void initializeNodes() {
         this.nodes = new Quadtree[4];
         for (int i = 0; i < this.nodes.length; i++) {
@@ -146,14 +162,14 @@ public class Quadtree<T> extends Sprite {
             this.nodes[i] = new Quadtree<>(this.size / 2, nx, ny);
         }
     }
-
+    
     private int positionToIndex(int x, int y) {
         int index = 0;
         index |= y < this.y + this.size / 2 ? 2 : 0;
         index |= x >= this.x + this.size / 2 ? 1 : 0;
         return index;
     }
-
+    
     private void visualize(Batch2D batch, int maxSize, float scale) {
         if (!isLeaf()) {
             if (this.nodes != null) {
@@ -180,10 +196,10 @@ public class Quadtree<T> extends Sprite {
         batch.drawLine(this.x * scale + this.size * scale, this.y * scale + this.size * scale, this.x * scale,
                 this.y * scale + this.size * scale, thickness);
     }
-
+    
     @Override
     public void draw(Batch2D batch) {
         visualize(batch, this.size, (float) ((Math.log(this.size) / Math.log(2)) * 4));
     }
-
+    
 }

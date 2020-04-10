@@ -3,8 +3,11 @@ package de.pcfreak9000.space.voxelworld.tile;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.resource.helper.TextureHelper;
 import de.omnikryptec.util.data.Color;
+import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.core.GameRegistry;
 import de.pcfreak9000.space.util.RegisterSensitive;
+import de.pcfreak9000.space.voxelworld.Region;
+import de.pcfreak9000.space.voxelworld.TileWorld;
 
 @RegisterSensitive(registry = "TILE_REGISTRY")
 public class TileType {
@@ -131,6 +134,9 @@ public class TileType {
         if (this.textureName != null) {
             this.texture = tileTextures.get(this.textureName);
         }
+    }
+    
+    public void tick(TileWorld tileWorld, Region region, Tile tile, Time time) {
     }
     
     @Override

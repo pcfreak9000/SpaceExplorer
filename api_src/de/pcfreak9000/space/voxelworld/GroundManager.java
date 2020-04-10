@@ -21,6 +21,7 @@ import de.pcfreak9000.space.voxelworld.ecs.ParallaxSystem;
 import de.pcfreak9000.space.voxelworld.ecs.PhysicsSystem;
 import de.pcfreak9000.space.voxelworld.ecs.PlayerInputSystem;
 import de.pcfreak9000.space.voxelworld.ecs.RenderSystem;
+import de.pcfreak9000.space.voxelworld.ecs.TickRegionSystem;
 
 /**
  * Responsible for successful surface world loading and unloading, management of
@@ -78,6 +79,7 @@ public class GroundManager {
         this.viewManager.addRenderer(renderer);
         this.ecsManager.addSystem(new RenderSystem(renderer, backgroundRenderer));
         this.ecsManager.addSystem(new PlayerInputSystem());
+        this.ecsManager.addSystem(new TickRegionSystem());
         this.ecsManager.addSystem(new PhysicsSystem());
         this.ecsManager.addSystem(new CameraSystem());
         this.ecsManager.addSystem(new ParallaxSystem());

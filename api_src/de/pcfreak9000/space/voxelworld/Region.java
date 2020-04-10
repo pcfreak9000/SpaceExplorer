@@ -28,7 +28,9 @@ import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathd;
 import de.omnikryptec.util.math.Mathf;
+import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.voxelworld.ecs.RenderComponent;
+import de.pcfreak9000.space.voxelworld.ecs.TickRegionComponent;
 import de.pcfreak9000.space.voxelworld.tile.Tile;
 import de.pcfreak9000.space.voxelworld.tile.TileType;
 
@@ -157,6 +159,7 @@ public class Region {
             }
         };
         this.regionEntity.addComponent(rc);
+        this.regionEntity.addComponent(new TickRegionComponent(this));
     }
     
     public void queueRecacheLights() {
@@ -191,6 +194,8 @@ public class Region {
         return this.tiles.get(x, y);
     }
     
+    //Maybe save the set for later somehow? 
+    
     public Tile setTile(Tile t) {
         Util.ensureNonNull(t);
         Tile old = this.tiles.set(t, t.getGlobalTileX(), t.getGlobalTileY());
@@ -224,7 +229,7 @@ public class Region {
     
     private void addLight(Tile light) {
         this.lightBfsQueue.add(light);
-        light.light().set(light.getType().getLightColor());
+        light.light().set(light.getType().getLightColor());//This might cause issues if this method is used to add light to already existing tiles?
         queueRecacheLights();
     }
     
@@ -258,6 +263,10 @@ public class Region {
             ecsManager.removeEntity(e);
         }
         ecsManager.removeEntity(this.regionEntity);
+    }
+    
+    public void tick(Time time) {
+        this.tiles.execute((t) -> t.getType().tick(tileWorld, this, t, time));
     }
     
     public void requestSunlightComputation() {
@@ -378,6 +387,10 @@ public class Region {
             Tile front = this.lightBfsQueue.poll();
             int tx = front.getGlobalTileX();
             int ty = front.getGlobalTileY();
+            //Check if the light "front" is actually there (theoretically doesnt need to be done for "front" that comes from propagating) 
+            if (front != get(tx, ty)) {
+                continue;
+            }
             if (front.getType().hasLightFilter()) {
                 Color filter = front.getType().getFilterColor();
                 front.light().mulRGB(filter);
