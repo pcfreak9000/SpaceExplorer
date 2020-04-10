@@ -1,4 +1,4 @@
-package de.pcfreak9000.space.voxelworld.ecs;
+package de.pcfreak9000.space.tileworld.ecs;
 
 import org.joml.Vector2f;
 import org.joml.Vector2fc;

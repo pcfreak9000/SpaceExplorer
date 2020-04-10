@@ -4,7 +4,6 @@ import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.event.Event;
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.event.EventSubscription;
-import de.omnikryptec.gui.GuiComponent;
 import de.omnikryptec.gui.GuiImage;
 import de.omnikryptec.gui.GuiProgressBar;
 import de.omnikryptec.resource.Font;

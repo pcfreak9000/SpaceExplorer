@@ -121,7 +121,7 @@ public class SpaceExplorer2D {
 
     @EventSubscription
     public void someFrameUpdateEventHandlerMethod(final FrameEvent ev) {
-        if (ev.getType() == FrameType.PRE && this.currentWorld != null) {
+        if (ev.getTile() == FrameType.PRE && this.currentWorld != null) {
             System.out.println(InputManager.getMouseHandler().getPosition());
             this.currentWorld.update();
         }

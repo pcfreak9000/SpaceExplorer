@@ -1,4 +1,4 @@
-package de.pcfreak9000.space.voxelworld.ecs;
+package de.pcfreak9000.space.tileworld.ecs;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,33 +16,32 @@ import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.core.Keys;
 import de.pcfreak9000.space.core.Space;
-import de.pcfreak9000.space.voxelworld.Region;
-import de.pcfreak9000.space.voxelworld.TileWorld;
-import de.pcfreak9000.space.voxelworld.VoxelworldEvents;
-import de.pcfreak9000.space.voxelworld.tile.Tile;
-import de.pcfreak9000.space.voxelworld.tile.TileType;
+import de.pcfreak9000.space.tileworld.Region;
+import de.pcfreak9000.space.tileworld.TileWorld;
+import de.pcfreak9000.space.tileworld.VoxelworldEvents;
+import de.pcfreak9000.space.tileworld.tile.Tile;
 
 public class PlayerInputSystem extends AbstractComponentSystem {
-
+    
     public PlayerInputSystem() {
         super(Family.of(PlayerInputComponent.class));
         Space.BUS.register(this);
     }
-
+    
     private final ComponentMapper<PlayerInputComponent> mapper = new ComponentMapper<>(PlayerInputComponent.class);
     private final ComponentMapper<PhysicsComponent> physicsMapper = new ComponentMapper<>(PhysicsComponent.class);
-
+    
     private TileWorld world;
     private Camera cam;
-
+    
     @EventSubscription
     public void settwevent(VoxelworldEvents.SetVoxelWorldEvent ev) {
         this.world = ev.tileWorldNew;
         this.cam = ev.groundMgr.getPlanetCamera().getCameraActual();//TODO meh...?
     }
-
-    private TileType ugly = null;
-
+    
+    private Tile ugly = null;
+    
     @Override
     public void update(IECSManager iecsManager, Time time) {
         PlayerInputComponent play = this.mapper.get(this.entities.get(0));
@@ -50,18 +49,18 @@ public class PlayerInputSystem extends AbstractComponentSystem {
         float vx = 0;
         //if (physicsMapper.get(entities.get(0)).onGround) {
         if (Keys.FORWARD.isPressed() || Keys.UP.isPressed()) {
-            vy += play.maxYv *5;
+            vy += play.maxYv * 5;
         }
         //kinda useless, use for sneaking/ladders instead?
         if (Keys.BACKWARD.isPressed() || Keys.DOWN.isPressed()) {
-            vy -= play.maxYv*5;
+            vy -= play.maxYv * 5;
         }
         //}
         if (Keys.LEFT.isPressed()) {
-            vx -= play.maxXv*5;
+            vx -= play.maxXv * 5;
         }
         if (Keys.RIGHT.isPressed()) {
-            vx += play.maxXv*5;
+            vx += play.maxXv * 5;
         }
         this.physicsMapper.get(this.entities.get(0)).acceleration.set(vx * 3, vy * 3 - 98.1f);
         if (Keys.EXPLODE_DEBUG.isPressed()) {
@@ -77,10 +76,10 @@ public class PlayerInputSystem extends AbstractComponentSystem {
                         int ty = tym + j;
                         Region r = this.world.requestRegion(Region.toGlobalRegion(tx), Region.toGlobalRegion(ty));
                         if (r != null) {
-                            Tile t = r.get(tx, ty);
-                            if (t != null && t.getType().canBreak()) {
-                                this.ugly = t.getType();
-                                r.setTile(new Tile(TileType.EMPTY, tx, ty));
+                            Tile t = r.getTile(tx, ty);
+                            if (t != null && t.canBreak()) {
+                                this.ugly = t;
+                                r.setTile(Tile.EMPTY, tx, ty);
                                 rs.add(r);
                             }
                         }
@@ -97,10 +96,10 @@ public class PlayerInputSystem extends AbstractComponentSystem {
             int ty = Tile.toGlobalTile(mouse.y());
             Region r = this.world.requestRegion(Region.toGlobalRegion(tx), Region.toGlobalRegion(ty));
             if (r != null) {
-                Tile t = r.get(tx, ty);
-                if (t != null && t.getType().canBreak()) {
-                    this.ugly = t.getType();
-                    r.setTile(new Tile(TileType.EMPTY, tx, ty));
+                Tile t = r.getTile(tx, ty);
+                if (t != null && t.canBreak()) {
+                    this.ugly = t;
+                    r.setTile(Tile.EMPTY, tx, ty);
                     r.queueRecacheTiles();
                 }
             }
@@ -111,12 +110,12 @@ public class PlayerInputSystem extends AbstractComponentSystem {
             int ty = Tile.toGlobalTile(mouse.y());
             Region r = this.world.requestRegion(Region.toGlobalRegion(tx), Region.toGlobalRegion(ty));
             if (r != null && this.ugly != null) {
-                if (r.get(tx, ty) == null || r.get(tx, ty).getType() == TileType.EMPTY) {
-                    r.setTile(new Tile(this.ugly, tx, ty));
+                if (r.getTile(tx, ty) == null || r.getTile(tx, ty) == Tile.EMPTY) {
+                    r.setTile(this.ugly, tx, ty);
                     r.queueRecacheTiles();
                 }
             }
         }
     }
-
+    
 }

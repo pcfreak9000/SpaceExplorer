@@ -1,4 +1,4 @@
-package de.pcfreak9000.space.voxelworld;
+package de.pcfreak9000.space.tileworld;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -6,7 +6,8 @@ import java.util.Set;
 
 import de.omnikryptec.util.math.Mathd;
 import de.omnikryptec.util.profiling.Profiler;
-import de.pcfreak9000.space.voxelworld.tile.Tile;
+import de.pcfreak9000.space.tileworld.tile.Tile;
+import de.pcfreak9000.space.tileworld.tile.TileState;
 
 public class TileWorld {
 
@@ -58,14 +59,14 @@ public class TileWorld {
         return tx >= 0 && tx < this.width && ty >= 0 && ty < this.height;
     }
 
-    public Tile get(int tx, int ty) {
+    public Tile getTile(int tx, int ty) {
         int rx = Region.toGlobalRegion(tx);
         int ry = Region.toGlobalRegion(ty);
         Region r = requestRegion(rx, ry);
-        return r.get(tx, ty);
+        return r.getTile(tx, ty);
     }
 
-    public void collectTileIntersections(Collection<Tile> output, int x, int y, int w, int h) {
+    public void collectTileIntersections(Collection<TileState> output, int x, int y, int w, int h) {
         Profiler.begin("collectTileIntersects");
         boolean xy = inBounds(x, y);
         boolean xwyh = inBounds(x + w, y + h);

@@ -1,7 +1,7 @@
 package de.pcfreak9000.space.core;
 
 import de.omnikryptec.event.EventSubscription;
-import de.pcfreak9000.space.voxelworld.Background;
+import de.pcfreak9000.space.tileworld.Background;
 
 public class BackgroundRegistry extends GameRegistry<Background> {
 

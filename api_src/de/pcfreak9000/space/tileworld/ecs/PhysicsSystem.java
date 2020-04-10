@@ -1,4 +1,4 @@
-package de.pcfreak9000.space.voxelworld.ecs;
+package de.pcfreak9000.space.tileworld.ecs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +16,10 @@ import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.core.Space;
-import de.pcfreak9000.space.voxelworld.TileWorld;
-import de.pcfreak9000.space.voxelworld.VoxelworldEvents;
-import de.pcfreak9000.space.voxelworld.tile.Tile;
+import de.pcfreak9000.space.tileworld.TileWorld;
+import de.pcfreak9000.space.tileworld.VoxelworldEvents;
+import de.pcfreak9000.space.tileworld.tile.Tile;
+import de.pcfreak9000.space.tileworld.tile.TileState;
 
 public class PhysicsSystem extends IterativeComponentSystem {
 
@@ -55,18 +56,18 @@ public class PhysicsSystem extends IterativeComponentSystem {
         if (!(pc.w == 0 && pc.h == 0)) {
             pc.onGround = false;
             float tRemaining = 1.0f;
-            Tile tile = null;
+            TileState tile = null;
             for (int i = 0; i < 4 && tRemaining > 0.0f; i++) {
                 float tMin = 1.0f;
                 positionState = tc.transform.worldspacePos();
                 pc.x = positionState.x();//TODO implement offset?
                 pc.y = positionState.y();
-                List<Tile> collisions = new ArrayList<>();
+                List<TileState> collisions = new ArrayList<>();
                 this.tileWorld.collectTileIntersections(collisions, (int) Mathf.floor(pc.x / Tile.TILE_SIZE),
                         (int) Mathf.floor(pc.y / Tile.TILE_SIZE), (int) Mathf.ceil((pc.w + posDeltaX) / Tile.TILE_SIZE),
                         (int) Mathf.ceil((pc.h + posDeltaY) / Tile.TILE_SIZE));
-                for (Tile t : collisions) {
-                    if (!t.getType().isSolid()) {
+                for (TileState t : collisions) {
+                    if (!t.getTile().isSolid()) {
                         continue;
                     }
                     Vector2f result = new Vector2f();
@@ -92,7 +93,7 @@ public class PhysicsSystem extends IterativeComponentSystem {
                 tc.transform.localspaceWrite().setTranslation(positionState.x() + posDeltaX * tMin,
                         positionState.y() + posDeltaY * tMin);
                 if (tMin < 1) {
-                    float bouncynessFactor = 1 + tile.getType().getBouncyness();
+                    float bouncynessFactor = 1 + tile.getTile().getBouncyness();
                     pc.velocity.sub(getNormal(tile, pc).mul(bouncynessFactor * pc.velocity.dot(getNormal(tile, pc))),
                             pc.velocity);
                     Vector2f hehe = new Vector2f(posDeltaX, posDeltaY);
@@ -107,7 +108,7 @@ public class PhysicsSystem extends IterativeComponentSystem {
         }
     }
 
-    private Vector2f getNormal(Tile t, PhysicsComponent pc) {
+    private Vector2f getNormal(TileState t, PhysicsComponent pc) {
         if ((1 + t.getGlobalTileY()) * Tile.TILE_SIZE < pc.y + pc.h * 0.01f) {
             return new Vector2f(0, 1);
         } else if ((t.getGlobalTileY()) * Tile.TILE_SIZE > pc.y + pc.h * 0.99f) {

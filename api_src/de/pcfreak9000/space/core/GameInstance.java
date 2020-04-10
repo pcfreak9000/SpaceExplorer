@@ -1,10 +1,10 @@
 package de.pcfreak9000.space.core;
 
 import de.omnikryptec.ecs.component.ComponentType;
-import de.pcfreak9000.space.voxelworld.GroundManager;
-import de.pcfreak9000.space.voxelworld.WorldInformationBundle;
-import de.pcfreak9000.space.voxelworld.WorldLoadingFence;
-import de.pcfreak9000.space.voxelworld.ecs.TransformComponent;
+import de.pcfreak9000.space.tileworld.GroundManager;
+import de.pcfreak9000.space.tileworld.WorldInformationBundle;
+import de.pcfreak9000.space.tileworld.WorldLoadingFence;
+import de.pcfreak9000.space.tileworld.ecs.TransformComponent;
 
 /**
  * The currently loaded level. Information about the player, the world, and

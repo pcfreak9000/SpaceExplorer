@@ -1,7 +1,7 @@
-package de.pcfreak9000.space.voxelworld;
+package de.pcfreak9000.space.tileworld;
 
 import de.omnikryptec.util.math.transform.Transform2Df;
-import de.pcfreak9000.space.voxelworld.tile.Tile;
+import de.pcfreak9000.space.tileworld.tile.Tile;
 
 public class WorldLoadingFence {
 

@@ -17,11 +17,10 @@ import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 import de.pcfreak9000.space.mod.ModLoader;
-import de.pcfreak9000.space.voxelworld.GroundManager;
-import de.pcfreak9000.space.voxelworld.TileWorldGenerator;
-import de.pcfreak9000.space.voxelworld.TileWorldGenerator.GeneratorCapabilitiesBase;
-import de.pcfreak9000.space.voxelworld.WorldInformationBundle;
-import de.pcfreak9000.space.voxelworld.tile.Tile;
+import de.pcfreak9000.space.tileworld.GroundManager;
+import de.pcfreak9000.space.tileworld.TileWorldGenerator;
+import de.pcfreak9000.space.tileworld.WorldInformationBundle;
+import de.pcfreak9000.space.tileworld.TileWorldGenerator.GeneratorCapabilitiesBase;
 
 /**
  * The main class. General settings and ressource/mod loading.

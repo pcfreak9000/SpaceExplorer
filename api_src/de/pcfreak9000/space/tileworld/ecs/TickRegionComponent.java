@@ -1,7 +1,7 @@
-package de.pcfreak9000.space.voxelworld.ecs;
+package de.pcfreak9000.space.tileworld.ecs;
 
 import de.omnikryptec.ecs.component.Component;
-import de.pcfreak9000.space.voxelworld.Region;
+import de.pcfreak9000.space.tileworld.Region;
 
 public class TickRegionComponent implements Component {
     

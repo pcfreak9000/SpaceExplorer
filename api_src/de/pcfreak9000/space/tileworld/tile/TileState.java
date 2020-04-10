@@ -1,15 +1,10 @@
-package de.pcfreak9000.space.voxelworld.tile;
+package de.pcfreak9000.space.tileworld.tile;
 
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.Color;
-import de.omnikryptec.util.math.Mathd;
 
-public class Tile {
-    public static final float TILE_SIZE = 16 * 1.5f;
-    
-    public static int toGlobalTile(float x) {
-        return (int) Mathd.floor(x / (double) TILE_SIZE);
-    }
+public class TileState {
+
     
     private final int globalTileX;
     private final int globalTileY;
@@ -18,9 +13,9 @@ public class Tile {
     private final Color sunlight;
     private boolean directSun;
     
-    private final TileType type;
+    private final Tile type;
     
-    public Tile(TileType type, int gtx, int gty) {
+    public TileState(Tile type, int gtx, int gty) {
         this.type = Util.ensureNonNull(type);
         this.light = new Color(0, 0, 0, 1);
         this.sunlight = new Color(0, 0, 0, 1);
@@ -36,7 +31,7 @@ public class Tile {
         return this.sunlight;
     }
     
-    public TileType getType() {
+    public Tile getTile() {
         return this.type;
     }
     

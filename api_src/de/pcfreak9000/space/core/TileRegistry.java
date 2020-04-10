@@ -1,9 +1,9 @@
 package de.pcfreak9000.space.core;
 
 import de.omnikryptec.event.EventSubscription;
-import de.pcfreak9000.space.voxelworld.tile.TileType;
+import de.pcfreak9000.space.tileworld.tile.Tile;
 
-public class TileRegistry extends GameRegistry<TileType> {
+public class TileRegistry extends GameRegistry<Tile> {
 
     public TileRegistry() {
         Space.BUS.register(this);

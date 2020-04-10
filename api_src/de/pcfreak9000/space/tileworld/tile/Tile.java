@@ -1,20 +1,28 @@
-package de.pcfreak9000.space.voxelworld.tile;
+package de.pcfreak9000.space.tileworld.tile;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.resource.helper.TextureHelper;
 import de.omnikryptec.util.data.Color;
+import de.omnikryptec.util.math.Mathd;
 import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.core.GameRegistry;
+import de.pcfreak9000.space.tileworld.Region;
+import de.pcfreak9000.space.tileworld.TileWorld;
 import de.pcfreak9000.space.util.RegisterSensitive;
-import de.pcfreak9000.space.voxelworld.Region;
-import de.pcfreak9000.space.voxelworld.TileWorld;
 
 @RegisterSensitive(registry = "TILE_REGISTRY")
-public class TileType {
+public class Tile {
     
     public static final float MAX_LIGHT_VALUE = 16;
     
-    public static final TileType EMPTY = new TileType();
+    public static final Tile EMPTY = new Tile();//TODO replace with usefulness
+    
+    public static final float TILE_SIZE = 16 * 1.5f;
+    
+    public static int toGlobalTile(float x) {
+        return (int) Mathd.floor(x / (double) TILE_SIZE);
+    }
+    
     static {
         EMPTY.setBouncyness(0);
         EMPTY.setCanBreak(false);
@@ -136,12 +144,12 @@ public class TileType {
         }
     }
     
-    public void tick(TileWorld tileWorld, Region region, Tile tile, Time time) {
+    public void tick(TileWorld tileWorld, Region region, TileState tile, Time time) {
     }
     
     @Override
     public String toString() {
-        return String.format("TileType[texture=%s]", this.textureName);
+        return String.format("Tile[texture=%s]", this.textureName);
     }
     
 }

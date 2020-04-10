@@ -3,7 +3,7 @@ package de.pcfreak9000.space.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.pcfreak9000.space.voxelworld.TileWorldGenerator;
+import de.pcfreak9000.space.tileworld.TileWorldGenerator;
 
 public class GeneratorRegistry extends GameRegistry<TileWorldGenerator> {
 

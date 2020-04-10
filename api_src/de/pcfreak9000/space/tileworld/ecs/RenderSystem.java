@@ -1,4 +1,4 @@
-package de.pcfreak9000.space.voxelworld.ecs;
+package de.pcfreak9000.space.tileworld.ecs;
 
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityListener;

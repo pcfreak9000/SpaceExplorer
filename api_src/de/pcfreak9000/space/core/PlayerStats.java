@@ -4,12 +4,11 @@ import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.SimpleSprite;
-import de.omnikryptec.util.data.Color;
-import de.pcfreak9000.space.voxelworld.ecs.PhysicsComponent;
-import de.pcfreak9000.space.voxelworld.ecs.PlayerInputComponent;
-import de.pcfreak9000.space.voxelworld.ecs.RenderComponent;
-import de.pcfreak9000.space.voxelworld.ecs.TransformComponent;
-import de.pcfreak9000.space.voxelworld.tile.Tile;
+import de.pcfreak9000.space.tileworld.ecs.PhysicsComponent;
+import de.pcfreak9000.space.tileworld.ecs.PlayerInputComponent;
+import de.pcfreak9000.space.tileworld.ecs.RenderComponent;
+import de.pcfreak9000.space.tileworld.ecs.TransformComponent;
+import de.pcfreak9000.space.tileworld.tile.Tile;
 
 /**
  * Information about the player: level, ships, inventory, etc. Also the player

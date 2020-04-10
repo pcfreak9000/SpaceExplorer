@@ -1,4 +1,4 @@
-package de.pcfreak9000.space.voxelworld.ecs;
+package de.pcfreak9000.space.tileworld.ecs;
 
 import org.joml.Vector2fc;
 
@@ -10,10 +10,10 @@ import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.core.Space;
-import de.pcfreak9000.space.voxelworld.PlanetCamera;
-import de.pcfreak9000.space.voxelworld.TileWorld;
-import de.pcfreak9000.space.voxelworld.VoxelworldEvents;
-import de.pcfreak9000.space.voxelworld.tile.Tile;
+import de.pcfreak9000.space.tileworld.PlanetCamera;
+import de.pcfreak9000.space.tileworld.TileWorld;
+import de.pcfreak9000.space.tileworld.VoxelworldEvents;
+import de.pcfreak9000.space.tileworld.tile.Tile;
 
 public class CameraSystem extends AbstractComponentSystem {
 

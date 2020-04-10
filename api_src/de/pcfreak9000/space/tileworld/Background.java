@@ -1,12 +1,12 @@
-package de.pcfreak9000.space.voxelworld;
+package de.pcfreak9000.space.tileworld;
 
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureConfig.WrappingMode;
 import de.omnikryptec.resource.helper.TextureHelper;
-import de.pcfreak9000.space.voxelworld.ecs.ParallaxComponent;
-import de.pcfreak9000.space.voxelworld.ecs.RenderComponent;
+import de.pcfreak9000.space.tileworld.ecs.ParallaxComponent;
+import de.pcfreak9000.space.tileworld.ecs.RenderComponent;
 
 public class Background {
 

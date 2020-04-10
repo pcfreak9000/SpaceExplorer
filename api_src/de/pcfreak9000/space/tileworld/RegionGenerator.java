@@ -1,4 +1,4 @@
-package de.pcfreak9000.space.voxelworld;
+package de.pcfreak9000.space.tileworld;
 
 /**
  * Generates regions of a TileWorld.

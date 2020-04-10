@@ -1,4 +1,4 @@
-package de.pcfreak9000.space.voxelworld;
+package de.pcfreak9000.space.tileworld;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -16,12 +16,12 @@ import de.omnikryptec.render.renderer.ViewManager;
 import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.core.Space;
-import de.pcfreak9000.space.voxelworld.ecs.CameraSystem;
-import de.pcfreak9000.space.voxelworld.ecs.ParallaxSystem;
-import de.pcfreak9000.space.voxelworld.ecs.PhysicsSystem;
-import de.pcfreak9000.space.voxelworld.ecs.PlayerInputSystem;
-import de.pcfreak9000.space.voxelworld.ecs.RenderSystem;
-import de.pcfreak9000.space.voxelworld.ecs.TickRegionSystem;
+import de.pcfreak9000.space.tileworld.ecs.CameraSystem;
+import de.pcfreak9000.space.tileworld.ecs.ParallaxSystem;
+import de.pcfreak9000.space.tileworld.ecs.PhysicsSystem;
+import de.pcfreak9000.space.tileworld.ecs.PlayerInputSystem;
+import de.pcfreak9000.space.tileworld.ecs.RenderSystem;
+import de.pcfreak9000.space.tileworld.ecs.TickRegionSystem;
 
 /**
  * Responsible for successful surface world loading and unloading, management of
