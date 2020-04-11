@@ -144,7 +144,12 @@ public class Tile {
         }
     }
     
-    public void tick(TileWorld tileWorld, Region region, TileState tile, Time time) {
+    public boolean hasTileEntity() {
+        return false;
+    }
+    
+    public TileEntity createTileEntity(TileWorld world, TileState myState) {
+        return null;
     }
     
     @Override

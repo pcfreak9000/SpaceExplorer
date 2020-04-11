@@ -4,7 +4,6 @@ import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.Color;
 
 public class TileState {
-
     
     private final int globalTileX;
     private final int globalTileY;
@@ -14,6 +13,8 @@ public class TileState {
     private boolean directSun;
     
     private final Tile type;
+    
+    private TileEntity tileEntity = null;
     
     public TileState(Tile type, int gtx, int gty) {
         this.type = Util.ensureNonNull(type);
@@ -49,6 +50,14 @@ public class TileState {
     
     public boolean isDirectSun() {
         return directSun;
+    }
+    
+    public void setTileEntity(TileEntity te) {
+        this.tileEntity = te;
+    }
+    
+    public TileEntity getTileEntity() {
+        return tileEntity;
     }
     
     @Override

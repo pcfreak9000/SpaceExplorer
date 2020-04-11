@@ -67,27 +67,20 @@ public class PlayerInputSystem extends AbstractComponentSystem {
             Vector2f mouse = Omnikryptec.getInput().getMousePositionInWorld2D(this.cam, new Vector2f());
             int txm = Tile.toGlobalTile(mouse.x());
             int tym = Tile.toGlobalTile(mouse.y());
-            Set<Region> rs = new HashSet<>();
             final int rad = 3;
             for (int i = -rad; i <= rad; i++) {
                 for (int j = -rad; j <= rad; j++) {
                     if (Mathf.square(i) + Mathf.square(j) <= Mathf.square(rad)) {
                         int tx = txm + i;
                         int ty = tym + j;
-                        Region r = this.world.requestRegion(Region.toGlobalRegion(tx), Region.toGlobalRegion(ty));
-                        if (r != null) {
-                            Tile t = r.getTile(tx, ty);
-                            if (t != null && t.canBreak()) {
-                                this.ugly = t;
-                                r.setTile(Tile.EMPTY, tx, ty);
-                                rs.add(r);
-                            }
+                        Tile t = world.getTile(tx, ty);
+                        if (t != null && t.canBreak()) {
+                            this.ugly = t;
+                            world.setTile(Tile.EMPTY, tx, ty);
                         }
+                        
                     }
                 }
-            }
-            for (Region r : rs) {
-                r.queueRecacheTiles();
             }
         }
         if (Keys.DESTROY.isPressed()) {
@@ -100,7 +93,6 @@ public class PlayerInputSystem extends AbstractComponentSystem {
                 if (t != null && t.canBreak()) {
                     this.ugly = t;
                     r.setTile(Tile.EMPTY, tx, ty);
-                    r.queueRecacheTiles();
                 }
             }
         }
@@ -112,7 +104,6 @@ public class PlayerInputSystem extends AbstractComponentSystem {
             if (r != null && this.ugly != null) {
                 if (r.getTile(tx, ty) == null || r.getTile(tx, ty) == Tile.EMPTY) {
                     r.setTile(this.ugly, tx, ty);
-                    r.queueRecacheTiles();
                 }
             }
         }

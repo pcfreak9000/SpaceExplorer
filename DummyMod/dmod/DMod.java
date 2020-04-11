@@ -13,6 +13,8 @@ import de.pcfreak9000.space.tileworld.TileWorld;
 import de.pcfreak9000.space.tileworld.TileWorldGenerator;
 import de.pcfreak9000.space.tileworld.WorldInformationBundle;
 import de.pcfreak9000.space.tileworld.tile.Tile;
+import de.pcfreak9000.space.tileworld.tile.TileEntity;
+import de.pcfreak9000.space.tileworld.tile.TileState;
 
 @Mod(id = "SpaceExplorer2D-Dummy-Mod", name = "Kek", resourceLocation = "", version = { 0, 0, 1 })
 public class DMod {
@@ -36,18 +38,7 @@ public class DMod {
         ironTile.setLightColor(new Color(Tile.MAX_LIGHT_VALUE, Tile.MAX_LIGHT_VALUE, Tile.MAX_LIGHT_VALUE));
         GameRegistry.TILE_REGISTRY.register("ore_iron", ironTile);
         
-        Tile bottom = new Tile() {
-            
-//            @Override
-//            public void tick(TileWorld tileWorld, Region r, TileState tile, Time time) {
-//                TileState ab = tileWorld.getTileState(tile.getGlobalTileX(), tile.getGlobalTileY() + 1);
-//                if (ab != null && tile.getTile() != EMPTY) {
-//                    Region reg = tileWorld.getRegion(Region.toGlobalRegion(ab.getGlobalTileX()),
-//                            Region.toGlobalRegion(ab.getGlobalTileY()));
-//                    reg.setTile(new TileState(EMPTY, ab.getGlobalTileX(), ab.getGlobalTileY()));
-//                }
-//            }
-        };
+        Tile bottom = new Tile();
         bottom.setCanBreak(false);
         bottom.setTexture("stone_dark.png");
         GameRegistry.TILE_REGISTRY.register("bottom", bottom);
@@ -62,29 +53,22 @@ public class DMod {
         dirttile.setBouncyness(1);
         //dirttile.setFilterColor(new Color(1, 0, 0, 1));
         GameRegistry.TILE_REGISTRY.register("dirt", dirttile);
-        //TODO somehow store per-tile data for e.g. this use-case:
-        //        TileType laser = new TileType() {
-        //            private int count = 0;
-        //            
-        //            @Override
-        //            public void tick(TileWorld tileWorld, Region r, Tile tile, Time time) {
-        //                count++;
-        //                if (tile.getGlobalTileY() - count >= 0) {
-        //                    Region tw = tileWorld.getRegion(r.getGlobalRegionX(),
-        //                            Region.toGlobalRegion(tile.getGlobalTileY() - count));
-        //                    if (tw != null) {
-        //                        tw.setTile(new Tile(EMPTY, tile.getGlobalTileX(), tile.getGlobalTileY() - count));
-        //                    }
-        //                } else {
-        //                    count = 0;
-        //                }
-        //                
-        //            }
-        //        };
-        //        laser.setTexture("dirt.png");
-        //        laser.color().set(1, 0, 0);
-        //        laser.setLightColor(new Color(TileType.MAX_LIGHT_VALUE, TileType.MAX_LIGHT_VALUE, TileType.MAX_LIGHT_VALUE));
-        //        GameRegistry.TILE_REGISTRY.register("laser", laser);
+        
+        Tile laser = new Tile() {
+            @Override
+            public boolean hasTileEntity() {
+                return true;
+            }
+            
+            @Override
+            public TileEntity createTileEntity(TileWorld world, TileState myState) {
+                return new LaserTileEntity(world, myState);
+            }
+        };
+        laser.setTexture("dirt.png");
+        laser.color().set(1, 0, 0);
+        laser.setLightColor(new Color(Tile.MAX_LIGHT_VALUE, Tile.MAX_LIGHT_VALUE, Tile.MAX_LIGHT_VALUE));
+        GameRegistry.TILE_REGISTRY.register("laser", laser);
         
         Background back = new Background("Space.png", 16 / 9f, 3, 1000, 1000);
         GameRegistry.BACKGROUND_REGISTRY.register("stars", back);
@@ -125,7 +109,7 @@ public class DMod {
                             }
                             if (t == tstoneTile) {
                                 if (Math.random() < 0.001) {
-                                    t = ironTile;
+                                    t = laser;
                                 }
                             }
                             chunk.setTile(t, i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY());

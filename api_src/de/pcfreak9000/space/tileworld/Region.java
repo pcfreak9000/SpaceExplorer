@@ -30,7 +30,9 @@ import de.omnikryptec.util.math.Mathd;
 import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.tileworld.ecs.RenderComponent;
 import de.pcfreak9000.space.tileworld.ecs.TickRegionComponent;
+import de.pcfreak9000.space.tileworld.tile.Tickable;
 import de.pcfreak9000.space.tileworld.tile.Tile;
+import de.pcfreak9000.space.tileworld.tile.TileEntity;
 import de.pcfreak9000.space.tileworld.tile.TileState;
 
 public class Region {
@@ -62,6 +64,8 @@ public class Region {
     
     private final Quadtree<TileState> tiles;
     private final Quadtree<TileState> tilesBackground;
+    private final List<Tickable> tickables;
+    private final List<TileEntity> tileEntities;
     private final List<Entity> entitiesStatic;
     private final List<Entity> entitiesDynamic;
     
@@ -83,6 +87,8 @@ public class Region {
         this.ty = ry * REGION_TILE_SIZE;
         this.tiles = new Quadtree<>(REGION_TILE_SIZE, this.tx, this.ty);
         this.tilesBackground = new Quadtree<>(REGION_TILE_SIZE, this.tx, this.ty);
+        this.tileEntities = new ArrayList<>();
+        this.tickables = new ArrayList<>();
         this.entitiesStatic = new ArrayList<>();
         this.entitiesDynamic = new ArrayList<>();
         this.ocvm = new OrderedCachedVertexManager(6 * REGION_TILE_SIZE);
@@ -94,8 +100,8 @@ public class Region {
         this.sunlightBfsQueue = new ArrayDeque<>();
         this.sunlightRemovalBfsQueue = new Queue[3];
         Arrays.setAll(this.sunlightRemovalBfsQueue, (i) -> new ArrayDeque<>());
-        this.recacheLights = true;
-        this.recacheTiles = true;
+        //this.recacheLights = true;
+        //this.recacheTiles = true;
         RenderComponent rc = new RenderComponent(new AdvancedSprite() {
             @Override
             public void draw(Batch2D batch) {
@@ -161,11 +167,11 @@ public class Region {
         this.regionEntity.addComponent(new TickRegionComponent(this));
     }
     
-    public void queueRecacheLights() {
+    private void queueRecacheLights() {
         this.recacheLights = true;
     }
     
-    public void queueRecacheTiles() {
+    private void queueRecacheTiles() {
         this.recacheTiles = true;
     }
     
@@ -210,6 +216,21 @@ public class Region {
         Util.ensureNonNull(t);
         TileState newTileState = new TileState(t, tx, ty);
         TileState old = this.tiles.set(newTileState, tx, ty);
+        if (old != null && old.getTileEntity() != null) {
+            this.tileEntities.remove(old.getTileEntity());
+            if (old.getTileEntity() instanceof Tickable) {
+                tickables.remove((Tickable) old.getTileEntity());
+            }
+            old.setTileEntity(null);
+        }
+        if (t.hasTileEntity()) {
+            TileEntity te = t.createTileEntity(tileWorld, newTileState);
+            this.tileEntities.add(te);
+            newTileState.setTileEntity(te);
+            if (te instanceof Tickable) {
+                tickables.add((Tickable) te);
+            }
+        }
         if (old != null
                 && (old.light().maxRGB() > 0 || !Objects.equal(old.getTile().getFilterColor(), t.getFilterColor())
                         || old.getTile().getLightLoss() != t.getLightLoss())) {
@@ -218,6 +239,7 @@ public class Region {
         if (t.hasLight()) {
             addLight(newTileState);
         }
+        queueRecacheTiles();
         return old == null ? null : old.getTile(); //<-TODO return only getTile withoout null checking
     }
     
@@ -232,20 +254,6 @@ public class Region {
             //queueRecacheLights();
         }
     }
-    
-    //    public TileState setTile(TileState t) {
-    //        Util.ensureNonNull(t);
-    //        TileState old = this.tiles.set(t, t.getGlobalTileX(), t.getGlobalTileY());
-    //        if (old != null && (old.light().maxRGB() > 0
-    //                || !Objects.equal(old.getTile().getFilterColor(), t.getTile().getFilterColor())
-    //                || old.getTile().getLightLoss() != t.getTile().getLightLoss())) {
-    //            removeLight(old);
-    //        }
-    //        if (t.getTile().hasLight()) {
-    //            addLight(t);
-    //        }
-    //        return old;
-    //    }
     
     public boolean inBounds(int gtx, int gty) {
         return gtx >= this.tx && gtx < this.tx + REGION_TILE_SIZE && gty >= this.ty && gty < this.ty + REGION_TILE_SIZE
@@ -291,7 +299,7 @@ public class Region {
     }
     
     public void tick(Time time) {
-        this.tiles.execute((t) -> t.getTile().tick(tileWorld, this, t, time));
+        this.tickables.forEach((t) -> t.tick(time));//TODO fix concurrent modification
     }
     
     public void requestSunlightComputation() {
