@@ -1,5 +1,9 @@
 package de.pcfreak9000.space.mod;
 
+import java.io.File;
+
+import de.codemakers.io.file.AdvancedFile;
+
 /**
  * contains a mod
  *
@@ -7,29 +11,35 @@ package de.pcfreak9000.space.mod;
  *
  */
 public class ModContainer {
-
+    
     private final Mod mod;
+    private final File file;
     private final Class<?> mainclass;
     private final Object instance;
-
-    public ModContainer(final Class<?> mc, final Mod mod, final Object instance) {
+    
+    public ModContainer(final Class<?> mc, final Mod mod, final Object instance, File file) {
         this.mainclass = mc;
         this.mod = mod;
         this.instance = instance;
+        this.file = file;
     }
-
+    
     public Mod getMod() {
         return this.mod;
     }
-
+    
     public Object getInstance() {
         return this.instance;
     }
-
+    
     public Class<?> getModClass() {
         return this.mainclass;
     }
-
+    
+    public File getFile() {
+        return file;
+    }
+    
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -44,7 +54,7 @@ public class ModContainer {
         }
         return false;
     }
-
+    
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();

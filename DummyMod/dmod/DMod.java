@@ -16,7 +16,7 @@ import de.pcfreak9000.space.tileworld.tile.Tile;
 import de.pcfreak9000.space.tileworld.tile.TileEntity;
 import de.pcfreak9000.space.tileworld.tile.TileState;
 
-@Mod(id = "SpaceExplorer2D-Dummy-Mod", name = "Kek", resourceLocation = "", version = { 0, 0, 1 })
+@Mod(id = "SpaceExplorer2D-Dummy-Mod", name = "Kek", version = { 0, 0, 1 })
 public class DMod {
     
     @Instance
@@ -49,7 +49,7 @@ public class DMod {
         GameRegistry.TILE_REGISTRY.register("grass", grasstile);
         
         Tile dirttile = new Tile();
-        dirttile.setTexture("dirt.png");
+        dirttile.setTexture("planets_1.png");
         dirttile.setBouncyness(1);
         //dirttile.setFilterColor(new Color(1, 0, 0, 1));
         GameRegistry.TILE_REGISTRY.register("dirt", dirttile);

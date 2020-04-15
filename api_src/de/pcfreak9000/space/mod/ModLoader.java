@@ -29,19 +29,19 @@ import de.pcfreak9000.space.core.Space;
  *
  */
 public class ModLoader {
-
+    
     public static final String THIS_INSTANCE_ID = "this";
-
+    
     private static class TmpHolder {
         private final File file;
         private final Class<?> modclass;
-
+        
         private TmpHolder(final Class<?> clazz, final File file) {
             this.file = file;
             this.modclass = clazz;
         }
     }
-
+    
     private static final Comparator<TmpHolder> COMP = (o1, o2) -> {
         final Mod m1 = o1.modclass.getAnnotation(Mod.class);
         final Mod m2 = o2.modclass.getAnnotation(Mod.class);
@@ -59,18 +59,15 @@ public class ModLoader {
         }
         return a1.length - a2.length;
     };
-
+    
     private static final Pattern ZIP_JAR_PATTERN = Pattern.compile("(.+).(zip|jar)$");
     private static final Logger LOGGER = Logger.getLogger(ModLoader.class);
-
+    
     private final List<TmpHolder> modClasses = new ArrayList<>();
     private final List<ModContainer> modList = new ArrayList<>();
     private final List<ModContainer> readOnlyModList = Collections.unmodifiableList(this.modList);
-
-    private int stage = 1;
-
+    
     public void load(AdvancedFile modsfolder) {
-        this.stage = 1;
         this.classLoadMods(modsfolder.toFile());
         this.instantiate();
         this.dispatchInstances();
@@ -80,35 +77,40 @@ public class ModLoader {
         this.postInit();
         LOGGER.info("Mod loading finished with " + this.modList.size() + " mod(s) loaded");
     }
-
+    
     public List<ModContainer> getMods() {
         return this.readOnlyModList;
     }
-
+    
     public void stageModResources(ResourceManager resourceManager, int i) {
-        for (TmpHolder th : this.modClasses) {
-            resourceManager.stage(new AdvancedFile(th.file.getAbsolutePath()), i);
+        for (ModContainer mc : modList) {
+            AdvancedFile.DEBUG = true;
+            AdvancedFile.DEBUG_TO_STRING = true;//TODO remove ugly debugging
+            AdvancedFile.DEBUG_TO_STRING_BIG = true;
+            System.out.println(new AdvancedFile(mc.getFile().getAbsolutePath(), mc.getMod().resourceLocation() + "/"));
+            resourceManager
+                    .stage(new AdvancedFile(mc.getFile().getAbsolutePath(), mc.getMod().resourceLocation() + "/"), i);
         }
     }
-
+    
     private void preInit() {
         LOGGER.info("mod pre-initialization stage");
         LoadingScreen.LOADING_STAGE_BUS.post(new LoadingScreen.LoadingEvent("Pre-initializing mods"));
         Space.BUS.post(new ModLoaderEvents.ModPreInitEvent());
     }
-
+    
     private void init() {
         LOGGER.info("mod initialization stage");
         LoadingScreen.LOADING_STAGE_BUS.post(new LoadingScreen.LoadingEvent("Initializing mods"));
         Space.BUS.post(new ModLoaderEvents.ModInitEvent());
     }
-
+    
     private void postInit() {
         LOGGER.info("mod post-initialization stage");
         LoadingScreen.LOADING_STAGE_BUS.post(new LoadingScreen.LoadingEvent("Post-initializing mods"));
         Space.BUS.post(new ModLoaderEvents.ModPostInitEvent());
     }
-
+    
     private void instantiate() {
         LOGGER.info("Instantiating mods...");
         LoadingScreen.LOADING_STAGE_BUS.post(new LoadingScreen.LoadingEvent("Constructing mods", true));
@@ -139,7 +141,8 @@ public class ModLoader {
                 LOGGER.error("The String \"" + THIS_INSTANCE_ID + "\" can not be used as Mod-ID: " + modClass);
                 continue;
             }
-            final ModContainer container = new ModContainer(modClass, modClass.getAnnotation(Mod.class), instance);
+            final ModContainer container = new ModContainer(modClass, modClass.getAnnotation(Mod.class), instance,
+                    th.file);
             if (this.modList.contains(container)) {
                 //TODO better
                 LOGGER.info("Skipping already loaded mod: " + container.getMod().id() + " (version "
@@ -154,7 +157,7 @@ public class ModLoader {
             }
         }
     }
-
+    
     private void registerEvents() {
         LOGGER.info("Registering container event handlers...");
         LoadingScreen.LOADING_STAGE_BUS.post(new LoadingScreen.LoadingEvent("Registering initializer"));
@@ -162,7 +165,7 @@ public class ModLoader {
             Space.BUS.register(container.getInstance());
         }
     }
-
+    
     private void dispatchInstances() {
         LOGGER.info("Dispatching instances...");
         LoadingScreen.LOADING_STAGE_BUS.post(new LoadingScreen.LoadingEvent("Dispatching instances"));
@@ -218,14 +221,14 @@ public class ModLoader {
             }
         }
     }
-
+    
     private void classLoadMods(final File moddir) {
         LoadingScreen.LOADING_STAGE_BUS.post(new LoadingScreen.LoadingEvent("Finding mods", true));
         final List<File> candidates = new ArrayList<>();
         discover(candidates, moddir);
         load(candidates);
     }
-
+    
     private void load(List<File> candidates) {
         final URL[] urlarray = new URL[candidates.size()];
         for (int i = 0; i < urlarray.length; i++) {
@@ -282,7 +285,7 @@ public class ModLoader {
         this.modClasses.sort(COMP);
         LOGGER.infof("Found %d mod candidate(s)!", this.modClasses.size());
     }
-
+    
     private void discover(final List<File> files, final File f) {
         if (f.isDirectory()) {
             final File[] innerFiles = f.listFiles();
@@ -296,7 +299,7 @@ public class ModLoader {
             }
         }
     }
-
+    
     private boolean contains(final Object o, final Object[] os) {
         for (final Object po : os) {
             if (po.equals(o)) {
@@ -305,5 +308,5 @@ public class ModLoader {
         }
         return false;
     }
-
+    
 }

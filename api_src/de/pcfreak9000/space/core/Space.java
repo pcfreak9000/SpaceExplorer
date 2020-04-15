@@ -135,6 +135,7 @@ public class Space extends Omnikryptec {
     private void loadResources() {
         LOGGER.info("Loading resources...");
         getResourceManager().stage(DEFAULT_RES_LOC);
+        modloader.stageModResources(getResourceManager(), 0);
         getResourceManager().stage(mkdirIfNonExisting(new AdvancedFile(FOLDER, RESOURCEPACKS)), 0);
         getResourceManager().processStaged(true, false);
         getResourceManager().clearStaged();
