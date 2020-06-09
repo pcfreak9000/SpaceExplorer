@@ -84,12 +84,7 @@ public class ModLoader {
     
     public void stageModResources(ResourceManager resourceManager, int i) {
         for (ModContainer mc : modList) {
-            AdvancedFile.DEBUG = true;
-            AdvancedFile.DEBUG_TO_STRING = true;//TODO remove ugly debugging
-            AdvancedFile.DEBUG_TO_STRING_BIG = true;
-            System.out.println(new AdvancedFile(mc.getFile().getAbsolutePath(), mc.getMod().resourceLocation() + "/"));
-            resourceManager
-                    .stage(new AdvancedFile(mc.getFile().getAbsolutePath(), mc.getMod().resourceLocation() + "/"), i);
+            resourceManager.stage(new AdvancedFile(mc.getFile().getAbsolutePath(), mc.getMod().resourceLocation()), i);
         }
     }
     
