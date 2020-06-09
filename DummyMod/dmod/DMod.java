@@ -49,7 +49,7 @@ public class DMod {
         GameRegistry.TILE_REGISTRY.register("grass", grasstile);
         
         Tile dirttile = new Tile();
-        dirttile.setTexture("planets_1.png");
+        dirttile.setTexture("dirt.png");
         dirttile.setBouncyness(1);
         //dirttile.setFilterColor(new Color(1, 0, 0, 1));
         GameRegistry.TILE_REGISTRY.register("dirt", dirttile);

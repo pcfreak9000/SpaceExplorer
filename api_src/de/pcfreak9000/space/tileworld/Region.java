@@ -68,6 +68,9 @@ public class Region {
     private final List<TileEntity> tileEntities;
     private final List<Entity> entitiesStatic;
     private final List<Entity> entitiesDynamic;
+    private final Queue<Tickable> tickablesForRemoval;
+    
+    private boolean ticking = false;
     
     private boolean recacheTiles;
     private boolean recacheLights;
@@ -89,6 +92,7 @@ public class Region {
         this.tilesBackground = new Quadtree<>(REGION_TILE_SIZE, this.tx, this.ty);
         this.tileEntities = new ArrayList<>();
         this.tickables = new ArrayList<>();
+        this.tickablesForRemoval = new ArrayDeque<>();
         this.entitiesStatic = new ArrayList<>();
         this.entitiesDynamic = new ArrayList<>();
         this.ocvm = new OrderedCachedVertexManager(6 * REGION_TILE_SIZE);
@@ -219,7 +223,11 @@ public class Region {
         if (old != null && old.getTileEntity() != null) {
             this.tileEntities.remove(old.getTileEntity());
             if (old.getTileEntity() instanceof Tickable) {
-                tickables.remove((Tickable) old.getTileEntity());
+                if (ticking) {
+                    tickablesForRemoval.add((Tickable) old.getTileEntity());
+                } else {
+                    tickables.remove((Tickable) old.getTileEntity());
+                }
             }
             old.setTileEntity(null);
         }
@@ -299,7 +307,12 @@ public class Region {
     }
     
     public void tick(Time time) {
-        this.tickables.forEach((t) -> t.tick(time));//TODO fix concurrent modification
+        this.ticking = true;
+        this.tickables.forEach((t) -> t.tick(time));
+        this.ticking = false;
+        while (!tickablesForRemoval.isEmpty()) {
+            tickables.remove(tickablesForRemoval.poll());
+        }
     }
     
     public void requestSunlightComputation() {
