@@ -90,23 +90,22 @@ public class DMod {
                             }
                             int value = 75 + Mathf.round(6 * Mathf.abs(Mathf.sin(0.2f * (i + chunk.getGlobalTileX())))
                                     + 20 * Mathf.abs(Mathf.sin(0.05f * (i + chunk.getGlobalTileX()))));
-                            
-                            Tile t;
                             if (j + chunk.getGlobalTileY() > value) {
-                                t = Tile.EMPTY;
+                                continue;
+                            }
+                            Tile t;
+                            if (j + chunk.getGlobalTileY() == 0) {
+                                t = GameRegistry.TILE_REGISTRY.get("bottom");
                             } else {
-                                if (j + chunk.getGlobalTileY() == 0) {
-                                    t = GameRegistry.TILE_REGISTRY.get("bottom");
+                                if (j + chunk.getGlobalTileY() == value) {
+                                    t = GameRegistry.TILE_REGISTRY.get("grass");
+                                } else if (j + chunk.getGlobalTileY() >= value - 3) {
+                                    t = GameRegistry.TILE_REGISTRY.get("dirt");
                                 } else {
-                                    if (j + chunk.getGlobalTileY() == value) {
-                                        t = GameRegistry.TILE_REGISTRY.get("grass");
-                                    } else if (j + chunk.getGlobalTileY() >= value - 3) {
-                                        t = GameRegistry.TILE_REGISTRY.get("dirt");
-                                    } else {
-                                        t = GameRegistry.TILE_REGISTRY.get("stone");
-                                    }
+                                    t = GameRegistry.TILE_REGISTRY.get("stone");
                                 }
                             }
+                            
                             if (t == tstoneTile) {
                                 if (Math.random() < 0.001) {
                                     t = laser;

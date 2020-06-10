@@ -62,8 +62,10 @@ public class Region {
     
     private final TileWorld tileWorld;
     
-    private final Quadtree<TileState> tiles;
-    private final Quadtree<TileState> tilesBackground;
+    //private final Quadtree<TileState> tiles;
+    private final TileStorage tiles;
+    //private final Quadtree<TileState> tilesBackground;
+    private final TileStorage tilesBackground;
     private final List<Tickable> tickables;
     private final List<TileEntity> tileEntities;
     private final List<Entity> entitiesStatic;
@@ -88,8 +90,8 @@ public class Region {
         this.ry = ry;
         this.tx = rx * REGION_TILE_SIZE;
         this.ty = ry * REGION_TILE_SIZE;
-        this.tiles = new Quadtree<>(REGION_TILE_SIZE, this.tx, this.ty);
-        this.tilesBackground = new Quadtree<>(REGION_TILE_SIZE, this.tx, this.ty);
+        this.tiles = new TileStorage(REGION_TILE_SIZE, this.tx, this.ty);
+        this.tilesBackground = new TileStorage(REGION_TILE_SIZE, this.tx, this.ty);
         this.tileEntities = new ArrayList<>();
         this.tickables = new ArrayList<>();
         this.tickablesForRemoval = new ArrayDeque<>();
@@ -140,7 +142,7 @@ public class Region {
             
             @Override
             public void draw(Batch2D batch) {
-               // queueRecacheLights();//TODO WIP solution
+                // queueRecacheLights();//TxDO WIP solution
                 if (Region.this.recacheLights) {
                     Region.this.recacheLights = false;
                     recacheLights();
@@ -220,7 +222,7 @@ public class Region {
         Util.ensureNonNull(t);
         TileState newTileState = new TileState(t, tx, ty);
         TileState old = this.tiles.set(newTileState, tx, ty);
-        if (old != null && old.getTileEntity() != null) {
+        if (old.getTileEntity() != null) {
             this.tileEntities.remove(old.getTileEntity());
             if (old.getTileEntity() instanceof Tickable) {
                 if (ticking) {
@@ -239,16 +241,18 @@ public class Region {
                 tickables.add((Tickable) te);
             }
         }
-        if (old != null
-                && (old.light().maxRGB() > 0 || !Objects.equal(old.getTile().getFilterColor(), t.getFilterColor())
-                        || old.getTile().getLightLoss() != t.getLightLoss())) {
+        if ((old.light().maxRGB() > 0 || !Objects.equal(old.getTile().getFilterColor(), t.getFilterColor())
+                || old.getTile().getLightLoss() != t.getLightLoss())) {
             removeLight(old);
         }
+        newTileState.sunlight().set(old.sunlight());
+        //newTileState.setDirectSun(old.isDirectSun());
+        requestSunlightComputation();
         if (t.hasLight()) {
             addLight(newTileState);
         }
         queueRecacheTiles();
-        return old == null ? null : old.getTile(); //<-TODO return only getTile withoout null checking
+        return old.getTile();
     }
     
     public Tile getBackground(int tx, int ty) {
@@ -434,7 +438,7 @@ public class Region {
             int tx = front.getGlobalTileX();
             int ty = front.getGlobalTileY();
             //Check if the light "front" is actually there (theoretically doesnt need to be done for "front" that comes from propagating) 
-            if (front != getTileState(tx, ty)) {
+            if (front != getTileStateGlobal(tx, ty)) {
                 continue;
             }
             if (front.getTile().hasLightFilter()) {
