@@ -109,7 +109,7 @@ public class Space extends Omnikryptec {
     
     @Override
     protected void onShutdown() {
-        System.out.println(Profiler.currentInfo());
+        //System.out.println(Profiler.currentInfo());
     }
     
     public void reloadResources() {

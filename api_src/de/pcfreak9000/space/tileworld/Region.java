@@ -140,7 +140,7 @@ public class Region {
             
             @Override
             public void draw(Batch2D batch) {
-                queueRecacheLights();//TODO WIP solution
+               // queueRecacheLights();//TODO WIP solution
                 if (Region.this.recacheLights) {
                     Region.this.recacheLights = false;
                     recacheLights();
@@ -337,7 +337,7 @@ public class Region {
     private void propagateSunlight(boolean test) {
         if (test) {
             for (int i = 0; i < REGION_TILE_SIZE && tx + i < tileWorld.getWorldWidth(); i++) {
-                TileState t = getTileStateGlobal(tx + i, ty + REGION_TILE_SIZE);
+                TileState t = getTileStateGlobal(tx + i, ty + REGION_TILE_SIZE - 1);
                 if (t != null && t.sunlight().maxRGB() >= 1) {
                     sunlightBfsQueue.add(t);
                 }
@@ -508,7 +508,7 @@ public class Region {
     private void recacheLights() {
         resolveLights();
         propagateSunlight(true);
-        LOGGER.debug("Recaching lights: " + toString());
+        //LOGGER.debug("Recaching lights: " + toString());
         this.lightOcvm.clear();
         SimpleBatch2D PACKING_BATCH = new SimpleBatch2D(this.lightOcvm);
         PACKING_BATCH.begin();
@@ -545,7 +545,7 @@ public class Region {
     }
     
     private void recacheTiles() {
-        LOGGER.debug("Recaching: " + toString());
+        //LOGGER.debug("Recaching: " + toString());
         this.ocvm.clear();
         AdvancedBatch2D PACKING_BATCH = new AdvancedBatch2D(this.ocvm);
         PACKING_BATCH.begin();
