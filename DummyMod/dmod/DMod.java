@@ -115,7 +115,7 @@ public class DMod {
                             chunk.setTileBackground(t, i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY());
                         }
                     }
-                    chunk.requestSunlightComputation();
+                    //chunk.requestSunlightComputation();
                 }), GameRegistry.BACKGROUND_REGISTRY.get("stars"));
             }
         });
