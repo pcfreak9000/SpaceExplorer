@@ -197,8 +197,8 @@ public class Region {
         return this.ty;
     }
     
-    public void tileIntersections(Collection<TileState> output, int x, int y, int w, int h) {
-        this.tiles.getAABB(output, x, y, w, h);
+    public void tileIntersections(Collection<TileState> output, int x, int y, int w, int h, Predicate<TileState> predicate) {
+        this.tiles.getAABB(output, x, y, w, h, predicate);
     }
     
     public Tile getTile(int tx, int ty) {

@@ -27,11 +27,18 @@ public class TileStorage {
     }
     
     public void getAABB(Collection<TileState> output, int x, int y, int w, int h) {
+        getAABB(output, x, y, w, h, null);
+    }
+    
+    public void getAABB(Collection<TileState> output, int x, int y, int w, int h, Predicate<TileState> predicate) {
         int xStart = Math.max(0, x - this.tx);
         int yStart = Math.max(0, y - this.ty);
         for (int i = xStart; i <= xStart + w && i < size; i++) {
             for (int j = yStart; j <= yStart + h && j < size; j++) {
-                output.add(tileArray[i][j]);
+                TileState t = tileArray[i][j];
+                if ((predicate == null || predicate.test(t))) {
+                    output.add(t);
+                }
             }
         }
     }

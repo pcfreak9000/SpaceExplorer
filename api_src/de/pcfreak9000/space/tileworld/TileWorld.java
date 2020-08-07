@@ -3,6 +3,7 @@ package de.pcfreak9000.space.tileworld;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import de.omnikryptec.util.math.Mathd;
 import de.omnikryptec.util.profiling.Profiler;
@@ -75,7 +76,7 @@ public class TileWorld {
         }
     }
     
-    public void collectTileIntersections(Collection<TileState> output, int x, int y, int w, int h) {
+    public void collectTileIntersections(Collection<TileState> output, int x, int y, int w, int h, Predicate<TileState> predicate) {
         Profiler.begin("collectTileIntersects");
         boolean xy = inBounds(x, y);
         boolean xwyh = inBounds(x + w, y + h);
@@ -97,7 +98,7 @@ public class TileWorld {
             regions.add(requestRegion(Region.toGlobalRegion(x), Region.toGlobalRegion(y + h)));
         }
         for (Region r : regions) {
-            r.tileIntersections(output, x, y, w, h);
+            r.tileIntersections(output, x, y, w, h, predicate);
         }
         Profiler.end();
     }
