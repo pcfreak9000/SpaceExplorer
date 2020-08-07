@@ -65,7 +65,7 @@ public class PhysicsSystem extends AbstractComponentSystem {
         Vector2fc positionState = tc.transform.worldspacePos();
         
         //Friction TODO manage elsewhere
-        pc.acceleration.sub(pc.velocity.x() * 1.5f, pc.velocity.y() * 1.5f, pc.acceleration);
+        //pc.acceleration.sub(pc.velocity.x() * 1.5f, pc.velocity.y() * 1.5f, pc.acceleration);
         
         //Integrate motion
         float posDeltaX = 0.5f * pc.acceleration.x() * Mathf.square(STEPSIZE_SECONDS)
@@ -84,7 +84,7 @@ public class PhysicsSystem extends AbstractComponentSystem {
                 positionState = tc.transform.worldspacePos();
                 pc.x = positionState.x();//TODO implement offset?
                 pc.y = positionState.y();
-                pc.onGround = false;
+                //pc.onGround = false;
                 List<TileState> collisions = new ArrayList<>();
                 //Collect possible tile collisions
                 this.tileWorld.collectTileIntersections(collisions, -1 + (int) Mathf.floor(pc.x / Tile.TILE_SIZE),
@@ -112,7 +112,7 @@ public class PhysicsSystem extends AbstractComponentSystem {
                 if (tMin < 1.0f) {
                     Vector2fc normal = getNormal(tile, pc, posDeltaX, posDeltaY, tMin);
                     pc.onGround |= normal.y() == 1f;
-                    float bouncynessFactor = 1.001f + tile.getTile().getBouncyness();//This epsilon here allows one to slide
+                    float bouncynessFactor = 1.001f + Mathf.max(tile.getTile().getBouncyness(), pc.restitution);//This epsilon here allows one to slide, do we want that?
                     pc.velocity.sub(new Vector2f(normal).mul(bouncynessFactor * pc.velocity.dot(normal)), pc.velocity);
                     Vector2f hehe = new Vector2f(posDeltaX, posDeltaY);
                     hehe.sub(new Vector2f(normal).mul(bouncynessFactor * hehe.dot(normal)), hehe);

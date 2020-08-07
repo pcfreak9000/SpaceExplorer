@@ -12,5 +12,6 @@ public class PhysicsComponent implements Component {
     public boolean onGround = false;
 
     public float x, y, w, h;
+    public float restitution = 0;
     
 }

@@ -49,15 +49,15 @@ public class PlayerInputSystem extends AbstractComponentSystem {
         PlayerInputComponent play = this.mapper.get(this.entities.get(0));
         float vy = 0;
         float vx = 0;
-        //if (physicsMapper.get(entities.get(0)).onGround) {
-        if (Keys.FORWARD.isPressed() || Keys.UP.isPressed()) {
-            vy += play.maxYv * 5;
+        if (physicsMapper.get(entities.get(0)).onGround) {
+            if (Keys.FORWARD.isPressed() || Keys.UP.isPressed()) {
+                vy += play.maxYv * 50;
+            }
+            //kinda useless, use for sneaking/ladders instead?
+            if (Keys.BACKWARD.isPressed() || Keys.DOWN.isPressed()) {
+                vy -= play.maxYv * 50;
+            }
         }
-        //kinda useless, use for sneaking/ladders instead?
-        if (Keys.BACKWARD.isPressed() || Keys.DOWN.isPressed()) {
-            vy -= play.maxYv * 5;
-        }
-        //}
         if (Keys.LEFT.isPressed()) {
             vx -= play.maxXv * 5;
         }
@@ -75,10 +75,12 @@ public class PlayerInputSystem extends AbstractComponentSystem {
             epc.velocity.set(vec).mul(150);
             epc.w = 10;
             epc.h = 10;
+            epc.restitution = 0.9f;
             AdvancedSprite sprite = new AdvancedSprite();
             sprite.setWidth(10);
             sprite.setHeight(10);
             sprite.setTexture(Omnikryptec.getTexturesS().get("sdfgsdfsdf"));
+            sprite.setLayer(50);
             RenderComponent rendComp = new RenderComponent(sprite);
             ent.addComponent(rendComp);
             ent.addComponent(epc);
@@ -132,6 +134,8 @@ public class PlayerInputSystem extends AbstractComponentSystem {
                 }
             }
         }
+        PhysicsComponent pc = physicsMapper.get(entities.get(0));
+        pc.acceleration.sub(pc.velocity.x() * 1.5f, pc.velocity.y() * 1.5f, pc.acceleration);
     }
     
 }
