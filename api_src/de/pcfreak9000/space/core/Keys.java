@@ -5,15 +5,15 @@ import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.keys.KeysAndButtons;
 
 public enum Keys {
-
-    FORWARD, BACKWARD, LEFT, RIGHT, UP, DOWN, DESTROY, BUILD, EXPLODE_DEBUG;
-
+    
+    FORWARD, BACKWARD, LEFT, RIGHT, UP, DOWN, DESTROY, BUILD, EXPLODE_DEBUG, SHOOT;
+    
     public final String id = toString();
-
+    
     public boolean isPressed() {
         return Omnikryptec.getInput().isPressed(this.id);
     }
-
+    
     public static void applyDefaultKeyConfig(KeySettings ks) {
         ks.addKey(FORWARD.id, KeysAndButtons.OKE_KEY_W);
         ks.addKey(BACKWARD.id, KeysAndButtons.OKE_KEY_S);
@@ -24,5 +24,6 @@ public enum Keys {
         ks.addMouseKey(DESTROY.id, KeysAndButtons.OKE_MOUSE_BUTTON_LEFT);
         ks.addMouseKey(BUILD.id, KeysAndButtons.OKE_MOUSE_BUTTON_RIGHT);
         ks.addMouseKey(EXPLODE_DEBUG.id, KeysAndButtons.OKE_MOUSE_BUTTON_MIDDLE);
+        ks.addKey(SHOOT.id, KeysAndButtons.OKE_KEY_F);
     }
 }

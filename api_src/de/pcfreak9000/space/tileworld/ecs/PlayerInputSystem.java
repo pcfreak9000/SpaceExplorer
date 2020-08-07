@@ -6,12 +6,14 @@ import java.util.Set;
 import org.joml.Vector2f;
 
 import de.omnikryptec.core.Omnikryptec;
+import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.render.Camera;
+import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.core.Keys;
@@ -61,6 +63,29 @@ public class PlayerInputSystem extends AbstractComponentSystem {
         }
         if (Keys.RIGHT.isPressed()) {
             vx += play.maxXv * 5;
+        }
+        if (Keys.SHOOT.isPressed()) {
+            Vector2f mouse = Omnikryptec.getInput().getMousePositionInWorld2D(this.cam, new Vector2f());
+            PhysicsComponent pc = this.physicsMapper.get(this.entities.get(0));
+            float delx = mouse.x - (pc.x + pc.w / 2);
+            float dely = mouse.y - (pc.y + pc.h / 2);
+            Vector2f vec = new Vector2f(delx, dely).normalize();
+            Entity ent = new Entity();
+            PhysicsComponent epc = new PhysicsComponent();
+            epc.velocity.set(vec).mul(150);
+            epc.w = 10;
+            epc.h = 10;
+            AdvancedSprite sprite = new AdvancedSprite();
+            sprite.setWidth(10);
+            sprite.setHeight(10);
+            sprite.setTexture(Omnikryptec.getTexturesS().get("sdfgsdfsdf"));
+            RenderComponent rendComp = new RenderComponent(sprite);
+            ent.addComponent(rendComp);
+            ent.addComponent(epc);
+            TransformComponent trans = new TransformComponent();
+            trans.transform.localspaceWrite().setTranslation(pc.x + pc.w / 2, pc.y + pc.h / 2);
+            ent.addComponent(trans);
+            iecsManager.addEntity(ent);
         }
         this.physicsMapper.get(this.entities.get(0)).acceleration.set(vx * 3, vy * 3 - 98.1f);
         if (Keys.EXPLODE_DEBUG.isPressed()) {
