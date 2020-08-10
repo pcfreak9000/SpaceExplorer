@@ -152,6 +152,10 @@ public class Tile {
         return null;
     }
     
+    public void neighbourChanged(TileWorld world, TileState neighbour) {
+        //?!?!?!?
+    }
+    
     @Override
     public String toString() {
         return String.format("Tile[texture=%s]", this.textureName);

@@ -26,10 +26,6 @@ public class TileStorage {
         }
     }
     
-    public void getAABB(Collection<TileState> output, int x, int y, int w, int h) {
-        getAABB(output, x, y, w, h, null);
-    }
-    
     public void getAABB(Collection<TileState> output, int x, int y, int w, int h, Predicate<TileState> predicate) {
         int xStart = Math.max(0, x - this.tx);
         int yStart = Math.max(0, y - this.ty);
@@ -51,10 +47,6 @@ public class TileStorage {
         TileState old = get(tileX, tileY);
         tileArray[tileX - this.tx][tileY - this.ty] = tileState;
         return old;
-    }
-    
-    public void getAll(Collection<TileState> list) {
-        getAll(list, null);
     }
     
     public void getAll(Collection<TileState> list, Predicate<TileState> predicate) {

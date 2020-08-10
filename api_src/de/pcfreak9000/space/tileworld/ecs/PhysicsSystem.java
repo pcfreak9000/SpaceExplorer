@@ -104,20 +104,33 @@ public class PhysicsSystem extends AbstractComponentSystem {
                                 tMin = result.x();
                                 tile = t;
                             }
+                            if (tMin == 0) {
+                                //Cant get a closer collision
+                                break;
+                            }
                         }
                     }
+                }
+                float tMinActual = tMin;
+                if (tMin < 1.0f) {
+                    //Not useful? Useful? oof
+                    tMin *= 0.9999f;
                 }
                 tc.transform.localspaceWrite().setTranslation(positionState.x() + posDeltaX * tMin,
                         positionState.y() + posDeltaY * tMin);
                 if (tMin < 1.0f) {
-                    Vector2fc normal = getNormal(tile, pc, posDeltaX, posDeltaY, tMin);
-                    pc.onGround |= normal.y() == 1f;
-                    float bouncynessFactor = 1.001f + Mathf.max(tile.getTile().getBouncyness(), pc.restitution);//This epsilon here allows one to slide, do we want that?
+                    Vector2f normal = new Vector2f();
+                    float pen = getNormal(tile, pc, posDeltaX, posDeltaY, tMinActual, normal);
+                    pc.onGround |= normal.y() == 1f;//<- does that work correctly?
+                    //Epsilon allows for sliding and makes stuff not so sticky
+                    float bouncynessFactor = 1.0001f + Mathf.max(tile.getTile().getBouncyness(), pc.restitution);
                     pc.velocity.sub(new Vector2f(normal).mul(bouncynessFactor * pc.velocity.dot(normal)), pc.velocity);
                     Vector2f hehe = new Vector2f(posDeltaX, posDeltaY);
                     hehe.sub(new Vector2f(normal).mul(bouncynessFactor * hehe.dot(normal)), hehe);
                     posDeltaX = hehe.x;
                     posDeltaY = hehe.y;
+                    //Positional correction because floating point error (fixes gliding through the tiles on y=1 or y=0 (y>1 not affected for some reason)
+                    tc.transform.localspaceWrite().translate(normal.mul(pen * 0.3f));
                 }
                 tRemaining -= tMin * tRemaining;
             }
@@ -127,7 +140,8 @@ public class PhysicsSystem extends AbstractComponentSystem {
         
     }
     
-    private Vector2f getNormal(TileState t, PhysicsComponent pc, float posDelX, float posDelY, float tMin) {
+    private float getNormal(TileState t, PhysicsComponent pc, float posDelX, float posDelY, float tMin,
+            Vector2f normal) {
         float woverlap = -1;
         float hoverlap = -1;
         float projectedX = pc.x + posDelX * tMin;
@@ -138,28 +152,27 @@ public class PhysicsSystem extends AbstractComponentSystem {
             woverlap = projectedX + pc.w - t.getGlobalTileX() * Tile.TILE_SIZE;
         }
         if (projectedY > t.getGlobalTileY() * Tile.TILE_SIZE) {
-            hoverlap = (t.getGlobalTileY() + 1) * Tile.TILE_SIZE - projectedY;
+            hoverlap = (t.getGlobalTileY() + 1.0f) * Tile.TILE_SIZE - projectedY;
         } else {
             hoverlap = projectedY + pc.h - t.getGlobalTileY() * Tile.TILE_SIZE;
         }
         //Stupid epsilon stuff
         woverlap += 0.001f;
         hoverlap += 0.001f;
-        if (woverlap < 0 || hoverlap < 0) {
-            Logger.getLogger(PhysicsSystem.class).warn("This should not happen");
-        }
         if (woverlap >= 0 && hoverlap >= 0) {
             woverlap = Mathf.min(woverlap, Tile.TILE_SIZE);
             hoverlap = Mathf.min(hoverlap, Tile.TILE_SIZE);
             float wperc = woverlap / Tile.TILE_SIZE;
             float hperc = hoverlap / Tile.TILE_SIZE;
             if (wperc < hperc) {
-                return new Vector2f(Math.signum(projectedX - t.getGlobalTileX() * Tile.TILE_SIZE), 0);
+                normal.set(new Vector2f(Math.signum(projectedX - t.getGlobalTileX() * Tile.TILE_SIZE), 0));
+                return woverlap;
             } else {
-                return new Vector2f(0, Math.signum(projectedY - t.getGlobalTileY() * Tile.TILE_SIZE));
+                normal.set(new Vector2f(0, Math.signum(projectedY - t.getGlobalTileY() * Tile.TILE_SIZE)));
+                return hoverlap;
             }
         }
-        throw new IllegalArgumentException();
+        throw new IllegalStateException("Negative overlap");
     }
     
 }

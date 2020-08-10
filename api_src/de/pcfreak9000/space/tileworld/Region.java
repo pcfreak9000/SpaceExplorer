@@ -197,7 +197,8 @@ public class Region {
         return this.ty;
     }
     
-    public void tileIntersections(Collection<TileState> output, int x, int y, int w, int h, Predicate<TileState> predicate) {
+    public void tileIntersections(Collection<TileState> output, int x, int y, int w, int h,
+            Predicate<TileState> predicate) {
         this.tiles.getAABB(output, x, y, w, h, predicate);
     }
     
@@ -252,6 +253,18 @@ public class Region {
             addLight(newTileState);
         }
         queueRecacheTiles();
+//        if (tileWorld.inBounds(tx + 1, ty)) {
+//            getTileStateGlobal(tx + 1, ty).getTile().neighbourChanged(tileWorld, newTileState);
+//        }
+//        if (tileWorld.inBounds(tx - 1, ty)) {
+//            getTileStateGlobal(tx - 1, ty).getTile().neighbourChanged(tileWorld, newTileState);
+//        }
+//        if (tileWorld.inBounds(tx, ty + 1)) {
+//            getTileStateGlobal(tx, ty + 1).getTile().neighbourChanged(tileWorld, newTileState);
+//        }
+//        if (tileWorld.inBounds(tx, ty - 1)) {
+//            getTileStateGlobal(tx, ty - 1).getTile().neighbourChanged(tileWorld, newTileState);
+//        }
         return old.getTile();
     }
     
@@ -319,95 +332,95 @@ public class Region {
         }
     }
     
-//    public void requestSunlightComputation() {
-//        int maxRy = toGlobalRegion(tileWorld.getWorldHeight());
-//        if (this.ry == maxRy) {
-//            //Add LICHTWURZELKNOTEN to the queue
-//            for (int i = 0; i < REGION_TILE_SIZE && tx + i < tileWorld.getWorldWidth(); i++) {
-//                TileState t = getTileState(tx + i, tileWorld.getWorldHeight() - 1);
-//                t.sunlight().set(Tile.MAX_LIGHT_VALUE, Tile.MAX_LIGHT_VALUE, Tile.MAX_LIGHT_VALUE);
-//                t.setDirectSun(true);
-//                sunlightBfsQueue.add(t);
-//            }
-//            propagateSunlight(false);
-//        } else {
-//            Region r = tileWorld.requestRegion(this.rx, this.ry + 1);
-//            //if r.sunlightPasses Check if sunlight can even pass that chunk, otherwise:
-//            r.requestSunlightComputation();
-//        }
-//        queueRecacheLights();
-//    }
+    //    public void requestSunlightComputation() {
+    //        int maxRy = toGlobalRegion(tileWorld.getWorldHeight());
+    //        if (this.ry == maxRy) {
+    //            //Add LICHTWURZELKNOTEN to the queue
+    //            for (int i = 0; i < REGION_TILE_SIZE && tx + i < tileWorld.getWorldWidth(); i++) {
+    //                TileState t = getTileState(tx + i, tileWorld.getWorldHeight() - 1);
+    //                t.sunlight().set(Tile.MAX_LIGHT_VALUE, Tile.MAX_LIGHT_VALUE, Tile.MAX_LIGHT_VALUE);
+    //                t.setDirectSun(true);
+    //                sunlightBfsQueue.add(t);
+    //            }
+    //            propagateSunlight(false);
+    //        } else {
+    //            Region r = tileWorld.requestRegion(this.rx, this.ry + 1);
+    //            //if r.sunlightPasses Check if sunlight can even pass that chunk, otherwise:
+    //            r.requestSunlightComputation();
+    //        }
+    //        queueRecacheLights();
+    //    }
     
-//    private void propagateSunlight(boolean test) {
-//        if (test) {
-//            for (int i = 0; i < REGION_TILE_SIZE && tx + i < tileWorld.getWorldWidth(); i++) {
-//                TileState t = getTileStateGlobal(tx + i, ty + REGION_TILE_SIZE - 1);
-//                if (t != null && t.sunlight().maxRGB() >= 1) {
-//                    sunlightBfsQueue.add(t);
-//                }
-//            }
-//        }
-//        while (!sunlightBfsQueue.isEmpty()) {
-//            TileState front = this.sunlightBfsQueue.poll();
-//            int tx = front.getGlobalTileX();
-//            int ty = front.getGlobalTileY();
-//            if (front.getTile().hasLightFilter()) {
-//                Color filter = front.getTile().getFilterColor();
-//                front.light().mulRGB(filter);
-//            }
-//            if (this.tileWorld.inBounds(tx + 1, ty)) {
-//                TileState t = getTileStateGlobal(tx + 1, ty);
-//                checkAddSunLightHelper(front, t, test);
-//            }
-//            if (this.tileWorld.inBounds(tx - 1, ty)) {
-//                TileState t = getTileStateGlobal(tx - 1, ty);
-//                checkAddSunLightHelper(front, t, test);
-//            }
-//            if (this.tileWorld.inBounds(tx, ty + 1)) {
-//                TileState t = getTileStateGlobal(tx, ty + 1);
-//                checkAddSunLightHelper(front, t, test);
-//            }
-//            if (this.tileWorld.inBounds(tx, ty - 1)) {
-//                TileState t = getTileStateGlobal(tx, ty - 1);
-//                checkAddSunLightHelper(front, t, test);
-//            }
-//        }
-//    }
+    //    private void propagateSunlight(boolean test) {
+    //        if (test) {
+    //            for (int i = 0; i < REGION_TILE_SIZE && tx + i < tileWorld.getWorldWidth(); i++) {
+    //                TileState t = getTileStateGlobal(tx + i, ty + REGION_TILE_SIZE - 1);
+    //                if (t != null && t.sunlight().maxRGB() >= 1) {
+    //                    sunlightBfsQueue.add(t);
+    //                }
+    //            }
+    //        }
+    //        while (!sunlightBfsQueue.isEmpty()) {
+    //            TileState front = this.sunlightBfsQueue.poll();
+    //            int tx = front.getGlobalTileX();
+    //            int ty = front.getGlobalTileY();
+    //            if (front.getTile().hasLightFilter()) {
+    //                Color filter = front.getTile().getFilterColor();
+    //                front.light().mulRGB(filter);
+    //            }
+    //            if (this.tileWorld.inBounds(tx + 1, ty)) {
+    //                TileState t = getTileStateGlobal(tx + 1, ty);
+    //                checkAddSunLightHelper(front, t, test);
+    //            }
+    //            if (this.tileWorld.inBounds(tx - 1, ty)) {
+    //                TileState t = getTileStateGlobal(tx - 1, ty);
+    //                checkAddSunLightHelper(front, t, test);
+    //            }
+    //            if (this.tileWorld.inBounds(tx, ty + 1)) {
+    //                TileState t = getTileStateGlobal(tx, ty + 1);
+    //                checkAddSunLightHelper(front, t, test);
+    //            }
+    //            if (this.tileWorld.inBounds(tx, ty - 1)) {
+    //                TileState t = getTileStateGlobal(tx, ty - 1);
+    //                checkAddSunLightHelper(front, t, test);
+    //            }
+    //        }
+    //    }
     
-//    private void checkAddSunLightHelper(TileState front, TileState t, boolean TEST) {
-//        if (t != null) {
-//            boolean found = false;
-//            boolean direct = front.getGlobalTileX() == t.getGlobalTileX() && front.isDirectSun();
-//            for (int i = 0; i < 3; i++) {
-//                if (t.sunlight().get(i) + 1 < front.sunlight().get(i)) {
-//                    t.sunlight().set(i, front.sunlight().get(i)
-//                            - (direct ? front.getTile().getSunLightLoss() : front.getTile().getLightLoss()));
-//                    t.setDirectSun(direct);
-//                    found = true;
-//                }
-//            }
-//            if (found) {
-//                this.sunlightBfsQueue.add(t);
-//                queueNeighbouringLightRecaching(t);
-//            }
-//        }
-//    }
+    //    private void checkAddSunLightHelper(TileState front, TileState t, boolean TEST) {
+    //        if (t != null) {
+    //            boolean found = false;
+    //            boolean direct = front.getGlobalTileX() == t.getGlobalTileX() && front.isDirectSun();
+    //            for (int i = 0; i < 3; i++) {
+    //                if (t.sunlight().get(i) + 1 < front.sunlight().get(i)) {
+    //                    t.sunlight().set(i, front.sunlight().get(i)
+    //                            - (direct ? front.getTile().getSunLightLoss() : front.getTile().getLightLoss()));
+    //                    t.setDirectSun(direct);
+    //                    found = true;
+    //                }
+    //            }
+    //            if (found) {
+    //                this.sunlightBfsQueue.add(t);
+    //                queueNeighbouringLightRecaching(t);
+    //            }
+    //        }
+    //    }
     
-//    private void queueNeighbouringSunLightRecaching(TileState t) {
-//        int c = Region.toGlobalRegion(t.getGlobalTileX());
-//        int d = Region.toGlobalRegion(t.getGlobalTileY());
-//        if (this.rx != c || this.ry != d) {
-//            Region r = this.tileWorld.getRegion(c, d);
-//            if (r != null) {
-//                if (r.ry < ry) {
-//                    r.sunlightBfsQueue.add(t);
-//                } else {
-//                    this.sunlightBfsQueue.add(t);
-//                }
-//                r.queueRecacheLights();
-//            }
-//        }
-//    }
+    //    private void queueNeighbouringSunLightRecaching(TileState t) {
+    //        int c = Region.toGlobalRegion(t.getGlobalTileX());
+    //        int d = Region.toGlobalRegion(t.getGlobalTileY());
+    //        if (this.rx != c || this.ry != d) {
+    //            Region r = this.tileWorld.getRegion(c, d);
+    //            if (r != null) {
+    //                if (r.ry < ry) {
+    //                    r.sunlightBfsQueue.add(t);
+    //                } else {
+    //                    this.sunlightBfsQueue.add(t);
+    //                }
+    //                r.queueRecacheLights();
+    //            }
+    //        }
+    //    }
     
     private void resolveLights() {
         for (int i = 0; i < this.lightRemovalBfsQueue.length; i++) {

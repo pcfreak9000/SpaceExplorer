@@ -23,6 +23,8 @@ public class TileWorld {
     
     private final Region[][] regions;
     
+    private boolean wrapsAround = true;
+    
     public TileWorld(int width, int height, RegionGenerator generator) {
         this.width = width;
         this.height = height;
