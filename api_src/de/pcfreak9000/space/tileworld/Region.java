@@ -68,8 +68,7 @@ public class Region {
     private final TileStorage tilesBackground;
     private final List<Tickable> tickables;
     private final List<TileEntity> tileEntities;
-    private final List<Entity> entitiesStatic;
-    private final List<Entity> entitiesDynamic;
+    
     private final Queue<Tickable> tickablesForRemoval;
     
     private boolean ticking = false;
@@ -95,8 +94,6 @@ public class Region {
         this.tileEntities = new ArrayList<>();
         this.tickables = new ArrayList<>();
         this.tickablesForRemoval = new ArrayDeque<>();
-        this.entitiesStatic = new ArrayList<>();
-        this.entitiesDynamic = new ArrayList<>();
         this.ocvm = new OrderedCachedVertexManager(6 * REGION_TILE_SIZE);
         this.lightOcvm = new OrderedCachedVertexManager(6 * REGION_TILE_SIZE);
         this.regionEntity = new Entity();
@@ -197,6 +194,10 @@ public class Region {
         return this.ty;
     }
     
+    public Entity getECSEntity() {
+        return regionEntity;
+    }
+    
     public void tileIntersections(Collection<TileState> output, int x, int y, int w, int h,
             Predicate<TileState> predicate) {
         this.tiles.getAABB(output, x, y, w, h, predicate);
@@ -253,18 +254,18 @@ public class Region {
             addLight(newTileState);
         }
         queueRecacheTiles();
-//        if (tileWorld.inBounds(tx + 1, ty)) {
-//            getTileStateGlobal(tx + 1, ty).getTile().neighbourChanged(tileWorld, newTileState);
-//        }
-//        if (tileWorld.inBounds(tx - 1, ty)) {
-//            getTileStateGlobal(tx - 1, ty).getTile().neighbourChanged(tileWorld, newTileState);
-//        }
-//        if (tileWorld.inBounds(tx, ty + 1)) {
-//            getTileStateGlobal(tx, ty + 1).getTile().neighbourChanged(tileWorld, newTileState);
-//        }
-//        if (tileWorld.inBounds(tx, ty - 1)) {
-//            getTileStateGlobal(tx, ty - 1).getTile().neighbourChanged(tileWorld, newTileState);
-//        }
+        //        if (tileWorld.inBounds(tx + 1, ty)) {
+        //            getTileStateGlobal(tx + 1, ty).getTile().neighbourChanged(tileWorld, newTileState);
+        //        }
+        //        if (tileWorld.inBounds(tx - 1, ty)) {
+        //            getTileStateGlobal(tx - 1, ty).getTile().neighbourChanged(tileWorld, newTileState);
+        //        }
+        //        if (tileWorld.inBounds(tx, ty + 1)) {
+        //            getTileStateGlobal(tx, ty + 1).getTile().neighbourChanged(tileWorld, newTileState);
+        //        }
+        //        if (tileWorld.inBounds(tx, ty - 1)) {
+        //            getTileStateGlobal(tx, ty - 1).getTile().neighbourChanged(tileWorld, newTileState);
+        //        }
         return old.getTile();
     }
     
@@ -301,26 +302,6 @@ public class Region {
             }
         }
         queueRecacheLights();
-    }
-    
-    public void addThisTo(IECSManager ecsManager) {
-        for (Entity e : this.entitiesStatic) {
-            ecsManager.addEntity(e);
-        }
-        for (Entity e : this.entitiesDynamic) {
-            ecsManager.addEntity(e);
-        }
-        ecsManager.addEntity(this.regionEntity);
-    }
-    
-    public void removeThisFrom(IECSManager ecsManager) {
-        for (Entity e : this.entitiesStatic) {
-            ecsManager.removeEntity(e);
-        }
-        for (Entity e : this.entitiesDynamic) {
-            ecsManager.removeEntity(e);
-        }
-        ecsManager.removeEntity(this.regionEntity);
     }
     
     public void tick(Time time) {

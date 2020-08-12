@@ -31,23 +31,24 @@ import de.pcfreak9000.space.tileworld.ecs.TickRegionSystem;
  *
  */
 public class GroundManager {
-
+    
     //add/remove entities
     //GUI? where? -> shared GUI renderer
-
+    
     private final IECSManager ecsManager;
-
+    
     private final ViewManager viewManager;
-
+    
     private final Scene localScene;
-
-    private WorldInformationBundle currentWorld;
-    private WorldLoadingFence worldLoadingFence;
 
     private final PlanetCamera planetCamera;
 
+    
+    private WorldInformationBundle currentWorld;
+    private WorldLoadingFence worldLoadingFence;
+        
     private final Set<Region> localLoadedChunks;
-
+    
     public GroundManager() {
         this.localLoadedChunks = new HashSet<>();
         this.ecsManager = UpdateableFactory.createDefaultIECSManager();
@@ -62,11 +63,11 @@ public class GroundManager {
         addDefaultECSSystems();
         Space.BUS.post(new VoxelworldEvents.InitGroundManagerEvent(this.ecsManager, this.viewManager));
     }
-
+    
     public PlanetCamera getPlanetCamera() {
         return this.planetCamera;
     }
-
+    
     private void addDefaultECSSystems() {
         AdvancedRenderer2D renderer = new AdvancedRenderer2D(12 * 6 * Region.REGION_TILE_SIZE);
         renderer.setEnableReflections(false);
@@ -84,7 +85,7 @@ public class GroundManager {
         this.ecsManager.addSystem(new CameraSystem());
         this.ecsManager.addSystem(new ParallaxSystem());
     }
-
+    
     public void setWorld(WorldInformationBundle w) {
         Space.BUS.post(new VoxelworldEvents.SetVoxelWorldEvent(this,
                 this.getCurrentWorld() == null ? null : this.getCurrentWorld().getTileWorld(),
@@ -112,15 +113,15 @@ public class GroundManager {
             loadAll();
         }
     }
-
+    
     public IECSManager getECSManager() {
         return this.ecsManager;
     }
-
+    
     public WorldInformationBundle getCurrentWorld() {
         return this.currentWorld;
     }
-
+    
     public void setWorldUpdateFence(WorldLoadingFence fence) {
         if (this.currentWorld == null) {
             this.worldLoadingFence = fence;
@@ -130,7 +131,7 @@ public class GroundManager {
         this.worldLoadingFence = fence;
         loadAll();
     }
-
+    
     private void loadAll() {
         int xR = this.worldLoadingFence.getChunkRadiusRangeX();
         int yR = this.worldLoadingFence.getChunkRadiusRangeY();
@@ -144,22 +145,22 @@ public class GroundManager {
                     Region c = this.currentWorld.getTileWorld().requestRegion(rx, ry);
                     if (c != null) {
                         this.localLoadedChunks.add(c);
-                        c.addThisTo(this.ecsManager);
+                        this.ecsManager.addEntity(c.getECSEntity());
                     }
                 }
             }
         }
     }
-
+    
     private void unloadAll() {
         Iterator<Region> it = this.localLoadedChunks.iterator();
         while (it.hasNext()) {
             Region c = it.next();
-            c.removeThisFrom(this.ecsManager);
+            this.ecsManager.addEntity(c.getECSEntity());
             it.remove();
         }
     }
-
+    
     private class UpdaterClass implements IUpdatable {
         @Override //make sure that the chunks are updated for dynamics after the movement but before this
         public void update(Time time) {
