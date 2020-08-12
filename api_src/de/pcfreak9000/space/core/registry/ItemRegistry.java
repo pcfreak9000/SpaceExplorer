@@ -3,7 +3,6 @@ package de.pcfreak9000.space.core.registry;
 import de.omnikryptec.event.EventSubscription;
 import de.pcfreak9000.space.core.CoreEvents;
 import de.pcfreak9000.space.core.Space;
-import de.pcfreak9000.space.core.CoreEvents.AssignResourcesEvent;
 import de.pcfreak9000.space.item.Item;
 
 public class ItemRegistry extends GameRegistry<Item> {

@@ -4,7 +4,6 @@ import java.util.Random;
 
 import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.render.Camera;
-import de.pcfreak9000.space.core.GameRegistry;
 import de.pcfreak9000.spaceexplorer.game.core.Player;
 import de.pcfreak9000.spaceexplorer.game.launch.SpaceExplorer2D;
 import de.pcfreak9000.spaceexplorer.universe.celestial.CelestialBody;

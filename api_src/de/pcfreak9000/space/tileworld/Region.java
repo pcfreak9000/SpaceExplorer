@@ -15,7 +15,6 @@ import com.google.common.base.Objects;
 
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
-import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.batch.AdvancedBatch2D;
 import de.omnikryptec.render.batch.Batch2D;

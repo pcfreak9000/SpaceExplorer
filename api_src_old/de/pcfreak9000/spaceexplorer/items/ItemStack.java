@@ -1,7 +1,5 @@
 package de.pcfreak9000.spaceexplorer.items;
 
-import de.pcfreak9000.space.core.GameRegistry;
-
 /**
  * a Stack of {@link Item}s
  *

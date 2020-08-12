@@ -5,7 +5,6 @@ import de.omnikryptec.old.physics.AdvancedBody;
 import de.omnikryptec.old.util.ConverterUtil;
 import de.omnikryptec.old.util.EnumCollection.UpdateType;
 import de.omnikryptec.render.objects.Sprite;
-import de.pcfreak9000.space.core.GameRegistry;
 
 public class Entity extends Sprite {
 

@@ -1,8 +1,5 @@
 package de.pcfreak9000.space.tileworld.ecs;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.joml.Vector2f;
 
 import de.omnikryptec.core.Omnikryptec;
@@ -20,7 +17,7 @@ import de.pcfreak9000.space.core.Keys;
 import de.pcfreak9000.space.core.Space;
 import de.pcfreak9000.space.tileworld.Region;
 import de.pcfreak9000.space.tileworld.TileWorld;
-import de.pcfreak9000.space.tileworld.VoxelworldEvents;
+import de.pcfreak9000.space.tileworld.TileWorldEvents;
 import de.pcfreak9000.space.tileworld.tile.Tile;
 
 public class PlayerInputSystem extends AbstractComponentSystem {
@@ -37,7 +34,7 @@ public class PlayerInputSystem extends AbstractComponentSystem {
     private Camera cam;
     
     @EventSubscription
-    public void settwevent(VoxelworldEvents.SetVoxelWorldEvent ev) {
+    public void settwevent(TileWorldEvents.SetTileWorldEvent ev) {
         this.world = ev.tileWorldNew;
         this.cam = ev.groundMgr.getPlanetCamera().getCameraActual();//TODO meh...?
     }

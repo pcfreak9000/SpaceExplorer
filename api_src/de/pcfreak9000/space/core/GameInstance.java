@@ -1,8 +1,8 @@
 package de.pcfreak9000.space.core;
 
 import de.omnikryptec.ecs.component.ComponentType;
-import de.pcfreak9000.space.tileworld.GroundManager;
 import de.pcfreak9000.space.tileworld.WorldInformationBundle;
+import de.pcfreak9000.space.tileworld.WorldLoader;
 import de.pcfreak9000.space.tileworld.WorldLoadingFence;
 import de.pcfreak9000.space.tileworld.ecs.TransformComponent;
 
@@ -17,9 +17,9 @@ public class GameInstance {
 
     private final PlayerStats playerStats;
 
-    private final GroundManager groundManager;
+    private final WorldLoader groundManager;
 
-    public GameInstance(GroundManager gmgr) {
+    public GameInstance(WorldLoader gmgr) {
         this.groundManager = gmgr;
         this.playerStats = new PlayerStats(); //TODO playerstats creation
     }

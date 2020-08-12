@@ -54,6 +54,9 @@ public class DMod {
         //dirttile.setFilterColor(new Color(1, 0, 0, 1));
         GameRegistry.TILE_REGISTRY.register("dirt", dirttile);
         
+        Tile torch = new Tile();
+        torch.setLightColor(new Color(Tile.MAX_LIGHT_VALUE, Tile.MAX_LIGHT_VALUE, Tile.MAX_LIGHT_VALUE));
+        
         Tile laser = new Tile() {
             @Override
             public boolean hasTileEntity() {
@@ -67,7 +70,7 @@ public class DMod {
         };
         laser.setTexture("dirt.png");
         laser.color().set(1, 0, 0);
-        laser.setLightColor(new Color(Tile.MAX_LIGHT_VALUE, Tile.MAX_LIGHT_VALUE, Tile.MAX_LIGHT_VALUE));
+        laser.setLightColor(new Color(5, 0, 0));
         GameRegistry.TILE_REGISTRY.register("laser", laser);
         
         Background back = new Background("Space.png", 16 / 9f, 3, 1000, 1000);
@@ -109,6 +112,9 @@ public class DMod {
                             if (t == tstoneTile) {
                                 if (Math.random() < 0.001) {
                                     t = laser;
+                                }
+                                if(Math.random() < 0.002) {
+                                    t = torch;
                                 }
                             }
                             chunk.setTile(t, i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY());

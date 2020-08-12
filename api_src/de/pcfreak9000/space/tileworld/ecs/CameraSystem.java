@@ -12,7 +12,7 @@ import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.core.Space;
 import de.pcfreak9000.space.tileworld.PlanetCamera;
 import de.pcfreak9000.space.tileworld.TileWorld;
-import de.pcfreak9000.space.tileworld.VoxelworldEvents;
+import de.pcfreak9000.space.tileworld.TileWorldEvents;
 import de.pcfreak9000.space.tileworld.tile.Tile;
 
 public class CameraSystem extends AbstractComponentSystem {
@@ -28,7 +28,7 @@ public class CameraSystem extends AbstractComponentSystem {
     }
 
     @EventSubscription
-    public void tileworldLoadingEvent(VoxelworldEvents.SetVoxelWorldEvent svwe) {
+    public void tileworldLoadingEvent(TileWorldEvents.SetTileWorldEvent svwe) {
         this.playerCam = svwe.groundMgr.getPlanetCamera();
         this.tileWorld = svwe.tileWorldNew;
     }

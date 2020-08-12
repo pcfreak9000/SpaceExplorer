@@ -4,7 +4,6 @@ import bin.de.pcfreak9000.space.mod.Se2DModInitEvent;
 import bin.de.pcfreak9000.space.mod.Se2DModPostInitEvent;
 import bin.de.pcfreak9000.space.mod.Se2DModPreInitEvent;
 import de.omnikryptec.event.EventSubscription;
-import de.pcfreak9000.space.core.GameRegistry;
 import de.pcfreak9000.space.mod.Instance;
 import de.pcfreak9000.space.mod.Mod;
 import de.pcfreak9000.space.mod.ModLoader;

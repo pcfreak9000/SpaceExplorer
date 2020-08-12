@@ -2,8 +2,6 @@ package de.pcfreak9000.space.mod;
 
 import java.io.File;
 
-import de.codemakers.io.file.AdvancedFile;
-
 /**
  * contains a mod
  *

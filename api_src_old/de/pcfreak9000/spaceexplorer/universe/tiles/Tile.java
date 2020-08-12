@@ -2,7 +2,6 @@ package de.pcfreak9000.spaceexplorer.universe.tiles;
 
 import de.omnikryptec.old.util.EnumCollection.FixedSizeMode;
 import de.omnikryptec.render.objects.Sprite;
-import de.pcfreak9000.space.core.GameRegistry;
 import de.pcfreak9000.spaceexplorer.universe.celestial.CelestialBody;
 import de.pcfreak9000.spaceexplorer.universe.worlds.World;
 

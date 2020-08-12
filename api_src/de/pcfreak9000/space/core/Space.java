@@ -21,10 +21,10 @@ import de.pcfreak9000.space.core.gui.LoadingScreenCallback;
 import de.pcfreak9000.space.core.gui.MainMenu;
 import de.pcfreak9000.space.core.registry.GameRegistry;
 import de.pcfreak9000.space.mod.ModLoader;
-import de.pcfreak9000.space.tileworld.GroundManager;
 import de.pcfreak9000.space.tileworld.TileWorldGenerator;
-import de.pcfreak9000.space.tileworld.WorldInformationBundle;
 import de.pcfreak9000.space.tileworld.TileWorldGenerator.GeneratorCapabilitiesBase;
+import de.pcfreak9000.space.tileworld.WorldInformationBundle;
+import de.pcfreak9000.space.tileworld.WorldLoader;
 
 /**
  * The main class. General settings and ressource/mod loading.
@@ -64,7 +64,7 @@ public class Space extends Omnikryptec {
     
     private MainMenu mainMenu;
     
-    private GroundManager groundManager;
+    private WorldLoader groundManager;
     
     private Space() {
         space = this;
@@ -98,7 +98,7 @@ public class Space extends Omnikryptec {
     public void onPlayEvent(CoreEvents.PlayEvent ev) {
         mainMenu.removeCurrentGui();
         //TESTING:
-        this.groundManager = new GroundManager();//Hmmm... is there a better place to do this
+        this.groundManager = new WorldLoader();//Hmmm... is there a better place to do this
         GameInstance ins = new GameInstance(this.groundManager);
         WorldInformationBundle testWorld = pickGenerator(
                 GameRegistry.GENERATOR_REGISTRY.filtered(GeneratorCapabilitiesBase.LVL_ENTRY)).generateWorld(0);

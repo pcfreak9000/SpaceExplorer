@@ -9,8 +9,6 @@ import de.omnikryptec.gui.GuiLabel;
 import de.omnikryptec.resource.helper.TextureHelper;
 import de.pcfreak9000.space.core.CoreEvents;
 import de.pcfreak9000.space.core.Space;
-import de.pcfreak9000.space.core.CoreEvents.AssignResourcesEvent;
-import de.pcfreak9000.space.core.CoreEvents.PlayEvent;
 
 public class MainMenu extends AbstractGui {
     

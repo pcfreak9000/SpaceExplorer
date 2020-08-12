@@ -30,7 +30,7 @@ import de.pcfreak9000.space.tileworld.ecs.TickRegionSystem;
  * @author pcfreak9000
  *
  */
-public class GroundManager {
+public class WorldLoader {
     
     //add/remove entities
     //GUI? where? -> shared GUI renderer
@@ -49,7 +49,7 @@ public class GroundManager {
         
     private final Set<Region> localLoadedChunks;
     
-    public GroundManager() {
+    public WorldLoader() {
         this.localLoadedChunks = new HashSet<>();
         this.ecsManager = UpdateableFactory.createDefaultIECSManager();
         this.localScene = new Scene();
@@ -61,7 +61,7 @@ public class GroundManager {
         updateables.setUpdatable(1, this.ecsManager);
         this.localScene.setGameLogic(updateables);
         addDefaultECSSystems();
-        Space.BUS.post(new VoxelworldEvents.InitGroundManagerEvent(this.ecsManager, this.viewManager));
+        Space.BUS.post(new TileWorldEvents.InitWorldLoaderEvent(this.ecsManager, this.viewManager));
     }
     
     public PlanetCamera getPlanetCamera() {
@@ -87,7 +87,7 @@ public class GroundManager {
     }
     
     public void setWorld(WorldInformationBundle w) {
-        Space.BUS.post(new VoxelworldEvents.SetVoxelWorldEvent(this,
+        Space.BUS.post(new TileWorldEvents.SetTileWorldEvent(this,
                 this.getCurrentWorld() == null ? null : this.getCurrentWorld().getTileWorld(),
                 w == null ? null : w.getTileWorld()));//TODO meh... use the WorldInformationBundle instead?
         if (w == null) {

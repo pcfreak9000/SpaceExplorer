@@ -4,9 +4,7 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.resource.helper.TextureHelper;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathd;
-import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.core.registry.GameRegistry;
-import de.pcfreak9000.space.tileworld.Region;
 import de.pcfreak9000.space.tileworld.TileWorld;
 import de.pcfreak9000.space.util.RegisterSensitive;
 
