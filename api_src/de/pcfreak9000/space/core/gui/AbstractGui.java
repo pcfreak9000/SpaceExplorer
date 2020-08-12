@@ -1,4 +1,4 @@
-package de.pcfreak9000.space.core;
+package de.pcfreak9000.space.core.gui;
 
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.gui.GuiComponent;

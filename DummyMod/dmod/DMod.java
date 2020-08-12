@@ -3,7 +3,7 @@ package dmod;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathf;
-import de.pcfreak9000.space.core.GameRegistry;
+import de.pcfreak9000.space.core.registry.GameRegistry;
 import de.pcfreak9000.space.mod.Instance;
 import de.pcfreak9000.space.mod.Mod;
 import de.pcfreak9000.space.mod.ModLoaderEvents;

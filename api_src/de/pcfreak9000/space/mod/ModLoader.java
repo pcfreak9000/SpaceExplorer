@@ -19,8 +19,8 @@ import java.util.regex.Pattern;
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.resource.loadervpc.ResourceManager;
 import de.omnikryptec.util.Logger;
-import de.pcfreak9000.space.core.LoadingScreen;
 import de.pcfreak9000.space.core.Space;
+import de.pcfreak9000.space.core.gui.LoadingScreen;
 
 /**
  * loads mods.

@@ -1,4 +1,4 @@
-package de.pcfreak9000.space.core;
+package de.pcfreak9000.space.core.gui;
 
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.event.EventSubscription;
@@ -7,6 +7,10 @@ import de.omnikryptec.gui.GuiButton.State;
 import de.omnikryptec.gui.GuiImage;
 import de.omnikryptec.gui.GuiLabel;
 import de.omnikryptec.resource.helper.TextureHelper;
+import de.pcfreak9000.space.core.CoreEvents;
+import de.pcfreak9000.space.core.Space;
+import de.pcfreak9000.space.core.CoreEvents.AssignResourcesEvent;
+import de.pcfreak9000.space.core.CoreEvents.PlayEvent;
 
 public class MainMenu extends AbstractGui {
     

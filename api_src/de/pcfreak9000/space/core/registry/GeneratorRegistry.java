@@ -1,4 +1,4 @@
-package de.pcfreak9000.space.core;
+package de.pcfreak9000.space.core.registry;
 
 import java.util.ArrayList;
 import java.util.List;

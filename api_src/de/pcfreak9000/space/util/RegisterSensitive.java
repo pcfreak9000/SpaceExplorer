@@ -7,8 +7,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import de.pcfreak9000.space.core.GameRegistry;
-
 /**
  * Indicates that the annoted object must be registered, usually in the
  * {@link GameRegistry}. This can be done in the InitEvents.
