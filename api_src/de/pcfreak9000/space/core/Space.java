@@ -66,9 +66,7 @@ public class Space extends Omnikryptec {
     private MainMenu mainMenu;
     
     private WorldManager worldManager;
-    
-    private WorldLoader groundManager;
-    
+       
     private Space() {
         space = this;
         BUS.register(this);
@@ -102,7 +100,6 @@ public class Space extends Omnikryptec {
         mainMenu.removeCurrentGui();
         //TESTING:
         this.worldManager = new WorldManager();
-        //this.groundManager = new WorldLoader(this.worldManager);//Hmmm... is there a better place to do this
         GameInstance ins = new GameInstance(this.worldManager);
         World testWorld = pickGenerator(
                 GameRegistry.GENERATOR_REGISTRY.filtered(GeneratorCapabilitiesBase.LVL_ENTRY)).generateWorld(0);

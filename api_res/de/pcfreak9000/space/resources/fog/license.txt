@@ -1,0 +1,7 @@
+fog_1, fog_2, fog_3, fog_4, fog_5
+
+Created by: Santoniche
+https://opengameart.org/content/mist
+
+License:
+https://creativecommons.org/licenses/by-sa/4.0/

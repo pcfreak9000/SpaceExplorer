@@ -10,6 +10,7 @@ import de.omnikryptec.render.renderer.Renderer2D;
 import de.omnikryptec.render.renderer.ViewManager;
 import de.pcfreak9000.space.core.Space;
 import de.pcfreak9000.space.tileworld.ecs.CameraSystem;
+import de.pcfreak9000.space.tileworld.ecs.FogSystem;
 import de.pcfreak9000.space.tileworld.ecs.ParallaxSystem;
 import de.pcfreak9000.space.tileworld.ecs.PhysicsSystem;
 import de.pcfreak9000.space.tileworld.ecs.PlayerInputSystem;
@@ -61,6 +62,7 @@ public class WorldManager {
         this.ecsManager.addSystem(new PhysicsSystem());
         this.ecsManager.addSystem(new CameraSystem());
         this.ecsManager.addSystem(new ParallaxSystem());
+        this.ecsManager.addSystem(new FogSystem());
     }
     
     public void setWorld(World world) {
