@@ -21,10 +21,11 @@ import de.pcfreak9000.space.core.gui.LoadingScreenCallback;
 import de.pcfreak9000.space.core.gui.MainMenu;
 import de.pcfreak9000.space.core.registry.GameRegistry;
 import de.pcfreak9000.space.mod.ModLoader;
-import de.pcfreak9000.space.tileworld.TileWorldGenerator;
-import de.pcfreak9000.space.tileworld.TileWorldGenerator.GeneratorCapabilitiesBase;
-import de.pcfreak9000.space.tileworld.WorldInformationBundle;
+import de.pcfreak9000.space.tileworld.WorldGenerator;
+import de.pcfreak9000.space.tileworld.WorldGenerator.GeneratorCapabilitiesBase;
+import de.pcfreak9000.space.tileworld.World;
 import de.pcfreak9000.space.tileworld.WorldLoader;
+import de.pcfreak9000.space.tileworld.WorldManager;
 
 /**
  * The main class. General settings and ressource/mod loading.
@@ -64,6 +65,8 @@ public class Space extends Omnikryptec {
     
     private MainMenu mainMenu;
     
+    private WorldManager worldManager;
+    
     private WorldLoader groundManager;
     
     private Space() {
@@ -98,16 +101,17 @@ public class Space extends Omnikryptec {
     public void onPlayEvent(CoreEvents.PlayEvent ev) {
         mainMenu.removeCurrentGui();
         //TESTING:
-        this.groundManager = new WorldLoader();//Hmmm... is there a better place to do this
-        GameInstance ins = new GameInstance(this.groundManager);
-        WorldInformationBundle testWorld = pickGenerator(
+        this.worldManager = new WorldManager();
+        //this.groundManager = new WorldLoader(this.worldManager);//Hmmm... is there a better place to do this
+        GameInstance ins = new GameInstance(this.worldManager);
+        World testWorld = pickGenerator(
                 GameRegistry.GENERATOR_REGISTRY.filtered(GeneratorCapabilitiesBase.LVL_ENTRY)).generateWorld(0);
         ins.visit(testWorld, 200, 2500);
         //***************
     }
     
     //TMP
-    private TileWorldGenerator pickGenerator(List<TileWorldGenerator> list) {
+    private WorldGenerator pickGenerator(List<WorldGenerator> list) {
         return MathUtil.getWeightedRandom(new Random(), list);
     }
     

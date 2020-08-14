@@ -1,9 +1,10 @@
 package de.pcfreak9000.space.core;
 
 import de.omnikryptec.ecs.component.ComponentType;
-import de.pcfreak9000.space.tileworld.WorldInformationBundle;
+import de.pcfreak9000.space.tileworld.World;
 import de.pcfreak9000.space.tileworld.WorldLoader;
 import de.pcfreak9000.space.tileworld.WorldLoadingFence;
+import de.pcfreak9000.space.tileworld.WorldManager;
 import de.pcfreak9000.space.tileworld.ecs.TransformComponent;
 
 /**
@@ -14,24 +15,24 @@ import de.pcfreak9000.space.tileworld.ecs.TransformComponent;
  *
  */
 public class GameInstance {
-
+    
     private final PlayerStats playerStats;
-
-    private final WorldLoader groundManager;
-
-    public GameInstance(WorldLoader gmgr) {
+    
+    private final WorldManager groundManager;
+    
+    public GameInstance(WorldManager gmgr) {
         this.groundManager = gmgr;
         this.playerStats = new PlayerStats(); //TODO playerstats creation
     }
-
-    public void visit(WorldInformationBundle world, float x, float y) {
+    
+    public void visit(World world, float x, float y) {
         //TODO set player coords
         TransformComponent tc = this.playerStats.getPlayerEntity()
                 .getComponent(ComponentType.of(TransformComponent.class));
         tc.transform.localspaceWrite().setTranslation(x, y);
-        this.groundManager.setWorldUpdateFence(new WorldLoadingFence(tc.transform));
+        this.groundManager.getLoader().setWorldUpdateFence(new WorldLoadingFence(tc.transform));
         this.groundManager.getECSManager().addEntity(this.playerStats.getPlayerEntity());
         this.groundManager.setWorld(world);
     }
-
+    
 }

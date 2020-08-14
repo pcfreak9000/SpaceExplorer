@@ -15,7 +15,7 @@ import de.pcfreak9000.space.util.RegisterSensitive;
  *
  */
 @RegisterSensitive(registry = "GENERATOR_REGISTRY")
-public abstract class TileWorldGenerator implements Weighted {
+public abstract class WorldGenerator implements Weighted {
 
     public static enum GeneratorCapabilitiesBase {
         LVL_ENTRY, ADRESSABLE_PORTAL;
@@ -23,9 +23,9 @@ public abstract class TileWorldGenerator implements Weighted {
 
     protected final Set<Object> CAPS = new HashSet<>();
 
-    public abstract WorldInformationBundle generateWorld(long seed);
+    public abstract World generateWorld(long seed);
 
-    public TileWorldGenerator() {
+    public WorldGenerator() {
         initCaps();
     }
 

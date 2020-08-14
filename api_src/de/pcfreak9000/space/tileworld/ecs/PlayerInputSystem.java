@@ -17,7 +17,7 @@ import de.pcfreak9000.space.core.Keys;
 import de.pcfreak9000.space.core.Space;
 import de.pcfreak9000.space.tileworld.Region;
 import de.pcfreak9000.space.tileworld.TileWorld;
-import de.pcfreak9000.space.tileworld.TileWorldEvents;
+import de.pcfreak9000.space.tileworld.WorldEvents;
 import de.pcfreak9000.space.tileworld.tile.Tile;
 
 public class PlayerInputSystem extends AbstractComponentSystem {
@@ -34,9 +34,9 @@ public class PlayerInputSystem extends AbstractComponentSystem {
     private Camera cam;
     
     @EventSubscription
-    public void settwevent(TileWorldEvents.SetTileWorldEvent ev) {
-        this.world = ev.tileWorldNew;
-        this.cam = ev.groundMgr.getPlanetCamera().getCameraActual();//TODO meh...?
+    public void settwevent(WorldEvents.SetWorldEvent ev) {
+        this.world = ev.getTileWorldNew();
+        this.cam = ev.worldMgr.getPlanetCamera().getCameraActual();//TODO meh...?
     }
     
     private Tile ugly = null;

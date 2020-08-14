@@ -18,7 +18,7 @@ import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.core.Space;
 import de.pcfreak9000.space.tileworld.TileWorld;
-import de.pcfreak9000.space.tileworld.TileWorldEvents;
+import de.pcfreak9000.space.tileworld.WorldEvents;
 import de.pcfreak9000.space.tileworld.tile.Tile;
 import de.pcfreak9000.space.tileworld.tile.TileState;
 
@@ -33,8 +33,8 @@ public class PhysicsSystem extends AbstractComponentSystem {
     private float deltaAcc = 0;
     
     @EventSubscription
-    public void tileworldLoadingEvent(TileWorldEvents.SetTileWorldEvent svwe) {
-        this.tileWorld = svwe.tileWorldNew;
+    public void tileworldLoadingEvent(WorldEvents.SetWorldEvent svwe) {
+        this.tileWorld = svwe.getTileWorldNew();
     }
     
     public PhysicsSystem() {

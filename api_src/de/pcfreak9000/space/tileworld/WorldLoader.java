@@ -25,114 +25,56 @@ import de.pcfreak9000.space.tileworld.ecs.TickRegionSystem;
 
 /**
  * Responsible for successful surface world loading and unloading, management of
- * loaded chunks, updating and rendering the current world.
+ * loaded chunks
  *
  * @author pcfreak9000
  *
  */
 public class WorldLoader {
     
-    //add/remove entities
-    //GUI? where? -> shared GUI renderer
+    private WorldManager manager;
     
-    private final IECSManager ecsManager;
-    
-    private final ViewManager viewManager;
-    
-    private final Scene localScene;
-
-    private final PlanetCamera planetCamera;
-
-    
-    private WorldInformationBundle currentWorld;
+    private World currentWorld;
     private WorldLoadingFence worldLoadingFence;
-        
+    
     private final Set<Region> localLoadedChunks;
     
-    public WorldLoader() {
+    public WorldLoader(WorldManager worldMgr) {
         this.localLoadedChunks = new HashSet<>();
-        this.ecsManager = UpdateableFactory.createDefaultIECSManager();
-        this.localScene = new Scene();
-        this.viewManager = this.localScene.getViewManager();
-        this.planetCamera = new PlanetCamera();
-        this.viewManager.getMainView().setProjection(this.planetCamera.getCameraActual());
-        UContainer updateables = new UContainer();
-        updateables.setUpdatable(0, new UpdaterClass());
-        updateables.setUpdatable(1, this.ecsManager);
-        this.localScene.setGameLogic(updateables);
-        addDefaultECSSystems();
-        Space.BUS.post(new TileWorldEvents.InitWorldLoaderEvent(this.ecsManager, this.viewManager));
+        this.manager = worldMgr;
     }
     
-    public PlanetCamera getPlanetCamera() {
-        return this.planetCamera;
-    }
-    
-    private void addDefaultECSSystems() {
-        AdvancedRenderer2D renderer = new AdvancedRenderer2D(12 * 6 * Region.REGION_TILE_SIZE);
-        renderer.setEnableReflections(false);
-        renderer.setUseExtendedLightRange(false);
-        renderer.ambientLight().setAllRGB(0);
-        Renderer2D backgroundRenderer = new Renderer2D(18);
-        backgroundRenderer.setEnableTiling(true);
-        backgroundRenderer.ambientLight().set(1, 1, 1);
-        this.viewManager.addRenderer(backgroundRenderer);
-        this.viewManager.addRenderer(renderer);
-        this.ecsManager.addSystem(new RenderSystem(renderer, backgroundRenderer));
-        this.ecsManager.addSystem(new PlayerInputSystem());
-        this.ecsManager.addSystem(new TickRegionSystem());
-        this.ecsManager.addSystem(new PhysicsSystem());
-        this.ecsManager.addSystem(new CameraSystem());
-        this.ecsManager.addSystem(new ParallaxSystem());
-    }
-    
-    public void setWorld(WorldInformationBundle w) {
-        Space.BUS.post(new TileWorldEvents.SetTileWorldEvent(this,
-                this.getCurrentWorld() == null ? null : this.getCurrentWorld().getTileWorld(),
-                w == null ? null : w.getTileWorld()));//TODO meh... use the WorldInformationBundle instead?
-        if (w == null) {
-            unloadAll();
-            if (this.currentWorld != null && this.currentWorld.getBackground() != null) {
-                getECSManager().removeEntity(this.currentWorld.getBackground().getEntity());
-            }
-            Omnikryptec.getGameS().removeScene(this.localScene);
-            //unload everything
-        } else {
-            if (this.currentWorld == null) {
-                Omnikryptec.getGameS().addScene(this.localScene);
-            } else {
-                if (this.currentWorld.getBackground() != null) {
-                    getECSManager().removeEntity(this.currentWorld.getBackground().getEntity());
-                }
-                unloadAll();
-            }
-            this.currentWorld = w;
+    public void setWorld(World w) {
+        if (hasCurrentWorld()) {
+            unloadAllRegions();
             if (this.currentWorld.getBackground() != null) {
-                getECSManager().addEntity(this.currentWorld.getBackground().getEntity());
+                manager.getECSManager().removeEntity(this.currentWorld.getBackground().getEntity());
             }
-            loadAll();
+        }
+        this.currentWorld = w;
+        if (hasCurrentWorld()) {
+            loadAllRegions();
+            if (this.currentWorld.getBackground() != null) {
+                manager.getECSManager().addEntity(this.currentWorld.getBackground().getEntity());
+            }
         }
     }
     
-    public IECSManager getECSManager() {
-        return this.ecsManager;
-    }
-    
-    public WorldInformationBundle getCurrentWorld() {
-        return this.currentWorld;
+    private boolean hasCurrentWorld() {
+        return this.currentWorld != null;
     }
     
     public void setWorldUpdateFence(WorldLoadingFence fence) {
-        if (this.currentWorld == null) {
+        if (!hasCurrentWorld()) {
             this.worldLoadingFence = fence;
             return;
         }
-        unloadAll();
+        unloadAllRegions();
         this.worldLoadingFence = fence;
-        loadAll();
+        loadAllRegions();
     }
     
-    private void loadAll() {
+    private void loadAllRegions() {
         int xR = this.worldLoadingFence.getChunkRadiusRangeX();
         int yR = this.worldLoadingFence.getChunkRadiusRangeY();
         int xM = this.worldLoadingFence.getChunkMidpointX();
@@ -145,31 +87,29 @@ public class WorldLoader {
                     Region c = this.currentWorld.getTileWorld().requestRegion(rx, ry);
                     if (c != null) {
                         this.localLoadedChunks.add(c);
-                        this.ecsManager.addEntity(c.getECSEntity());
+                        manager.getECSManager().addEntity(c.getECSEntity());
                     }
                 }
             }
         }
     }
     
-    private void unloadAll() {
+    private void unloadAllRegions() {
         Iterator<Region> it = this.localLoadedChunks.iterator();
         while (it.hasNext()) {
             Region c = it.next();
-            this.ecsManager.addEntity(c.getECSEntity());
+            manager.getECSManager().addEntity(c.getECSEntity());
             it.remove();
         }
     }
     
-    private class UpdaterClass implements IUpdatable {
-        @Override //make sure that the chunks are updated for dynamics after the movement but before this
-        public void update(Time time) {
-            //TODO improve world chunk loading update -> unload all non-needed in update and load new needed
-            Profiler.begin("Reload World");
-            unloadAll();
-            loadAll();
-            Profiler.end();
-            //System.out.println(time.ops);
-        }
+    //make sure that the chunks are updated for dynamics after the movement but before this
+    public void loadChunks(Time time) {
+        //TODO improve world chunk loading update -> unload all non-needed in update and load new needed
+        Profiler.begin("Reload World");
+        unloadAllRegions();
+        loadAllRegions();
+        Profiler.end();
+        //System.out.println(time.ops);
     }
 }

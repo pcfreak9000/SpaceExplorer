@@ -10,8 +10,8 @@ import de.pcfreak9000.space.mod.ModLoaderEvents;
 import de.pcfreak9000.space.tileworld.Background;
 import de.pcfreak9000.space.tileworld.Region;
 import de.pcfreak9000.space.tileworld.TileWorld;
-import de.pcfreak9000.space.tileworld.TileWorldGenerator;
-import de.pcfreak9000.space.tileworld.WorldInformationBundle;
+import de.pcfreak9000.space.tileworld.WorldGenerator;
+import de.pcfreak9000.space.tileworld.World;
 import de.pcfreak9000.space.tileworld.tile.Tile;
 import de.pcfreak9000.space.tileworld.tile.TileEntity;
 import de.pcfreak9000.space.tileworld.tile.TileState;
@@ -76,7 +76,7 @@ public class DMod {
         Background back = new Background("Space.png", 16 / 9f, 3, 1000, 1000);
         GameRegistry.BACKGROUND_REGISTRY.register("stars", back);
         
-        GameRegistry.GENERATOR_REGISTRY.register("STS", new TileWorldGenerator() {
+        GameRegistry.GENERATOR_REGISTRY.register("STS", new WorldGenerator() {
             
             @Override
             protected void initCaps() {
@@ -84,8 +84,8 @@ public class DMod {
             }
             
             @Override
-            public WorldInformationBundle generateWorld(long seed) {
-                return new WorldInformationBundle(new TileWorld(400, 400, (chunk, tileWorld) -> {
+            public World generateWorld(long seed) {
+                return new World(new TileWorld(400, 400, (chunk, tileWorld) -> {
                     for (int i = 0; i < Region.REGION_TILE_SIZE; i++) {
                         for (int j = 0; j < Region.REGION_TILE_SIZE; j++) {
                             if (!tileWorld.inBounds(i + chunk.getGlobalTileX(), j + chunk.getGlobalTileY())) {

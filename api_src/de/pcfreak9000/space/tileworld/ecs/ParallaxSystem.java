@@ -12,7 +12,7 @@ import de.omnikryptec.render.Camera;
 import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.core.Space;
 import de.pcfreak9000.space.tileworld.TileWorld;
-import de.pcfreak9000.space.tileworld.TileWorldEvents;
+import de.pcfreak9000.space.tileworld.WorldEvents;
 import de.pcfreak9000.space.tileworld.tile.Tile;
 
 public class ParallaxSystem extends IterativeComponentSystem {
@@ -29,9 +29,9 @@ public class ParallaxSystem extends IterativeComponentSystem {
     private Camera cam;
 
     @EventSubscription
-    public void tileworldLoadingEvent(TileWorldEvents.SetTileWorldEvent svwe) {
-        this.tileWorld = svwe.tileWorldNew;
-        this.cam = svwe.groundMgr.getPlanetCamera().getCameraActual();
+    public void tileworldLoadingEvent(WorldEvents.SetWorldEvent svwe) {
+        this.tileWorld = svwe.getTileWorldNew();
+        this.cam = svwe.worldMgr.getPlanetCamera().getCameraActual();
     }
 
     @Override

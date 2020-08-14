@@ -43,7 +43,7 @@ public class Region {
     
     private static final Logger LOGGER = Logger.getLogger(Region.class);
     
-    private static final boolean DEBUG_SHOW_BORDERS = true;
+    private static final boolean DEBUG_SHOW_BORDERS = false;
     
     public static final int REGION_TILE_SIZE = 64;
     

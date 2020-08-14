@@ -1,15 +1,15 @@
 package de.pcfreak9000.space.tileworld;
 
-public class WorldInformationBundle {
+public class World {
 
     private final TileWorld tileWorld;
     private final Background background;
 
-    public WorldInformationBundle(TileWorld tileWorld, Background background) {
+    public World(TileWorld tileWorld, Background background) {
         this.tileWorld = tileWorld;
         this.background = background;
     }
-
+    
     public TileWorld getTileWorld() {
         return this.tileWorld;
     }

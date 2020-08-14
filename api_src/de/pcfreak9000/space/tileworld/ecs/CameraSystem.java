@@ -12,27 +12,27 @@ import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.core.Space;
 import de.pcfreak9000.space.tileworld.PlanetCamera;
 import de.pcfreak9000.space.tileworld.TileWorld;
-import de.pcfreak9000.space.tileworld.TileWorldEvents;
+import de.pcfreak9000.space.tileworld.WorldEvents;
 import de.pcfreak9000.space.tileworld.tile.Tile;
 
 public class CameraSystem extends AbstractComponentSystem {
-
+    
     private PlanetCamera playerCam;
     private TileWorld tileWorld;
-
+    
     private final ComponentMapper<TransformComponent> transformMapper = new ComponentMapper<>(TransformComponent.class);
-
+    
     public CameraSystem() {
         super(Family.of(PlayerInputComponent.class, TransformComponent.class));
         Space.BUS.register(this);
     }
-
+    
     @EventSubscription
-    public void tileworldLoadingEvent(TileWorldEvents.SetTileWorldEvent svwe) {
-        this.playerCam = svwe.groundMgr.getPlanetCamera();
-        this.tileWorld = svwe.tileWorldNew;
+    public void tileworldLoadingEvent(WorldEvents.SetWorldEvent svwe) {
+        this.playerCam = svwe.worldMgr.getPlanetCamera();
+        this.tileWorld = svwe.getTileWorldNew();
     }
-
+    
     @Override
     public void update(IECSManager iecsManager, Time time) {
         Vector2fc positionState = this.transformMapper.get(this.entities.get(0)).transform.worldspacePos();
@@ -43,7 +43,7 @@ public class CameraSystem extends AbstractComponentSystem {
         x = Mathf.min(this.tileWorld.getWorldWidth() * Tile.TILE_SIZE - this.playerCam.getWidth(), x);
         y = Mathf.min(this.tileWorld.getWorldHeight() * Tile.TILE_SIZE - this.playerCam.getHeight(), y);
         this.playerCam.getCameraActual().getTransform().localspaceWrite().translation(-x, -y, 0);
-
+        
         //temporary wrap around
         TransformComponent tc = this.transformMapper.get(this.entities.get(0));
         if (tc.transform.worldspacePos().x() < 0) {
