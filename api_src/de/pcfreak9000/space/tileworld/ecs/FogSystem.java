@@ -21,7 +21,8 @@ public class FogSystem extends AbstractComponentSystem {
     public void update(IECSManager iecsManager, Time time) {
         if (time.opCount % 10 == 0) {
             AdvancedSprite sprite = new AdvancedSprite();
-            sprite.setTexture(Omnikryptec.getTexturesS().get("fog:fog_1.png"));
+            Random rand = new Random();
+            sprite.setTexture(Omnikryptec.getTexturesS().get("fog:fog_" + (rand.nextInt(5) + 1) + ".png"));
             sprite.setHeight(450);
             sprite.setWidth(1500);
             sprite.setLayer(200);
@@ -30,8 +31,7 @@ public class FogSystem extends AbstractComponentSystem {
             PhysicsComponent pc = new PhysicsComponent();
             pc.w = 0;
             pc.h = 0;
-            Random r = new Random();
-            pc.velocity.set(r.nextInt(800), r.nextInt(500));
+            pc.velocity.set(rand.nextInt(800), rand.nextInt(500));
             TransformComponent tc = new TransformComponent();
             Entity entity = new Entity();
             entity.addComponent(pc).addComponent(rc).addComponent(tc);

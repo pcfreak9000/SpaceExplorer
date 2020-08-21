@@ -5,6 +5,7 @@ import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.SimpleSprite;
+import de.pcfreak9000.space.item.Inventory;
 import de.pcfreak9000.space.tileworld.ecs.PhysicsComponent;
 import de.pcfreak9000.space.tileworld.ecs.PlayerInputComponent;
 import de.pcfreak9000.space.tileworld.ecs.RenderComponent;
@@ -18,14 +19,17 @@ import de.pcfreak9000.space.tileworld.tile.Tile;
  * @author pcfreak9000
  *
  */
-public class PlayerStats {
-
+public class Player {
+    
     private final Entity playerEntity;
-
-    public PlayerStats() {
+    
+    private Inventory inventory;
+    
+    public Player() {
         this.playerEntity = createRawPlayerEntity();
+        this.inventory = new Inventory();
     }
-
+    
     private Entity createRawPlayerEntity() {
         Entity e = new Entity();
         PlayerInputComponent pic = new PlayerInputComponent();
@@ -34,12 +38,12 @@ public class PlayerStats {
         e.addComponent(pic);
         PhysicsComponent pc = new PhysicsComponent();
         AdvancedSprite sprite = new AdvancedSprite() {
-          @Override
-        public void draw(Batch2D batch) {   
-            super.draw(batch);
-            batch.color().set(0, 0, 1);
-            batch.drawRect(pc.x, pc.y, pc.w, pc.h);
-        }  
+            @Override
+            public void draw(Batch2D batch) {
+                super.draw(batch);
+                batch.color().set(0, 0, 1);
+                batch.drawRect(pc.x, pc.y, pc.w, pc.h);
+            }
         };
         sprite.setWidth(Tile.TILE_SIZE * 2);
         sprite.setHeight(Tile.TILE_SIZE * 4);
@@ -63,8 +67,12 @@ public class PlayerStats {
         pc.h = sprite.getHeight() * 0.95f;
         return e;
     }
-
+    
     public Entity getPlayerEntity() {
         return this.playerEntity;
+    }
+    
+    public Inventory getInventory() {
+        return this.inventory;
     }
 }

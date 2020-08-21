@@ -37,6 +37,8 @@ public class WorldLoader {
     private World currentWorld;
     private WorldLoadingFence worldLoadingFence;
     
+    //TODO recache loaded regions if resources have been reloaded
+    
     private final Set<Region> localLoadedChunks;
     
     public WorldLoader(WorldManager worldMgr) {

@@ -94,10 +94,10 @@ public class PhysicsSystem extends AbstractComponentSystem {
                     Vector2f result = new Vector2f();
                     //Minkowski sum used
                     if (Intersectionf.intersectRayAab(pc.x + pc.w / 2, pc.y + pc.h / 2, 0, posDeltaX, posDeltaY, 0,
-                            t.getGlobalTileX() * Tile.TILE_SIZE - pc.w / 2,
-                            t.getGlobalTileY() * Tile.TILE_SIZE - pc.h / 2, 0,
-                            (1 + t.getGlobalTileX()) * Tile.TILE_SIZE + pc.w / 2,
-                            (1 + t.getGlobalTileY()) * Tile.TILE_SIZE + pc.h / 2, 0, result)) {
+                            t.getGlobalTileX() * Tile.TILE_SIZE - pc.w / 2 - 0.0001f,
+                            t.getGlobalTileY() * Tile.TILE_SIZE - pc.h / 2 - 0.0001f, 0,
+                            (1 + t.getGlobalTileX()) * Tile.TILE_SIZE + pc.w / 2 + 0.0001f,
+                            (1 + t.getGlobalTileY()) * Tile.TILE_SIZE + pc.h / 2 + 0.0001f, 0, result)) {
                         if (result.x() >= 0) {
                             if (result.x() < tMin) {
                                 tMin = result.x();
