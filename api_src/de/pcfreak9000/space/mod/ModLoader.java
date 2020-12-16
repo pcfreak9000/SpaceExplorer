@@ -3,6 +3,7 @@ package de.pcfreak9000.space.mod;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -118,11 +119,15 @@ public class ModLoader {
             Object instance = null;
             try {
                 modClass.getConstructor().setAccessible(true);
-                instance = modClass.newInstance();
+                instance = modClass.getConstructor().newInstance();
             } catch (InstantiationException | NoSuchMethodException e) {
                 LOGGER.error(
                         "Mod could not be instantiated. Make sure a nullary-constructor is available and your mod class is non-abstract etc: "
                                 + modClass.getAnnotation(Mod.class).id());
+                continue;
+            } catch (InvocationTargetException e) {
+                LOGGER.error("Exception in mod during mod construction: " + modClass.getAnnotation(Mod.class).id());
+                e.printStackTrace(LOGGER.getErr());
                 continue;
             } catch (IllegalAccessException | SecurityException e) {
                 LOGGER.error("Illegal Access: " + modClass.getAnnotation(Mod.class).id());
