@@ -3,6 +3,7 @@ package de.pcfreak9000.spaceexplorer.universe.celestial;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.pcfreak9000.space.core.registry.GameRegistry;
 import de.pcfreak9000.space.util.RegisterSensitive;
 import de.pcfreak9000.spaceexplorer.universe.SpaceCoordinates;
 import de.pcfreak9000.spaceexplorer.universe.biome.BiomeDefinition;

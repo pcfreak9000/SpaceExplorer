@@ -3,6 +3,7 @@ package de.pcfreak9000.spaceexplorer.universe.celestial;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.pcfreak9000.space.core.registry.GameRegistry;
 import de.pcfreak9000.spaceexplorer.util.Private;
 
 /**

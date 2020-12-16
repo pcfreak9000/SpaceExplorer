@@ -4,24 +4,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import de.omnikryptec.core.Omnikryptec;
-import de.omnikryptec.core.Scene;
-import de.omnikryptec.core.update.IUpdatable;
-import de.omnikryptec.core.update.UContainer;
-import de.omnikryptec.core.update.UpdateableFactory;
-import de.omnikryptec.ecs.IECSManager;
-import de.omnikryptec.render.renderer.AdvancedRenderer2D;
-import de.omnikryptec.render.renderer.Renderer2D;
-import de.omnikryptec.render.renderer.ViewManager;
 import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.updater.Time;
-import de.pcfreak9000.space.core.Space;
-import de.pcfreak9000.space.tileworld.ecs.CameraSystem;
-import de.pcfreak9000.space.tileworld.ecs.ParallaxSystem;
-import de.pcfreak9000.space.tileworld.ecs.PhysicsSystem;
-import de.pcfreak9000.space.tileworld.ecs.PlayerInputSystem;
-import de.pcfreak9000.space.tileworld.ecs.RenderSystem;
-import de.pcfreak9000.space.tileworld.ecs.TickRegionSystem;
 
 /**
  * Responsible for successful surface world loading and unloading, management of

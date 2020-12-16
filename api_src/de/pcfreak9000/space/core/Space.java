@@ -21,10 +21,9 @@ import de.pcfreak9000.space.core.gui.LoadingScreenCallback;
 import de.pcfreak9000.space.core.gui.MainMenu;
 import de.pcfreak9000.space.core.registry.GameRegistry;
 import de.pcfreak9000.space.mod.ModLoader;
+import de.pcfreak9000.space.tileworld.World;
 import de.pcfreak9000.space.tileworld.WorldGenerator;
 import de.pcfreak9000.space.tileworld.WorldGenerator.GeneratorCapabilitiesBase;
-import de.pcfreak9000.space.tileworld.World;
-import de.pcfreak9000.space.tileworld.WorldLoader;
 import de.pcfreak9000.space.tileworld.WorldManager;
 
 /**
@@ -114,7 +113,7 @@ public class Space extends Omnikryptec {
     
     @Override
     protected void onShutdown() {
-        //System.out.println(Profiler.currentInfo());
+        System.out.println(Profiler.currentInfo());
     }
     
     public void reloadResources() {

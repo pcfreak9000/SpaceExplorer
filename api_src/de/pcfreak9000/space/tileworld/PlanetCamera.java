@@ -2,7 +2,7 @@ package de.pcfreak9000.space.tileworld;
 
 import org.joml.Matrix4f;
 
-import de.omnikryptec.render.AdaptiveCamera;
+import de.omnikryptec.render3.AdaptiveCamera;
 import de.omnikryptec.util.math.MathUtil;
 
 public class PlanetCamera {

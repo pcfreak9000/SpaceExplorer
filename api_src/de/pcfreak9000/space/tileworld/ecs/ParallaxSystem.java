@@ -8,7 +8,7 @@ import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.system.IterativeComponentSystem;
 import de.omnikryptec.event.EventSubscription;
-import de.omnikryptec.render.Camera;
+import de.omnikryptec.render3.Camera;
 import de.omnikryptec.util.updater.Time;
 import de.pcfreak9000.space.core.Space;
 import de.pcfreak9000.space.tileworld.TileWorld;

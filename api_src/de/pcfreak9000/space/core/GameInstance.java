@@ -2,7 +2,6 @@ package de.pcfreak9000.space.core;
 
 import de.omnikryptec.ecs.component.ComponentType;
 import de.pcfreak9000.space.tileworld.World;
-import de.pcfreak9000.space.tileworld.WorldLoader;
 import de.pcfreak9000.space.tileworld.WorldLoadingFence;
 import de.pcfreak9000.space.tileworld.WorldManager;
 import de.pcfreak9000.space.tileworld.ecs.TransformComponent;

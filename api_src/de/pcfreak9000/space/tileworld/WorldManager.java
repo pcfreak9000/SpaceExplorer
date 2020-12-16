@@ -5,16 +5,15 @@ import de.omnikryptec.core.Scene;
 import de.omnikryptec.core.update.UContainer;
 import de.omnikryptec.core.update.UpdateableFactory;
 import de.omnikryptec.ecs.IECSManager;
-import de.omnikryptec.render.postprocessing.BrightnessAccent;
-import de.omnikryptec.render.postprocessing.EffectMixer;
-import de.omnikryptec.render.postprocessing.GaussianBlur;
-import de.omnikryptec.render.postprocessing.PostprocessingBundle;
 import de.omnikryptec.render.renderer.AdvancedRenderer2D;
 import de.omnikryptec.render.renderer.Renderer2D;
-import de.omnikryptec.render.renderer.ViewManager;
+import de.omnikryptec.render3.postprocessing.BrightnessAccent;
+import de.omnikryptec.render3.postprocessing.EffectMixer;
+import de.omnikryptec.render3.postprocessing.GaussianBlur;
+import de.omnikryptec.render3.postprocessing.PostprocessingBundle;
+import de.omnikryptec.render3.structure.ViewManager;
 import de.pcfreak9000.space.core.Space;
 import de.pcfreak9000.space.tileworld.ecs.CameraSystem;
-import de.pcfreak9000.space.tileworld.ecs.FogSystem;
 import de.pcfreak9000.space.tileworld.ecs.ParallaxSystem;
 import de.pcfreak9000.space.tileworld.ecs.PhysicsSystem;
 import de.pcfreak9000.space.tileworld.ecs.PlayerInputSystem;
@@ -75,7 +74,7 @@ public class WorldManager {
         this.ecsManager.addSystem(new PhysicsSystem());
         this.ecsManager.addSystem(new CameraSystem());
         this.ecsManager.addSystem(new ParallaxSystem());
-        this.ecsManager.addSystem(new FogSystem());
+        //this.ecsManager.addSystem(new FogSystem());
     }
     
     public void setWorld(World world) {

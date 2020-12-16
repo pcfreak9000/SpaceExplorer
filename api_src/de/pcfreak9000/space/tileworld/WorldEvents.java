@@ -2,7 +2,7 @@ package de.pcfreak9000.space.tileworld;
 
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.event.Event;
-import de.omnikryptec.render.renderer.ViewManager;
+import de.omnikryptec.render3.structure.ViewManager;
 
 public class WorldEvents {
     
