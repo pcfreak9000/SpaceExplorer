@@ -16,12 +16,12 @@ import com.google.common.base.Objects;
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.libapi.exposed.render.Texture;
-import de.omnikryptec.render.batch.AdvancedBatch2D;
-import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.batch.vertexmanager.OrderedCachedVertexManager;
-import de.omnikryptec.render.objects.AdvancedSprite;
-import de.omnikryptec.render.objects.Sprite;
+import de.omnikryptec.render3.d2.BatchCache;
+import de.omnikryptec.render3.d2.compat.BorderedBatchAdapter;
+import de.omnikryptec.render3.d2.instanced.InstancedBatch2D;
+import de.omnikryptec.render3.d2.sprites.Sprite;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.Color;
@@ -82,6 +82,8 @@ public class Region {
     private final OrderedCachedVertexManager lightOcvm;
     private final Entity regionEntity;
     
+    private BatchCache tileCache;
+    
     public Region(int rx, int ry, TileWorld tw) {
         this.tileWorld = tw;
         this.rx = rx;
@@ -104,25 +106,27 @@ public class Region {
         //Arrays.setAll(this.sunlightRemovalBfsQueue, (i) -> new ArrayDeque<>());
         //this.recacheLights = true;
         //this.recacheTiles = true;
-        RenderComponent rc = new RenderComponent(new AdvancedSprite() {
+        RenderComponent rc = new RenderComponent(new Sprite() {
             @Override
-            public void draw(Batch2D batch) {
+            public void draw() {
                 if (Region.this.recacheTiles) {
                     Region.this.recacheTiles = false;
                     recacheTiles();
                 }
-                Region.this.ocvm.draw(batch);
+                if(tileCache!=null) {
+                    InstancedBatch2D.DEFAULT_BATCH.put(tileCache);//TODO this sucks, make a proper getter for the renderer or something?
+                }
                 if (DEBUG_SHOW_BORDERS) {
-                    batch.color().set(1, 0, 0, 1);
-                    float left = Region.this.tx * Tile.TILE_SIZE;
-                    float right = (Region.this.tx + REGION_TILE_SIZE) * Tile.TILE_SIZE;
-                    float top = Region.this.ty * Tile.TILE_SIZE;
-                    float bot = (Region.this.ty + REGION_TILE_SIZE) * Tile.TILE_SIZE;
-                    batch.drawLine(left, bot, left, top, 2);
-                    batch.drawLine(left, bot, right, bot, 2);
-                    batch.drawLine(right, top, left, top, 2);
-                    batch.drawLine(right, top, right, bot, 2);
-                    batch.color().setAll(1);
+//                    batch.color().set(1, 0, 0, 1);
+//                    float left = Region.this.tx * Tile.TILE_SIZE;
+//                    float right = (Region.this.tx + REGION_TILE_SIZE) * Tile.TILE_SIZE;
+//                    float top = Region.this.ty * Tile.TILE_SIZE;
+//                    float bot = (Region.this.ty + REGION_TILE_SIZE) * Tile.TILE_SIZE;
+//                    batch.drawLine(left, bot, left, top, 2);
+//                    batch.drawLine(left, bot, right, bot, 2);
+//                    batch.drawLine(right, top, left, top, 2);
+//                    batch.drawLine(right, top, right, bot, 2);
+//                    batch.color().setAll(1);
                 }
             }
             
@@ -134,37 +138,37 @@ public class Region {
                 
             }
         });
-        rc.light = new Sprite() {
-            
-            @Override
-            public void draw(Batch2D batch) {
-                // queueRecacheLights();//TxDO WIP solution
-                if (Region.this.recacheLights) {
-                    Region.this.recacheLights = false;
-                    recacheLights();
-                }
-                Region.this.lightOcvm.draw(batch);
-                if (DEBUG_SHOW_BORDERS) {
-                    batch.color().set(1, 0, 0, 1);
-                    float left = Region.this.tx * Tile.TILE_SIZE;
-                    float right = (Region.this.tx + REGION_TILE_SIZE) * Tile.TILE_SIZE;
-                    float top = Region.this.ty * Tile.TILE_SIZE;
-                    float bot = (Region.this.ty + REGION_TILE_SIZE) * Tile.TILE_SIZE;
-                    batch.drawLine(left, bot, left, top, 2);
-                    batch.drawLine(left, bot, right, bot, 2);
-                    batch.drawLine(right, top, left, top, 2);
-                    batch.drawLine(right, top, right, bot, 2);
-                    batch.color().setAll(1);
-                }
-            }
-            
-            @Override
-            public boolean isVisible(FrustumIntersection frustum) {
-                return frustum.testAab((Region.this.tx - 3) * Tile.TILE_SIZE, (Region.this.ty - 3) * Tile.TILE_SIZE, 0,
-                        (Region.this.tx + REGION_TILE_SIZE + 3) * Tile.TILE_SIZE,
-                        (Region.this.ty + REGION_TILE_SIZE + 3) * Tile.TILE_SIZE, 0);
-            }
-        };
+        //        rc.light = new Sprite() {
+        //            
+        //            @Override
+        //            public void draw(Batch2D batch) {
+        //                // queueRecacheLights();//TxDO WIP solution
+        //                if (Region.this.recacheLights) {
+        //                    Region.this.recacheLights = false;
+        //                    recacheLights();
+        //                }
+        //                Region.this.lightOcvm.draw(batch);
+        //                if (DEBUG_SHOW_BORDERS) {
+        //                    batch.color().set(1, 0, 0, 1);
+        //                    float left = Region.this.tx * Tile.TILE_SIZE;
+        //                    float right = (Region.this.tx + REGION_TILE_SIZE) * Tile.TILE_SIZE;
+        //                    float top = Region.this.ty * Tile.TILE_SIZE;
+        //                    float bot = (Region.this.ty + REGION_TILE_SIZE) * Tile.TILE_SIZE;
+        //                    batch.drawLine(left, bot, left, top, 2);
+        //                    batch.drawLine(left, bot, right, bot, 2);
+        //                    batch.drawLine(right, top, left, top, 2);
+        //                    batch.drawLine(right, top, right, bot, 2);
+        //                    batch.color().setAll(1);
+        //                }
+        //            }
+        //            
+        //            @Override
+        //            public boolean isVisible(FrustumIntersection frustum) {
+        //                return frustum.testAab((Region.this.tx - 3) * Tile.TILE_SIZE, (Region.this.ty - 3) * Tile.TILE_SIZE, 0,
+        //                        (Region.this.tx + REGION_TILE_SIZE + 3) * Tile.TILE_SIZE,
+        //                        (Region.this.ty + REGION_TILE_SIZE + 3) * Tile.TILE_SIZE, 0);
+        //            }
+        //        };
         this.regionEntity.addComponent(rc);
         this.regionEntity.addComponent(new TickRegionComponent(this));
     }
@@ -229,7 +233,7 @@ public class Region {
                 if (ticking) {
                     tickablesForRemoval.add((Tickable) old.getTileEntity());
                 } else {
-                    tickables.remove((Tickable) old.getTileEntity());
+                    tickables.remove(old.getTileEntity());
                 }
             }
             old.setTileEntity(null);
@@ -544,9 +548,11 @@ public class Region {
     private void recacheTiles() {
         //LOGGER.debug("Recaching: " + toString());
         this.ocvm.clear();
-        AdvancedBatch2D PACKING_BATCH = new AdvancedBatch2D(this.ocvm);
+        InstancedBatch2D packingBatchActual = new InstancedBatch2D(true);
+        BorderedBatchAdapter PACKING_BATCH = new BorderedBatchAdapter(packingBatchActual);
         PACKING_BATCH.begin();
         Matrix3x2f tmpTransform = new Matrix3x2f();
+        tmpTransform.scale(Tile.TILE_SIZE);
         List<TileState> tiles = new ArrayList<>();
         Predicate<TileState> predicate = (t) -> t.getTile().color().getA() > 0;
         //background does not need to be recached all the time because it can not change (rn)
@@ -555,16 +561,16 @@ public class Region {
             PACKING_BATCH.color().set(t.getTile().color());
             PACKING_BATCH.color().mulRGB(BACKGROUND_FACTOR);
             tmpTransform.setTranslation(t.getGlobalTileX() * Tile.TILE_SIZE, t.getGlobalTileY() * Tile.TILE_SIZE);
-            PACKING_BATCH.draw(t.getTile().getTexture(), tmpTransform, Tile.TILE_SIZE, Tile.TILE_SIZE, false, false);
+            PACKING_BATCH.draw(t.getTile().getTexture(), tmpTransform);
         }
         tiles.clear();
         this.tiles.getAll(tiles, predicate);
         for (TileState t : tiles) {
             PACKING_BATCH.color().set(t.getTile().color());
             tmpTransform.setTranslation(t.getGlobalTileX() * Tile.TILE_SIZE, t.getGlobalTileY() * Tile.TILE_SIZE);
-            PACKING_BATCH.draw(t.getTile().getTexture(), tmpTransform, Tile.TILE_SIZE, Tile.TILE_SIZE, false, false);
+            PACKING_BATCH.draw(t.getTile().getTexture(), tmpTransform);
         }
-        PACKING_BATCH.end();
+        tileCache = packingBatchActual.flushWithOptionalCache();
     }
     
     @Override

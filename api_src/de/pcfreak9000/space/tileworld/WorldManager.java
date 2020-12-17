@@ -5,8 +5,6 @@ import de.omnikryptec.core.Scene;
 import de.omnikryptec.core.update.UContainer;
 import de.omnikryptec.core.update.UpdateableFactory;
 import de.omnikryptec.ecs.IECSManager;
-import de.omnikryptec.render.renderer.AdvancedRenderer2D;
-import de.omnikryptec.render.renderer.Renderer2D;
 import de.omnikryptec.render3.postprocessing.BrightnessAccent;
 import de.omnikryptec.render3.postprocessing.EffectMixer;
 import de.omnikryptec.render3.postprocessing.GaussianBlur;
@@ -50,15 +48,6 @@ public class WorldManager {
     }
     
     private void addDefaultECSSystems() {
-        AdvancedRenderer2D renderer = new AdvancedRenderer2D(12 * 6 * Region.REGION_TILE_SIZE);
-        renderer.setEnableReflections(false);
-        renderer.setUseExtendedLightRange(false);
-        renderer.ambientLight().setAllRGB(0);
-        Renderer2D backgroundRenderer = new Renderer2D(18);
-        backgroundRenderer.setEnableTiling(true);
-        backgroundRenderer.ambientLight().set(1, 1, 1);
-        this.viewManager.addRenderer(backgroundRenderer);
-        this.viewManager.addRenderer(renderer);
         PostprocessingBundle bund = new PostprocessingBundle();
         bund.add(new BrightnessAccent());
         bund.add(GaussianBlur.createGaussianBlurBundle(1));
@@ -67,8 +56,8 @@ public class WorldManager {
         EffectMixer eff = new EffectMixer(bund);
         eff.setWeightSource(0.6f);
         eff.setWeightEffect(0.5f);
-        this.viewManager.getMainView().setPostprocessor(eff);
-        this.ecsManager.addSystem(new RenderSystem(renderer, backgroundRenderer));
+       // this.viewManager.getMainView().setPostprocessor(eff);
+        this.ecsManager.addSystem(new RenderSystem(viewManager.createAndAddVRenderer2D()));
         this.ecsManager.addSystem(new PlayerInputSystem());
         this.ecsManager.addSystem(new TickRegionSystem());
         this.ecsManager.addSystem(new PhysicsSystem());

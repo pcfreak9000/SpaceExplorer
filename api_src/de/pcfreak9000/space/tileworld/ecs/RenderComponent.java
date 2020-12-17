@@ -1,23 +1,14 @@
 package de.pcfreak9000.space.tileworld.ecs;
 
 import de.omnikryptec.ecs.component.Component;
-import de.omnikryptec.render.objects.AdvancedSprite;
-import de.omnikryptec.render.objects.Sprite;
+import de.omnikryptec.render3.d2.sprites.Sprite;
 
 public class RenderComponent implements Component {
     
-    public final AdvancedSprite sprite;
-    public Sprite light;
+    public final Sprite sprite;
     
-    public final boolean asBackground;
-
-    public RenderComponent(AdvancedSprite sprite) {
+    public RenderComponent(Sprite sprite) {
         this.sprite = sprite;
-        this.asBackground = false;
     }
-
-    public RenderComponent(AdvancedSprite sprite, boolean asBackground) {
-        this.sprite = sprite;
-        this.asBackground = asBackground;
-    }
+    
 }
