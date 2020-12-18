@@ -61,8 +61,8 @@ public class Player {
         e.addComponent(rc);
         e.addComponent(new TransformComponent());
         e.addComponent(pc);
-        pc.w = Tile.TILE_SIZE * 2;
-        pc.h = Tile.TILE_SIZE * 4 * 0.95f;//FIXME get width and height
+        pc.w = sprite.getWidth();
+        pc.h = sprite.getHeight() * 0.95f;
         return e;
     }
     
