@@ -17,7 +17,6 @@ import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.batch.SimpleBatch2D;
-import de.omnikryptec.render.batch.vertexmanager.OrderedCachedVertexManager;
 import de.omnikryptec.render3.d2.BatchCache;
 import de.omnikryptec.render3.d2.compat.BorderedBatchAdapter;
 import de.omnikryptec.render3.d2.instanced.InstancedBatch2D;
@@ -61,16 +60,15 @@ public class Region {
     
     private final TileWorld tileWorld;
     
-    //private final Quadtree<TileState> tiles;
     private final TileStorage tiles;
-    //private final Quadtree<TileState> tilesBackground;
     private final TileStorage tilesBackground;
-    private final List<Tickable> tickables;
     private final List<TileEntity> tileEntities;
+    private final List<Tickable> tickables;
     
     private final Queue<Tickable> tickablesForRemoval;
-    
     private boolean ticking = false;
+    
+    private InstancedBatch2D tileRenderer = new InstancedBatch2D(40000);
     
     private boolean recacheTiles;
     private boolean recacheLights;
@@ -78,8 +76,6 @@ public class Region {
     private final Queue<RemovalNode>[] lightRemovalBfsQueue;
     //private final Queue<TileState> sunlightBfsQueue;
     //private final Queue<RemovalNode>[] sunlightRemovalBfsQueue;
-    private final OrderedCachedVertexManager ocvm;
-    private final OrderedCachedVertexManager lightOcvm;
     private final Entity regionEntity;
     
     private BatchCache tileCache;
@@ -95,8 +91,6 @@ public class Region {
         this.tileEntities = new ArrayList<>();
         this.tickables = new ArrayList<>();
         this.tickablesForRemoval = new ArrayDeque<>();
-        this.ocvm = new OrderedCachedVertexManager(6 * REGION_TILE_SIZE);
-        this.lightOcvm = new OrderedCachedVertexManager(6 * REGION_TILE_SIZE);
         this.regionEntity = new Entity();
         this.lightBfsQueue = new ArrayDeque<>();
         this.lightRemovalBfsQueue = new Queue[3];
@@ -113,20 +107,20 @@ public class Region {
                     Region.this.recacheTiles = false;
                     recacheTiles();
                 }
-                if(tileCache!=null) {
-                    InstancedBatch2D.DEFAULT_BATCH.put(tileCache);//TODO this sucks, make a proper getter for the renderer or something?
+                if (tileCache != null) {
+                    tileRenderer.put(tileCache);
                 }
                 if (DEBUG_SHOW_BORDERS) {
-//                    batch.color().set(1, 0, 0, 1);
-//                    float left = Region.this.tx * Tile.TILE_SIZE;
-//                    float right = (Region.this.tx + REGION_TILE_SIZE) * Tile.TILE_SIZE;
-//                    float top = Region.this.ty * Tile.TILE_SIZE;
-//                    float bot = (Region.this.ty + REGION_TILE_SIZE) * Tile.TILE_SIZE;
-//                    batch.drawLine(left, bot, left, top, 2);
-//                    batch.drawLine(left, bot, right, bot, 2);
-//                    batch.drawLine(right, top, left, top, 2);
-//                    batch.drawLine(right, top, right, bot, 2);
-//                    batch.color().setAll(1);
+                    //                    batch.color().set(1, 0, 0, 1);
+                    //                    float left = Region.this.tx * Tile.TILE_SIZE;
+                    //                    float right = (Region.this.tx + REGION_TILE_SIZE) * Tile.TILE_SIZE;
+                    //                    float top = Region.this.ty * Tile.TILE_SIZE;
+                    //                    float bot = (Region.this.ty + REGION_TILE_SIZE) * Tile.TILE_SIZE;
+                    //                    batch.drawLine(left, bot, left, top, 2);
+                    //                    batch.drawLine(left, bot, right, bot, 2);
+                    //                    batch.drawLine(right, top, left, top, 2);
+                    //                    batch.drawLine(right, top, right, bot, 2);
+                    //                    batch.color().setAll(1);
                 }
             }
             
@@ -510,8 +504,8 @@ public class Region {
         resolveLights();
         //propagateSunlight(true);
         //LOGGER.debug("Recaching lights: " + toString());
-        this.lightOcvm.clear();
-        SimpleBatch2D PACKING_BATCH = new SimpleBatch2D(this.lightOcvm);
+        //this.lightOcvm.clear();
+        SimpleBatch2D PACKING_BATCH = null;//new SimpleBatch2D(this.lightOcvm);
         PACKING_BATCH.begin();
         Matrix3x2f tmpTransform = new Matrix3x2f();
         List<TileState> tiles = new ArrayList<>();
@@ -547,10 +541,9 @@ public class Region {
     
     private void recacheTiles() {
         //LOGGER.debug("Recaching: " + toString());
-        this.ocvm.clear();
         InstancedBatch2D packingBatchActual = new InstancedBatch2D(true);
-        BorderedBatchAdapter PACKING_BATCH = new BorderedBatchAdapter(packingBatchActual);
-        PACKING_BATCH.begin();
+        BorderedBatchAdapter packingBatch = new BorderedBatchAdapter(packingBatchActual);
+        packingBatch.begin();
         Matrix3x2f tmpTransform = new Matrix3x2f();
         tmpTransform.scale(Tile.TILE_SIZE);
         List<TileState> tiles = new ArrayList<>();
@@ -558,17 +551,17 @@ public class Region {
         //background does not need to be recached all the time because it can not change (rn)
         this.tilesBackground.getAll(tiles, predicate);
         for (TileState t : tiles) {
-            PACKING_BATCH.color().set(t.getTile().color());
-            PACKING_BATCH.color().mulRGB(BACKGROUND_FACTOR);
+            packingBatch.color().set(t.getTile().color());
+            packingBatch.color().mulRGB(BACKGROUND_FACTOR);
             tmpTransform.setTranslation(t.getGlobalTileX() * Tile.TILE_SIZE, t.getGlobalTileY() * Tile.TILE_SIZE);
-            PACKING_BATCH.draw(t.getTile().getTexture(), tmpTransform);
+            packingBatch.draw(t.getTile().getTexture(), tmpTransform);
         }
         tiles.clear();
         this.tiles.getAll(tiles, predicate);
         for (TileState t : tiles) {
-            PACKING_BATCH.color().set(t.getTile().color());
+            packingBatch.color().set(t.getTile().color());
             tmpTransform.setTranslation(t.getGlobalTileX() * Tile.TILE_SIZE, t.getGlobalTileY() * Tile.TILE_SIZE);
-            PACKING_BATCH.draw(t.getTile().getTexture(), tmpTransform);
+            packingBatch.draw(t.getTile().getTexture(), tmpTransform);
         }
         tileCache = packingBatchActual.flushWithOptionalCache();
     }
