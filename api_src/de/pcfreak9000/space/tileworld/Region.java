@@ -101,6 +101,8 @@ public class Region {
         //this.recacheLights = true;
         //this.recacheTiles = true;
         RenderComponent rc = new RenderComponent(new Sprite() {
+            
+            
             @Override
             public void draw() {
                 if (Region.this.recacheTiles) {
@@ -108,7 +110,8 @@ public class Region {
                     recacheTiles();
                 }
                 if (tileCache != null) {
-                    tileRenderer.put(tileCache);
+                    InstancedBatch2D.DEFAULT_BATCH.put(tileCache);
+                    //tileRenderer.put(tileCache);
                 }
                 if (DEBUG_SHOW_BORDERS) {
                     //                    batch.color().set(1, 0, 0, 1);
